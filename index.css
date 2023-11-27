@@ -1,0 +1,453 @@
+.first-background {
+  background-image: url('assets\\images\\sign-in\\signin.svg');
+  background-size: cover;
+  font-family: Verdana;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column; /* Arrange children in a column */
+  min-height: 100vh; /* Make sure the body takes at least the full height of the viewport */
+}
+
+.title1{
+  flex: 1; /* Grow to fill available space, pushing .signin to the bottom */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 250px;
+  margin-bottom: 0px;
+  font-weight: lighter;
+  color: white;
+  
+}
+.title2{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 5px;
+  color: white;
+}
+
+.title3{
+  flex: 1; /* Grow to fill available space, pushing .signin to the bottom */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 250px;
+  margin-bottom: 0px;
+  font-weight: lighter;
+  color: white;
+}
+.title4{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 5px;
+  color: white;
+}
+
+header {
+  top: 0;
+  height: 10vh;
+  padding: 10px;
+}
+
+header h2{
+  color: white;
+  position: fixed;
+  margin-top: 20px;
+  left: 47.5%;
+}
+
+.main-content {
+  flex: 1; /* Grow to fill available space, pushing .signin to the bottom */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: justify;
+  margin-top: 110px;
+  color: white;
+}
+
+.login-form {
+  position: fixed;
+  width: 200px;
+  height: 80px;
+  margin: 0;
+  padding: 20px;
+  bottom: 300px;
+  margin-left: 150px;
+  left: 0;
+  background-color: none;
+  outline: none;
+}
+
+.forgot-password{
+  background-color: none;
+  
+}
+
+.next-btn{
+  background-color: #850F16;
+  color: white;
+  border-radius: 4px;
+  height: 25px;
+  width: 70px;
+  border-style: solid;
+  border-color: transparent;
+  margin-left: 60px;
+}
+.submit-button{
+  margin-top: 10px;
+}
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid maroon;
+  border-radius: 5px;
+  color: #333;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.7);
+}
+.form-group{
+  background-color: none;
+}
+
+/* Buttons */
+.signin-button {
+  top: 45%;
+  height: 35px;
+  width: 120px;
+  border: none;
+  border-radius: 10px;
+  color: maroon;
+  background-color: rgb(245, 230, 203);
+  border-color: maroon;
+  font-weight: bolder;
+  margin: auto; /* Center the button horizontally and vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed; /* Fixed positioning to keep it in place while scrolling */
+  bottom: 30px; /* Adjust this value as needed to position it above the footer */
+  left: 50%; /* Center horizontally */
+  margin-left: -60px; /* Half of the button's width to center it horizontally */
+  z-index: 3; /* Set a higher z-index for the button */
+}
+
+.signin-button:hover {
+  top: 45%;
+  height: 35px;
+  width: 120px;
+  border: none;
+  color: rgb(245, 230, 203);
+  background-color: maroon;
+  border: 1px solid rgb(245, 230, 203);
+  box-shadow: 2px 2px 5px rgba(1, 1, 1, 0.9);
+  font-weight: bolder;
+  margin: auto; /* Center the button horizontally and vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed; /* Fixed positioning to keep it in place while scrolling */
+  bottom: 30px; /* Adjust this value as needed to position it above the footer */
+  left: 50%; /* Center horizontally */
+  margin-left: -60px; /* Half of the button's width to center it horizontally */
+  z-index: 3; /* Set a higher z-index for the button */
+  cursor: pointer;
+}
+
+
+.market-button {
+  top: 30%;
+  height: 35px;
+  width: 120px;
+  border: none;
+  border-radius: 10px;
+  color: maroon;
+  background-color: rgb(245, 230, 203);
+  border-color: maroon;
+  font-weight: bolder;
+  margin: auto; /* Center the button horizontally and vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed; /* Fixed positioning to keep it in place while scrolling */
+  bottom: 30px; /* Adjust this value as needed to position it above the footer */
+  left: 50%; /* Center horizontally */
+  margin-left: -60px; /* Half of the button's width to center it horizontally */
+  z-index: 3; /* Set a higher z-index for the button */
+}
+
+.market-button:hover {
+  top: 30%;
+  height: 35px;
+  width: 120px;
+  border: none;
+  color: rgb(245, 230, 203);
+  background-color: maroon;
+  border: 1px solid rgb(245, 230, 203);
+  box-shadow: 2px 2px 5px rgba(1, 1, 1, 0.9);
+  font-weight: bolder;
+  margin: auto; /* Center the button horizontally and vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed; /* Fixed positioning to keep it in place while scrolling */
+  bottom: 30px; /* Adjust this value as needed to position it above the footer */
+  left: 50%; /* Center horizontally */
+  margin-left: -60px; /* Half of the button's width to center it horizontally */
+  z-index: 3; /* Set a higher z-index for the button */
+  cursor: pointer;
+
+}
+.treasury-button {
+  top: 43%;
+  height: 35px;
+  width: 140px;
+  border: none;
+  border-radius: 10px;
+  color: maroon;
+  background-color: rgb(245, 230, 203);
+  border-color: maroon;
+  font-weight: bolder;
+  margin: auto; /* Center the button horizontally and vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed; /* Fixed positioning to keep it in place while scrolling */
+  bottom: 30px; /* Adjust this value as needed to position it above the footer */
+  left: 49.5%; /* Center horizontally */
+  margin-left: -60px; /* Half of the button's width to center it horizontally */
+  z-index: 3; /* Set a higher z-index for the button */
+}
+
+.treasury-button:hover {
+  top: 43%;
+  height: 35px;
+  width: 140px;
+  border: none;
+  color: rgb(245, 230, 203);
+  background-color: maroon;
+  border: 1px solid rgb(245, 230, 203);
+  box-shadow: 2px 2px 5px rgba(1, 1, 1, 0.9);
+  font-weight: bolder;
+  margin: auto; /* Center the button horizontally and vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed; /* Fixed positioning to keep it in place while scrolling */
+  bottom: 30px; /* Adjust this value as needed to position it above the footer */
+  left: 49.5%; /* Center horizontally */
+  margin-left: -60px; /* Half of the button's width to center it horizontally */
+  z-index: 3; /* Set a higher z-index for the button */
+  cursor: pointer;
+
+}
+
+.forgot-password{
+  color:maroon;
+  font-style: italic;
+  font-size: smaller;
+}
+.vendor-button {
+  top: 30%;
+  height: 35px;
+  width: 120px;
+  border: none;
+  border-radius: 10px;
+  color: maroon;
+  background-color: rgb(245, 230, 203);
+  border-color: maroon;
+  font-weight: bolder;
+  margin: auto; /* Center the button horizontally and vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed; /* Fixed positioning to keep it in place while scrolling */
+  bottom: 30px; /* Adjust this value as needed to position it above the footer */
+  left: 50%; /* Center horizontally */
+  margin-left: -60px; /* Half of the button's width to center it horizontally */
+  z-index: 3; /* Set a higher z-index for the button */
+}
+
+.vendor-button:hover {
+  top: 30%;
+  height: 35px;
+  width: 120px;
+  border: none;
+  color: rgb(245, 230, 203);
+  background-color: maroon;
+  border: 1px solid rgb(245, 230, 203);
+  box-shadow: 2px 2px 5px rgba(1, 1, 1, 0.9);
+  font-weight: bolder;
+  margin: auto; /* Center the button horizontally and vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed; /* Fixed positioning to keep it in place while scrolling */
+  bottom: 30px; /* Adjust this value as needed to position it above the footer */
+  left: 50%; /* Center horizontally */
+  margin-left: -60px; /* Half of the button's width to center it horizontally */
+  z-index: 3; /* Set a higher z-index for the button */
+  cursor: pointer;
+}
+
+.admin-button {
+  top: 43%;
+  height: 35px;
+  width: 140px;
+  border: none;
+  border-radius: 10px;
+  color: maroon;
+  background-color: rgb(245, 230, 203);
+  border-color: maroon;
+  font-weight: bolder;
+  margin: auto; /* Center the button horizontally and vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed; /* Fixed positioning to keep it in place while scrolling */
+  bottom: 30px; /* Adjust this value as needed to position it above the footer */
+  left: 49.5%; /* Center horizontally */
+  margin-left: -60px; /* Half of the button's width to center it horizontally */
+  z-index: 3; /* Set a higher z-index for the button */
+}
+
+.admin-button:hover {
+  top: 43%;
+  height: 35px;
+  width: 140px;
+  border: none;
+  color: rgb(245, 230, 203);
+  background-color: maroon;
+  border: 1px solid rgb(245, 230, 203);
+  box-shadow: 2px 2px 5px rgba(1, 1, 1, 0.9);
+  font-weight: bolder;
+  margin: auto; /* Center the button horizontally and vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed; /* Fixed positioning to keep it in place while scrolling */
+  bottom: 30px; /* Adjust this value as needed to position it above the footer */
+  left: 49.5%; /* Center horizontally */
+  margin-left: -60px; /* Half of the button's width to center it horizontally */
+  z-index: 3; /* Set a higher z-index for the button */
+  cursor: pointer;
+
+}
+
+.back-button {
+  top: 65%;
+  height: 35px;
+  width: 140px;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: bolder;
+  background-color: transparent;
+  margin: auto; /* Center the button horizontally and vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed; /* Fixed positioning to keep it in place while scrolling */
+  bottom: 30px; /* Adjust this value as needed to position it above the footer */
+  left: 49.5%; /* Center horizontally */
+  margin-left: -60px; /* Half of the button's width to center it horizontally */
+  z-index: 3; /* Set a higher z-index for the button */
+}
+
+.back-button:hover {
+  top: 65%;
+  height: 35px;
+  width: 140px;
+  border: none;
+  background-color: transparent;
+  color: rgb(245, 230, 203);
+  font-weight: bolder;
+  margin: auto; /* Center the button horizontally and vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed; /* Fixed positioning to keep it in place while scrolling */
+  bottom: 30px; /* Adjust this value as needed to position it above the footer */
+  left: 49.5%; /* Center horizontally */
+  margin-left: -60px; /* Half of the button's width to center it horizontally */
+  z-index: 3; /* Set a higher z-index for the button */
+  cursor: pointer;
+
+}
+
+@media (min-width: 768px) {
+  body::after {
+    width: 100%;
+  }
+}
+
+header, footer {
+  position: fixed;
+  background-color: #850F16;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  color: black;
+  z-index: 2;
+}
+
+footer {
+  height: 10vh;
+  bottom: 0;
+}
+
+footer h2 {
+  position: fixed;
+  left: 40%;
+  
+}
+
+footer p {
+  position: fixed;
+  bottom: 20px;
+  color: orange;
+}
+
+.nav {
+  position: fixed;
+  width: 100%;
+}
+
+.nav a {
+  position: relative;
+  left: 45%;
+  top: 20px;
+  color: white;
+  text-decoration: none;
+  margin-right: 20px;
+}
+
+.placeholder {
+  position: fixed;
+  top: 20%;
+  left: 30%;
+  width: 40%;
+  height: 60%;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 3;
+}
+
+.palengke-pic {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
