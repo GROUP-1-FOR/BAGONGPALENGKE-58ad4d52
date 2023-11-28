@@ -35,11 +35,15 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $message = $_POST["message"];
 
         // Insert the message into the messages table
-    $sqlInsertMessage = "INSERT INTO messages (sender, receiver, message, timestamp) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
-    $stmtInsertMessage = $connect->prepare($sqlInsertMessage);
-    $stmtInsertMessage->bind_param('sss', $sender, $receiver, $message);
-    $stmtInsertMessage->execute();
-}
+        $sqlInsertMessage = "INSERT INTO messages (sender, receiver, message, timestamp) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
+        $stmtInsertMessage = $connect->prepare($sqlInsertMessage);
+        $stmtInsertMessage->bind_param('sss', $sender, $receiver, $message);
+        $stmtInsertMessage->execute();
+
+        // Redirect after form submission to avoid resubmission on page refresh
+        header("Location: admin_messages.php");
+        exit();
+    }
 
 ?>
 
