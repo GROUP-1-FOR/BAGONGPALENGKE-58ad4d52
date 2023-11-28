@@ -138,7 +138,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <button type="submit" name="send_message">Send Message</button>
     </form>
 
-    <a href="vendor_main_page.php">Back to Main Page</a>
+    <a href="vendor_index.php">Back to Main Page</a>
 
 </body>
 
