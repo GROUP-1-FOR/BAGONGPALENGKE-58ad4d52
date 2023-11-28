@@ -22,10 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# ignore all .txt files
-*.txt
-*.img
-*.svg
-*.jpg
-*.png
