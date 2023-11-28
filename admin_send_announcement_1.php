@@ -25,12 +25,12 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             }
             echo '<script>';
             echo 'alert("Announcement Sent to All Market Vendors!");';
-            echo 'window.location.href = "/admin_send_announcement.php";';
+            echo 'window.location.href = "admin_send_announcement.php";';
             echo '</script>';
         } else {
             echo '<script>';
             echo 'alert("No Market Vendors Found!");';
-            echo 'window.location.href = "/admin_send_announcement.php";';
+            echo 'window.location.href = "admin_send_announcement.php";';
             echo '</script>';
         }
     }
