@@ -42,104 +42,105 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     }
 ?>
 
-<!DOCTYPE html>
-<html>
+    <!DOCTYPE html>
+    <html>
 
-<head>
-    <title>Messages Page - Admin</title>
-    <style>
-        body {
-            text-align: center;
-            margin: 50px;
-            background-color: #f2f2f2;
-        }
-
-        #message-form {
-            width: 50%;
-            margin: auto;
-            padding: 20px;
-            border: 3px solid #ccc;
-            background-color: #fff;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        select, textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-
-        button {
-            background-color: #850F16;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-
-<body>
-    <h1>Reply to Messages</h1>
-
-    <form id="message-form" method="post" action="">
-        <label for="receiver">Select Receiver:</label>
-        <select name="receiver" required>
-            <?php
-            while ($rowVendor = $resultVendors->fetch_assoc()) {
-                echo "<option value='" . $rowVendor["vendor_name"] . "'>" . $rowVendor["vendor_name"] . "</option>";
-            }
-            ?>
-        </select>
-
-        <div>
-            <?php
-            // Fetch and display sent messages
-            $sqlSentMessages = "SELECT * FROM messages WHERE sender = ?";
-            $stmtSentMessages = $connect->prepare($sqlSentMessages);
-            $stmtSentMessages->bind_param('s', $sender);
-            $stmtSentMessages->execute();
-            $resultSentMessages = $stmtSentMessages->get_result();
-
-            echo "<h2>Sent Messages</h2>";
-            while ($rowSentMessage = $resultSentMessages->fetch_assoc()) {
-                echo "<p>Receiver: " . $rowSentMessage['receiver'] . "<br>";
-                echo "Message: " . $rowSentMessage['message'] . "<br>";
-                echo "Timestamp: " . $rowSentMessage['timestamp'] . "</p>";
+    <head>
+        <title>Messages Page - Admin</title>
+        <style>
+            body {
+                text-align: center;
+                margin: 50px;
+                background-color: #f2f2f2;
             }
 
-            // Fetch and display received messages
-            $sqlReceivedMessages = "SELECT * FROM messages WHERE receiver = ?";
-            $stmtReceivedMessages = $connect->prepare($sqlReceivedMessages);
-            $stmtReceivedMessages->bind_param('s', $sender);
-            $stmtReceivedMessages->execute();
-            $resultReceivedMessages = $stmtReceivedMessages->get_result();
-
-            echo "<h2>Received Messages</h2>";
-            while ($rowReceivedMessage = $resultReceivedMessages->fetch_assoc()) {
-                echo "<p>Sender: " . $rowReceivedMessage['sender'] . "<br>";
-                echo "Message: " . $rowReceivedMessage['message'] . "<br>";
-                echo "Timestamp: " . $rowReceivedMessage['timestamp'] . "</p>";
+            #message-form {
+                width: 50%;
+                margin: auto;
+                padding: 20px;
+                border: 3px solid #ccc;
+                background-color: #fff;
             }
-            ?>
-        </div>
 
-        <label for="message">Message:</label>
-        <textarea name="message" rows="4" required></textarea>
+            label {
+                display: block;
+                margin-bottom: 10px;
+            }
 
-        <button type="submit">Send Message</button>
-    </form>
+            select,
+            textarea {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
 
-    <a href="admin_main_page.php">Back to Main Page</a>
+            button {
+                background-color: #850F16;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+        </style>
+    </head>
 
-</body>
+    <body>
+        <h1>Reply to Messages</h1>
 
-</html>
+        <form id="message-form" method="post" action="">
+            <label for="receiver">Select Receiver:</label>
+            <select name="receiver" required>
+                <?php
+                while ($rowVendor = $resultVendors->fetch_assoc()) {
+                    echo "<option value='" . $rowVendor["vendor_name"] . "'>" . $rowVendor["vendor_name"] . "</option>";
+                }
+                ?>
+            </select>
+
+            <div>
+                <?php
+                // Fetch and display sent messages
+                $sqlSentMessages = "SELECT * FROM messages WHERE sender = ?";
+                $stmtSentMessages = $connect->prepare($sqlSentMessages);
+                $stmtSentMessages->bind_param('s', $sender);
+                $stmtSentMessages->execute();
+                $resultSentMessages = $stmtSentMessages->get_result();
+
+                echo "<h2>Sent Messages</h2>";
+                while ($rowSentMessage = $resultSentMessages->fetch_assoc()) {
+                    echo "<p>Receiver: " . $rowSentMessage['receiver'] . "<br>";
+                    echo "Message: " . $rowSentMessage['message'] . "<br>";
+                    echo "Timestamp: " . $rowSentMessage['timestamp'] . "</p>";
+                }
+
+                // Fetch and display received messages
+                $sqlReceivedMessages = "SELECT * FROM messages WHERE receiver = ?";
+                $stmtReceivedMessages = $connect->prepare($sqlReceivedMessages);
+                $stmtReceivedMessages->bind_param('s', $sender);
+                $stmtReceivedMessages->execute();
+                $resultReceivedMessages = $stmtReceivedMessages->get_result();
+
+                echo "<h2>Received Messages</h2>";
+                while ($rowReceivedMessage = $resultReceivedMessages->fetch_assoc()) {
+                    echo "<p>Sender: " . $rowReceivedMessage['sender'] . "<br>";
+                    echo "Message: " . $rowReceivedMessage['message'] . "<br>";
+                    echo "Timestamp: " . $rowReceivedMessage['timestamp'] . "</p>";
+                }
+                ?>
+            </div>
+
+            <label for="message">Message:</label>
+            <textarea name="message" rows="4" required></textarea>
+
+            <button type="submit">Send Message</button>
+        </form>
+
+        <a href="admin_index.php">Back to Main Page</a>
+
+    </body>
+
+    </html>
 
 <?php
 } else {
