@@ -18,6 +18,9 @@ if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     $name = $row['vendor_name'];
     $balance = $row['balance'];
+} else {
+    // Handle the case where the user ID is not found or there's an issue with the database query
+    die("User not found or database query issue.");
 }
 
 // Check the payment status
@@ -125,7 +128,7 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid") {
         <a href=vendor_view_announcement.php>
             <h1>SEE ANNOUNCEMENTS</h1>
         </a>
-        <a href="">
+        <a href="vendor_messages.php">
             <h1>MESSAGES</h1>
         </a>
 
