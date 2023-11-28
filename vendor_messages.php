@@ -39,13 +39,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $stmtInsertMessage = $connect->prepare($sqlInsertMessage);
         $stmtInsertMessage->bind_param('sss', $sender, $receiver, $message);
         $stmtInsertMessage->execute();
-<<<<<<< HEAD
-=======
-
-        // Redirect after form submission to avoid resubmission on page refresh
-        header("Location: admin_messages.php");
-        exit();
->>>>>>> d1b3639ec06c211423572a69d17f706141d0deae
     }
 
 ?>
@@ -62,7 +55,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 background-color: #f2f2f2;
             }
 
-<<<<<<< HEAD
             #message-form {
                 width: 50%;
                 margin: auto;
@@ -70,14 +62,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 border: 3px solid #ccc;
                 background-color: #fff;
             }
-=======
-            // Fetch and display received messages
-            $sqlReceivedMessages = "SELECT * FROM messages WHERE receiver = ?";
-            $stmtReceivedMessages = $connect->prepare($sqlReceivedMessages);
-            $stmtReceivedMessages->bind_param('s', $row['vendor_name']);  // Use the sender (admin name) as the receiver
-            $stmtReceivedMessages->execute();
-            $resultReceivedMessages = $stmtReceivedMessages->get_result();
->>>>>>> d1b3639ec06c211423572a69d17f706141d0deae
 
             label {
                 display: block;
@@ -91,7 +75,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 margin-bottom: 20px;
             }
 
-<<<<<<< HEAD
             button {
                 background-color: #850F16;
                 color: white;
@@ -102,10 +85,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             }
         </style>
     </head>
-=======
-        <button type="submit" name="send_message">Send Message</button>
-    </form>
->>>>>>> d1b3639ec06c211423572a69d17f706141d0deae
 
     <body>
         <h1>Send a Message</h1>

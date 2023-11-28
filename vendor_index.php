@@ -14,22 +14,22 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $stmt->execute();
     $result = $stmt->get_result();
 
-<<<<<<< HEAD
+
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $name = $row['vendor_name'];
         $balance = $row['balance'];
     }
-=======
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $name = $row['vendor_name'];
-    $balance = $row['balance'];
-} else {
-    // Handle the case where the user ID is not found or there's an issue with the database query
-    die("User not found or database query issue.");
-}
->>>>>>> d1b3639ec06c211423572a69d17f706141d0deae
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $name = $row['vendor_name'];
+        $balance = $row['balance'];
+    } else {
+        // Handle the case where the user ID is not found or there's an issue with the database query
+        die("User not found or database query issue.");
+    }
+
 
     // Check the payment status
     $paymentStatus = "To be paid";

@@ -39,10 +39,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $stmtInsertMessage = $connect->prepare($sqlInsertMessage);
         $stmtInsertMessage->bind_param('sss', $sender, $receiver, $message);
         $stmtInsertMessage->execute();
-
-        // Redirect after form submission to avoid resubmission on page refresh
-        header("Location: admin_messages.php");
-        exit();
     }
 ?>
 
@@ -71,17 +67,12 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 margin-bottom: 10px;
             }
 
-<<<<<<< HEAD
             select,
             textarea {
                 width: 100%;
                 padding: 10px;
                 margin-bottom: 20px;
             }
-=======
-        <button type="submit" name="send_message">Send Message</button>
-    </form>
->>>>>>> d1b3639ec06c211423572a69d17f706141d0deae
 
             button {
                 background-color: #850F16;
