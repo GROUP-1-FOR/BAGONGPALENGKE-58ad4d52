@@ -37,8 +37,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <h1>Manage Vendor Accounts</h1>
         </a>
 
-        <a href=admin_feature_5.php>
-            <h1>Feature 5</h1>
+        <a href=admin_messages.php>
+            <h1>Messages</h1>
         </a>
 
         <a href=admin_feature_6.php>
