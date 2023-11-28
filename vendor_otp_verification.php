@@ -27,7 +27,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 mysqli_query($connect, $reset_trials_query);
                 echo '<script>';
                 echo 'alert("OTP Verified!");';
-                echo 'window.location.href = "/vendor_index.php";';
+                echo 'window.location.href = "vendor_index.php";';
                 echo '</script>';
             } else {
 
