@@ -4,7 +4,43 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $id = $_SESSION["id"];
     $userid = $_SESSION["userid"];
 
+    function generateUserID($pdo)
+    {
+        while (true) {
+            // Generate a random 5-digit number
+            $randomNumber = str_pad(rand(0, 99999), 5, '0', STR_PAD_LEFT);
+
+            // Form the user ID
+            $userID = "VSR-" . $randomNumber;
+
+            // Check if the user ID is unique in the database
+            if (isUniqueUserID($pdo, $userID)) {
+                return $userID;
+            }
+        }
+    }
+
+    // Function to check if the generated user ID is unique in the database
+    function isUniqueUserID($pdo, $userID)
+    {
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM vendor_sign_in WHERE vendor_userid = ?");
+        $stmt->execute([$userID]);
+
+        return $stmt->fetchColumn() == 0;
+    }
+
+    // Create 
+    try {
+        $pdo = new PDO("mysql:host=localhost;dbname=bagong_palengke_db", "root", "");
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    } catch (PDOException $e) {
+        die("Connection failed: " . $e->getMessage());
+    }
+
+
 ?>
+
+    ?>
     <!DOCTYPE html>
     <html>
 
@@ -44,9 +80,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <br />
             <br />
 
+
             <h2>Vendor Account</h2>
             <label>Vendor User ID</label>
-            <input type="text" name="vendor_userid" required><br />
+            <input type="text" name="vendor_userid" value="<?php echo $new_vendor_userid = generateUserID($pdo); ?>" readonly><br />
 
             <label>Password</label>
             <input type="password" name="vendor_password" required><br />
