@@ -39,6 +39,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $stmtInsertMessage = $connect->prepare($sqlInsertMessage);
         $stmtInsertMessage->bind_param('sss', $sender, $receiver, $message);
         $stmtInsertMessage->execute();
+
+        // Redirect after form submission to avoid resubmission on page refresh
+        header("Location: admin_messages.php");
+        exit();
     }
 ?>
 
