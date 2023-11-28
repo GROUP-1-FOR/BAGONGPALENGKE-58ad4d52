@@ -35,11 +35,12 @@ require("config.php");
     </div> -->
     </header>
 
+
     <div class="main-content">
 
         <form class="" action="vendor_login_1.php" method="post" autocomplete="off">
             <label for="Vendor User ID"> Vendor User ID: </label>
-            <input type="text" name="vendor_userid" id="vendor_userid" required value=""><br />
+            <input type="text" name="vendor_userid" id="vendor_userid" placeholder="VSR-00000" value="VSR-" maxlength="9" required value=""><br />
             <label for="Password"> Password: </label>
             <input type="password" name="vendor_password" id="vendor_password" required value=""><br />
             <button class="signin-button" type="submit" name="vendor_login_submit">Enter</button>
