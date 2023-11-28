@@ -29,18 +29,21 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         die("Error fetching admin list: " . $connect->error);
     }
 
-    // Process the form submission
-    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+     // Process the form submission
+     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $receiver = $_POST["receiver"];
         $message = $_POST["message"];
 
         // Insert the message into the messages table
-    $sqlInsertMessage = "INSERT INTO messages (sender, receiver, message, timestamp) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
-    $stmtInsertMessage = $connect->prepare($sqlInsertMessage);
-    $stmtInsertMessage->bind_param('sss', $sender, $receiver, $message);
-    $stmtInsertMessage->execute();
-}
+        $sqlInsertMessage = "INSERT INTO messages (sender, receiver, message, timestamp) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
+        $stmtInsertMessage = $connect->prepare($sqlInsertMessage);
+        $stmtInsertMessage->bind_param('sss', $sender, $receiver, $message);
+        $stmtInsertMessage->execute();
 
+        // Redirect after form submission to avoid resubmission on page refresh
+        header("Location: admin_messages.php");
+        exit();
+    }
 ?>
 
 <!DOCTYPE html>
@@ -133,7 +136,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <label for="message">Message:</label>
         <textarea name="message" rows="4" required></textarea>
 
-        <button type="submit">Send Message</button>
+        <button type="submit" name="send_message">Send Message</button>
     </form>
 
     <a href="vendor_main_page.php">Back to Main Page</a>
