@@ -137,7 +137,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <label for="message">Message:</label>
         <textarea name="message" rows="4" required></textarea>
 
-        <button type="submit">Send Message</button>
+        <button type="submit" name="send_message">Send Message</button>
     </form>
 
     <a href="vendor_main_page.php">Back to Main Page</a>
