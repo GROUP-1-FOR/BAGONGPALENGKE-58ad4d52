@@ -10,7 +10,7 @@ if (isset($_POST["vendor_login_submit"])) {
     if (empty($_POST['vendor_userid']) || empty($_POST['vendor_password'])) {
         echo '<script>';
         echo 'alert("Input Needed!");';
-        echo 'window.location.href = "/vendor_login.php";';
+        echo 'window.location.href = "vendor_login.php";';
         echo '</script>';
     } else {
         $vendor_userid = mysqli_real_escape_string($connect, $_POST["vendor_userid"]);
@@ -35,21 +35,18 @@ if (isset($_POST["vendor_login_submit"])) {
                 //OTP Generation
                 include("vendor_otp_generation.php");
             } else {
-                /*
+                
                 echo '<script>';
                 echo 'alert("Wrong Credentials");';
-                echo 'window.location.href = "/vendor_login.php";';
-                echo '</script>';*/
-                var_dump($row);
-                var_dump(md5($vendor_password));
+                echo 'window.location.href = "vendor_login.php";';
+                echo '</script>';
             }
         } else {
-            /*
+            
             echo '<script>';
             echo 'alert("Wrong Credentials!");';
-            echo 'window.location.href = "/vendor_login.php";';
-            echo '</script>';*/
-            var_dump($row);
+            echo 'window.location.href = "vendor_login.php";';
+            echo '</script>';
         }
     }
 }

@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($vendor_password !== $vendor_confirm_password) {
         echo '<script>';
         echo 'alert("Passwords do not match!");';
-        echo 'window.location.href = "/admin_create_vendor_account.php";';
+        echo 'window.location.href = "admin_create_vendor_account.php";';
         echo '</script>';
         exit();
     }
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($resultIfExists->num_rows > 0) {
         echo '<script>';
         echo 'alert("Account already exists for this user ID!");';
-        echo 'window.location.href = "/admin_create_vendor_account.php";';
+        echo 'window.location.href = "admin_create_vendor_account.php";';
         echo '</script>';
         exit();
     }

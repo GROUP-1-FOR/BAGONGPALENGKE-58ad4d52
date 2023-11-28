@@ -8,7 +8,7 @@ if (isset($_POST["admin_login_submit"])) {
     if (empty($_POST['admin_userid']) || empty($_POST['admin_password'])) {
         echo '<script>';
         echo 'alert("Input Needed!");';
-        echo 'window.location.href = "/admin_login.php";';
+        echo 'window.location.href = "admin_login.php";';
         echo '</script>';
     } else {
         $admin_userid = htmlspecialchars($_POST["admin_userid"]);
@@ -35,13 +35,13 @@ if (isset($_POST["admin_login_submit"])) {
             } else {
                 echo '<script>';
                 echo 'alert("Wrong Credentials");';
-                echo 'window.location.href = "/admin_login.php";';
+                echo 'window.location.href = "admin_login.php";';
                 echo '</script>';
             }
         } else {
             echo '<script>';
             echo 'alert("Wrong Credentials!");';
-            echo 'window.location.href = "/admin_login.php";';
+            echo 'window.location.href = "admin_login.php";';
             echo '</script>';
         }
     }
