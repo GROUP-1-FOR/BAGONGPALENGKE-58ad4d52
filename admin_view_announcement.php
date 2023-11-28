@@ -2,10 +2,10 @@
 
 require("config.php");
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $id = $_SESSION["id"];
-    $userid = $_SESSION["userid"];
+    $admin_id = $_SESSION["id"];
+    $admin_userid = $_SESSION["userid"];
 
-    $sql_sent_announcement = "SELECT DISTINCT announcement_text, announcement_time FROM announcements WHERE admin_id = '$id' ORDER BY announcement_time DESC";
+    $sql_sent_announcement = "SELECT DISTINCT announcement_text, announcement_time FROM announcements WHERE admin_id = '$admin_id' ORDER BY announcement_time DESC";
     $result_sent_announcement = $connect->query($sql_sent_announcement);
 
     $connect->close();

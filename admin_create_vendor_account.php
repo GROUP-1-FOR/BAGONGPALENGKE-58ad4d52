@@ -1,8 +1,8 @@
 <?php
 require("config.php");
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $id = $_SESSION["id"];
-    $userid = $_SESSION["userid"];
+    $admin_id = $_SESSION["id"];
+    $admin_userid = $_SESSION["userid"];
 
     function generateUserID($pdo)
     {
@@ -50,7 +50,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     <body>
 
-        <h1>Create Vendor Account, <?php echo $userid  ?>! </h1>
+        <h1>Create Vendor Account, <?php echo $admin_userid  ?>! </h1>
 
         <form action="admin_create_vendor_account_1.php" method="post">
 

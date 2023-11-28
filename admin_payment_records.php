@@ -1,8 +1,8 @@
 <?php
 require("config.php");
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $id = $_SESSION["id"];
-    $userid = $_SESSION["userid"];
+    $admin_id = $_SESSION["id"];
+    $admin_userid = $_SESSION["userid"];
 
     // Fetch paid records from the database
     $query = "SELECT id, name, balance, payment_date FROM ven_payments WHERE confirmed = 1";

@@ -2,8 +2,8 @@
 
 require("config.php");
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $id = $_SESSION["id"];
-    $userid = $_SESSION["userid"];
+    $admin_id = $_SESSION["id"];
+    $admin_userid = $_SESSION["userid"];
 
 ?>
 
@@ -18,7 +18,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     <body>
 
-        <h1>Welcome, <?php echo $userid ?>! </h1>
+        <h1>Welcome, <?php echo $admin_userid ?>! </h1>
         <h1>Send an Announcement:</h1>
 
         <form action="admin_send_announcement_1.php" method="post">

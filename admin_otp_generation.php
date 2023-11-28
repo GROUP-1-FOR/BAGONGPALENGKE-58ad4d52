@@ -6,7 +6,7 @@ for ($i = 0; $i < 6; $i++) {
 }
 
 $admin_otp = implode('', $random_numbers);
-$otp_query = "UPDATE admin_sign_in SET admin_otp = $admin_otp WHERE admin_id = $id";
+$otp_query = "UPDATE admin_sign_in SET admin_otp = $admin_otp WHERE admin_id = $admin_id";
 $stmt = mysqli_prepare($connect, $otp_query);
 if (mysqli_stmt_execute($stmt)) {
     echo '<script>';

@@ -2,8 +2,8 @@
 require_once "config.php";
 
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $id = $_SESSION["id"];
-    $userid = $_SESSION["userid"];
+    $admin_id = $_SESSION["id"];
+    $admin_userid = $_SESSION["userid"];
 
     // Fetch data from the database
     $sql = "SELECT vendor_userid, vendor_name FROM vendor_sign_in";

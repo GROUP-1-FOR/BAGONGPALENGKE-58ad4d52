@@ -6,19 +6,18 @@ require("config.php");
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $userid = $_SESSION["userid"];
 
-            // Fetch user data using prepared statement
-    $sqlVendors = "SELECT * FROM vendor_sign_in WHERE vendor_userid = ?";
-    $stmtVendors = $connect->prepare($sqlVendors);
-    $stmtVendors->bind_param('s', $userid); // Use 's' for VARCHAR
-    $stmtVendors->execute();
-    $resultVendors = $stmtVendors->get_result();
+    $sqlVendorName = "SELECT vendor_name FROM vendor_sign_in WHERE vendor_userid = ?";
+    $stmtVendorName = $connect->prepare($sqlVendorName);
+    $stmtVendorName->bind_param('s', $userid);
+    $stmtVendorName->execute();
+    $resultVendorName = $stmtVendorName->get_result();
 
-    if ($resultVendors->num_rows > 0) {
-        $row = $resultVendors->fetch_assoc();
-        $sender = $row['vendor_name'];
+    if ($resultVendorName->num_rows > 0) {
+        $rowVendorName = $resultVendorName->fetch_assoc();
+        $sender = $rowVendorName["vendor_name"];
     } else {
-        // Handle the case where the user ID is not found or there's an issue with the database query
-        die("User not found or database query issue.");
+        // Handle the case where the vendor_name is not found for the given user ID
+        die("Error: Vendor name not found for user ID $userid");
     }
 
     // Fetch the list of admin receivers
@@ -29,22 +28,21 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         die("Error fetching admin list: " . $connect->error);
     }
 
-    // Process the form submission
-    if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        $receiver = $_POST["receiver"];
-        $message = $_POST["message"];
+   // Process the form submission
+   if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $receiver = $_POST["receiver"];
+    $message = $_POST["message"];
 
-        // Insert the message into the messages table
-        $sqlInsertMessage = "INSERT INTO messages (sender, receiver, message, timestamp) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
-        $stmtInsertMessage = $connect->prepare($sqlInsertMessage);
-        $stmtInsertMessage->bind_param('sss', $sender, $receiver, $message);
-        $stmtInsertMessage->execute();
+    // Insert the message into the messages table
+    $sqlInsertMessage = "INSERT INTO messages (sender, receiver, message, timestamp) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
+    $stmtInsertMessage = $connect->prepare($sqlInsertMessage);
+    $stmtInsertMessage->bind_param('sss', $sender, $receiver, $message);
+    $stmtInsertMessage->execute();
 
-        // Redirect after form submission to avoid resubmission on page refresh
-        header("Location: admin_messages.php");
-        exit();
-    }
-
+    // Redirect after form submission to avoid resubmission on page refresh
+    header("Location: vendor_messages.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -121,7 +119,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             // Fetch and display received messages
             $sqlReceivedMessages = "SELECT * FROM messages WHERE receiver = ?";
             $stmtReceivedMessages = $connect->prepare($sqlReceivedMessages);
-            $stmtReceivedMessages->bind_param('s', $row['vendor_name']);  // Use the sender (admin name) as the receiver
+            $stmtReceivedMessages->bind_param('s', $sender);  // Use the sender (admin name) as the receiver
             $stmtReceivedMessages->execute();
             $resultReceivedMessages = $stmtReceivedMessages->get_result();
 

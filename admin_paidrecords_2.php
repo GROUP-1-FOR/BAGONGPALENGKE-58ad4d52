@@ -1,8 +1,8 @@
 <?php
 require("config.php");
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $id = $_SESSION["id"];
-    $userid = $_SESSION["userid"];
+    $admin_id = $_SESSION["id"];
+    $admin_userid = $_SESSION["userid"];
 
 ?>
     <!DOCTYPE html>
@@ -13,7 +13,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     </head>
 
     <body>
-        <h1>VIEW MARKET RENTAL STALLS, <?php echo $userid  ?>! </h1>
+        <h1>VIEW MARKET RENTAL STALLS, <?php echo $admin_userid  ?>! </h1>
 
         <a href=admin_index.php>
             <h1>BACK</h1>

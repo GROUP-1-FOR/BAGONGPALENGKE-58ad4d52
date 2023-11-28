@@ -4,12 +4,12 @@
 require("config.php");
 
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $userid = $_SESSION["userid"];
+    $admin_userid = $_SESSION["userid"];
 
     // Fetch admin data using prepared statement
     $sqlAdmin = "SELECT * FROM admin_sign_in WHERE admin_userid = ?";
     $stmtAdmin = $connect->prepare($sqlAdmin);
-    $stmtAdmin->bind_param('s', $userid); // Use 's' for VARCHAR
+    $stmtAdmin->bind_param('s', $admin_userid); // Use 's' for VARCHAR
     $stmtAdmin->execute();
     $resultAdmin = $stmtAdmin->get_result();
 

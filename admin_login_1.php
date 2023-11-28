@@ -28,7 +28,7 @@ if (isset($_POST["admin_login_submit"])) {
                 $_SESSION["userid"] = $row["admin_userid"];
 
 
-                $id = $_SESSION["id"];
+                $admin_id = $_SESSION["id"];
 
 
                 //OTP Generation
