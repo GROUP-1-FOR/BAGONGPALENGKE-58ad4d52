@@ -125,6 +125,9 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid") {
         <a href=vendor_view_announcement.php>
             <h1>SEE ANNOUNCEMENTS</h1>
         </a>
+        <a href="">
+            <h1>MESSAGES</h1>
+        </a>
 
 
 
