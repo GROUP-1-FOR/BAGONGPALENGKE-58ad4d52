@@ -29,21 +29,18 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         die("Error fetching admin list: " . $connect->error);
     }
 
-     // Process the form submission
-     if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Process the form submission
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $receiver = $_POST["receiver"];
         $message = $_POST["message"];
 
         // Insert the message into the messages table
-        $sqlInsertMessage = "INSERT INTO messages (sender, receiver, message, timestamp) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
-        $stmtInsertMessage = $connect->prepare($sqlInsertMessage);
-        $stmtInsertMessage->bind_param('sss', $sender, $receiver, $message);
-        $stmtInsertMessage->execute();
+    $sqlInsertMessage = "INSERT INTO messages (sender, receiver, message, timestamp) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
+    $stmtInsertMessage = $connect->prepare($sqlInsertMessage);
+    $stmtInsertMessage->bind_param('sss', $sender, $receiver, $message);
+    $stmtInsertMessage->execute();
+}
 
-        // Redirect after form submission to avoid resubmission on page refresh
-        header("Location: admin_messages.php");
-        exit();
-    }
 ?>
 
 <!DOCTYPE html>
@@ -120,7 +117,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             // Fetch and display received messages
             $sqlReceivedMessages = "SELECT * FROM messages WHERE receiver = ?";
             $stmtReceivedMessages = $connect->prepare($sqlReceivedMessages);
-            $stmtReceivedMessages->bind_param('s', $sender);  // Use the sender (admin name) as the receiver
+            $stmtReceivedMessages->bind_param('s', $row['vendor_name']);  // Use the sender (admin name) as the receiver
             $stmtReceivedMessages->execute();
             $resultReceivedMessages = $stmtReceivedMessages->get_result();
 
@@ -136,7 +133,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <label for="message">Message:</label>
         <textarea name="message" rows="4" required></textarea>
 
-        <button type="submit" name="send_message">Send Message</button>
+        <button type="submit">Send Message</button>
     </form>
 
     <a href="vendor_main_page.php">Back to Main Page</a>
