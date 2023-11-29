@@ -17,40 +17,33 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $rowAdmin = $resultAdmin->fetch_assoc();
         $sender = $rowAdmin['admin_name'];
     } else {
-        // Handle the case where the vendor_name is not found for the given user ID
         die("Error: Admin name not found for user ID $admin_userid");
     }
 
-    // Fetch the list of vendor receivers
-    $sqlVendors = "SELECT vendor_name FROM vendor_sign_in";
-    $resultVendors = $connect->query($sqlVendors);
-
-    if (!$resultVendors) {
-        die("Error fetching vendor list: " . $connect->error);
+    // Fetch the selected sender from the URL parameter
+    if (isset($_GET['sender'])) {
+        $selectedSender = $_GET['sender'];
+    } else {
+        die("Error: Sender not specified in the URL");
     }
 
-    // Process the form submission
-    if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        $receiver = $_POST["receiver"];
-        $message = $_POST["message"];
-
-        // Insert the message into the messages table
-        $sqlInsertMessage = "INSERT INTO messages (sender, receiver, message, timestamp) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
-        $stmtInsertMessage = $connect->prepare($sqlInsertMessage);
-        $stmtInsertMessage->bind_param('sss', $sender, $receiver, $message);
-        $stmtInsertMessage->execute();
-
-        // Redirect after form submission to avoid resubmission on page refresh
-        header("Location: admin_messages.php");
-        exit();
-    }
+    // Fetch and display all messages for the selected sender (sent and received)
+    $sqlAllMessages = "
+        SELECT *
+        FROM messages
+        WHERE (sender = ? AND receiver = ?) OR (sender = ? AND receiver = ?)
+        ORDER BY timestamp ASC";
+    $stmtAllMessages = $connect->prepare($sqlAllMessages);
+    $stmtAllMessages->bind_param('ssss', $sender, $selectedSender, $selectedSender, $sender);
+    $stmtAllMessages->execute();
+    $resultAllMessages = $stmtAllMessages->get_result();
 ?>
 
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Messages Page - Admin</title>
+    <title>All Messages - Admin</title>
     <style>
         body {
             text-align: center;
@@ -58,26 +51,63 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             background-color: #f2f2f2;
         }
 
-        #message-form {
-            width: 50%;
+        h1 {
+            color: #333;
+        }
+
+        .message-container {
+            width: 60%;
+            margin: auto;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .sent-message {
+            background-color: #ccc;
+            align-self: flex-end;
+            color: #333;
+        }
+
+        .received-message {
+            background-color: #ffcccc;
+            align-self: flex-start;
+            color: #850F16;
+        }
+
+        .message p {
+            margin: 5px 0;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .reply-form {
+            width: 60%;
             margin: auto;
             padding: 20px;
             border: 3px solid #ccc;
             background-color: #fff;
+            margin-top: 20px;
         }
 
-        label {
-            display: block;
+        .reply-form textarea {
+            width: 100%;
+            height: 100px;
             margin-bottom: 10px;
         }
 
-        select, textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-
-        button {
+        .reply-form button {
             background-color: #850F16;
             color: white;
             padding: 10px 20px;
@@ -89,63 +119,51 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 </head>
 
 <body>
-    <h1>Reply to Messages</h1>
+    <h1>All Messages - Admin</h1>
 
-    <form id="message-form" method="post" action="">
-        <label for="receiver">Select Receiver:</label>
-        <select name="receiver" required>
-            <?php
-            while ($rowVendor = $resultVendors->fetch_assoc()) {
-                echo "<option value='" . $rowVendor["vendor_name"] . "'>" . $rowVendor["vendor_name"] . "</option>";
-            }
-            ?>
-        </select>
+    <div class="message-container">
+        <?php
+        while ($rowMessage = $resultAllMessages->fetch_assoc()) {
+            echo "<div class='message " . ($rowMessage['sender'] == $sender ? 'sent-message' : 'received-message') . "'>";
+            echo "<p>";
+            echo "Sender: " . $rowMessage['sender'] . "<br>";
+            echo "Message: " . $rowMessage['message'] . "<br>";
+            echo "Timestamp: " . $rowMessage['timestamp'] . "</p>";
+            echo "</div>";
+        }
+        ?>
+    </div>
 
-        <div>
-            <?php
-            // Fetch and display sent messages
-            $sqlSentMessages = "SELECT * FROM messages WHERE sender = ?";
-            $stmtSentMessages = $connect->prepare($sqlSentMessages);
-            $stmtSentMessages->bind_param('s', $sender);
-            $stmtSentMessages->execute();
-            $resultSentMessages = $stmtSentMessages->get_result();
+    <div class="reply-form">
+        <form method="post" action="">
+            <label for="reply_message">Reply:</label>
+            <textarea name="reply_message" required></textarea>
+            <br>
+            <button type="submit" name="submit_reply">Send Reply</button>
+        </form>
+    </div>
 
-            echo "<h2>Sent Messages</h2>";
-            while ($rowSentMessage = $resultSentMessages->fetch_assoc()) {
-                echo "<p>Receiver: " . $rowSentMessage['receiver'] . "<br>";
-                echo "Message: " . $rowSentMessage['message'] . "<br>";
-                echo "Timestamp: " . $rowSentMessage['timestamp'] . "</p>";
-            }
-
-            // Fetch and display received messages
-            $sqlReceivedMessages = "SELECT * FROM messages WHERE receiver = ?";
-            $stmtReceivedMessages = $connect->prepare($sqlReceivedMessages);
-            $stmtReceivedMessages->bind_param('s', $sender);
-            $stmtReceivedMessages->execute();
-            $resultReceivedMessages = $stmtReceivedMessages->get_result();
-
-            echo "<h2>Received Messages</h2>";
-            while ($rowReceivedMessage = $resultReceivedMessages->fetch_assoc()) {
-                echo "<p>Sender: " . $rowReceivedMessage['sender'] . "<br>";
-                echo "Message: " . $rowReceivedMessage['message'] . "<br>";
-                echo "Timestamp: " . $rowReceivedMessage['timestamp'] . "</p>";
-            }
-            ?>
-        </div>
-
-        <label for="message">Message:</label>
-        <textarea name="message" rows="4" required></textarea>
-
-        <button type="submit" name="send_message">Send Message</button>
-    </form>
-
-    <a href="admin_index.php">Back to Main Page</a>
+    <a href="admin_messages_preview.php">Back to Messages Preview</a>
 
 </body>
 
 </html>
 
 <?php
+    if (isset($_POST['submit_reply'])) {
+        // Handle form submission for reply
+        $replyMessage = $_POST['reply_message'];
+
+        // Insert the reply into the messages table
+        $sqlInsertReply = "INSERT INTO messages (sender, receiver, message, timestamp) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
+        $stmtInsertReply = $connect->prepare($sqlInsertReply);
+        $stmtInsertReply->bind_param('sss', $sender, $selectedSender, $replyMessage);
+        $stmtInsertReply->execute();
+
+        // Refresh the page after replying to display the updated messages
+        header("Location: admin_messages.php?sender=$selectedSender");
+        exit();
+    }
 } else {
     header("location:admin_login.php");
 }

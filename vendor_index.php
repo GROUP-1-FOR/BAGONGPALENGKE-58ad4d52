@@ -134,7 +134,7 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
     <a href=vendor_view_announcement.php>
         <h1>SEE ANNOUNCEMENTS</h1>
     </a>
-    <a href="vendor_messages.php">
+    <a href="vendor_messages_preview.php">
         <h1>MESSAGES</h1>
     </a>
 
