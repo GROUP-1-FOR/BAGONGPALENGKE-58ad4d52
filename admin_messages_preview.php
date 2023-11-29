@@ -19,18 +19,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     } else {
         die("Error: Admin name not found for user ID $admin_userid");
     }
-
-    // Fetch and display the latest message for each sender
-    $sqlLatestMessages = "
-        SELECT sender, MAX(timestamp) AS max_timestamp
-        FROM messages
-        WHERE receiver = ?
-        GROUP BY sender
-    ";
-    $stmtLatestMessages = $connect->prepare($sqlLatestMessages);
-    $stmtLatestMessages->bind_param('s', $sender);
-    $stmtLatestMessages->execute();
-    $resultLatestMessages = $stmtLatestMessages->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -87,57 +75,57 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             margin-top: 20px;
             color: #333;
         }
-    </style>
+        </style>
 </head>
 
 <body>
     <h1>Messages Preview - Admin</h1>
 
     <div>
-    <?php
-    // Fetch and display the latest message for each sender
-    $sqlLatestMessages = "
-        SELECT sender, MAX(timestamp) AS max_timestamp
-        FROM messages
-        WHERE receiver = ?
-        GROUP BY sender
-        ORDER BY max_timestamp DESC
-    ";
-    $stmtLatestMessages = $connect->prepare($sqlLatestMessages);
-    $stmtLatestMessages->bind_param('s', $sender);
-    $stmtLatestMessages->execute();
-    $resultLatestMessages = $stmtLatestMessages->get_result();
-
-    while ($rowLatestMessage = $resultLatestMessages->fetch_assoc()) {
-        // Fetch all messages for each sender
-        $latestSender = $rowLatestMessage['sender'];
-        $sqlAllMessages = "
-            SELECT *
+        <?php
+        // Fetch and display the latest message for each sender
+        $sqlLatestMessages = "
+            SELECT sender, MAX(timestamp) AS max_timestamp
             FROM messages
-            WHERE sender = ? AND receiver = ?
-            ORDER BY timestamp DESC
+            WHERE receiver = ? OR sender = ?
+            GROUP BY sender
+            ORDER BY max_timestamp DESC
         ";
-        $stmtAllMessages = $connect->prepare($sqlAllMessages);
-        $stmtAllMessages->bind_param('ss', $latestSender, $sender);
-        $stmtAllMessages->execute();
-        $resultAllMessages = $stmtAllMessages->get_result();
+        $stmtLatestMessages = $connect->prepare($sqlLatestMessages);
+        $stmtLatestMessages->bind_param('ss', $sender, $sender);
+        $stmtLatestMessages->execute();
+        $resultLatestMessages = $stmtLatestMessages->get_result();
 
-        if ($resultAllMessages->num_rows > 0) {
-            // Display the latest message in the preview with appropriate styling
-            $rowLatestMessageDetails = $resultAllMessages->fetch_assoc();
-            $messageClass = ($rowLatestMessageDetails['sender'] == $sender) ? 'sent-preview' : 'received-preview';
-            echo "<div class='message-preview " . $messageClass . "'>";
-            echo "<p><a href='admin_messages.php?sender=" . $latestSender . "'>";
-            echo "Sender: " . $latestSender . "<br>";
-            echo "Message: " . $rowLatestMessageDetails['message'] . "<br>";
-            echo "Timestamp: " . $rowLatestMessageDetails['timestamp'] . "</a></p>";
-            echo "</div>";
+        while ($rowLatestMessage = $resultLatestMessages->fetch_assoc()) {
+            // Fetch the last message (sent or received) for each sender
+            $latestSender = $rowLatestMessage['sender'];
+            $sqlLastMessage = "
+                SELECT *
+                FROM messages
+                WHERE (sender = ? AND receiver = ?) OR (sender = ? AND receiver = ?)
+                ORDER BY timestamp DESC
+                LIMIT 1
+            ";
+            $stmtLastMessage = $connect->prepare($sqlLastMessage);
+            $stmtLastMessage->bind_param('ssss', $latestSender, $sender, $sender, $latestSender);
+            $stmtLastMessage->execute();
+            $resultLastMessage = $stmtLastMessage->get_result();
+
+            if ($resultLastMessage->num_rows > 0) {
+                $rowLastMessage = $resultLastMessage->fetch_assoc();
+                $messageClass = ($rowLastMessage['sender'] == $sender) ? 'sent-preview' : 'received-preview';
+                echo "<div class='message-preview " . $messageClass . "'>";
+                echo "<p><a href='admin_messages.php?sender=" . $latestSender . "'>";
+                echo "Sender: " . $latestSender . "<br>";
+                echo "Message: " . $rowLastMessage['message'] . "<br>";
+                echo "Timestamp: " . $rowLastMessage['timestamp'] . "</a></p>";
+                echo "</div>";
+            }
         }
-    }
-    ?>
-</div>
+        ?>
+    </div>
     <div>
-    <a href="create_new_message.php">Create New Message</a>
+        <a href="create_new_message.php">Create New Message</a>
     </div>
     <a href="admin_index.php">Back to Main Page</a>
 
