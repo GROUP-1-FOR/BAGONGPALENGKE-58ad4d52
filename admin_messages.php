@@ -7,7 +7,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $admin_userid = $_SESSION["userid"];
 
     // Fetch admin data using prepared statement
-    $sqlAdmin = "SELECT * FROM admin_sign_in WHERE admin_userid = ?";
+    $sqlAdmin = "SELECT admin_name FROM admin_sign_in WHERE admin_userid = ?";
     $stmtAdmin = $connect->prepare($sqlAdmin);
     $stmtAdmin->bind_param('s', $admin_userid); // Use 's' for VARCHAR
     $stmtAdmin->execute();
@@ -17,8 +17,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $rowAdmin = $resultAdmin->fetch_assoc();
         $sender = $rowAdmin['admin_name'];
     } else {
-        // Handle the case where the admin ID is not found or there's an issue with the database query
-        die("Admin not found or database query issue.");
+        // Handle the case where the vendor_name is not found for the given user ID
+        die("Error: Admin name not found for user ID $admin_userid");
     }
 
     // Fetch the list of vendor receivers
