@@ -40,7 +40,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
 ?>
 
-    ?>
+
     <!DOCTYPE html>
     <html>
 

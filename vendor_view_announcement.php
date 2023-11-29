@@ -4,14 +4,12 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $id = $_SESSION["id"];
     $userid = $_SESSION["userid"];
 
-
-    // Retrieve messages for the logged-in user
-    $sql_messages = "SELECT * FROM announcements WHERE vendor_id = '$id' ORDER BY announcement_time DESC";
+    // Retrieve announcements for the logged-in user
+    $sql_messages = "SELECT * FROM announcements  ORDER BY announcement_id DESC";
     $result_messages = $connect->query($sql_messages);
 
     $connect->close();
 ?>
-
 
     <!DOCTYPE html>
     <html lang="en">

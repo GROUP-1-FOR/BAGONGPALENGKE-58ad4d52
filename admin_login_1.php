@@ -18,7 +18,6 @@ if (isset($_POST["admin_login_submit"])) {
         $result = mysqli_query($connect, "SELECT * FROM admin_sign_in WHERE admin_userid= '$admin_userid'");
         $row = mysqli_fetch_assoc($result);
 
-
         if (mysqli_num_rows($result) > 0) {
 
 
@@ -33,6 +32,16 @@ if (isset($_POST["admin_login_submit"])) {
 
                 //OTP Generation
                 include("admin_otp_generation.php");
+
+                if (mysqli_stmt_execute($stmt)) {
+                    echo '<script>';
+                    echo 'alert("OTP Sent!");';
+                    echo 'window.location.href = "admin_otp_verification.php";';
+                    echo '</script>';
+                    exit();
+                } else {
+                    echo "<script> alert('Error Sending OTP!'); </script>" . mysqli_error($connect);
+                }
             } else {
                 echo '<script>';
                 echo 'alert("Wrong Credentials");';
