@@ -51,7 +51,7 @@ if ($resultCheckPaymentConfirmation->num_rows > 0) {
 }
 
 // Process payment if the "Pay" button is clicked
-if (isset($_POST['pay']) && $paymentStatus === "To be paid") {
+if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
     // Insert payment data into ven_payments table
     $paymentDate = date('Y-m-d H:i:s');
     $sqlInsertPayment = "INSERT INTO ven_payments (id, name, balance, archived, confirmed, payment_date) VALUES (?, ?, ?, 0, 0, ?)";
@@ -61,6 +61,9 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid") {
 
     // Display a message or perform additional actions if needed
     echo "Payment request sent. Please wait for confirmation.";
+} elseif ($balance <= 0) {
+    // Display a message if the balance is not sufficient
+    echo "Your balance is not sufficient to make a payment.";
 }
 
 ?>
@@ -104,17 +107,20 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid") {
     </head>
 
     <body>
-        <h1>Welcome, <?php echo $userid ?>! </h1>
-        <table id="money-table">
+    <h1>Welcome, <?php echo $userid ?>! </h1>
+    <table id="money-table">
         <tr>
             <td id="money-cell">
                 <center>
-                    $<?php echo number_format($balance, 2); ?>
-                    <?php if ($paymentStatus === "To be paid"): ?>
+                    <?php if ($balance > 0): ?>
+                        $<?php echo number_format($balance, 2); ?>
                         <form method="post">
                             <button type="submit" name="pay" onclick="return confirm('Are you sure you want to make the payment?')">Pay</button>
                         </form>
-                    <?php elseif ($paymentStatus === "Payment has already been sent"): ?>
+                    <?php else: ?>
+                        $<?php echo number_format($balance, 2); ?>
+                    <?php endif; ?>
+                    <?php if ($paymentStatus === "Payment has already been sent"): ?>
                         <p>Payment has already been sent. Wait for confirmation.</p>
                     <?php elseif ($paymentStatus === "The payment is confirmed"): ?>
                         <p>The payment is confirmed. You have no current balance.</p>
@@ -125,20 +131,17 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid") {
     </table>
     <br>
 
-        <a href=vendor_view_announcement.php>
-            <h1>SEE ANNOUNCEMENTS</h1>
-        </a>
-        <a href="vendor_messages.php">
-            <h1>MESSAGES</h1>
-        </a>
+    <a href=vendor_view_announcement.php>
+        <h1>SEE ANNOUNCEMENTS</h1>
+    </a>
+    <a href="vendor_messages.php">
+        <h1>MESSAGES</h1>
+    </a>
 
-
-
-
-        <a href=vendor_logout.php>
-            <h1>LOGOUT</h1>
-        </a>
-    </body>
+    <a href=vendor_logout.php>
+        <h1>LOGOUT</h1>
+    </a>
+</body>
 
 
     </html>

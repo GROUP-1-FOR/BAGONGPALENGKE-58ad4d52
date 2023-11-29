@@ -2,6 +2,9 @@
 
 require("config.php");
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -44,7 +47,7 @@ require("config.php");
             <input type="password" name="admin_password" id="admin_password" required value=""><br />
             <button class="signin-button" type="submit" name="admin_login_submit">Enter</button>
         </form>
-
+        <a href="admin_forgot_password.php"> Forgot Password?</a> <br />
         <a href="vendor_admin_select.php"> Back</a>
 
     </div>

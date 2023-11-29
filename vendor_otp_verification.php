@@ -1,4 +1,5 @@
 <?php
+
 require("config.php");
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $id = $_SESSION["id"];
@@ -55,6 +56,16 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             echo "Error: " . mysqli_error($connect);
         }
     }
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["vendor_resend_otp"])) {
+        include("vendor_otp_generation.php");
+        echo '<script>';
+        echo 'alert("OTP Resent!");';
+        echo '</script>';
+    }
+
+
+
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -63,7 +74,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>VENDOR OTP Verification</title>
-        <link rel="stylesheet" type="text/css" href="index.css">
+
     </head>
 
     <body>
@@ -84,7 +95,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     </div> -->
         </header>
-        <div class="main-content">
+        <div>
             <h2>OTP Verification</h2>
             <form action="" method="post">
                 <label for="otp">Enter OTP:</label>
@@ -92,9 +103,20 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 <button type="submit">Verify OTP</button>
 
             </form>
-
-            <a href=vendor_logout.php> CANCEL </a>
         </div>
+
+        <div>
+            <br />
+
+            <form action="" method="post">
+                <button type="form" id="resendOTPButton" name="vendor_resend_otp">Resend OTP</button>
+                <div id="resendOTPMessage"></div>
+            </form>
+        </div>
+
+
+        <a href=vendor_logout.php> CANCEL </a>
+
         <footer>
 
         </footer>
