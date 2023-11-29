@@ -1,7 +1,6 @@
 <?php
 
 require("config.php");
-
 ?>
 
 <!DOCTYPE html>
@@ -45,7 +44,7 @@ require("config.php");
             <input type="password" name="vendor_password" id="vendor_password" required value=""><br />
             <button class="signin-button" type="submit" name="vendor_login_submit">Enter</button>
         </form>
-
+        <a href="vendor_forgot_password.php"> Forgot Password?</a> <br />
         <a href="vendor_admin_select.php"> Back</a>
 
     </div>
