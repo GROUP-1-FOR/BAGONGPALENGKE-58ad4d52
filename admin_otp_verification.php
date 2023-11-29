@@ -4,7 +4,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $admin_id = $_SESSION["id"];
     $admin_userid = $_SESSION["userid"];
 
-
     if (isset($_POST["admin_otp"])) {
         $entered_otp = htmlspecialchars($_POST["admin_otp"]);
         $max_trials = 3;
@@ -55,6 +54,13 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             echo "Error: " . mysqli_error($connect);
         }
     }
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["admin_resend_otp"])) {
+        include("admin_otp_generation.php");
+        echo '<script>';
+        echo 'alert("OTP Resent!");';
+        echo '</script>';
+    }
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -63,7 +69,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Admin OTP Verification</title>
-        <link rel="stylesheet" type="text/css" href="index.css">
+
     </head>
 
     <body>
@@ -84,16 +90,27 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     </div> -->
         </header>
-        <div class="main-content">
-            <h2>OTP Verification</h2>
+
+        <h2>OTP Verification</h2>
+        <form action="" method="post">
+            <label for="otp">Enter OTP:</label>
+            <input type="text" pattern="[0-9]{6}" maxlength="6" id="otp" name="admin_otp" title="Please enter six numbers" placeholder="123456" required>
+            <button type="submit">Verify OTP</button>
+        </form>
+
+        <div>
+            <br />
+
             <form action="" method="post">
-                <label for="otp">Enter OTP:</label>
-                <input type="text" pattern="[0-9]{6}" maxlength="6" id="otp" name="admin_otp" title="Please enter six numbers" placeholder="123456" required>
-                <button type="submit">Verify OTP</button>
+                <button type="form" id="resendOTPButton" name="admin_resend_otp">Resend OTP</button>
+                <div id="resendOTPMessage"></div>
             </form>
 
-            <a href=admin_logout.php> CANCEL </a>
+
         </div>
+
+        <a href=admin_logout.php> CANCEL </a>
+
         <footer>
 
         </footer>

@@ -34,6 +34,10 @@ if (isset($_POST["vendor_login_submit"])) {
 
                 //OTP Generation
                 include("vendor_otp_generation.php");
+                echo '<script>';
+                echo 'alert("OTP Generated!");';
+                echo 'window.location.href = "vendor_otp_verification.php";';
+                echo '</script>';
             } else {
 
                 echo '<script>';
@@ -42,7 +46,6 @@ if (isset($_POST["vendor_login_submit"])) {
                 echo '</script>';
             }
         } else {
-
             echo '<script>';
             echo 'alert("Wrong Credentials!");';
             echo 'window.location.href = "vendor_login.php";';
