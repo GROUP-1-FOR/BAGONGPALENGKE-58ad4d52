@@ -78,6 +78,25 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             ?>
         </table>
 
+        <?php
+        // Check if there is at least one row with confirmed and archived both equal to 1
+        $validationQuery = "SELECT COUNT(*) AS count FROM ven_payments WHERE confirmed = 1 AND archived = 1";
+        $validationResult = mysqli_query($connect, $validationQuery);
+
+        if ($validationResult) {
+            $rowCount = mysqli_fetch_assoc($validationResult)['count'];
+
+            // Display the button only if there is at least one row
+            if ($rowCount > 0) {
+                echo '<button onclick="confirmRemoveAll()">Remove All Confirmed Payments</button>';
+            } else {
+                echo '<p>No confirmed payments available for removal.</p>';
+            }
+        } else {
+            echo '<p>Error checking for confirmed payments: ' . mysqli_error($connect) . '</p>';
+        }
+        ?>
+
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script>
             function confirmAndArchive(id, name, payment_date, row) {
@@ -100,6 +119,28 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     }
                 });
             }
+
+            function confirmRemoveAll() {
+            var confirmDelete = confirm("Are you sure you want to remove all confirmed payments?");
+            if (confirmDelete) {
+                removeAllConfirmedPayments();
+            }
+        }
+
+        function removeAllConfirmedPayments() {
+            $.ajax({
+                type: "POST",
+                url: "remove_all_confirmed_payments.php", // Create this file to handle the removal
+                success: function(response) {
+                    alert(response); // Display the server's response (if needed)
+                    // Reload the page or update the table if needed
+                    location.reload();
+                },
+                error: function() {
+                    alert("Error removing confirmed payments");
+                }
+            });
+        }
         </script>
 
 
