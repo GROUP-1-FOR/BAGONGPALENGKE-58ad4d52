@@ -7,43 +7,38 @@ require("config.php");
 $successMessage = $errorMessage = '';
 
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    // Your existing code for session variables goes here
-
-    // Additional code for the vendor_messages page can be added below
-    // For example, fetching and displaying messages from the database
-
-    // Sample code to handle message submission (replace it with your form handling logic)
+ 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit_message"])) {
         // Get the message from the form
         $vendor_messages = $_POST["vendor_messages"];
-
+    
         // Retrieve vendor_name and vendor_stall_number from the vendor_sign_in table
         $vendor_userid = $_SESSION["userid"];
-
+    
         $sqlFetchVendorInfo = "SELECT vendor_name, vendor_stall_number FROM vendor_sign_in WHERE vendor_userid = ?";
         $stmtFetchVendorInfo = $connect->prepare($sqlFetchVendorInfo);
         $stmtFetchVendorInfo->bind_param('s', $vendor_userid);
         $stmtFetchVendorInfo->execute();
         $resultFetchVendorInfo = $stmtFetchVendorInfo->get_result();
-
+    
         if ($resultFetchVendorInfo->num_rows > 0) {
             $rowVendorInfo = $resultFetchVendorInfo->fetch_assoc();
             $vendor_name = $rowVendorInfo['vendor_name'];
             $vendor_stall_number = $rowVendorInfo['vendor_stall_number'];
-
-            // Insert the message into the system_messages table
-            $sqlInsertMessage = "INSERT INTO system_messages (vendor_messages, vendor_name, vendor_stall_number) VALUES (?, ?, ?)";
+    
+            // Insert the message into the system_messages table with vendor_timestamp
+            $sqlInsertMessage = "INSERT INTO system_messages (vendor_messages, vendor_name, vendor_stall_number, vendor_timestamp) VALUES (?, ?, ?, NOW())";
             $stmtInsertMessage = $connect->prepare($sqlInsertMessage);
             $stmtInsertMessage->bind_param('sss', $vendor_messages, $vendor_name, $vendor_stall_number);
             $stmtInsertMessage->execute();
-
+    
             // Display a success message or perform additional actions if needed
             $successMessage = "Message sent successfully!";
         } else {
             // Handle the case where vendor information is not found
             $errorMessage = "Vendor information not found.";
         }
-
+    
         // Redirect to prevent form resubmission
         header("Location: {$_SERVER['PHP_SELF']}");
         exit();
@@ -180,7 +175,7 @@ if (isset($_SESSION["userid"])) {
             while ($rowMessage = $resultFetchMessages->fetch_assoc()) {
                 echo "<li>";
                 echo "<p>Message: {$rowMessage['vendor_messages']}</p>";
-                echo "<p>Timestamp: {$rowMessage['timestamp']}</p>";
+                echo "<p>Timestamp: {$rowMessage['vendor_timestamp']}</p>";
                 echo "</li>";
             }
             echo "</ul>";
