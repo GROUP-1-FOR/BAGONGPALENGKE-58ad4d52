@@ -75,13 +75,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Forgot Password</title>
 </head>
 
+
 <body>
     <div align="center">
         <div>
             <h2>Forgot Password?</h2>
             <form action="" method="post">
                 <label for="Vendor User ID">Vendor User ID:</label>
-                <input type="text" name="vendor_userid" required> <br />
+                <input type="text" name="vendor_userid" placeholder="VSR-00000" value="VSR-" maxlength="9" required value=""><br />
                 <label for="email">Email:</label>
                 <input type="email" name="vendor_email" required> <br />
                 <input type="submit" value="Send Verification"><br />
