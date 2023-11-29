@@ -171,36 +171,41 @@ if (isset($_SESSION["userid"])) {
     ?>
 
         <!-- Display messages sent by the current vendor -->
-        <?php  // Check if the query was successful
-        if ($resultFetchMessages) {
-            // Display messages sent by the current vendor
-            if ($resultFetchMessages->num_rows > 0) {
-                echo "<h2> Messages</h2>";
-                echo "<ul>";
-                while ($rowMessage = $resultFetchMessages->fetch_assoc()) {
-                    echo "<li>{$rowMessage['vendor_messages']}</li>";
-                }
-                echo "</ul>";
-            } else {
-                echo "<p>No messages sent by you yet.</p>";
+        <?php // Check if the query was successful
+    if ($resultFetchMessages) {
+        // Display messages sent by the current vendor
+        if ($resultFetchMessages->num_rows > 0) {
+            echo "<h2> Messages</h2>";
+            echo "<ul>";
+            while ($rowMessage = $resultFetchMessages->fetch_assoc()) {
+                echo "<li>";
+                echo "<p>Message: {$rowMessage['vendor_messages']}</p>";
+                echo "<p>Timestamp: {$rowMessage['timestamp']}</p>";
+                echo "</li>";
             }
+            echo "</ul>";
         } else {
-            // Handle the case where the query was not successful
-            echo "Error fetching messages: " . $connect->error;
+            echo "<p>No messages sent by you yet.</p>";
         }
-            ?>
+    } else {
+        // Handle the case where the query was not successful
+        echo "Error fetching messages: " . $connect->error;
+    }
+?>
 
-    <?php if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])): ?>
-        <!-- Display a form for the vendor to submit messages -->
-        <form method='post'>
-            <h2>Submit a Message</h2>
-            <textarea name='vendor_messages' placeholder='Type your message here' rows='4' cols='50'></textarea><br>
-            <input type='submit' name='submit_message' value='Submit'>
-        </form>
-    <?php else: ?>
-        <?php header("location: vendor_login.php"); ?>
-    <?php endif; ?>
+<?php if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])): ?>
+    <!-- Display a form for the vendor to submit messages -->
+    <form method='post'>
+        <h2>Submit a Message</h2>
+        <textarea name='vendor_messages' placeholder='Type your message here' rows='4' cols='50'></textarea><br>
+        <input type='submit' name='submit_message' value='Submit'>
+        <input type='submit' name='back' value='Back' onclick="window.location='vendor_index.php'; return false;">
+    </form>
+<?php else: ?>
+    <?php header("location: vendor_login.php"); ?>
+<?php endif; ?>
 </div>
+
 
 </body>
 </html>
