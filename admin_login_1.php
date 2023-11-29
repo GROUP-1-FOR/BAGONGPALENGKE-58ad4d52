@@ -32,16 +32,10 @@ if (isset($_POST["admin_login_submit"])) {
 
                 //OTP Generation
                 include("admin_otp_generation.php");
-
-                if (mysqli_stmt_execute($stmt)) {
-                    echo '<script>';
-                    echo 'alert("OTP Sent!");';
-                    echo 'window.location.href = "admin_otp_verification.php";';
-                    echo '</script>';
-                    exit();
-                } else {
-                    echo "<script> alert('Error Sending OTP!'); </script>" . mysqli_error($connect);
-                }
+                echo '<script>';
+                echo 'alert("OTP Generated!");';
+                echo 'window.location.href = "admin_otp_verification.php";';
+                echo '</script>';
             } else {
                 echo '<script>';
                 echo 'alert("Wrong Credentials");';
