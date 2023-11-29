@@ -11,7 +11,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $connect->close();
 ?>
 
-
     <!DOCTYPE html>
     <html lang="en">
 

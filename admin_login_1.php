@@ -18,7 +18,6 @@ if (isset($_POST["admin_login_submit"])) {
         $result = mysqli_query($connect, "SELECT * FROM admin_sign_in WHERE admin_userid= '$admin_userid'");
         $row = mysqli_fetch_assoc($result);
 
-
         if (mysqli_num_rows($result) > 0) {
 
 
