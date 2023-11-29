@@ -21,7 +21,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $userid = htmlspecialchars($_POST["admin_userid"]);
 
     $query = "SELECT admin_token FROM admin_sign_in WHERE admin_userid = '$userid'";
-
     // Perform the query
     $result = mysqli_query($connect, $query);
 
@@ -31,8 +30,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($admin_token && isTokenValid($admin_token['admin_token'])) {
 
-            header("Location: admin_forgot_password_2.php");
-            exit; // Ensure that no further code is executed after the redirect
+            header("Location: admin_forgot_password_2.php?userid=" . urlencode($userid));
+            exit();
         } else {
 
             echo '<script>';
@@ -43,6 +42,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         // Handle the query error
         echo "Error: " . mysqli_error($connect);
+        echo '<script>';
+        echo 'alert("Wrong Admin User ID!");';
+        echo 'window.location.href = "admin_login.php";';
+        echo '</script>';
     }
 }
 ?>
@@ -61,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h2>REENTER ADMIN USER ID</h2>
             <form action="" onsubmit="return confirm('Proceed?');" method="post">
                 <label for="Admin User ID">Admin User ID:</label>
-                <input type="text" name="admin_userid" required> <br />
+                <input type="text" name="admin_userid" value="<?php echo $userid = isset($_GET['userid']) ? htmlspecialchars($_GET['userid']) : ''; ?>" required> <br />
                 <input type="submit" value="Enter"><br />
             </form>
         </div>

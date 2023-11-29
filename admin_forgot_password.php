@@ -4,7 +4,7 @@ require("config.php");
 
 
 //token expires after 5 mins
-function generateToken($length = 32, $expirationTime = 60)
+function generateToken($length = 32, $expirationTime = 10)
 {
     // Generate a random token
     $token = bin2hex(random_bytes($length));
@@ -27,9 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = htmlspecialchars($_POST["admin_email"]);
     $userid = htmlspecialchars($_POST["admin_userid"]);
 
-
     // If the email is valid, generate a unique token
-
 
     $result = mysqli_query($connect, "SELECT admin_userid, admin_email FROM admin_sign_in WHERE admin_userid = '$userid' && admin_email= '$email'");
     $row = mysqli_fetch_assoc($result);
@@ -47,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt->affected_rows > 0) {
             echo '<script>';
             echo 'alert("View Email!");';
-            echo 'window.location.href = "admin_forgot_password_1.php";';
+            echo 'window.location.href = "admin_forgot_password_1.php?userid=' . urlencode($userid) . '";';
             echo '</script>';
         } else {
             echo "Failed to send token.";
@@ -86,14 +84,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="text" name="admin_userid" required> <br />
                 <label for="email">Email:</label>
                 <input type="email" name="admin_email" required> <br />
-
                 <input type="submit" value="Send Verification"><br />
             </form>
         </div>
 
-
         <div>
-
             <a href=admin_login.php>
                 <h2>Back</h2> <br />
             </a>
