@@ -5,7 +5,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $admin_userid = $_SESSION["userid"];
 
     // Fetch paid records from the database
-    $query = "SELECT id, name, balance, payment_date FROM ven_payments WHERE confirmed = 1";
+    $query = "SELECT id, name, balance, payment_date FROM paid_records";
     $result = mysqli_query($connect, $query);
 
     if (!$result) {
