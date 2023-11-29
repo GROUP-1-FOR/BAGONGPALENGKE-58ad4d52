@@ -1,206 +1,142 @@
 <?php
-// vendor_messages.php
-
-// Include the config.php file and check for session variables
 require("config.php");
 
-$successMessage = $errorMessage = '';
-
+// Check if the user is logged in
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
- 
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit_message"])) {
-        // Get the message from the form
-        $vendor_messages = $_POST["vendor_messages"];
-    
-        // Retrieve vendor_name and vendor_stall_number from the vendor_sign_in table
-        $vendor_userid = $_SESSION["userid"];
-    
-        $sqlFetchVendorInfo = "SELECT vendor_name, vendor_stall_number FROM vendor_sign_in WHERE vendor_userid = ?";
-        $stmtFetchVendorInfo = $connect->prepare($sqlFetchVendorInfo);
-        $stmtFetchVendorInfo->bind_param('s', $vendor_userid);
-        $stmtFetchVendorInfo->execute();
-        $resultFetchVendorInfo = $stmtFetchVendorInfo->get_result();
-    
-        if ($resultFetchVendorInfo->num_rows > 0) {
-            $rowVendorInfo = $resultFetchVendorInfo->fetch_assoc();
-            $vendor_name = $rowVendorInfo['vendor_name'];
-            $vendor_stall_number = $rowVendorInfo['vendor_stall_number'];
-    
-            // Insert the message into the system_messages table with vendor_timestamp
-            $sqlInsertMessage = "INSERT INTO system_messages (vendor_messages, vendor_name, vendor_stall_number, vendor_timestamp) VALUES (?, ?, ?, NOW())";
-            $stmtInsertMessage = $connect->prepare($sqlInsertMessage);
-            $stmtInsertMessage->bind_param('sss', $vendor_messages, $vendor_name, $vendor_stall_number);
-            $stmtInsertMessage->execute();
-    
-            // Display a success message or perform additional actions if needed
-            $successMessage = "Message sent successfully!";
-        } else {
-            // Handle the case where vendor information is not found
-            $errorMessage = "Vendor information not found.";
-        }
-    
-        // Redirect to prevent form resubmission
-        header("Location: {$_SERVER['PHP_SELF']}");
-        exit();
-    }
+    $userid = $_SESSION["userid"];
 
-// Fetch and display messages sent by the current vendor
-if (isset($_SESSION["userid"])) {
-    $vendor_userid = $_SESSION["userid"];
+    // Fetch vendor data from vendor_sign_in table
+    $sqlVendorData = "SELECT vendor_name, vendor_stall_number FROM vendor_sign_in WHERE vendor_userid = ?";
+    $stmtVendorData = $connect->prepare($sqlVendorData);
+    $stmtVendorData->bind_param('s', $userid);
+    $stmtVendorData->execute();
+    $resultVendorData = $stmtVendorData->get_result();
 
-    $sqlFetchVendorInfo = "SELECT vendor_name, vendor_stall_number FROM vendor_sign_in WHERE vendor_userid = ?";
-    $stmtFetchVendorInfo = $connect->prepare($sqlFetchVendorInfo);
-    $stmtFetchVendorInfo->bind_param('s', $vendor_userid);
-    $stmtFetchVendorInfo->execute();
-    $resultFetchVendorInfo = $stmtFetchVendorInfo->get_result();
-
-    if ($resultFetchVendorInfo->num_rows > 0) {
-        $rowVendorInfo = $resultFetchVendorInfo->fetch_assoc();
-        $vendor_name = $rowVendorInfo['vendor_name'];
-        $vendor_stall_number = $rowVendorInfo['vendor_stall_number'];
-
-        $sqlFetchMessages = "SELECT * FROM system_messages WHERE vendor_name = ? AND vendor_stall_number = ?";
-        $stmtFetchMessages = $connect->prepare($sqlFetchMessages);
-        $stmtFetchMessages->bind_param('ss', $vendor_name, $vendor_stall_number);
-        $stmtFetchMessages->execute();
-        $resultFetchMessages = $stmtFetchMessages->get_result();
-
-       
+    if ($resultVendorData->num_rows > 0) {
+        $rowVendorData = $resultVendorData->fetch_assoc();
+        $vendorName = $rowVendorData['vendor_name'];
+        $vendorStallNumber = $rowVendorData['vendor_stall_number'];
     } else {
-        // Handle the case where vendor information is not found
-        echo "Vendor information not found.";
+        // Handle the case where the vendor data is not found
+        die("Vendor data not found.");
     }
-} else {
-    // Handle the case where the user is not logged in
-    echo "User not logged in.";
-}
-}
-?>
-<!DOCTYPE html>
+
+    // Process message submission
+    if (isset($_POST['submit_message'])) {
+        $userMessage = $_POST['user_message'];
+        $timestamp = date('Y-m-d H:i:s');
+
+        // Insert user's message into system_messages table
+        $sqlInsertMessage = "INSERT INTO system_messages (vendor_name, vendor_stall_number, vendor_messages, vendor_timestamp) VALUES (?, ?, ?, ?)";
+        $stmtInsertMessage = $connect->prepare($sqlInsertMessage);
+        $stmtInsertMessage->bind_param('ssss', $vendorName, $vendorStallNumber, $userMessage, $timestamp);
+        $stmtInsertMessage->execute();
+    }
+
+    // Fetch messages from system_messages table
+    $sqlFetchMessages = "SELECT * FROM system_messages WHERE (vendor_name = ? AND vendor_stall_number = ?) OR (vendor_name = 'admin' AND vendor_stall_number = 'admin') ORDER BY COALESCE(admin_timestamp, vendor_timestamp)";
+    $stmtFetchMessages = $connect->prepare($sqlFetchMessages);
+    $stmtFetchMessages->bind_param('ss', $vendorName, $vendorStallNumber);
+    $stmtFetchMessages->execute();
+    $resultFetchMessages = $stmtFetchMessages->get_result();
+
+    // Display messages
+    ?>
+  <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vendor Messages</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
             background-color: #f2f2f2;
-            margin: 20px;
-            display: flex;
-            justify-content: center;
         }
 
-        .container {
-            width: 60%;
+        h1, h2 {
+            color: #850F16;
+        }
+
+        div {
+            margin: auto;
+            width: 50%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         form {
-            margin-top: 20px;
+            margin-bottom: 20px;
         }
 
         textarea {
-            margin-bottom: 10px;
             width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
         }
 
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px;
+        button {
+            padding: 10px 20px;
+            background-color: #850F16;
+            color: #fff;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
         }
 
-        .success-message {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px;
-            margin-top: 10px;
-        }
-
-        .error-message {
-            background-color: #ff6666;
-            color: white;
-            padding: 10px;
-            margin-top: 10px;
-        }
-
-        .additional-message {
-            margin-top: 20px;
-            background-color: #f2f2f2;
-            padding: 10px;
-        }
-
-        /* Style for the messages */
-        h2 {
-            margin-top: 20px;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        li {
-            border: 1px solid #ddd;
-            margin: 5px;
-            padding: 10px;
-            background-color: #fff;
-        }
-
         p {
+            margin-bottom: 10px;
+        }
+
+        a {
+            display: block;
             margin-top: 20px;
+            color: #850F16;
+            text-decoration: none;
+            font-weight: bold;
         }
     </style>
 </head>
+
 <body>
+    <h1>Welcome, <?php echo $vendorName; ?>!</h1>
+    <h2>Vendor Stall Number: <?php echo $vendorStallNumber; ?></h2>
 
-<div class="container">
-    <?php
-    if ($successMessage) {
-        echo "<div class='success-message'>$successMessage</div>";
-    } elseif ($errorMessage) {
-        echo "<div class='error-message'>$errorMessage</div>";
-    }
-    ?>
+    <div>
+        <!-- Form for submitting messages -->
+        <form method="post">
+            <label for="user_message">Your Message:</label>
+            <textarea name="user_message" id="user_message" rows="4" cols="50" required></textarea>
+            <br>
+            <button type="submit" name="submit_message">Send Message</button>
+        </form>
 
-        <!-- Display messages sent by the current vendor -->
-        <?php // Check if the query was successful
-    if ($resultFetchMessages) {
-        // Display messages sent by the current vendor
-        if ($resultFetchMessages->num_rows > 0) {
-            echo "<h2> Messages</h2>";
-            echo "<ul>";
-            while ($rowMessage = $resultFetchMessages->fetch_assoc()) {
-                echo "<li>";
-                echo "<p>Message: {$rowMessage['vendor_messages']}</p>";
-                echo "<p>Timestamp: {$rowMessage['vendor_timestamp']}</p>";
-                echo "</li>";
-            }
-            echo "</ul>";
-        } else {
-            echo "<p>No messages sent by you yet.</p>";
-        }
-    } else {
-        // Handle the case where the query was not successful
-        echo "Error fetching messages: " . $connect->error;
-    }
-?>
+        <!-- Display messages -->
+        <?php while ($rowMessage = $resultFetchMessages->fetch_assoc()) : ?>
+            <p>
+                <?php
+                if ($rowMessage['vendor_name'] == 'admin') {
+                    echo "Admin: " . $rowMessage['admin_reply'];
+                } else {
+                    echo "You: " . $rowMessage['vendor_messages'];
+                }
+                ?>
+            </p>
+        <?php endwhile; ?>
+    </div>
 
-<?php if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])): ?>
-    <!-- Display a form for the vendor to submit messages -->
-    <form method='post'>
-        <h2>Submit a Message</h2>
-        <textarea name='vendor_messages' placeholder='Type your message here' rows='4' cols='50'></textarea><br>
-        <input type='submit' name='submit_message' value='Submit'>
-        <input type='submit' name='back' value='Back' onclick="window.location='vendor_index.php'; return false;">
-    </form>
-<?php else: ?>
-    <?php header("location: vendor_login.php"); ?>
-<?php endif; ?>
-</div>
-
-
+    <a href="vendor_main_page.php">Go back to Main Page</a>
 </body>
+
 </html>
+<?php
+} else {
+    // Redirect to the login page if the user is not logged in
+    header("location:vendor_login.php");
+}
+?>
