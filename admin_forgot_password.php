@@ -4,7 +4,7 @@ require("config.php");
 
 
 //token expires after 5 mins
-function generateToken($length = 32, $expirationTime = 10)
+function generateToken($length = 32, $expirationTime = 60)
 {
     // Generate a random token
     $token = bin2hex(random_bytes($length));

@@ -71,7 +71,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </script>
 
         <div>
-
             <a href=admin_login.php>
                 <h2>Back</h2> <br />
             </a>
