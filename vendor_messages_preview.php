@@ -127,7 +127,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             $rowLatestMessageDetails = $resultAllMessages->fetch_assoc();
             $messageClass = ($rowLatestMessageDetails['sender'] == $sender) ? 'sent-preview' : 'received-preview';
             echo "<div class='message-preview " . $messageClass . "'>";
-            echo "<p><a href='admin_messages.php?sender=" . $latestSender . "'>";
+            echo "<p><a href='vendor_messages.php?sender=" . $latestSender . "'>";
             echo "Sender: " . $latestSender . "<br>";
             echo "Message: " . $rowLatestMessageDetails['message'] . "<br>";
             echo "Timestamp: " . $rowLatestMessageDetails['timestamp'] . "</a></p>";
