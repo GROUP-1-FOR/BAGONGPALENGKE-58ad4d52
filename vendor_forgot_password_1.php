@@ -18,33 +18,33 @@ function isTokenValid($token)
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $userid = htmlspecialchars($_POST["admin_userid"]);
+    $userid = htmlspecialchars($_POST["vendor_userid"]);
 
-    $query = "SELECT admin_token FROM admin_sign_in WHERE admin_userid = '$userid'";
+    $query = "SELECT vendor_token FROM vendor_sign_in WHERE vendor_userid = '$userid'";
     // Perform the query
     $result = mysqli_query($connect, $query);
 
     if ($result) {
         // Fetch the user data as an associative array
-        $admin_token = mysqli_fetch_assoc($result);
+        $vendor_token = mysqli_fetch_assoc($result);
 
-        if ($admin_token && isTokenValid($admin_token['admin_token'])) {
+        if ($vendor_token && isTokenValid($vendor_token['vendor_token'])) {
 
-            header("Location: admin_forgot_password_2.php?userid=" . urlencode($userid));
+            header("Location: vendor_forgot_password_2.php?userid=" . urlencode($userid));
             exit();
         } else {
 
             echo '<script>';
             echo 'alert("Token Expired!");';
-            echo 'window.location.href = "admin_login.php";';
+            echo 'window.location.href = "vendor_login.php";';
             echo '</script>';
         }
     } else {
         // Handle the query error
         echo "Error: " . mysqli_error($connect);
         echo '<script>';
-        echo 'alert("Wrong Admin User ID!");';
-        echo 'window.location.href = "admin_login.php";';
+        echo 'alert("Wrong Vendor User ID!");';
+        echo 'window.location.href = "vendor_login.php";';
         echo '</script>';
     }
 }
@@ -61,10 +61,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div align="center">
         <div>
-            <h2>REENTER ADMIN USER ID</h2>
+            <h2>REENTER VENDOR USER ID</h2>
             <form action="" onsubmit="return confirm('Proceed?');" method="post">
-                <label for="Admin User ID">Admin User ID:</label>
-                <input type="text" name="admin_userid" value="<?php echo $userid = isset($_GET['userid']) ? htmlspecialchars($_GET['userid']) : ''; ?>" required> <br />
+                <label for="Vendor User ID">Vendor User ID:</label>
+                <input type="text" name="vendor_userid" value="<?php echo $userid = isset($_GET['userid']) ? htmlspecialchars($_GET['userid']) : ''; ?>" required> <br />
                 <input type="submit" value="Enter"><br />
             </form>
         </div>
@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </script>
 
         <div>
-            <a href=admin_login.php>
+            <a href=vendor_login.php>
                 <h2>Back</h2> <br />
             </a>
         </div>

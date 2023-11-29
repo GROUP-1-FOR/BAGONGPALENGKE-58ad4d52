@@ -24,17 +24,17 @@ function generateToken($length = 32, $expirationTime = 10)
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get the email address from the form
-    $email = htmlspecialchars($_POST["admin_email"]);
-    $userid = htmlspecialchars($_POST["admin_userid"]);
+    $email = htmlspecialchars($_POST["vendor_email"]);
+    $userid = htmlspecialchars($_POST["vendor_userid"]);
 
     // If the email is valid, generate a unique token
 
-    $result = mysqli_query($connect, "SELECT admin_userid, admin_email FROM admin_sign_in WHERE admin_userid = '$userid' && admin_email= '$email'");
+    $result = mysqli_query($connect, "SELECT vendor_userid, vendor_email FROM vendor_sign_in WHERE vendor_userid = '$userid' && vendor_email= '$email'");
     $row = mysqli_fetch_assoc($result);
 
     if (mysqli_num_rows($result) > 0) {
         $token = generateToken();
-        $email_query = "UPDATE admin_sign_in SET admin_token = ? WHERE admin_userid = ?";
+        $email_query = "UPDATE vendor_sign_in SET vendor_token = ? WHERE vendor_userid = ?";
         $stmt = mysqli_prepare($connect, $email_query);
 
         // Use "ss" for two string parameters
@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt->affected_rows > 0) {
             echo '<script>';
             echo 'alert("View Email!");';
-            echo 'window.location.href = "admin_forgot_password_1.php?userid=' . urlencode($userid) . '";';
+            echo 'window.location.href = "vendor_forgot_password_1.php?userid=' . urlencode($userid) . '";';
             echo '</script>';
         } else {
             echo "Failed to send token.";
@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         echo '<script>';
         echo 'alert("Email Not Registered!");';
-        echo 'window.location.href = "admin_forgot_password.php";';
+        echo 'window.location.href = "vendor_forgot_password.php";';
         echo '</script>';
     }
 
@@ -75,21 +75,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Forgot Password</title>
 </head>
 
+
 <body>
     <div align="center">
         <div>
             <h2>Forgot Password?</h2>
             <form action="" method="post">
-                <label for="Admin User ID">Admin User ID:</label>
-                <input type="text" name="admin_userid" required> <br />
+                <label for="Vendor User ID">Vendor User ID:</label>
+                <input type="text" name="vendor_userid" placeholder="VSR-00000" value="VSR-" maxlength="9" required value=""><br />
                 <label for="email">Email:</label>
-                <input type="email" name="admin_email" required> <br />
+                <input type="email" name="vendor_email" required> <br />
                 <input type="submit" value="Send Verification"><br />
             </form>
         </div>
 
         <div>
-            <a href=admin_login.php>
+            <a href=vendor_login.php>
                 <h2>Back</h2> <br />
             </a>
         </div>

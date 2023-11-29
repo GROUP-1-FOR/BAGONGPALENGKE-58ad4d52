@@ -4,20 +4,20 @@ $userid = isset($_GET['userid']) ? htmlspecialchars($_GET['userid']) : '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $admin_new_password = isset($_POST["admin_new_password"]) ? htmlspecialchars($_POST["admin_new_password"]) : '';
-    $admin_confirm_new_password = isset($_POST["admin_confirm_new_password"]) ? htmlspecialchars($_POST["admin_confirm_new_password"]) : '';
+    $vendor_new_password = isset($_POST["vendor_new_password"]) ? htmlspecialchars($_POST["vendor_new_password"]) : '';
+    $vendor_confirm_new_password = isset($_POST["vendor_confirm_new_password"]) ? htmlspecialchars($_POST["vendor_confirm_new_password"]) : '';
 
-    if ($admin_new_password !== $admin_confirm_new_password) {
+    if ($vendor_new_password !== $vendor_confirm_new_password) {
         echo '<script>';
         echo 'alert("Passwords do not match!");';
-        echo 'window.location.href = "admin_forgot_password_2.php";';
+        echo 'window.location.href = "vendor_forgot_password_2.php";';
         echo '</script>';
         exit();
     }
 
-    $hashedPassword = md5($admin_new_password);
+    $hashedPassword = md5($vendor_new_password);
 
-    $password_query = "UPDATE admin_sign_in SET admin_password = ? WHERE admin_userid = ?";
+    $password_query = "UPDATE vendor_sign_in SET vendor_password = ? WHERE vendor_userid = ?";
     $stmt = mysqli_prepare($connect, $password_query);
 
     // Use "ss" for two string parameters
@@ -28,12 +28,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($stmt->affected_rows > 0) {
         echo '<script>';
         echo 'alert("Password Updated!");';
-        echo 'window.location.href = "admin_login.php";';
+        echo 'window.location.href = "vendor_login.php";';
         echo '</script>';
     } else {
         echo '<script>';
         echo 'alert("Failed to update Password!");';
-        echo 'window.location.href = "admin_login.php";';
+        echo 'window.location.href = "vendor_login.php";';
         echo '</script>';
         exit();
     }
@@ -53,14 +53,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div>
         <h1>New Password</h1><br />
         <form action="" method="post">
-            <label for="Admin User ID">Admin User ID:</label>
-            <input type="text" name="admin_userid" value="<?php echo $userid; ?>" required readonly> <br />
+            <label for="Vendor User ID">Vendor User ID:</label>
+            <input type="text" name="vendor_userid" value="<?php echo $userid; ?>" required readonly> <br />
 
-            <label for="admin_username">New Password:</label>
-            <input type="password" name="admin_new_password" required> <br />
+            <label for="vendor_username">New Password:</label>
+            <input type="password" name="vendor_new_password" required> <br />
 
             <label for="new_password">Confirm Password:</label>
-            <input type="password" name="admin_confirm_new_password" required oninput="checkPasswordMatch()">
+            <input type="password" name="vendor_confirm_new_password" required oninput="checkPasswordMatch()">
             <span id="passwordMatchMessage"></span><br />
 
             <input type="submit" value="Update Password" disabled>
@@ -71,8 +71,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 });
 
                 function checkPasswordMatch() {
-                    var password = document.getElementsByName("admin_new_password")[0].value;
-                    var confirmPassword = document.getElementsByName("admin_confirm_new_password")[0].value;
+                    var password = document.getElementsByName("vendor_new_password")[0].value;
+                    var confirmPassword = document.getElementsByName("vendor_confirm_new_password")[0].value;
                     var messageElement = document.getElementById("passwordMatchMessage");
                     var submitButton = document.querySelector('input[type="submit"]');
 
@@ -90,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
     </div>
 
-    <div><a href="admin_login.php">Back</a></div>
+    <div><a href="vendor_login.php">Back</a></div>
 
 
 </body>
