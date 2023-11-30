@@ -5,19 +5,21 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $admin_id = $_SESSION["id"];
     $admin_userid = $_SESSION["userid"];
 
-    // Fetch the latest message (vendor_messages or admin_reply) from each vendor,
+    // Fetch the latest message (vendor_messages or admin_reply) from each recipient,
     // ordered by the latest timestamp in descending order
     $sqlFetchLatestMessages = "
         SELECT
-            vendor_name,
+            recipient_name,
             MAX(CASE WHEN admin_reply IS NULL THEN vendor_timestamp ELSE admin_timestamp END) AS latest_timestamp,
             MAX(CASE WHEN admin_reply IS NULL THEN vendor_messages ELSE admin_reply END) AS latest_message
         FROM
             system_messages
         WHERE
-            vendor_name IN (SELECT DISTINCT vendor_name FROM system_messages)
+            recipient_name IN (SELECT DISTINCT vendor_name FROM system_messages WHERE vendor_name IS NOT NULL
+                UNION
+                SELECT DISTINCT admin_name FROM system_messages WHERE admin_name IS NOT NULL)
         GROUP BY
-            vendor_name
+            recipient_name
         ORDER BY
             latest_timestamp DESC
     ";
@@ -79,13 +81,13 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             if ($resultLatestMessages) {
                 if ($resultLatestMessages->num_rows > 0) {
                     while ($rowLatestMessage = $resultLatestMessages->fetch_assoc()) {
-                        $vendor_name = $rowLatestMessage['vendor_name'];
+                        $recipient_name = $rowLatestMessage['recipient_name'];
                         $latest_timestamp = $rowLatestMessage['latest_timestamp'];
                         $latest_message = $rowLatestMessage['latest_message'];
             ?>
-                        <a href="admin_messages.php?vendor=<?php echo urlencode($vendor_name); ?>">
+                        <a href="admin_messages.php?recipient=<?php echo urlencode($recipient_name); ?>">
                             <div class="message-box">
-                                <h3>Vendor: <?php echo $vendor_name; ?></h3>
+                                <h3>Recipient: <?php echo $recipient_name; ?></h3>
                                 <p>Latest Message: <?php echo $latest_message; ?></p>
                                 <p>Timestamp: <?php echo $latest_timestamp; ?></p>
                             </div>
