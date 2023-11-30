@@ -1,99 +1,101 @@
 <?php
 require("config.php");
-
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $admin_id = $_SESSION["id"];
     $admin_userid = $_SESSION["userid"];
 
-    // Fetch the latest message from each vendor
-    $sqlFetchLatestMessages = "SELECT vendor_name, timestamp, vendor_messages FROM system_messages WHERE (vendor_name, timestamp) IN (SELECT vendor_name, MAX(timestamp) AS latest_timestamp FROM system_messages GROUP BY vendor_name)";
-    $resultLatestMessages = $connect->query($sqlFetchLatestMessages);
+    // Include database connection or functions
+    // Example: include('db_connection.php');
 
-    // Display the latest messages
+    // Fetch vendor messages with the latest message for each vendor
+    $query = "SELECT vendor_name, vendor_stall_number, MAX(latest_timestamp) as latest_timestamp FROM (
+                    SELECT vendor_name, vendor_stall_number, vendor_timestamp as latest_timestamp
+                    FROM vendor_messages
+                    UNION
+                    SELECT vendor_name, vendor_stall_number, admin_timestamp as latest_timestamp
+                    FROM admin_messages
+                 ) as combined_messages
+                 GROUP BY vendor_name, vendor_stall_number
+                 ORDER BY latest_timestamp DESC";
+
+    // Execute the query and handle errors
+    $result = $connect->query($query);
+    if (!$result) {
+        die("Error executing the query: " . $connect->error);
+    }
+
     ?>
- <!DOCTYPE html>
-<html>
 
-<head>
-    <title>Messages Preview</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
+    <!DOCTYPE html>
+    <html>
 
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+    <head>
+        <title>Messages Preview</title>
+    </head>
 
-        h1,
-        h2,
-        h3 {
-            color: #333;
-        }
-
-        div.message-box {
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background-color: #fff;
-        }
-
-        a {
-            display: block;
-            margin-top: 20px;
-            text-decoration: none;
-            color: #007bff;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-        <h1>Welcome, <?php echo $admin_userid ?>!</h1>
-        <h2>Messages Preview</h2>
+    <body>
+        <h1>Messages Preview</h1>
 
         <?php
-        if ($resultLatestMessages) {
-            if ($resultLatestMessages->num_rows > 0) {
-                while ($rowLatestMessage = $resultLatestMessages->fetch_assoc()) {
-                    $vendor_name = $rowLatestMessage['vendor_name'];
-                    $latest_timestamp = $rowLatestMessage['timestamp'];
-                    $latest_message = $rowLatestMessage['vendor_messages'];
-        ?>
-                    <div class="message-box">
-                        <h3>Vendor: <?php echo $vendor_name; ?></h3>
-                        <p>Latest Message: <?php echo $latest_message; ?></p>
-                        <p>Timestamp: <?php echo $latest_timestamp; ?></p>
-                    </div>
-        <?php
-                }
-            } else {
-                echo "<p>No messages available.</p>";
+        // Loop through each vendor to display the preview
+        while ($row = $result->fetch_assoc()) {
+            $vendor_name = $row['vendor_name'];
+            $vendor_stall_number = $row['vendor_stall_number'];
+            $latest_timestamp = $row['latest_timestamp'];
+
+            // Fetch the latest message for each vendor (consider both vendor_chat and admin_reply)
+            $latest_message_query = "SELECT * FROM (
+                                        SELECT vendor_name, vendor_stall_number, vendor_chat as message, vendor_timestamp as timestamp, NULL as admin_name
+                                        FROM vendor_messages
+                                        WHERE vendor_name = '$vendor_name' AND vendor_stall_number = '$vendor_stall_number'
+                                        UNION
+                                        SELECT vendor_name, vendor_stall_number, admin_reply as message, admin_timestamp as timestamp, admin_name
+                                        FROM admin_messages
+                                        WHERE vendor_name = '$vendor_name' AND vendor_stall_number = '$vendor_stall_number'
+                                     ) as combined_messages
+                                     ORDER BY timestamp DESC
+                                     LIMIT 1";
+
+            // Execute the query and handle errors
+            $latest_message_result = $connect->query($latest_message_query);
+            if (!$latest_message_result) {
+                die("Error executing the query: " . $connect->error);
             }
-        } else {
-            echo "Error fetching messages: " . $connect->error;
+
+            if ($latest_message_row = $latest_message_result->fetch_assoc()) {
+                $recipient = $latest_message_row['vendor_name'];
+                $stall_number = $latest_message_row['vendor_stall_number'];
+                $message_preview = $latest_message_row['message'];
+                $admin_name = $latest_message_row['admin_name'];
+
+                // Display the preview
+                echo "<h3>Recipient: $recipient</h3>";
+                echo "<p>Stall: $stall_number</p>";
+
+                if (!empty($admin_name)) {
+                    // If the latest message is an admin reply, display admin information
+                    echo "<p>Replied by: $admin_name</p>";
+                }
+
+                echo "<p>Message: $message_preview</p>";
+
+                // Create a clickable link to view all messages
+                echo "<a href='admin_messages.php?vendor_name=$recipient&vendor_stall_number=$stall_number'>View All Messages</a>";
+            }
         }
         ?>
 
-        <a href="admin_index.php">
-            <h1>Back</h1>
-        </a>
+        <!-- Button to create a new message -->
+        <a href='admin_createnew_message.php'><button>Create New Message</button></a>
 
-    </div>
-</body>
+        <!-- Back button -->
+        <a href='admin_index.php'><button>Back</button></a>
+    </body>
 
-</html>
-<?php
+    </html>
+
+    <?php
 } else {
-    header("location: admin_login.php");
+    header("location:admin_login.php");
 }
 ?>
