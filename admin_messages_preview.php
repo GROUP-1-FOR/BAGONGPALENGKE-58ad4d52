@@ -86,7 +86,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         ?>
 
         <!-- Button to create a new message -->
-        <a href='admin_create_message.php'><button>Create New Message</button></a>
+        <a href='admin_createnew_message.php'><button>Create New Message</button></a>
 
         <!-- Back button -->
         <a href='admin_index.php'><button>Back</button></a>
