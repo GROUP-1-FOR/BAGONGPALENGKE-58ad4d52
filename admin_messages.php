@@ -87,6 +87,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 </head>
 
 <body>
+<center>
     <h1>Messages for <?php echo $recipient; ?></h1>
 
     <!-- Display messages -->
@@ -119,7 +120,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     <!-- Back button -->
     <a href='admin_messages_preview.php'><button>Back</button></a>
 </body>
-
+    </center>
 </html>
 
 <?php

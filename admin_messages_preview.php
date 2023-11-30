@@ -7,8 +7,16 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     // Include database connection or functions
     // Example: include('db_connection.php');
 
-    // Fetch vendor messages
-    $query = "SELECT DISTINCT vendor_name, vendor_stall_number FROM vendor_messages ORDER BY vendor_timestamp DESC";
+    // Fetch vendor messages with the latest message for each vendor
+    $query = "SELECT vendor_name, vendor_stall_number, MAX(latest_timestamp) as latest_timestamp FROM (
+                    SELECT vendor_name, vendor_stall_number, vendor_timestamp as latest_timestamp
+                    FROM vendor_messages
+                    UNION
+                    SELECT vendor_name, vendor_stall_number, admin_timestamp as latest_timestamp
+                    FROM admin_messages
+                 ) as combined_messages
+                 GROUP BY vendor_name, vendor_stall_number
+                 ORDER BY latest_timestamp DESC";
 
     // Execute the query and handle errors
     $result = $connect->query($query);
@@ -33,9 +41,20 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         while ($row = $result->fetch_assoc()) {
             $vendor_name = $row['vendor_name'];
             $vendor_stall_number = $row['vendor_stall_number'];
+            $latest_timestamp = $row['latest_timestamp'];
 
-            // Fetch the latest message for each vendor
-            $latest_message_query = "SELECT * FROM vendor_messages WHERE vendor_name = '$vendor_name' AND vendor_stall_number = '$vendor_stall_number' ORDER BY vendor_timestamp DESC LIMIT 1";
+            // Fetch the latest message for each vendor (consider both vendor_chat and admin_reply)
+            $latest_message_query = "SELECT * FROM (
+                                        SELECT vendor_name, vendor_stall_number, vendor_chat as message, vendor_timestamp as timestamp
+                                        FROM vendor_messages
+                                        WHERE vendor_name = '$vendor_name' AND vendor_stall_number = '$vendor_stall_number'
+                                        UNION
+                                        SELECT vendor_name, vendor_stall_number, admin_reply as message, admin_timestamp as timestamp
+                                        FROM admin_messages
+                                        WHERE vendor_name = '$vendor_name' AND vendor_stall_number = '$vendor_stall_number'
+                                     ) as combined_messages
+                                     ORDER BY timestamp DESC
+                                     LIMIT 1";
 
             // Execute the query and handle errors
             $latest_message_result = $connect->query($latest_message_query);
@@ -46,7 +65,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             if ($latest_message_row = $latest_message_result->fetch_assoc()) {
                 $recipient = $latest_message_row['vendor_name'];
                 $stall_number = $latest_message_row['vendor_stall_number'];
-                $message_preview = $latest_message_row['vendor_chat'];
+                $message_preview = $latest_message_row['message'];
 
                 // Display the preview
                 echo "<h3>Recipient: $recipient</h3>";
@@ -63,7 +82,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <a href='admin_create_message.php'><button>Create New Message</button></a>
 
         <!-- Back button -->
-        <a href='admin_main_page.php'><button>Back</button></a>
+        <a href='admin_index.php'><button>Back</button></a>
     </body>
 
     </html>
