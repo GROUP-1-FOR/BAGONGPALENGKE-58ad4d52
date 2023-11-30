@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 
 <head>
   <meta charset="UTF-8">
@@ -11,35 +9,27 @@
 </head>
 
 <body>
-  <!-- External stylesheet link -->
+  <header> LOGO </header>
 
-  <header class=>
-    <h2> LOGO </h2>
-
+  <div class="website-title">
     <h1 class="title1"> WELCOME TO </h1>
     <h1 class="title2"> SANTA ROSA PUBLIC MARKET </h1>
-    <!--<div class="nav">
-      <a href="">HOME</a>
-      <a href="">BLOG</a>
-      <a href="">About</a>
-      <a href="">FAQs</a>
-      <a href="">Info</a>
-      <a href="">Tricks</a>
-      <a href="">LOGIn</a>
-
-    </div> -->
-  </header>
-  <div class="main-content">
-    <p>The Bagong Palengke Market is committed to providing its<br> customers with the best possible experience. The vendors </br> are friendly and knowledgeable, and they are always happy<br> to help customers find what they are looking for.</br></p>
   </div>
-  <a href=vendor_admin_select.php><button class="signin-button"> SIGN IN </button></a>
-  <footer>
+<div>
+  <img class="tech-line-tr" src="assets\\images\\sign-in\\tech-line-tr.png" alt="tech-line-tr">
+  <img class="tech-line-bl" src="assets\\images\\sign-in\\tech-line-bl.png" alt="tech-line-bl">
+  <img class="front-layer" src ="assets\\images\\sign-in\\front.svg" alt="front-layer">
+  <img class="back-layer" src ="assets\\images\\sign-in\\back.svg" alt="back-layer">
+</div>
 
+  <div class="main-content">
+      <p>The Bagong Palengke Market is committed to providing its<br> customers with the best possible experience. The vendors </br> are friendly and knowledgeable, and they are always happy<br> to help customers find what they are looking for.</br></p>
+  </div>
 
-  </footer>
-  <main>
-
-  </main>
+  <div class="signin-button-location">
+    <a href=vendor_admin_select.php><button class="signin-button"> SIGN IN </button></a>
+  </div>
+  <section> </section>
+  <footer> </footer>
 </body>
-
 </html>

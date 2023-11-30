@@ -29,7 +29,7 @@ footer {
 
 body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  margin: 0;
+  font-family: 'Your Preferred Font', Verdana, Geneva, Tahoma, sans-serif;
   padding: 0;
   display: flex;
   align-items: center;
@@ -120,7 +120,7 @@ header {
 }
 
 .website-title-v2{
-  margin-left: 2%;.;
+  margin-left: 2%;
   margin-top: 7%;
 }
 
@@ -215,13 +215,14 @@ header {
 }
 
 /* BUTTON STYLE*/
+.vendor-button,
+.admin-button
 .button-style,
 .signin-button,
 .market-button,
 .treasury-button,
 .vendor-button,
-.admin-button,
-.back-button {
+.admin-button{
 
   height: 35px;
   width: 140px;
@@ -232,6 +233,51 @@ header {
   font-weight: bolder;
 }
 
+.vendor-button{
+  height: 35px;
+  width: 140px;
+  border: none;
+  border-radius: 10px;
+  color: maroon;
+  background-color: rgb(245, 230, 203);
+  font-weight: bolder;
+}
+
+.back-button{
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  height: 35px;
+  width: 140px;
+  border: none;
+  color: black;
+  background-color:transparent;
+  font-weight: lighter;
+  bottom: 25%;
+  left: 50%;
+  margin-left: -60px;
+  z-index: 3;
+}
+.back-button:hover{
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  height: 35px;
+  width: 140px;
+  border: none;
+  color: white;
+  background-color:transparent;
+  font-weight: lighter;
+  bottom: 25%;
+  left: 50%;
+  margin-left: -60px;
+  cursor: pointer;
+  z-index: 3;
+}
 
 /* LOCATION STYLE */
 .button-style,
@@ -239,16 +285,11 @@ header {
 .market-button,
 .treasury-button,
 .vendor-button,
-.admin-button,
-.back-button, 
 .button-style:hover,
 .signin-button:hover,
 .market-button:hover,
 .treasury-button:hover,
-.vendor-button:hover,
-.admin-button:hover,
-.back-button:hover {
-
+.vendor-button:hover{
   margin: auto;
   display: flex;
   justify-content: center;
@@ -260,8 +301,30 @@ header {
   z-index: 3;
 }
 
-/* Hover styles for buttons ... */
-/* HOVER BUTTON STYLE*/
+.admin-button{
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 37%;
+  left: 50%;
+  margin-left: -60px;
+  z-index: 3;
+}
+.admin-button:hover{
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 37%;
+  left: 50%;
+  margin-left: -60px;
+  z-index: 3;
+}
+
+
 
 .login-btn:hover,
 .button-style:hover,
@@ -269,8 +332,7 @@ header {
 .market-button:hover,
 .treasury-button:hover,
 .vendor-button:hover,
-.admin-button:hover,
-.back-button:hover {
+.admin-button:hover{
 
   border: none;
   color: rgb(245, 230, 203);
