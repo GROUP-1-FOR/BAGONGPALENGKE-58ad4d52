@@ -1,80 +1,127 @@
-<<<<<<< Updated upstream
-body {
-=======
-.bagong-palengke {
->>>>>>> Stashed changes
-  background-image: url('assets\\images\\sign-in\\signin.svg');
-  background-size: cover;
-  font-family: Verdana;
-  margin: 0;
-  padding: 0;
-  display: flex;
-<<<<<<< Updated upstream
-  flex-direction: column; /* Arrange children in a column */
-  min-height: 100vh; /* Make sure the body takes at least the full height of the viewport */
-  
+* {
+  margin: 0%;
+  padding: 0%;
+  box-sizing: border-box;
 }
 
-
-header, footer {
+header {
   position: fixed;
   background-color: #850F16;
   width: 100%;
+  padding: 10px;
+  text-align: center;
   color: black;
-  z-index: 2;
+  z-index: 3;
+  height: 7vh;
+  top: 0;
 }
-.title1{
-
-  flex: 1; /* Grow to fill available space, pushing .signin to the bottom */
-=======
-  flex-direction: column;
-  min-height: 100vh;
+footer {
+  position: fixed;
+  background-color: #850F16;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  color: black;
+  z-index: 3;
+  height: 5vh;
+  bottom: 0;
 }
 
-.bagong-palengke-v2{
-  background-image: url('assets\\images\\sign-in\\white-layer.svg');
-  background-size: cover;
-  font-family: Verdana;
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   margin: 0;
   padding: 0;
->>>>>>> Stashed changes
   display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.container{
-  display: flex;
-  flex-direction: column;
-}
-
-.image {
-    max-width: 100%; /* Ensure the image doesn't exceed the container width */
-    max-height: 100%; /* Ensure the image doesn't exceed the container height */
-    
-}
-
-
-.website-title{  /* title ng website */
   align-items: center;
   justify-content: center;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  overflow: hidden;
+  height: 100vh;
+  width: 100%;
+  background-image: url('assets\\images\\sign-in\\publicmarketbg.png');
+}
+
+header {
+  background-color: maroon; 
+  color: white; 
+  text-align: center; 
+  z-index: 3;
+}
+
+.tech-line-tr{
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  z-index: 1;
+  transform: rotate(180deg);
+}
+.tech-line-bl{
+  position: absolute;
+  bottom: -5%;
+  left: -5%;
+  z-index: 1;
+}
+.front-layer{
+  position: absolute;
+  top:0%;
+  right: 0%;
+  z-index: 2;
+  
+}
+.back-layer{
+  position: absolute;
+  top:0%;
+  right: 0%;
+  z-index: 2;
+  
+}
+.item-1{
+  position: absolute;
+}
+
+
+.website-title {
+  justify-content: center;
   text-align: center;
-  margin-top: 10%;
-}
-.website-title-v2{
-  margin-left: 2%;
-  margin-top: 7%;
-}
-
-.margin{
-  margin-top: 1px;
+  top: 30%;
+  position: absolute;
+  z-index: 3;
+  width: 100%; /* Added to make sure it takes full width */
 }
 
-.title1{ /* WELCOME TO  */
+.title1 {
   line-height: 0;
   flex: 1;
   font-weight: lighter;
-  color: maroon;
+  color: white;
+}
+
+.title2 {
+  line-height: 2;
+  flex: 1;
+  font-weight: bolder;
+  color: white;
+}
+
+
+.main-content {
+  flex: 1; /* Grow to fill available space, pushing .signin to the bottom */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: justify;
+  bottom: 20%;
+  color: white;
+  letter-spacing: 1px;
+  z-index: 3;
+}
+
+.website-title-v2{
+  margin-left: 2%;.;
+  margin-top: 7%;
 }
 
 .title3{ /* WELCOME TO */
@@ -85,32 +132,6 @@ header, footer {
   letter-spacing: 3px;
 }
 
-.title2 { /* SANTA ROSA PUBLIC MARKET */
-  
-<<<<<<< Updated upstream
-}
-.title2{
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  margin-top: 5px;
-  color: white;
-}
-
-
-header {
-  top: 0;
-  height: 10vh;
-=======
-  line-height: 1;
-  flex: 1;
-  font-weight: bolder;
-  color:white;
-}
-
-
 .title4 { /* SANTA ROSA PUBLIC MARKET */
   
   line-height: 1;
@@ -120,260 +141,14 @@ header {
   letter-spacing: 1px;
 }
 
-header {
-  top: 0;
-  height: 7vh;
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed; /* Fixed positioning to keep it in place while scrolling */
->>>>>>> Stashed changes
-}
-
-header h2{ /* Style ng Logo */
-  color: white;
-
-}
-
 .logo-location{ /* location ng Logo */
-
   position: fixed;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-
 }
 
-.main-content {
-  flex: 1; /* Grow to fill available space, pushing .signin to the bottom */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: justify;
-  margin-bottom: 20%;
-  color: white;
-  letter-spacing: 1px;
-}
-
-<<<<<<< Updated upstream
-.signin-button {
-  top: 45%;
-  height: 35px;
-  width: 120px;
-  border: none;
-  border-radius: 10px;
-  color: maroon;
-  background-color: rgb(245, 230, 203);
-  border-color: maroon;
-  font-weight: bolder;
-  margin: auto; /* Center the button horizontally and vertically */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed; /* Fixed positioning to keep it in place while scrolling */
-  bottom: 30px; /* Adjust this value as needed to position it above the footer */
-  left: 50%; /* Center horizontally */
-  margin-left: -60px; /* Half of the button's width to center it horizontally */
-  z-index: 3; /* Set a higher z-index for the button */
-}
-.signin-button:hover {
-
-  top: 45%;
-  height: 35px;
-  width: 120px;
-  border: none;
-  color: rgb(245, 230, 203);
-  background-color: maroon;
-  border: 1px solid rgb(245, 230, 203);
-  box-shadow: 2px 2px 5px rgba(1, 1, 1, 0.9);
-  font-weight: bolder;
-  margin: auto; /* Center the button horizontally and vertically */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed; /* Fixed positioning to keep it in place while scrolling */
-  bottom: 30px; /* Adjust this value as needed to position it above the footer */
-  left: 50%; /* Center horizontally */
-  margin-left: -60px; /* Half of the button's width to center it horizontally */
-  z-index: 3; /* Set a higher z-index for the button */
-  cursor: pointer;
-}
-
-
-.market-button {
-  top: 30%;
-  height: 35px;
-  width: 120px;
-  border: none;
-  border-radius: 10px;
-  color: maroon;
-  background-color: rgb(245, 230, 203);
-  border-color: maroon;
-  font-weight: bolder;
-  margin: auto; /* Center the button horizontally and vertically */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed; /* Fixed positioning to keep it in place while scrolling */
-  bottom: 30px; /* Adjust this value as needed to position it above the footer */
-  left: 50%; /* Center horizontally */
-  margin-left: -60px; /* Half of the button's width to center it horizontally */
-  z-index: 3; /* Set a higher z-index for the button */
-}
-.market-button:hover {
-  top: 30%;
-  height: 35px;
-  width: 120px;
-  border: none;
-  color: rgb(245, 230, 203);
-  background-color: maroon;
-  border: 1px solid rgb(245, 230, 203);
-  box-shadow: 2px 2px 5px rgba(1, 1, 1, 0.9);
-  font-weight: bolder;
-  margin: auto; /* Center the button horizontally and vertically */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed; /* Fixed positioning to keep it in place while scrolling */
-  bottom: 30px; /* Adjust this value as needed to position it above the footer */
-  left: 50%; /* Center horizontally */
-  margin-left: -60px; /* Half of the button's width to center it horizontally */
-  z-index: 3; /* Set a higher z-index for the button */
-  cursor: pointer;
-
-}
-.treasury-button {
-  top: 43%;
-  height: 35px;
-  width: 140px;
-  border: none;
-  border-radius: 10px;
-  color: maroon;
-  background-color: rgb(245, 230, 203);
-  border-color: maroon;
-  font-weight: bolder;
-  margin: auto; /* Center the button horizontally and vertically */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed; /* Fixed positioning to keep it in place while scrolling */
-  bottom: 30px; /* Adjust this value as needed to position it above the footer */
-  left: 49.5%; /* Center horizontally */
-  margin-left: -60px; /* Half of the button's width to center it horizontally */
-  z-index: 3; /* Set a higher z-index for the button */
-}
-.treasury-button:hover {
-  top: 43%;
-  height: 35px;
-  width: 140px;
-  border: none;
-  color: rgb(245, 230, 203);
-  background-color: maroon;
-  border: 1px solid rgb(245, 230, 203);
-  box-shadow: 2px 2px 5px rgba(1, 1, 1, 0.9);
-  font-weight: bolder;
-  margin: auto; /* Center the button horizontally and vertically */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed; /* Fixed positioning to keep it in place while scrolling */
-  bottom: 30px; /* Adjust this value as needed to position it above the footer */
-  left: 49.5%; /* Center horizontally */
-  margin-left: -60px; /* Half of the button's width to center it horizontally */
-  z-index: 3; /* Set a higher z-index for the button */
-  cursor: pointer;
-
-}
-
-.vendor-button {
-  top: 30%;
-  height: 35px;
-  width: 140px;
-  border: none;
-  border-radius: 10px;
-  color: maroon;
-  background-color: rgb(245, 230, 203);
-  border-color: maroon;
-  font-weight: bolder;
-  margin: auto; /* Center the button horizontally and vertically */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed; /* Fixed positioning to keep it in place while scrolling */
-  bottom: 30px; /* Adjust this value as needed to position it above the footer */
-  left: 50%; /* Center horizontally */
-  margin-left: -60px; /* Half of the button's width to center it horizontally */
-  z-index: 3; /* Set a higher z-index for the button */
-}
-.vendor-button:hover {
-  top: 30%;
-  height: 35px;
-  width: 140px;
-  border: none;
-  color: rgb(245, 230, 203);
-  background-color: maroon;
-  border: 1px solid rgb(245, 230, 203);
-  box-shadow: 2px 2px 5px rgba(1, 1, 1, 0.9);
-  font-weight: bolder;
-  margin: auto; /* Center the button horizontally and vertically */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed; /* Fixed positioning to keep it in place while scrolling */
-  bottom: 30px; /* Adjust this value as needed to position it above the footer */
-  left: 50%; /* Center horizontally */
-  margin-left: -60px; /* Half of the button's width to center it horizontally */
-  z-index: 3; /* Set a higher z-index for the button */
-  cursor: pointer;
-
-}
-.admin-button {
-  top: 43%;
-  height: 35px;
-  width: 140px;
-  border: none;
-  border-radius: 10px;
-  color: maroon;
-  background-color: rgb(245, 230, 203);
-  border-color: maroon;
-  font-weight: bolder;
-  margin: auto; /* Center the button horizontally and vertically */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed; /* Fixed positioning to keep it in place while scrolling */
-  bottom: 30px; /* Adjust this value as needed to position it above the footer */
-  left: 50%; /* Center horizontally */
-  margin-left: -60px; /* Half of the button's width to center it horizontally */
-  z-index: 3; /* Set a higher z-index for the button */
-}
-.admin-button:hover {
-  top: 43%;
-  height: 35px;
-  width: 140px;
-  border: none;
-  color: rgb(245, 230, 203);
-  background-color: maroon;
-  border: 1px solid rgb(245, 230, 203);
-  box-shadow: 2px 2px 5px rgba(1, 1, 1, 0.9);
-  font-weight: bolder;
-  margin: auto; /* Center the button horizontally and vertically */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed; /* Fixed positioning to keep it in place while scrolling */
-  bottom: 30px; /* Adjust this value as needed to position it above the footer */
-  left: 50%; /* Center horizontally */
-  margin-left: -60px; /* Half of the button's width to center it horizontally */
-  z-index: 3; /* Set a higher z-index for the button */
-  cursor: pointer;
-
-}
-
-
-=======
 .login-form {
   position: fixed;
   width: 200px;
@@ -411,7 +186,6 @@ header h2{ /* Style ng Logo */
   width: 70px;
   border-style: solid;
   border-color: transparent;
-
 }
 
 .login-button-location{
@@ -441,14 +215,12 @@ header h2{ /* Style ng Logo */
 }
 
 /* BUTTON STYLE*/
-
 .button-style,
 .signin-button,
 .market-button,
 .treasury-button,
 .vendor-button,
 .admin-button,
->>>>>>> Stashed changes
 .back-button {
 
   height: 35px;
@@ -459,12 +231,9 @@ header h2{ /* Style ng Logo */
   background-color: rgb(245, 230, 203);
   font-weight: bolder;
 }
-<<<<<<< Updated upstream
-=======
 
 
 /* LOCATION STYLE */
-
 .button-style,
 .signin-button,
 .market-button,
@@ -478,7 +247,6 @@ header h2{ /* Style ng Logo */
 .treasury-button:hover,
 .vendor-button:hover,
 .admin-button:hover,
->>>>>>> Stashed changes
 .back-button:hover {
 
   margin: auto;
@@ -493,7 +261,6 @@ header h2{ /* Style ng Logo */
 }
 
 /* Hover styles for buttons ... */
-
 /* HOVER BUTTON STYLE*/
 
 .login-btn:hover,
@@ -518,34 +285,4 @@ header h2{ /* Style ng Logo */
   body::after {
     width: 100%;
   }
-}
-
-<<<<<<< Updated upstream
-=======
-header,
-footer {
-  position: fixed;
-  background-color: #850F16;
-  width: 100%;
-  padding: 10px;
-  text-align: center;
-  color: black;
-  z-index: 1;
-}
-
->>>>>>> Stashed changes
-footer {
-  height: 5vh;
-  bottom: 0;
-}
-
-footer h2 {
-  position: fixed;
-  left: 40%;
-}
-
-footer p {
-  position: fixed;
-  bottom: 20px;
-  color: orange;
 }
