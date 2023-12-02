@@ -15,7 +15,7 @@
   <header> LOGO </header>
   <div class="website-title">
     <h1 class="title1"> WELCOME TO </h1>
-    <h1 class="title2"> SANTA ROSA PUBLIC MARKET </h1>
+    <h1 class="title2"> SANTA ROSA PUBLIC MARKETs </h1>
   </div>
 <div>
   <img class="tech-line-tr" src="assets\\images\\sign-in\\tech-line-tr.png" alt="tech-line-tr">
