@@ -1,7 +1,11 @@
+/* MAIN BODY COMPOSITION */
+
 * {
   margin: 0%;
   padding: 0%;
   box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
 }
 
 header {
@@ -11,10 +15,11 @@ header {
   padding: 10px;
   text-align: center;
   color: black;
-  z-index: 3;
   height: 7vh;
   top: 0;
+  z-index: 3 !important;
 }
+
 footer {
   position: fixed;
   background-color: #850F16;
@@ -22,15 +27,15 @@ footer {
   padding: 10px;
   text-align: center;
   color: black;
-  z-index: 3;
   height: 5vh;
   bottom: 0;
+  z-index: 3;
 }
 
 body {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-family: 'Your Preferred Font', Verdana, Geneva, Tahoma, sans-serif;
+  font-family: 'Montserrat', sans-serif;
   padding: 0;
+  margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,16 +46,39 @@ body {
   overflow: hidden;
   height: 100vh;
   width: 100%;
+}
+
+
+.bagongpalengke-bg{
   background-image: url('assets\\images\\sign-in\\publicmarketbg.png');
 }
 
-header {
-  background-color: maroon; 
-  color: white; 
-  text-align: center; 
-  z-index: 3;
+.bagongpgalengke-v2{
+  background-image: url('assets\\images\\sign-in\\publicmarket-bg-v2.svg');
+
 }
 
+/* side bar */
+
+.container {
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  height: 100vh;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* side bar  */
+/* FLOATING IMAGES */
 .tech-line-tr{
   position: absolute;
   top: 0%;
@@ -58,44 +86,73 @@ header {
   z-index: 1;
   transform: rotate(180deg);
 }
+
 .tech-line-bl{
   position: absolute;
   bottom: -5%;
   left: -5%;
   z-index: 1;
 }
+
 .front-layer{
   position: absolute;
   top:0%;
   right: 0%;
   z-index: 2;
-  
 }
+
 .back-layer{
   position: absolute;
   top:0%;
   right: 0%;
   z-index: 2;
-  
 }
-.item-1{
+
+.front-layer-v2{
   position: absolute;
+  top:0%;
+  right: -10%;
+  z-index: 1;
+  transform: scaleX(-1) rotate(-14.5deg);
 }
 
+.back-layer-v2{
+  position: absolute;
+  top:0%;
+  right: -6%;
+  z-index: 1;
+  transform: scaleX(-1) rotate(-14.5deg);
+}
 
+.white-front{
+  position: absolute;
+  left: 0%;
+  bottom: 0%;
+  z-index: 2;
+}
+
+/* TITLES */
 .website-title {
   justify-content: center;
   text-align: center;
-  top: 30%;
-  position: absolute;
-  z-index: 3;
+  z-index: 4;
   width: 100%; /* Added to make sure it takes full width */
+  position: absolute;
+  transform: translate(-50%, -50%); /* Center horizontally and vertically */
+  left: 50%;
+  top: 38%;
+}
+
+.website-title-v2 {
+  z-index: 3;
+  height: 70%; /* Added to make sure it takes full height */
+  width: 95%; /* Added to make sure it takes full width */
 }
 
 .title1 {
   line-height: 0;
   flex: 1;
-  font-weight: lighter;
+  font-weight: 100;
   color: white;
 }
 
@@ -106,28 +163,11 @@ header {
   color: white;
 }
 
-
-.main-content {
-  flex: 1; /* Grow to fill available space, pushing .signin to the bottom */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: justify;
-  bottom: 20%;
-  color: white;
-  letter-spacing: 1px;
-  z-index: 3;
-}
-
-.website-title-v2{
-  margin-left: 2%;
-  margin-top: 7%;
-}
-
 .title3{ /* WELCOME TO */
-  line-height: 0;
+  line-height: 1;
   flex: 1;
-  font-weight: lighter;
+  font-size: 50px;
+  font-weight: 300;
   color: maroon;
   letter-spacing: 3px;
 }
@@ -136,9 +176,46 @@ header {
   
   line-height: 1;
   flex: 1;
-  font-weight: bolder;
+  font-size: 40px;
+  font-weight: 700;
   color:rgb(76, 74, 74);
   letter-spacing: 1px;
+}
+
+.main-content {
+  flex: 1; /* Grow to fill available space, pushing .signin to the bottom */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: justify;
+  top: 50%;
+  color: white;
+  letter-spacing: 1px;
+  z-index: 3;
+  position: absolute;
+  transform: translate(-50%, -50%); /* Center horizontally and vertically */
+  left: 50%;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid maroon;
+  border-radius: 5px;
+  color: #333;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.7);
+}
+
+.form-group{
+  background-color: none;
 }
 
 .logo-location{ /* location ng Logo */
@@ -160,6 +237,7 @@ header {
   left: 0;
   background-color: none;
   outline: none;
+  z-index: 3;
 }
 
 .forgot-password{
@@ -167,8 +245,8 @@ header {
   color: maroon;
   font-style: italic;
   font-weight: 100;
-  
 }
+
 .forgot-password:hover{
   background-color: none;
   font-style: italic;
@@ -194,26 +272,6 @@ header {
   margin-left: 55px;
 }
 
-.form-group input {
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-  border: 1px solid maroon;
-  border-radius: 5px;
-  color: #333;
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 5px rgba(52, 152, 219, 0.7);
-}
-.form-group{
-  background-color: none;
-}
-
 /* BUTTON STYLE*/
 .vendor-button,
 .admin-button
@@ -223,7 +281,6 @@ header {
 .treasury-button,
 .vendor-button,
 .admin-button{
-
   height: 35px;
   width: 140px;
   border: none;
@@ -252,7 +309,7 @@ header {
   height: 35px;
   width: 140px;
   border: none;
-  color: black;
+  color:white;
   background-color:transparent;
   font-weight: lighter;
   bottom: 25%;
@@ -260,6 +317,7 @@ header {
   margin-left: -60px;
   z-index: 3;
 }
+
 .back-button:hover{
   margin: auto;
   display: flex;
@@ -269,7 +327,7 @@ header {
   height: 35px;
   width: 140px;
   border: none;
-  color: white;
+  color: whitesmoke;
   background-color:transparent;
   font-weight: lighter;
   bottom: 25%;
@@ -312,6 +370,7 @@ header {
   margin-left: -60px;
   z-index: 3;
 }
+
 .admin-button:hover{
   margin: auto;
   display: flex;
@@ -324,8 +383,6 @@ header {
   z-index: 3;
 }
 
-
-
 .login-btn:hover,
 .button-style:hover,
 .signin-button:hover,
@@ -333,7 +390,6 @@ header {
 .treasury-button:hover,
 .vendor-button:hover,
 .admin-button:hover{
-
   border: none;
   color: rgb(245, 230, 203);
   background-color: maroon;
