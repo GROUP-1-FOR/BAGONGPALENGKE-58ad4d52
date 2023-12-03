@@ -3,12 +3,11 @@ require("config.php");
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $admin_id = $_SESSION["id"];
     $admin_userid = $_SESSION["userid"];
+    $incorrect_otp_message = "";
 
     if (isset($_POST["admin_otp"])) {
         $entered_otp = htmlspecialchars($_POST["admin_otp"]);
         $max_trials = 3;
-        $incorrect_otp_message = "";
-
 
         // Retrieve the stored OTP and trials from the database
         $select_query = "SELECT admin_otp, admin_otp_trials FROM admin_sign_in WHERE admin_id = $admin_id";
@@ -38,14 +37,17 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 mysqli_query($connect, $update_trials_query);
 
                 $incorrect_otp_message = "Wrong OTP!";
-                echo $incorrect_otp_message;
+
 
                 // Check if trials exceed the limit
                 if ($otp_trials >= $max_trials) {
                     // Redirect the user to the login page
                     $reset_trials_query = "UPDATE admin_sign_in SET admin_otp_trials = 0 WHERE admin_id = $admin_id";
                     mysqli_query($connect, $reset_trials_query);
-                    echo "<script>window.location.href='admin_login.php';</script>";
+                    echo '<script>';
+                    echo 'alert("Reached Maximum OTP Trials!");';
+                    echo 'window.location.href = "admin_login.php";';
+                    echo '</script>';
                     exit();
                 }
             }
@@ -94,8 +96,13 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <h2>OTP Verification</h2>
         <form action="" method="post">
             <label for="otp">Enter OTP:</label>
-            <input type="text" pattern="[0-9]{6}" maxlength="6" id="otp" name="admin_otp" title="Please enter six numbers" placeholder="123456" required>
+            <input type="text" pattern="[0-9]{6}" maxlength="6" id="otp" name="admin_otp" title="Please enter only numbers" placeholder="123456" required>
             <button type="submit">Verify OTP</button>
+            <span style="color: red">
+                <?php
+                echo $incorrect_otp_message;
+                ?>
+            </span>
         </form>
 
         <div>
