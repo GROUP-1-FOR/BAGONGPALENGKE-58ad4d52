@@ -29,7 +29,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         return $stmt->fetchColumn() == 0;
     }
 
-    // Create 
+    // Create  Vendor User ID
     try {
         $pdo = new PDO("mysql:host=localhost;dbname=bagong_palengke_db", "root", "");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -58,17 +58,50 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <h2>Vendor Information</h2>
 
             <label for="Vendor Name">Vendor Name</label>
-            <input type="text" name="vendor_name" required> <br />
+            <input type="text" name="vendor_name" required>
+            <!-- Display an error message if it exists in the session -->
+            <span style="color: red;">
+                <?php
+                if (isset($_SESSION['vendor_name_error'])) {
+                    echo $_SESSION['vendor_name_error'];
+                    // Unset the session variable after displaying the error
+                    unset($_SESSION['vendor_name_error']);
+                }
+                ?>
+            </span>
 
+            <br />
             <label for="Stall Number">Stall No:</label>
             <input type="number" name="vendor_stall_number" required><br />
 
             <label for="Mobile Number">Mobile Number</label>
-            <input type="tel" name="vendor_mobile_number" maxlength="11" placeholder="09XXXXXXXXX" required><br />
+            <input type="tel" name="vendor_mobile_number" maxlength="11" placeholder="09XXXXXXXXX" required>
+            <!-- Display an error message if it exists in the session -->
+            <span style="color: red;">
+                <?php
+                if (isset($_SESSION['vendor_mobile_number_error'])) {
+                    echo $_SESSION['vendor_mobile_number_error'];
+                    // Unset the session variable after displaying the error
+                    unset($_SESSION['vendor_mobile_number_error']);
+                }
+                ?>
+            </span>
 
+            <br />
             <label for="Email">Email:</label>
-            <input type="email" name="vendor_email" required><br />
+            <input type="email" name="vendor_email" required>
+            <!-- Display an error message if it exists in the session -->
+            <span style="color: red;">
+                <?php
+                if (isset($_SESSION['vendor_email_error'])) {
+                    echo $_SESSION['vendor_email_error'];
+                    // Unset the session variable after displaying the error
+                    unset($_SESSION['vendor_email_error']);
+                }
+                ?>
+            </span>
 
+            <br />
             <label for="Product Type">Products:</label>
             <select name="vendor_product" required>
                 <option value="" disabled selected>Select Product Type</option>
