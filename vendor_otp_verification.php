@@ -6,7 +6,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $userid = $_SESSION["userid"];
     $incorrect_otp_message = "";
 
-
     if (isset($_POST["vendor_otp"])) {
         $entered_otp = htmlspecialchars($_POST["vendor_otp"]);
         $max_trials = 3;
@@ -61,9 +60,21 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["vendor_resend_otp"])) {
         include("vendor_otp_generation.php");
+        $reset_trials_query = "UPDATE vendor_sign_in SET vendor_otp_trials = 0 WHERE vendor_id = $id";
+        mysqli_query($connect, $reset_trials_query);
         echo '<script>';
         echo 'alert("OTP Resent!");';
+        echo 'window.location.href = "vendor_otp_email_simulation.php";';
         echo '</script>';
+    }
+
+    if (isset($_GET['cancel_button'])) {
+        // Execute the SQL query
+        $reset_trials_query = "UPDATE vendor_sign_in SET vendor_otp_trials = 0 WHERE vendor_id = $id";
+        mysqli_query($connect, $reset_trials_query);
+
+        header("Location: vendor_login.php");
+        exit;
     }
 
 
@@ -122,7 +133,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         </div>
 
 
-        <a href=vendor_logout.php> CANCEL </a>
+        <a href="?cancel_button=1"> CANCEL </a>
 
         <footer>
 

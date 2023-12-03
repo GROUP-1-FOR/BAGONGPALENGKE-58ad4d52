@@ -34,7 +34,7 @@ if (isset($_POST["vendor_login_submit"])) {
                 include("vendor_otp_generation.php");
                 echo '<script>';
                 echo 'alert("OTP Generated!");';
-                echo 'window.location.href = "vendor_otp_verification.php";';
+                echo 'window.location.href = "vendor_otp_email_simulation.php";';
                 echo '</script>';
             } else {
 

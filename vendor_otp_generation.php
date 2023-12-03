@@ -20,6 +20,8 @@ function generateAndSaveOTP($id, $connect)
 
         // Execute the statement
         mysqli_stmt_execute($stmt);
+        $vendor_otp_message = $vendor_otp;
+        $_SESSION['vendor_otp_message'] = $vendor_otp_message;
 
         // Check for success or failure
         if (mysqli_stmt_affected_rows($stmt) == 0) {

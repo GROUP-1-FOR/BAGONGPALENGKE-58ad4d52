@@ -60,10 +60,21 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["admin_resend_otp"])) {
         include("admin_otp_generation.php");
+        $reset_trials_query = "UPDATE admin_sign_in SET admin_otp_trials = 0 WHERE admin_id = $admin_id";
+        mysqli_query($connect, $reset_trials_query);
         echo '<script>';
         echo 'alert("OTP Resent!");';
         echo 'window.location.href = "admin_otp_email_simulation.php";';
         echo '</script>';
+    }
+
+    if (isset($_GET['cancel_button'])) {
+        // Execute the SQL query
+        $reset_trials_query = "UPDATE admin_sign_in SET admin_otp_trials = 0 WHERE admin_id = $admin_id";
+        mysqli_query($connect, $reset_trials_query);
+
+        header("Location: admin_login.php");
+        exit;
     }
 ?>
     <!DOCTYPE html>
@@ -118,7 +129,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         </div>
 
-        <a href=admin_logout.php> CANCEL </a>
+        <a href="?cancel_button=1"> CANCEL </a>
 
         <footer>
 
