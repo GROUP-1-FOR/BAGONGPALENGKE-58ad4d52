@@ -20,7 +20,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <?php
             if (isset($_SESSION['admin_otp_message'])) {
                 echo $_SESSION['admin_otp_message'];
-                unset($_SESSION['admin_otp_message']);
             }
             ?>
         </h1>

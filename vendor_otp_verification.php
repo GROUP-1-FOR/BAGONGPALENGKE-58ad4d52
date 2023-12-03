@@ -59,6 +59,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["vendor_resend_otp"])) {
+        unset($_SESSION['vendor_otp_message']);
         include("vendor_otp_generation.php");
         $reset_trials_query = "UPDATE vendor_sign_in SET vendor_otp_trials = 0 WHERE vendor_id = $id";
         mysqli_query($connect, $reset_trials_query);
@@ -70,6 +71,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     if (isset($_GET['cancel_button'])) {
         // Execute the SQL query
+        unset($_SESSION['vendor_otp_message']);
         $reset_trials_query = "UPDATE vendor_sign_in SET vendor_otp_trials = 0 WHERE vendor_id = $id";
         mysqli_query($connect, $reset_trials_query);
 

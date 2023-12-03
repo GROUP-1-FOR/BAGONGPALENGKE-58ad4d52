@@ -59,6 +59,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["admin_resend_otp"])) {
+        unset($_SESSION['admin_otp_message']);
         include("admin_otp_generation.php");
         $reset_trials_query = "UPDATE admin_sign_in SET admin_otp_trials = 0 WHERE admin_id = $admin_id";
         mysqli_query($connect, $reset_trials_query);
@@ -70,6 +71,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     if (isset($_GET['cancel_button'])) {
         // Execute the SQL query
+        unset($_SESSION['admin_otp_message']);
         $reset_trials_query = "UPDATE admin_sign_in SET admin_otp_trials = 0 WHERE admin_id = $admin_id";
         mysqli_query($connect, $reset_trials_query);
 
