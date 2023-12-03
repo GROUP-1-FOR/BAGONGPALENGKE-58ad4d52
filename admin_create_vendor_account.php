@@ -104,34 +104,49 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 var password = document.getElementsByName("vendor_password")[0].value;
                 var confirmPassword = document.getElementsByName("vendor_confirm_password")[0].value;
                 var messageElement = document.getElementById("passwordMatchMessage");
+                var confirmPasswordInput = document.getElementsByName("vendor_confirm_password")[0];
 
-                // Check if both passwords are non-empty
-                if (password.length > 0 && confirmPassword.length > 0) {
-                    // Check if passwords match
-                    if (password === confirmPassword) {
-                        // Check if passwords have at least 14 characters
-                        if (password.length >= 14 && confirmPassword.length >= 14) {
-                            messageElement.innerHTML = "Passwords match and meet the minimum length requirement.";
-                            messageElement.style.color = "green";
+                // Enable or disable Confirm Password based on whether Password is empty
+                confirmPasswordInput.disabled = password.length === 0;
+
+                // Check if the "Password" field is not empty
+                if (password.length > 0) {
+                    // Check if the "Confirm Password" field is also not empty
+                    if (confirmPassword.length > 0) {
+                        // Check if passwords match
+                        if (password === confirmPassword) {
+                            // Check if passwords have at least 8 characters
+                            if (password.length >= 8 && confirmPassword.length >= 8) {
+                                messageElement.innerHTML = "Passwords match and meet the minimum length requirement.";
+                                messageElement.style.color = "green";
+                            } else {
+                                messageElement.innerHTML = "Passwords match but do not meet the minimum length requirement (8 characters).";
+                                messageElement.style.color = "red";
+                            }
                         } else {
-                            messageElement.innerHTML = "Passwords match but do not meet the minimum length requirement (14 characters).";
+                            messageElement.innerHTML = "Passwords do not match.";
                             messageElement.style.color = "red";
                         }
                     } else {
-                        messageElement.innerHTML = "Passwords do not match.";
-                        messageElement.style.color = "red";
+                        // "Confirm Password" field is empty, clear the message
+                        messageElement.innerHTML = "";
                     }
                 } else {
-                    messageElement.innerHTML = ""; // Clear the message if passwords are empty
+                    // "Password" field is empty, clear the message and "Confirm Password" field
+                    messageElement.innerHTML = "";
+                    confirmPasswordInput.value = "";
                 }
 
-                return password === confirmPassword && password.length >= 14 && confirmPassword.length >= 14;
+                return password === confirmPassword && password.length >= 8 && confirmPassword.length >= 8;
             }
+
 
 
 
             function updateSubmitButton() {
                 var submitButton = document.querySelector('button[type="submit"]');
+
+
                 var formIsValid = validateVendorName() && validateVendorMobileNumber() && validateVendorEmail() && checkPasswordMatch();
                 submitButton.disabled = !formIsValid;
             }
@@ -211,7 +226,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <input type="text" name="vendor_userid" value="<?php echo $new_vendor_userid = generateUserID($pdo); ?>" readonly><br />
 
             <label>Password</label>
-            <input type="password" name="vendor_password" placeholder="14 characters above" oninput="checkPasswordMatch(); updateSubmitButton()"><br />
+            <input type="password" name="vendor_password" placeholder="8 characters above" oninput="checkPasswordMatch(); updateSubmitButton()"><br />
 
             <label>Confirm Password</label>
             <input type="password" name="vendor_confirm_password" required oninput="checkPasswordMatch(); updateSubmitButton()">
