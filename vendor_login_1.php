@@ -4,8 +4,6 @@ require("config.php");
 if (isset($_POST["vendor_login_submit"])) {
 
 
-
-
     //server side validation ng submit form if empty
     if (empty($_POST['vendor_userid']) || empty($_POST['vendor_password'])) {
         echo '<script>';

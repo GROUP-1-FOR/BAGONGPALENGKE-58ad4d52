@@ -46,21 +46,112 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     <head>
         <title>Create Vendor Account</title>
+        <script>
+            function validateVendorName() {
+                var vendor_name = document.getElementById("vendor_name").value;
+                var vendor_name_error_span = document.getElementById("vendor_name_error_span");
+
+                // Check if the input contains any numbers
+                if (/\d/.test(vendor_name)) {
+                    vendor_name_error_span.textContent = "Please enter the vendor name without numbers.";
+                    return false; // Prevent form submission
+                } else {
+                    vendor_name_error_span.textContent = "";
+                }
+
+                // If the input is valid, you can proceed with form submission
+                return true;
+            }
+
+            function validateVendorMobileNumber() {
+                var vendor_mobile_number = document.getElementById("vendor_mobile_number").value;
+                var vendor_mobile_number_error_span = document.getElementById("vendor_mobile_number_error_span");
+
+                // Check if the input contains any non-numeric characters
+                if (!/^\d{11}$/.test(vendor_mobile_number)) {
+                    // Show error message
+                    vendor_mobile_number_error_span.textContent = "Please enter a valid mobile number.";
+                    return false; // Prevent form submission
+                } else {
+                    // Clear error message
+                    vendor_mobile_number_error_span.textContent = "";
+                }
+
+                // If the input is valid, you can proceed with form submission
+                return true;
+            }
+
+            function validateVendorEmail() {
+                var vendor_email = document.getElementById("vendor_email").value;
+                var vendor_email_error_span = document.getElementById("vendor_email_error_span");
+
+                // Use the built-in email validation
+                if (!document.getElementById("vendor_email").checkValidity()) {
+                    // Show error message
+                    vendor_email_error_span.textContent = "Please enter a valid email address.";
+                    return false; // Prevent form submission
+                } else {
+                    // Clear error message
+                    vendor_email_error_span.textContent = "";
+                }
+
+                // If the input is valid, you can proceed with form submission
+                return true;
+            }
+
+            function checkPasswordMatch() {
+                var password = document.getElementsByName("vendor_password")[0].value;
+                var confirmPassword = document.getElementsByName("vendor_confirm_password")[0].value;
+                var messageElement = document.getElementById("passwordMatchMessage");
+
+                // Check if both passwords are non-empty
+                if (password.length > 0 && confirmPassword.length > 0) {
+                    // Check if passwords match
+                    if (password === confirmPassword) {
+                        // Check if passwords have at least 14 characters
+                        if (password.length >= 14 && confirmPassword.length >= 14) {
+                            messageElement.innerHTML = "Passwords match and meet the minimum length requirement.";
+                            messageElement.style.color = "green";
+                        } else {
+                            messageElement.innerHTML = "Passwords match but do not meet the minimum length requirement (14 characters).";
+                            messageElement.style.color = "red";
+                        }
+                    } else {
+                        messageElement.innerHTML = "Passwords do not match.";
+                        messageElement.style.color = "red";
+                    }
+                } else {
+                    messageElement.innerHTML = ""; // Clear the message if passwords are empty
+                }
+
+                return password === confirmPassword && password.length >= 14 && confirmPassword.length >= 14;
+            }
+
+
+
+            function updateSubmitButton() {
+                var submitButton = document.querySelector('button[type="submit"]');
+                var formIsValid = validateVendorName() && validateVendorMobileNumber() && validateVendorEmail() && checkPasswordMatch();
+                submitButton.disabled = !formIsValid;
+            }
+        </script>
+
     </head>
 
     <body>
 
         <h1>Create Vendor Account, <?php echo $admin_userid  ?>! </h1>
 
-        <form action="admin_create_vendor_account_1.php" method="post">
+        <form action="admin_create_vendor_account_1.php" method="post" onsubmit="return validateForm()">
 
 
             <h2>Vendor Information</h2>
 
             <label for="Vendor Name">Vendor Name</label>
-            <input type="text" name="vendor_name" required>
+            <input type="text" name="vendor_name" id="vendor_name" required oninput="validateVendorName(); updateSubmitButton()">
             <!-- Display an error message if it exists in the session -->
-            <span style="color: red;">
+            <span style="color: red;" id="vendor_name_error_span">
+
                 <?php
                 if (isset($_SESSION['vendor_name_error'])) {
                     echo $_SESSION['vendor_name_error'];
@@ -75,9 +166,9 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <input type="number" name="vendor_stall_number" required><br />
 
             <label for="Mobile Number">Mobile Number</label>
-            <input type="tel" name="vendor_mobile_number" maxlength="11" placeholder="09XXXXXXXXX" required>
+            <input type="tel" name="vendor_mobile_number" id="vendor_mobile_number" maxlength="11" placeholder="09XXXXXXXXX" required oninput="validateVendorMobileNumber(); updateSubmitButton()">
             <!-- Display an error message if it exists in the session -->
-            <span style="color: red;">
+            <span style="color: red;" id="vendor_mobile_number_error_span">
                 <?php
                 if (isset($_SESSION['vendor_mobile_number_error'])) {
                     echo $_SESSION['vendor_mobile_number_error'];
@@ -89,9 +180,9 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
             <br />
             <label for="Email">Email:</label>
-            <input type="email" name="vendor_email" required>
+            <input type="email" name="vendor_email" id="vendor_email" required oninput="validateVendorEmail(); updateSubmitButton()">
             <!-- Display an error message if it exists in the session -->
-            <span style="color: red;">
+            <span style="color: red;" id="vendor_email_error_span">
                 <?php
                 if (isset($_SESSION['vendor_email_error'])) {
                     echo $_SESSION['vendor_email_error'];
@@ -119,35 +210,22 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <input type="text" name="vendor_userid" value="<?php echo $new_vendor_userid = generateUserID($pdo); ?>" readonly><br />
 
             <label>Password</label>
-            <input type="password" name="vendor_password" required><br />
+            <input type="password" name="vendor_password" placeholder="14 characters above" oninput="checkPasswordMatch(); updateSubmitButton()"><br />
 
             <label>Confirm Password</label>
-            <input type="password" name="vendor_confirm_password" required oninput="checkPasswordMatch()">
+            <input type="password" name="vendor_confirm_password" required oninput="checkPasswordMatch(); updateSubmitButton()">
             <span id="passwordMatchMessage"></span><br />
 
-            <script>
-                function checkPasswordMatch() {
-                    var password = document.getElementsByName("vendor_password")[0].value;
-                    var confirmPassword = document.getElementsByName("vendor_confirm_password")[0].value;
-                    var messageElement = document.getElementById("passwordMatchMessage");
-                    var submitButton = document.querySelector('button[type="submit"]');
 
-                    if (password === confirmPassword) {
-                        messageElement.innerHTML = "Passwords match";
-                        messageElement.style.color = "green";
-                        submitButton.disabled = false; // Enable the button
-                    } else {
-                        messageElement.innerHTML = "Passwords do not match";
-                        messageElement.style.color = "red";
-                        submitButton.disabled = true; // Disable the button
-                    }
-                }
-            </script>
 
             <button type="submit" disabled>Submit</button>
-
-
         </form>
+
+        <script>
+            function validateForm() {
+                return validateVendorName() && validateVendorMobileNumber() && validateVendorEmail() && checkPasswordMatch();
+            }
+        </script>
 
 
 
