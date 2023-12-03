@@ -5,6 +5,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $admin_userid = $_SESSION["userid"];
     $incorrect_otp_message = "";
 
+
     if (isset($_POST["admin_otp"])) {
         $entered_otp = htmlspecialchars($_POST["admin_otp"]);
         $max_trials = 3;
