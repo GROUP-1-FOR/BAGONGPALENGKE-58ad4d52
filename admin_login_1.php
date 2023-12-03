@@ -1,5 +1,6 @@
 <?php
 require("config.php");
+$wrong_credentials = "";
 
 if (isset($_POST["admin_login_submit"])) {
 
@@ -34,19 +35,17 @@ if (isset($_POST["admin_login_submit"])) {
                 include("admin_otp_generation.php");
                 echo '<script>';
                 echo 'alert("OTP Generated!");';
-                echo 'window.location.href = "admin_otp_verification.php";';
+                echo 'window.location.href = "admin_otp_email_simulation.php";';
                 echo '</script>';
             } else {
-                echo '<script>';
-                echo 'alert("Wrong Credentials");';
-                echo 'window.location.href = "admin_login.php";';
-                echo '</script>';
+                $wrong_credentials = "Wrong Credentials!";
+                $_SESSION['wrong_credentials'] = $wrong_credentials;
+                header("Location: admin_login.php");
             }
         } else {
-            echo '<script>';
-            echo 'alert("Wrong Credentials!");';
-            echo 'window.location.href = "admin_login.php";';
-            echo '</script>';
+            $wrong_credentials = "Wrong Credentials!";
+            $_SESSION['wrong_credentials'] = $wrong_credentials;
+            header("Location: admin_login.php");
         }
     }
 }

@@ -1,15 +1,4 @@
 <?php
-/*
-$random_numbers = [];
-for ($i = 0; $i < 6; $i++) {
-    $random_numbers[] = rand(0, 9);
-}
-
-$vendor_otp = implode('', $random_numbers);
-$otp_query = "UPDATE vendor_sign_in SET vendor_otp = $vendor_otp WHERE vendor_id = $id";
-$stmt = mysqli_prepare($connect, $otp_query);
-*/
-
 
 function generateAndSaveOTP($id, $connect)
 {
@@ -31,6 +20,8 @@ function generateAndSaveOTP($id, $connect)
 
         // Execute the statement
         mysqli_stmt_execute($stmt);
+        $vendor_otp_message = $vendor_otp;
+        $_SESSION['vendor_otp_message'] = $vendor_otp_message;
 
         // Check for success or failure
         if (mysqli_stmt_affected_rows($stmt) == 0) {

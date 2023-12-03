@@ -4,8 +4,6 @@ require("config.php");
 if (isset($_POST["vendor_login_submit"])) {
 
 
-
-
     //server side validation ng submit form if empty
     if (empty($_POST['vendor_userid']) || empty($_POST['vendor_password'])) {
         echo '<script>';
@@ -36,20 +34,17 @@ if (isset($_POST["vendor_login_submit"])) {
                 include("vendor_otp_generation.php");
                 echo '<script>';
                 echo 'alert("OTP Generated!");';
-                echo 'window.location.href = "vendor_otp_verification.php";';
+                echo 'window.location.href = "vendor_otp_email_simulation.php";';
                 echo '</script>';
             } else {
-
-                echo '<script>';
-                echo 'alert("Wrong Credentials");';
-                echo 'window.location.href = "vendor_login.php";';
-                echo '</script>';
+                $wrong_credentials = "Wrong Credentials!";
+                $_SESSION['wrong_credentials'] = $wrong_credentials;
+                header("Location: vendor_login.php");
             }
         } else {
-            echo '<script>';
-            echo 'alert("Wrong Credentials!");';
-            echo 'window.location.href = "vendor_login.php";';
-            echo '</script>';
+            $wrong_credentials = "Wrong Credentials!";
+            $_SESSION['wrong_credentials'] = $wrong_credentials;
+            header("Location: vendor_login.php");
         }
     }
 }

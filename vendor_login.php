@@ -42,8 +42,20 @@ require("config.php");
             <input type="text" name="vendor_userid" id="vendor_userid" placeholder="VSR-00000" value="VSR-" maxlength="9" required value=""><br />
             <label for="Password"> Password: </label>
             <input type="password" name="vendor_password" id="vendor_password" required value=""><br />
+            <span style="color: red;">
+                <?php
+                if (isset($_SESSION['wrong_credentials'])) {
+                    echo $_SESSION['wrong_credentials'];
+                    // Unset the session variable after displaying the error
+                    unset($_SESSION['wrong_credentials']);
+                }
+                ?>
+            </span>
             <button class="signin-button" type="submit" name="vendor_login_submit">Enter</button>
         </form>
+
+
+
         <a href="vendor_forgot_password.php"> Forgot Password?</a> <br />
         <a href="vendor_admin_select.php"> Back</a>
 
