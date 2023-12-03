@@ -61,66 +61,70 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         echo 'alert("OTP Resent!");';
         echo '</script>';
     }
+
 ?>
-    <!DOCTYPE html>
-    <html lang="en">
+<!DOCTYPE html>
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Admin OTP Verification</title>
+<html lang="en">
 
-    </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGN IN</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
 
-    <body>
+<body class="bagongpgalengke-v2" >
+  <header> LOGO </header>
 
-        <header class=>
-            <h2> LOGO </h2>
+  <div class="website-title-v2">
+    <h1 class="title3"> WELCOME TO </h1>
+    <h1 class="title4"> SANTA ROSA<br>PUBLIC MARKET</h1>
+  </div>
 
-            <h1 class="title1"> WELCOME TO </h1>
-            <h1 class="title2"> SANTA ROSA PUBLIC MARKET </h1>
-            <!--<div class="nav">
-      <a href="">HOME</a>
-      <a href="">BLOG</a>
-      <a href="">About</a>
-      <a href="">FAQs</a>
-      <a href="">Info</a>
-      <a href="">Tricks</a>
-      <a href="">LOGIn</a>
+  <div>
+    <img class= "white-front" src="assets\images\sign-in\white-front.svg" alt="white-front">
+    <img class= "front-layer-v2" src="assets\images\sign-in\front.svg" alt="front">
+    <img class= "back-layer-v2" src="assets\images\sign-in\back.svg" alt="back">
+  </div>
 
-    </div> -->
-        </header>
+<div class="otp-verification">
 
-        <h2>OTP Verification</h2>
-        <form action="" method="post">
-            <label for="otp">Enter OTP:</label>
-            <input type="text" pattern="[0-9]{6}" maxlength="6" id="otp" name="admin_otp" title="Please enter six numbers" placeholder="123456" required>
-            <button type="submit">Verify OTP</button>
-        </form>
+<div class="otp-heading">
+    <h2>OTP Verification</h2>
+</div>
+<div>
+<form action="" method="post">
+    <input class="otp-box" type="text" pattern="[0-9]{6}" maxlength="6" id="otp" name="admin_otp" title="Please enter six numbers" placeholder="Enter OTP" required>
+    <button class ="submit-button" type="submit">Verify OTP</button>
+</form>
+<div>
+    <form action="" method="post">
+    <button class="resend-button" type="form" id="resendOTPButton" name="admin_resend_otp">Resend OTP</button>
+    <div id="resendOTPMessage"></div>
+    </form>
+</div>
+</div>
+    <a href=admin_logout.php> CANCEL </a>
+</div>
 
-        <div>
-            <br />
-
-            <form action="" method="post">
-                <button type="form" id="resendOTPButton" name="admin_resend_otp">Resend OTP</button>
-                <div id="resendOTPMessage"></div>
-            </form>
-
-
-        </div>
-
-        <a href=admin_logout.php> CANCEL </a>
-
-        <footer>
-
-        </footer>
-
-    </body>
-
-    </html>
-
+  <footer> </footer>
+  
+</body>
+</html>
 
 <?php
 } else {
     header("location:admin_login.php");
 }
+
+
+
+
+
+
+
+
