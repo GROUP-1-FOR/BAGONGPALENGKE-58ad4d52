@@ -226,7 +226,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <input type="text" name="vendor_userid" value="<?php echo $new_vendor_userid = generateUserID($pdo); ?>" readonly><br />
 
             <label>Password</label>
-            <input type="password" name="vendor_password" placeholder="8 characters above" oninput="checkPasswordMatch(); updateSubmitButton()"><br />
+            <input type="password" name="vendor_password" placeholder="8 characters and above" oninput="checkPasswordMatch(); updateSubmitButton()"><br />
 
             <label>Confirm Password</label>
             <input type="password" name="vendor_confirm_password" required oninput="checkPasswordMatch(); updateSubmitButton()">
