@@ -51,9 +51,9 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 var vendor_name = document.getElementById("vendor_name").value;
                 var vendor_name_error_span = document.getElementById("vendor_name_error_span");
 
-                // Check if the input contains any numbers
-                if (/\d/.test(vendor_name)) {
-                    vendor_name_error_span.textContent = "Please enter the vendor name without numbers.";
+                // Check if the input contains any numbers or symbols
+                if (vendor_name.length > 0 && /[0-9!@#$%^&*(),.?":{}|<>]/.test(vendor_name)) {
+                    vendor_name_error_span.textContent = "Please enter the vendor name without numbers or symbols.";
                     return false; // Prevent form submission
                 } else {
                     vendor_name_error_span.textContent = "";
@@ -63,12 +63,13 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 return true;
             }
 
+
             function validateVendorMobileNumber() {
                 var vendor_mobile_number = document.getElementById("vendor_mobile_number").value;
                 var vendor_mobile_number_error_span = document.getElementById("vendor_mobile_number_error_span");
 
                 // Check if the input contains any non-numeric characters
-                if (!/^\d{11}$/.test(vendor_mobile_number)) {
+                if (vendor_mobile_number.length > 0 && !/^09\d{9}$/.test(vendor_mobile_number)) {
                     // Show error message
                     vendor_mobile_number_error_span.textContent = "Please enter a valid mobile number.";
                     return false; // Prevent form submission
@@ -86,7 +87,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 var vendor_email_error_span = document.getElementById("vendor_email_error_span");
 
                 // Use the built-in email validation
-                if (!document.getElementById("vendor_email").checkValidity()) {
+                if (vendor_email.length > 0 && !document.getElementById("vendor_email").checkValidity()) {
                     // Show error message
                     vendor_email_error_span.textContent = "Please enter a valid email address.";
                     return false; // Prevent form submission
@@ -166,7 +167,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <input type="number" name="vendor_stall_number" required><br />
 
             <label for="Mobile Number">Mobile Number</label>
-            <input type="tel" name="vendor_mobile_number" id="vendor_mobile_number" maxlength="11" placeholder="09XXXXXXXXX" required oninput="validateVendorMobileNumber(); updateSubmitButton()">
+            <input type="tel" name="vendor_mobile_number" id="vendor_mobile_number" maxlength="11" placeholder="09XXXXXXXXX" oninput="validateVendorMobileNumber(); updateSubmitButton()">
             <!-- Display an error message if it exists in the session -->
             <span style="color: red;" id="vendor_mobile_number_error_span">
                 <?php
