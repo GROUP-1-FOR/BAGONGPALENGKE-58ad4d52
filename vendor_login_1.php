@@ -37,17 +37,14 @@ if (isset($_POST["vendor_login_submit"])) {
                 echo 'window.location.href = "vendor_otp_email_simulation.php";';
                 echo '</script>';
             } else {
-
-                echo '<script>';
-                echo 'alert("Wrong Credentials");';
-                echo 'window.location.href = "vendor_login.php";';
-                echo '</script>';
+                $wrong_credentials = "Wrong Credentials!";
+                $_SESSION['wrong_credentials'] = $wrong_credentials;
+                header("Location: vendor_login.php");
             }
         } else {
-            echo '<script>';
-            echo 'alert("Wrong Credentials!");';
-            echo 'window.location.href = "vendor_login.php";';
-            echo '</script>';
+            $wrong_credentials = "Wrong Credentials!";
+            $_SESSION['wrong_credentials'] = $wrong_credentials;
+            header("Location: vendor_login.php");
         }
     }
 }
