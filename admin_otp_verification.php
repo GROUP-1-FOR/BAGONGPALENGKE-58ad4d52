@@ -62,6 +62,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         include("admin_otp_generation.php");
         echo '<script>';
         echo 'alert("OTP Resent!");';
+        echo 'window.location.href = "admin_otp_email_simulation.php";';
         echo '</script>';
     }
 ?>

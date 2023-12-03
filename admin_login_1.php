@@ -34,7 +34,7 @@ if (isset($_POST["admin_login_submit"])) {
                 include("admin_otp_generation.php");
                 echo '<script>';
                 echo 'alert("OTP Generated!");';
-                echo 'window.location.href = "admin_otp_verification.php";';
+                echo 'window.location.href = "admin_otp_email_simulation.php";';
                 echo '</script>';
             } else {
                 echo '<script>';

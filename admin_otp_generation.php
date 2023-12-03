@@ -21,6 +21,9 @@ function generateAndSaveOTP($admin_id, $connect)
         // Execute the statement
         mysqli_stmt_execute($stmt);
 
+        $admin_otp_message = $admin_otp;
+        $_SESSION['admin_otp_message'] = $admin_otp_message;
+
 
         // Check for success or failure
         if (mysqli_stmt_affected_rows($stmt) == 0) {
