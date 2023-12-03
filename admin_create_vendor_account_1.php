@@ -1,15 +1,39 @@
 <?php
 require("config.php");
+//Error message for the first part of the form
+$vendor_name_error  = $vendor_mobile_number_error = $vendor_email_error = "";
+//Error message for the second part
+$vendor_userid_error = $vendor_password_error = $vendor_confirm_password_error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Step 1 variables
+    // Part 1 variables
     $vendor_name = isset($_POST["vendor_name"]) ? htmlspecialchars($_POST["vendor_name"]) : '';
-    $vendor_stall_number = isset($_POST["vendor_stall_number"]) ? htmlspecialchars($_POST["vendor_stall_number"]) : '';
-    $vendor_mobile_number = isset($_POST["vendor_mobile_number"]) ? htmlspecialchars($_POST["vendor_mobile_number"]) : '';
+    $vendor_stall_number = isset($_POST["vendor_stall_number"]) ? trim(htmlspecialchars($_POST["vendor_stall_number"])) : '';
+    $vendor_mobile_number = isset($_POST["vendor_mobile_number"]) ? trim(htmlspecialchars($_POST["vendor_mobile_number"])) : '';
     $vendor_email = isset($_POST["vendor_email"]) ? htmlspecialchars($_POST["vendor_email"]) : '';
     $vendor_product_type = isset($_POST["vendor_product"]) ? htmlspecialchars($_POST["vendor_product"]) : '';
 
-    // Step 2 variables
+    if (!preg_match("/^[a-zA-Z-' ]*$/", $vendor_name)) {
+        $vendor_name_error = "Only letters are allowed";
+        $_SESSION['vendor_name_error'] = $vendor_name_error;
+    }
+
+    if (!is_numeric($vendor_mobile_number)) {
+        $vendor_mobile_number_error = "Only numbers are allowed";
+        $_SESSION['vendor_mobile_number_error'] = $vendor_mobile_number_error;
+    }
+    if (!filter_var($vendor_email, FILTER_VALIDATE_EMAIL)) {
+        $vendor_email_error = "Wrong email format";
+        $_SESSION['vendor_email_error'] = $vendor_email_error;
+    }
+
+    if (isset($_SESSION['vendor_name_error']) || isset($_SESSION['vendor_mobile_number_error']) || isset($_SESSION['vendor_email_error'])) {
+        header("Location: admin_create_vendor_account.php");
+        exit();
+    }
+
+
+    // Part2 variables
     $vendor_userid = isset($_POST["vendor_userid"]) ? htmlspecialchars($_POST["vendor_userid"]) : '';
     $vendor_password = isset($_POST["vendor_password"]) ? htmlspecialchars($_POST["vendor_password"]) : '';
     $vendor_confirm_password = isset($_POST["vendor_confirm_password"]) ? htmlspecialchars($_POST["vendor_confirm_password"]) : '';
