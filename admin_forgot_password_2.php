@@ -48,9 +48,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <title>Forgot Password</title>
 
-
-
-
     <script>
         function checkPasswordMatch() {
             var password = document.getElementsByName("admin_new_password")[0].value;
