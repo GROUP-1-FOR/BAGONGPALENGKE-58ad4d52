@@ -52,28 +52,31 @@ if ($resultCheckPaymentConfirmation->num_rows > 0) {
 
     // Process payment if the "Pay" button is clicked
     if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
+       
         // Insert payment data into ven_payments table
         $paymentDate = date('Y-m-d H:i:s');
-        $sqlInsertPayment = "INSERT INTO ven_payments (id, name, balance, archived, confirmed, payment_date) VALUES (?, ?, ?, 0, 0, ?)";
+        $sqlInsertPayment = "INSERT INTO ven_payments (id, name, transaction_id, balance, archived, confirmed, payment_date) VALUES (?, ?, ?, ?, 0, 0, ?)";
         $stmtInsertPayment = $connect->prepare($sqlInsertPayment);
-        $stmtInsertPayment->bind_param('ssds', $userid, $name, $balance, $paymentDate); // Use 's' for VARCHAR and 'd' for DOUBLE
+        $stmtInsertPayment->bind_param('ssdss', $userid, $name, $transactionId, $balance, $paymentDate); // Use 's' for VARCHAR and 'd' for DOUBLE
         $stmtInsertPayment->execute();
 
         // Set payment status to "Payment request sent" in session
-        $_SESSION['payment_status'] = "Payment request sent. Please wait for confirmation.";
+       // $_SESSION['payment_status'] = "Payment request sent. Please wait for confirmation.";
 
         // Redirect to the same page to avoid form resubmission on refresh
         header("Location: ".$_SERVER['PHP_SELF']);
         exit();
-    } elseif ($balance <= 0) {
-    // Display a message if the balance is not sufficient
-    echo "Your balance is not sufficient to make a payment.";
-}
+    } 
     // Check for payment status in session and reset the session variable
     if (isset($_SESSION['payment_status'])) {
         echo $_SESSION['payment_status'];
         unset($_SESSION['payment_status']);
     }
+    elseif ($balance <= 0) {
+    // Display a message if the balance is not sufficient
+    echo "Your balance is not sufficient to make a payment.";
+}
+    
 
 ?>
     <!DOCTYPE html>
