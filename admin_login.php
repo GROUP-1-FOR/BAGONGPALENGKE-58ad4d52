@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body class="bagongpgalengke-v2">
-  <header> LOGO </header>
+  <header><img src="assets\images\sign-in\Santa-Rosa-Logo.svg" class="logo-src"></header>
 
   <div class="website-title-v2">
     <h1 class="title3"> WELCOME TO </h1>

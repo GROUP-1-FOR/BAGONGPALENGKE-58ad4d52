@@ -330,6 +330,7 @@ h2, .resend-otp, .verify-otp{
 }
 
 .website-title-v2 {
+  margin-top: 4%;
   z-index: 3;
   height: 70%; /* Added to make sure it takes full height */
   width: 95%; /* Added to make sure it takes full width */
