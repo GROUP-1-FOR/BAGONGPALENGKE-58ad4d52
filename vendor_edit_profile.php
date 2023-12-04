@@ -223,9 +223,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <h1>BACK</h1>
         </a>
 
-        <a href=vendor_logout.php>
-            <h1>LOGOUT</h1>
-        </a>
     </body>
 
 

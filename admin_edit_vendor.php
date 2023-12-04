@@ -96,6 +96,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     // Execute statements
                     if ($update_vendor_signin_stmt->execute() && $delete_vendor_profile_stmt->execute()) {
                         echo "<p>Vendor information updated successfully.</p>";
+
+                        // Redirect to admin_vendor_manage_accounts.php
+                        header("Location: admin_vendor_manage_accounts.php");
+                        exit();
                     } else {
                         echo "<p>Error updating vendor sign-in information: " . $update_vendor_signin_stmt->error . "</p>";
                         echo "<p>Error deleting vendor profile information: " . $delete_vendor_profile_stmt->error . "</p>";
