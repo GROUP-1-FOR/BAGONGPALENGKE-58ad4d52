@@ -171,7 +171,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script>
             function editVendor(vendorId) {
-                console.log("Edit vendor with ID: " + vendorId);
+                window.location.href = 'admin_edit_vendor.php?vendor_userid=' + encodeURIComponent(vendorId);
             }
 
             function removeVendor(vendorId) {

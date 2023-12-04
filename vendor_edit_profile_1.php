@@ -36,6 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: vendor_edit_profile.php");
         exit();
     }
+    $vendor_full_name = $vendor_first_name . " " . $vendor_last_name;
 
 
     // Perform database insertion (you might need to adjust table/column names)
