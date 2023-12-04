@@ -28,7 +28,7 @@ $paymentStatus = "To be paid";
 // Check if the payment has been sent but not confirmed
 $sqlCheckPayment = "SELECT * FROM ven_payments WHERE id = ? AND name = ? AND confirmed = 0 AND archived = 0";
 $stmtCheckPayment = $connect->prepare($sqlCheckPayment);
-$stmtCheckPayment->bind_param('is', $userid, $name);
+$stmtCheckPayment->bind_param('is', $userid, $vendorName);
 $stmtCheckPayment->execute();
 $resultCheckPayment = $stmtCheckPayment->get_result();
 
@@ -39,7 +39,7 @@ if ($resultCheckPayment->num_rows > 0) {
 // Check if the payment is confirmed
 $sqlCheckPaymentConfirmation = "SELECT * FROM ven_payments WHERE id = ? AND name = ? AND confirmed = 1 AND archived = 1";
 $stmtCheckPaymentConfirmation = $connect->prepare($sqlCheckPaymentConfirmation);
-$stmtCheckPaymentConfirmation->bind_param('is', $userid, $name);
+$stmtCheckPaymentConfirmation->bind_param('is', $userid, $vendorName);
 $stmtCheckPaymentConfirmation->execute();
 $resultCheckPaymentConfirmation = $stmtCheckPaymentConfirmation->get_result();
 
@@ -56,7 +56,7 @@ if ($resultCheckPaymentConfirmation->num_rows > 0) {
         $paymentDate = date('Y-m-d H:i:s');
         $sqlInsertPayment = "INSERT INTO ven_payments (id, name, balance, archived, confirmed, payment_date) VALUES (?, ?, ?, 0, 0, ?)";
         $stmtInsertPayment = $connect->prepare($sqlInsertPayment);
-        $stmtInsertPayment->bind_param('ssds', $userid, $name, $balance, $paymentDate); // Use 's' for VARCHAR and 'd' for DOUBLE
+        $stmtInsertPayment->bind_param('ssds', $userid, $vendorName, $balance, $paymentDate); // Use 's' for VARCHAR and 'd' for DOUBLE
         $stmtInsertPayment->execute();
 
         // Set payment status to "Payment request sent" in session
@@ -142,7 +142,9 @@ if ($resultCheckPaymentConfirmation->num_rows > 0) {
         </tr>
     </table>
     <br>
-
+    <a href=vendor_edit_profile.php>
+        <h1>EDIT PROFILE</h1>
+    </a>
     <a href=vendor_view_announcement.php>
         <h1>SEE ANNOUNCEMENTS</h1>
     </a>
