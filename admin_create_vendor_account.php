@@ -245,7 +245,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
 
 
-        <a href=admin_index.php>
+        <a href=admin_vendor_manage_accounts.php>
             <h1>BACK</h1>
         </a>
 
