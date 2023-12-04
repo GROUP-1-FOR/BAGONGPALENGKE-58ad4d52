@@ -88,24 +88,21 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     $update_vendor_signin_stmt = $connect->prepare($update_vendor_signin_sql);
                     $update_vendor_signin_stmt->bind_param("sssssss", $new_vendor_name, $new_vendor_first_name, $new_vendor_last_name, $new_vendor_email, $new_vendor_mobile_number, $new_vendor_product, $vendor_userid);
 
-                    // Update vendor_edit_profile table
-                    $update_vendor_profile_sql = "UPDATE vendor_edit_profile SET
-                        vendor_edit = 1
-                        WHERE vendor_userid = ?";
+                    // Delete row from vendor_edit_profile table
+                    $delete_vendor_profile_sql = "DELETE FROM vendor_edit_profile WHERE vendor_userid = ?";
+                    $delete_vendor_profile_stmt = $connect->prepare($delete_vendor_profile_sql);
+                    $delete_vendor_profile_stmt->bind_param("s", $vendor_userid);
 
-                    $update_vendor_profile_stmt = $connect->prepare($update_vendor_profile_sql);
-                    $update_vendor_profile_stmt->bind_param("s", $vendor_userid);
-
-                    // Execute both statements
-                    if ($update_vendor_signin_stmt->execute() && $update_vendor_profile_stmt->execute()) {
+                    // Execute statements
+                    if ($update_vendor_signin_stmt->execute() && $delete_vendor_profile_stmt->execute()) {
                         echo "<p>Vendor information updated successfully.</p>";
                     } else {
                         echo "<p>Error updating vendor sign-in information: " . $update_vendor_signin_stmt->error . "</p>";
-                        echo "<p>Error updating vendor edit profile information: " . $update_vendor_profile_stmt->error . "</p>";
+                        echo "<p>Error deleting vendor profile information: " . $delete_vendor_profile_stmt->error . "</p>";
                     }
 
                     $update_vendor_signin_stmt->close();
-                    $update_vendor_profile_stmt->close();
+                    $delete_vendor_profile_stmt->close();
                 }
                 ?>
 
