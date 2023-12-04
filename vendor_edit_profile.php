@@ -275,11 +275,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
 
 
-        <a href=admin_vendor_manage_accounts.php>
+        <a href=vendor_index.php>
             <h1>BACK</h1>
         </a>
 
-        <a href=admin_logout.php>
+        <a href=vendor_logout.php>
             <h1>LOGOUT</h1>
         </a>
     </body>
