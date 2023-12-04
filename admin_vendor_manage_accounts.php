@@ -120,13 +120,37 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             </tr>
 
             <?php
+            // Function to check if vendor is editable
+            function isVendorEditable($vendorId)
+            {
+                global $connect;
+
+                // Check if vendor_userid exists in vendor_edit_profile table and vendor_edit column is equal to 0
+                $sql = "SELECT vendor_userid FROM vendor_edit_profile WHERE vendor_userid = ? AND vendor_edit = 0";
+                $stmt = $connect->prepare($sql);
+                $stmt->bind_param("s", $vendorId);
+                $stmt->execute();
+                $stmt->store_result();
+                $rowCount = $stmt->num_rows;
+                $stmt->close();
+
+                return $rowCount > 0;
+            }
+
             // Display data in a table
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>" . $row["vendor_name"] . "<br>Vendor ID: " . $row["vendor_userid"] . "</td>";
                     echo "<td>";
-                    echo "<button onclick='editVendor(\"" . $row["vendor_userid"] . "\")'>Edit</button>";
+
+                    // Check if vendor_userid exists in vendor_edit_profile table and vendor_edit column is equal to 0
+                    $editButtonVisible = isVendorEditable($row["vendor_userid"]);
+
+                    if ($editButtonVisible) {
+                        echo "<button onclick='editVendor(\"" . $row["vendor_userid"] . "\")'>Edit</button>";
+                    }
+
                     echo "<button onclick='removeVendor(\"" . $row["vendor_userid"] . "\")'>Remove</button>";
                     echo "</td>";
                     echo "</tr>";
@@ -134,6 +158,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             } else {
                 echo "<tr><td colspan='2'>No vendors found</td></tr>";
             }
+            
+            
             ?>
         </table>
 
