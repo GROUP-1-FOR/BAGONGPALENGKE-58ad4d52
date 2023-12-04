@@ -35,6 +35,9 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     function confirmUpdate() {
                         return confirm("Are you sure you want to update the vendor information?");
                     }
+                    function confirmRemove() {
+                        return confirm("Are you sure you want to remove this vendor?");
+                    }
                 </script>
             </head>
 
@@ -61,13 +64,19 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     <label for="vendor_product">Product:</label>
                     <input type="text" id="vendor_product" name="vendor_product" value="<?= $vendor_data['vendor_product'] ?>"readonly><br>
 
-                    <input type="submit" value="Update">
+                    <input type="submit" name="update" value="Update">
 
+                </form>
+                <!-- Add a Remove button -->
+                <form method="post" action="">
+                    <input type="hidden" name="vendor_userid" value="<?= $vendor_userid ?>">
+                    <input type="submit" name="remove" value="Remove" onclick="return confirmRemove();">
                 </form>
 
                 <?php
                 // Process the form submission
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    if (isset($_POST['update'])) {
                     $new_vendor_name = $_POST['vendor_name'];
                     $new_vendor_first_name = $_POST['vendor_first_name'];
                     $new_vendor_last_name = $_POST['vendor_last_name'];
@@ -107,9 +116,25 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
                     $update_vendor_signin_stmt->close();
                     $delete_vendor_profile_stmt->close();
+                } elseif (isset($_POST['remove'])) {
+                    // Remove logic
+                    $delete_vendor_profile_sql = "DELETE FROM vendor_edit_profile WHERE vendor_userid = ?";
+                    $delete_vendor_profile_stmt = $connect->prepare($delete_vendor_profile_sql);
+                    $delete_vendor_profile_stmt->bind_param("s", $vendor_userid);
+        
+                    if ($delete_vendor_profile_stmt->execute()) {
+                        echo "<p>Vendor information removed successfully.</p>";
+                        // Redirect using JavaScript
+                        echo '<script>window.location.href = "admin_vendor_manage_accounts.php";</script>';
+                    } else {
+                        echo "<p>Error removing vendor profile information: " . $delete_vendor_profile_stmt->error . "</p>";
+                    }
+        
+                    $delete_vendor_profile_stmt->close();
                 }
-                ?>
-
+            }
+            ?>
+            
             </body>
             <button><a href="admin_vendor_manage_accounts.php">Back</a></button>
             </html>
@@ -122,7 +147,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         // Vendor ID not provided in the URL
         echo "Vendor ID not provided.";
     }
-
     // Close the database connection
     $connect->close();
 } else {
