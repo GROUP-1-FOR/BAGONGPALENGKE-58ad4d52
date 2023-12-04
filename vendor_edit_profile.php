@@ -10,7 +10,14 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $sqlUserData = "SELECT * FROM vendor_sign_in WHERE vendor_userid = ?";
     $stmtUserData = $connect->prepare($sqlUserData);
     $stmtUserData->bind_param('s', $userid); // Use 's' for VARCHAR
+
     $stmtUserData->execute();
+
+    // Check for errors after executing the query
+    if ($stmtUserData->error) {
+        die('Error: ' . $stmtUserData->error);
+    }
+
     $resultUserData = $stmtUserData->get_result();
 
     if ($resultUserData->num_rows > 0) {
@@ -52,7 +59,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <input type="text" name="mobileNumber" value="<?php echo $mobileNumber; ?>"><br>
 
         <label for="product">Product:</label>
-        <input type="text" name="product" value="<?php echo $product; ?>"><br>
+        <select name="product">
+            <option value="Wet" <?php echo ($product === 'Wet') ? 'selected' : ''; ?>>Wet</option>
+            <option value="Dry" <?php echo ($product === 'Dry') ? 'selected' : ''; ?>>Dry</option>
+            <option value="Other" <?php echo ($product === 'Other') ? 'selected' : ''; ?>>Other</option>
+        </select><br>
 
         <button type="submit" name="requestEdit">Request Edit</button>
     </form>
