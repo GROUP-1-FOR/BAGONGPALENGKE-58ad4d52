@@ -47,9 +47,25 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     <head>
         <title>Create Vendor Account</title>
         <script>
-            function validateVendorName() {
-                var vendor_name = document.getElementById("vendor_name").value;
-                var vendor_name_error_span = document.getElementById("vendor_name_error_span");
+            function validateVendorFirstName() {
+                var vendor_name = document.getElementById("vendor_first_name").value;
+                var vendor_name_error_span = document.getElementById("vendor_first_name_error_span");
+
+                // Check if the input contains any numbers or symbols
+                if (vendor_name.length > 0 && /[0-9!@#$%^&*(),.?":{}|<>]/.test(vendor_name)) {
+                    vendor_name_error_span.textContent = "Please enter the vendor name without numbers or symbols.";
+                    return false; // Prevent form submission
+                } else {
+                    vendor_name_error_span.textContent = "";
+                }
+
+                // If the input is valid, you can proceed with form submission
+                return true;
+            }
+
+            function validateVendorLastName() {
+                var vendor_name = document.getElementById("vendor_last_name").value;
+                var vendor_name_error_span = document.getElementById("vendor_last_name_error_span");
 
                 // Check if the input contains any numbers or symbols
                 if (vendor_name.length > 0 && /[0-9!@#$%^&*(),.?":{}|<>]/.test(vendor_name)) {
@@ -147,7 +163,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 var submitButton = document.querySelector('button[type="submit"]');
 
 
-                var formIsValid = validateVendorName() && validateVendorMobileNumber() && validateVendorEmail() && checkPasswordMatch();
+                var formIsValid = validateVendorFirstName() && validateVendorLastName() && validateVendorMobileNumber() && validateVendorEmail() && checkPasswordMatch();
                 submitButton.disabled = !formIsValid;
             }
         </script>
@@ -163,16 +179,30 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
             <h2>Vendor Information</h2>
 
-            <label for="Vendor Name">Vendor Name</label>
-            <input type="text" name="vendor_name" id="vendor_name" required oninput="validateVendorName(); updateSubmitButton()">
+            <label for="Vendor First Name">Vendor First Name</label>
+            <input type="text" name="vendor_first_name" id="vendor_first_name" required oninput="validateVendorFirstName(); updateSubmitButton()">
             <!-- Display an error message if it exists in the session -->
-            <span style="color: red;" id="vendor_name_error_span">
+            <span style="color: red;" id="vendor_first_name_error_span">
 
                 <?php
-                if (isset($_SESSION['vendor_name_error'])) {
-                    echo $_SESSION['vendor_name_error'];
+                if (isset($_SESSION['vendor_first_name_error'])) {
+                    echo $_SESSION['vendor_first_name_error'];
                     // Unset the session variable after displaying the error
-                    unset($_SESSION['vendor_name_error']);
+                    unset($_SESSION['vendor_first_name_error']);
+                }
+                ?>
+            </span>
+            <br />
+            <label for="Vendor Last Name">Vendor Last Name</label>
+            <input type="text" name="vendor_last_name" id="vendor_last_name" required oninput="validateVendorLastName(); updateSubmitButton()">
+            <!-- Display an error message if it exists in the session -->
+            <span style="color: red;" id="vendor_last_name_error_span">
+
+                <?php
+                if (isset($_SESSION['vendor_last_name_error'])) {
+                    echo $_SESSION['vendor_last_name_error'];
+                    // Unset the session variable after displaying the error
+                    unset($_SESSION['vendor_last_name_error']);
                 }
                 ?>
             </span>
@@ -239,7 +269,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         <script>
             function validateForm() {
-                return validateVendorName() && validateVendorMobileNumber() && validateVendorEmail() && checkPasswordMatch();
+                return validateVendorFirstName() && validateVendorLastName() && validateVendorMobileNumber() && validateVendorEmail() && checkPasswordMatch();
             }
         </script>
 
