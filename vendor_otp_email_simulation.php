@@ -4,6 +4,22 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $id = $_SESSION["id"];
     $userid = $_SESSION["userid"];
 
+    $sql = "SELECT vendor_name FROM vendor_sign_in WHERE vendor_userid = '$userid'";
+    // Execute the query
+    $result = $connect->query($sql);
+    $vendor_name = "";
+    $vendor_name_error = "";
+
+    // Check if any rows were returned
+    if ($result->num_rows > 0) {
+        // Output data for each row
+        while ($row = $result->fetch_assoc()) {
+            $vendor_name = $row['vendor_name'];
+        }
+    } else {
+        $vendor_name_error = "No results found for user ID $userId";
+    }
+
 ?>
     <!DOCTYPE html>
     <html>
@@ -13,16 +29,21 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     </head>
 
     <body>
-        <h2 align="center">Remember your OTP, <?php echo $userid  ?>! </h2>
+        <div>
+            <h1 align="center">GMAIL ACCOUNT SIMULATION</h1>
+            <h2 align="center">Remember your OTP, <?php echo $vendor_name  ?>! </h2> <br />
+            <span style="color: red;"> <?php echo $vendor_name_error; ?></span>
+        </div>
 
-
-        <h1 style="color: green;" align="center">
-            <?php
-            if (isset($_SESSION['vendor_otp_message'])) {
-                echo $_SESSION['vendor_otp_message'];
-            }
-            ?>
-        </h1>
+        <div>
+            <h1 style="color: green;" align="center">
+                <?php
+                if (isset($_SESSION['vendor_otp_message'])) {
+                    echo $_SESSION['vendor_otp_message'];
+                }
+                ?>
+            </h1>
+        </div>
 
 
         <a href=vendor_otp_verification.php>
