@@ -1,45 +1,28 @@
 <?php
 require("config.php");
+
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $admin_id = $_SESSION["id"];
-    $admin_userid = $_SESSION["userid"];
+    $id = $_SESSION["id"];
+    $userid = $_SESSION["userid"];
 
-    function generateUserID($pdo)
-    {
-        while (true) {
-            // Generate a random 5-digit number
-            $randomNumber = str_pad(rand(0, 99999), 5, '0', STR_PAD_LEFT);
+    // Fetch user details from the database based on the session user ID
+    $query = "SELECT vendor_first_name, vendor_last_name, vendor_mobile_number, vendor_email, vendor_product FROM vendor_sign_in WHERE vendor_userid = '$userid'";
+    $result = mysqli_query($connect, $query);
 
-            // Form the user ID
-            $userID = "VSR-" . $randomNumber;
+    if ($result) {
+        $userDetails = mysqli_fetch_assoc($result);
 
-            // Check if the user ID is unique in the database
-            if (isUniqueUserID($pdo, $userID)) {
-                return $userID;
-            }
-        }
+        // Assign retrieved values to variables
+        $vendorFirstName = $userDetails['vendor_first_name'];
+        $vendorLastName = $userDetails['vendor_last_name'];
+        $vendorMobileNumber = $userDetails['vendor_mobile_number'];
+        $vendorEmail = $userDetails['vendor_email'];
+        $vendorProduct = $userDetails['vendor_product'];
+    } else {
+        // Handle database query error
+        die("Database query failed: " . mysqli_error($connect));
     }
-
-    // Function to check if the generated user ID is unique in the database
-    function isUniqueUserID($pdo, $userID)
-    {
-        $stmt = $pdo->prepare("SELECT COUNT(*) FROM vendor_sign_in WHERE vendor_userid = ?");
-        $stmt->execute([$userID]);
-
-        return $stmt->fetchColumn() == 0;
-    }
-
-    // Create  Vendor User ID
-    try {
-        $pdo = new PDO("mysql:host=localhost;dbname=bagong_palengke_db", "root", "");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
-        die("Connection failed: " . $e->getMessage());
-    }
-
-
 ?>
-
 
     <!DOCTYPE html>
     <html>
@@ -116,55 +99,32 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 return true;
             }
 
-            function checkPasswordMatch() {
-                var password = document.getElementsByName("vendor_password")[0].value;
-                var confirmPassword = document.getElementsByName("vendor_confirm_password")[0].value;
-                var messageElement = document.getElementById("passwordMatchMessage");
-                var confirmPasswordInput = document.getElementsByName("vendor_confirm_password")[0];
 
-                // Enable or disable Confirm Password based on whether Password is empty
-                confirmPasswordInput.disabled = password.length === 0;
+        // Initialize variables to store initial values of form fields
+        var initialVendorFirstName = "<?php echo $vendorFirstName; ?>";
+            var initialVendorLastName = "<?php echo $vendorLastName; ?>";
+            var initialVendorMobileNumber = "<?php echo $vendorMobileNumber; ?>";
+            var initialVendorEmail = "<?php echo $vendorEmail; ?>";
+            var initialVendorProduct = "<?php echo $vendorProduct; ?>";
 
-                // Check if the "Password" field is not empty
-                if (password.length > 0) {
-                    // Check if the "Confirm Password" field is also not empty
-                    if (confirmPassword.length > 0) {
-                        // Check if passwords match
-                        if (password === confirmPassword) {
-                            // Check if passwords have at least 8 characters
-                            if (password.length >= 8 && confirmPassword.length >= 8) {
-                                messageElement.innerHTML = "Passwords match and meet the minimum length requirement.";
-                                messageElement.style.color = "green";
-                            } else {
-                                messageElement.innerHTML = "Passwords match but do not meet the minimum length requirement (8 characters).";
-                                messageElement.style.color = "red";
-                            }
-                        } else {
-                            messageElement.innerHTML = "Passwords do not match.";
-                            messageElement.style.color = "red";
-                        }
-                    } else {
-                        // "Confirm Password" field is empty, clear the message
-                        messageElement.innerHTML = "";
-                    }
-                } else {
-                    // "Password" field is empty, clear the message and "Confirm Password" field
-                    messageElement.innerHTML = "";
-                    confirmPasswordInput.value = "";
-                }
-
-                return password === confirmPassword && password.length >= 8 && confirmPassword.length >= 8;
+            function hasFormChanged() {
+                // Check if any of the form fields have changed
+                return (
+                    document.getElementById("vendor_first_name").value !== initialVendorFirstName ||
+                    document.getElementById("vendor_last_name").value !== initialVendorLastName ||
+                    document.getElementById("vendor_mobile_number").value !== initialVendorMobileNumber ||
+                    document.getElementById("vendor_email").value !== initialVendorEmail ||
+                    document.getElementById("vendor_product").value !== initialVendorProduct
+                );
             }
-
-
-
 
             function updateSubmitButton() {
                 var submitButton = document.querySelector('button[type="submit"]');
+                submitButton.disabled = !hasFormChanged();
+            }
 
-
-                var formIsValid = validateVendorFirstName() && validateVendorLastName() && validateVendorMobileNumber() && validateVendorEmail() && checkPasswordMatch();
-                submitButton.disabled = !formIsValid;
+            function validateForm() {
+                return hasFormChanged() && validateVendorFirstName() && validateVendorLastName() && validateVendorMobileNumber() && validateVendorEmail();
             }
         </script>
 
@@ -172,15 +132,15 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     <body>
 
-        <h1>Create Vendor Account, <?php echo $admin_userid  ?>! </h1>
+        <h1>Update Vendor Account, <?php echo $userid  ?>! </h1>
 
-        <form action="admin_create_vendor_account_1.php" method="post" onsubmit="return validateForm()">
+        <form action="vendor_edit_profile_1.php" method="post" onsubmit="return validateForm()">
 
 
             <h2>Vendor Information</h2>
 
             <label for="Vendor First Name">Vendor First Name</label>
-            <input type="text" name="vendor_first_name" id="vendor_first_name" required oninput="validateVendorFirstName(); updateSubmitButton()">
+            <input type="text" name="vendor_first_name" id="vendor_first_name" required oninput="validateVendorFirstName(); updateSubmitButton()" value="<?php echo $vendorFirstName; ?>">
             <!-- Display an error message if it exists in the session -->
             <span style="color: red;" id="vendor_first_name_error_span">
 
@@ -194,7 +154,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             </span>
             <br />
             <label for="Vendor Last Name">Vendor Last Name</label>
-            <input type="text" name="vendor_last_name" id="vendor_last_name" required oninput="validateVendorLastName(); updateSubmitButton()">
+            <input type="text" name="vendor_last_name" id="vendor_last_name" required oninput="validateVendorLastName(); updateSubmitButton()" value="<?php echo $vendorLastName; ?>">
             <!-- Display an error message if it exists in the session -->
             <span style="color: red;" id="vendor_last_name_error_span">
 
@@ -208,11 +168,9 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             </span>
 
             <br />
-            <label for="Stall Number">Stall No:</label>
-            <input type="number" name="vendor_stall_number" required><br />
 
             <label for="Mobile Number">Mobile Number</label>
-            <input type="tel" name="vendor_mobile_number" id="vendor_mobile_number" maxlength="11" placeholder="09XXXXXXXXX" oninput="validateVendorMobileNumber(); updateSubmitButton()">
+            <input type="tel" name="vendor_mobile_number" id="vendor_mobile_number" maxlength="11" placeholder="09XXXXXXXXX" oninput="validateVendorMobileNumber(); updateSubmitButton()" value="<?php echo $vendorMobileNumber; ?>">
             <!-- Display an error message if it exists in the session -->
             <span style="color: red;" id="vendor_mobile_number_error_span">
                 <?php
@@ -226,7 +184,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
             <br />
             <label for="Email">Email:</label>
-            <input type="email" name="vendor_email" id="vendor_email" required oninput="validateVendorEmail(); updateSubmitButton()">
+            <input type="email" name="vendor_email" id="vendor_email" required oninput="validateVendorEmail(); updateSubmitButton()" value="<?php echo $vendorEmail; ?>">
             <!-- Display an error message if it exists in the session -->
             <span style="color: red;" id="vendor_email_error_span">
                 <?php
@@ -241,28 +199,14 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <br />
             <label for="Product Type">Products:</label>
             <select name="vendor_product" required>
-                <option value="" disabled selected>Select Product Type</option>
-                <option value="Wet">Wet</option>
-                <option value="Dry">Dry</option>
-                <option value="Other">Other</option>
+                <option value="" disabled>Select Product Type</option>
+                <option value="Wet" <?php if ($vendorProduct == 'Wet') echo 'selected'; ?>>Wet</option>
+                <option value="Dry" <?php if ($vendorProduct == 'Dry') echo 'selected'; ?>>Dry</option>
+                <option value="Other" <?php if ($vendorProduct == 'Other') echo 'selected'; ?>>Other</option>
             </select><br />
 
             <br />
             <br />
-
-
-            <h2>Vendor Account</h2>
-            <label>Vendor User ID</label>
-            <input type="text" name="vendor_userid" value="<?php echo $new_vendor_userid = generateUserID($pdo); ?>" readonly><br />
-
-            <label>Password</label>
-            <input type="password" name="vendor_password" placeholder="8 characters and above" oninput="checkPasswordMatch(); updateSubmitButton()"><br />
-
-            <label>Confirm Password</label>
-            <input type="password" name="vendor_confirm_password" required oninput="checkPasswordMatch(); updateSubmitButton()">
-            <span id="passwordMatchMessage"></span><br />
-
-
 
             <button type="submit" disabled>Submit</button>
         </form>
@@ -287,5 +231,5 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     </html>
 <?php } else {
-    header("location:admin_login.php");
+    header("location:vendor_login.php");
 }
