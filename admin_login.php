@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     <a class="forgot-password" href="admin_forgot_password.php"> Forgot Password?</a> <br />
-    <a class="back-button" href="vendor_admin_select.php"> Back</a>
+    <a class="" href="vendor_admin_select.php"> Back</a>
   </div>
   <footer> </footer>
 </body>

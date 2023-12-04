@@ -114,7 +114,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     <h2>OTP Verification</h2>
 </div>
 <div>
-<form action= ""  method="post">
+<form action="" method="post">
     <input class="otp-box" type="text" pattern="[0-9]{6}" maxlength="6" id="otp" name="admin_otp" title="Please enter six numbers" placeholder="Enter OTP" required>
     <button class ="submit-button" type="submit">Verify OTP</button>
     <span style="color: red">

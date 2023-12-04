@@ -70,8 +70,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Perform database insertion (you might need to adjust table/column names)
-    $sql = "INSERT INTO vendor_sign_in (vendor_first_name, vendor_last_name, vendor_name, vendor_stall_number,vendor_mobile_number,vendor_product,vendor_email, vendor_userid, vendor_password, balance) 
-        VALUES ('$vendor_first_name','$vendor_last_name','$vendor_full_name', '$vendor_stall_number','$vendor_mobile_number','$vendor_product_type','$vendor_email', '$vendor_userid', '$hashedPassword', '0.00')";
+    $sql = "INSERT INTO vendor_sign_in (vendor_name, vendor_stall_number,vendor_mobile_number,vendor_product,vendor_email, vendor_userid, vendor_password, balance) 
+        VALUES ('$vendor_full_name', '$vendor_stall_number','$vendor_mobile_number','$vendor_product_type','$vendor_email', '$vendor_userid', '$hashedPassword', '0.00')";
 
     if ($connect->query($sql) === TRUE) {
         echo '<script>';
