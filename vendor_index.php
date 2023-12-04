@@ -3,25 +3,24 @@ require("config.php");
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $id = $_SESSION["id"];
     $userid = $_SESSION["userid"];
-
-
-    //to know last log in time of vendor
-    include('vendor_login_time.php');
+     //to know last log in time of vendor
+     include('vendor_login_time.php');
     // Fetch user data using prepared statement
-$sql = "SELECT * FROM vendor_sign_in WHERE vendor_userid = ?";
-$stmt = $connect->prepare($sql);
-$stmt->bind_param('s', $userid); // Use 's' for VARCHAR
-$stmt->execute();
-$result = $stmt->get_result();
+    $sqlUserData = "SELECT * FROM vendor_sign_in WHERE vendor_userid = ?";
+    $stmtUserData = $connect->prepare($sqlUserData);
+    $stmtUserData->bind_param('s', $userid); // Use 's' for VARCHAR
+    $stmtUserData->execute();
+    $resultUserData = $stmtUserData->get_result();
 
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $name = $row['vendor_name'];
-    $balance = $row['balance'];
-} else {
-    // Handle the case where the user ID is not found or there's an issue with the database query
-    die("User not found or database query issue.");
-}
+    if ($resultUserData->num_rows > 0) {
+        $rowUserData = $resultUserData->fetch_assoc();
+        $vendorName = $rowUserData['vendor_name'];
+        $stallNumber = $rowUserData['vendor_stall_number'];
+        $balance = $rowUserData['balance'];
+    } else {
+        // Handle the case where the user ID is not found or there's an issue with the database query
+        die("User not found or database query issue.");
+    }
 
 // Check the payment status
 $paymentStatus = "To be paid";
@@ -115,7 +114,11 @@ if ($resultCheckPaymentConfirmation->num_rows > 0) {
     </head>
 
     <body>
-    <h1>Welcome, <?php echo $userid ?>! </h1>
+    <h1><?php echo "Hi, " . $vendorName; ?>!</h1>
+        <!-- Display vendor information -->
+        <p>Stall No: <?php echo $stallNumber; ?></p>
+        <p>Vendor ID: <?php echo $userid; ?></p>
+
     <!-- Vendor Pay Table -->
     <table id="money-table">
         <tr>
