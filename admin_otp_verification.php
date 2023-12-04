@@ -132,9 +132,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 </div>
     <a href=admin_logout.php> CANCEL </a>
 </div>
-
   <footer> </footer>
-  
 </body>
 </html>
 
