@@ -5,7 +5,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $admin_userid = $_SESSION["userid"];
 
 
-    $query = "SELECT id, name, balance, confirmed, archived, payment_date, mop FROM ven_payments";
+    $query = "SELECT id, name, balance, confirmed, archived, payment_date, mop, transaction_id FROM ven_payments";
     // Only select necessary columns
     $result = mysqli_query($connect, $query);
 
@@ -62,20 +62,21 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 echo "<tr>";
                 echo "<td>{$row['name']}</td>";
                 echo "<td>{$row['balance']}</td>";
-
+            
                 // Check if the payment is confirmed and archived
                 if ($row['confirmed'] == 1 && $row['archived'] == 1) {
                     echo "<td class='paid-mark'>Paid</td>";
                 } else {
                     echo "<td class='action-cell'>
-                        <button onclick=\"confirmAndArchive('{$row['id']}', '{$row['name']}', '{$row['payment_date']}', '{$row['mop']}', this)\" data-vendor-id='{$row['id']}'>Confirm</button>
+                        <button onclick=\"confirmAndArchive('{$row['id']}', '{$row['name']}', '{$row['payment_date']}', '{$row['mop']}', '{$row['transaction_id']}', this)\" data-vendor-id='{$row['id']}'>Confirm</button>
                     </td>";
                 }
-
-                // Display the current date and Mode of Payment
+            
+                // Display the current date, Mode of Payment, and Transaction ID
                 echo "<td>{$row['payment_date']}</td>";
                 echo "<td>{$row['mop']}</td>";
-
+                //echo "<td>{$row['transaction_id']}</td>";
+            
                 echo "</tr>";
             }
             ?>
@@ -102,7 +103,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script>
-            function confirmAndArchive(id, name, payment_date, modeOfPayment, row) {
+            function confirmAndArchive(id, name, payment_date, modeOfPayment, transactionId, row) {
             $.ajax({
                 type: "POST",
                 url: "confirm_and_archive_db.php",
@@ -110,7 +111,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     vendorId: id,
                     vendorName: name,
                     paymentDate: payment_date,
-                    modeOfPayment: modeOfPayment // Add the MOP parameter
+                    modeOfPayment: modeOfPayment, // Add the MOP parameter
+                    transactionId: transactionId, // Add the transaction_id parameter
                 },
                 success: function(response) {
                     alert(response); // Display the server's response (if needed)
