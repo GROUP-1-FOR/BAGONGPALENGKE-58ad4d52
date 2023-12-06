@@ -121,8 +121,12 @@ function generateUniqueTransactionId($connect, $vendorId) {
         $checkIfExistsVendor = "SELECT transaction_id FROM vendor_balance WHERE transaction_id = '$transactionId'";
         $resultVendor = $connect->query($checkIfExistsVendor);
 
-        // If not exists in vendor_balance table, break the loop
-        if ($resultVendor->num_rows === 0) {
+        // Check if the generated transaction_id already exists in paid_records table
+        $checkIfExistsPaidRecords = "SELECT transaction_id FROM paid_records WHERE transaction_id = '$transactionId'";
+        $resultPaidRecords = $connect->query($checkIfExistsPaidRecords);
+
+        // If not exists in both tables, break the loop
+        if ($resultVendor->num_rows === 0 && $resultPaidRecords->num_rows === 0) {
             return $transactionId;
         }
     }
