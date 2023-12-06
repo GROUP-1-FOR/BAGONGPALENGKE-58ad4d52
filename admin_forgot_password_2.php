@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    $hashedPassword = md5($admin_new_password);
+    $hashedPassword = password_hash($admin_new_password, PASSWORD_BCRYPT);
 
     $password_query = "UPDATE admin_sign_in SET admin_password = ? WHERE admin_userid = ?";
     $stmt = mysqli_prepare($connect, $password_query);

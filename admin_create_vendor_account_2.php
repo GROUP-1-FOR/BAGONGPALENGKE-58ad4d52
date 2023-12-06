@@ -28,14 +28,13 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     // Check if the form is submitted
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $admin_password = htmlspecialchars($_POST["admin_password"]);
-        $hashedAdminPassword = md5($admin_password);
 
         // Query the database for admin information
         $result = mysqli_query($connect, "SELECT * FROM admin_sign_in WHERE admin_userid= '$admin_userid'");
         $row = mysqli_fetch_assoc($result);
 
         if (mysqli_num_rows($result) > 0) {
-            if ($hashedAdminPassword == $row["admin_password"]) {
+            if (password_verify($admin_password, $row["admin_password"])) {
                 // Insert data into vendor_sign_in table
                 $sql1 = "INSERT INTO vendor_sign_in (vendor_first_name, vendor_last_name, vendor_name, vendor_stall_number, vendor_mobile_number, vendor_product, vendor_email, vendor_userid, vendor_password) 
                     VALUES ('$vendor_first_name', '$vendor_last_name', '$vendor_full_name', '$vendor_stall_number', '$vendor_mobile_number', '$vendor_product_type', '$vendor_email', '$vendor_userid', '$vendor_password')";
