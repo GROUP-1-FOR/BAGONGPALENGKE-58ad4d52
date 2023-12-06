@@ -62,9 +62,6 @@
 </div>
 
 <script>
-    let currentTableId;
-    let selectedStatus;
-
     function showOptions(tableId) {
         // Remove the 'selected' class from all tables
         const tables = document.querySelectorAll('.table');
@@ -73,24 +70,15 @@
         // Add the 'selected' class to the clicked table
         currentTableId = tableId;
         document.getElementById(currentTableId).classList.add('selected');
+        document.getElementById('optionsPopup').innerHTML = '<button onclick="redirectToForm()">Add</button>';
         document.getElementById('optionsPopup').style.display = 'block';
     }
 
-    function selectOption(status) {
-        selectedStatus = status;
-    }
-
-    function confirmAndChangeColor() {
-        if (selectedStatus) {
-            const confirmation = confirm("Are you sure you want to change the color?");
-            if (confirmation) {
-                document.getElementById(currentTableId).style.backgroundColor = selectedStatus;
-                document.getElementById('optionsPopup').style.display = 'none';
-            }
-        } else {
-            alert("Please select an option.");
-        }
-    }
+    function redirectToForm() {
+    const stallNumber = currentTableId.replace('table', '');
+    console.log('Stall Number:', stallNumber); // Check if this prints the correct stall number
+    window.location.href = 'add_stall_form.php?stall_number=' + stallNumber;
+}
 </script>
 </body>
 </html>
