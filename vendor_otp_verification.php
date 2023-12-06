@@ -75,7 +75,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $reset_trials_query = "UPDATE vendor_sign_in SET vendor_otp_trials = 0 WHERE vendor_id = $id";
         mysqli_query($connect, $reset_trials_query);
 
-        header("Location: vendor_login.php");
+        header("Location: vendor_logout.php");
         exit;
     }
 
@@ -115,7 +115,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <form action="" method="post">
                 <label for="otp">Enter OTP:</label>
                 <input type="text" pattern="[0-9]{6}" maxlength="6" id="otp" name="vendor_otp" title="Please enter six numbers" placeholder="123456" required>
-                <button type="submit">Verify OTP</button>
+                <button type="submit">Verify OTP</button> <br />
                 <span style="color: red">
                     <?php
                     echo $incorrect_otp_message;
