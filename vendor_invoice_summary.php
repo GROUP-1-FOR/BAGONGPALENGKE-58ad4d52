@@ -21,9 +21,11 @@ if (isset($_POST['vendorName']) && isset($_POST['vendorUserId']) && isset($_POST
 if (isset($_POST['pay_cash'])) {
     // Insert payment data into ven_payments table
     $paymentDate = date('Y-m-d H:i:s');
-    $sqlInsertPayment = "INSERT INTO ven_payments (id, name, balance, archived, confirmed, payment_date) VALUES (?, ?, ?, 0, 0, ?)";
+    $paymentMethod = "CASH"; // Set the payment method to "CASH"
+    
+    $sqlInsertPayment = "INSERT INTO ven_payments (id, name, balance, archived, confirmed, payment_date, mop) VALUES (?, ?, ?, 0, 0, ?, ?)";
     $stmtInsertPayment = $connect->prepare($sqlInsertPayment);
-    $stmtInsertPayment->bind_param('ssds', $vendorUserId, $vendorName, $balance, $paymentDate); // Use 's' for VARCHAR and 'd' for DOUBLE
+    $stmtInsertPayment->bind_param('ssdss', $vendorUserId, $vendorName, $balance, $paymentDate, $paymentMethod); // Use 's' for VARCHAR, 'd' for DOUBLE
     $stmtInsertPayment->execute();
 
     // Set payment status to "Payment request sent" in session
@@ -33,6 +35,7 @@ if (isset($_POST['pay_cash'])) {
     header("Location: ".$_SERVER['PHP_SELF']);
     exit();
 }
+
 
 // Check if the "GCash" button is clicked
 if (isset($_POST['pay_gcash'])) {
