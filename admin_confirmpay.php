@@ -5,7 +5,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $admin_userid = $_SESSION["userid"];
 
 
-    $query = "SELECT id, name, balance, confirmed, archived, payment_date FROM ven_payments"; // Only select necessary columns
+    $query = "SELECT id, name, balance, confirmed, archived, payment_date, mop FROM ven_payments";
+    // Only select necessary columns
     $result = mysqli_query($connect, $query);
 
     if (!$result) {
@@ -48,12 +49,13 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <h1>CONFIRM PAYMENT, <?php echo $admin_userid  ?>! </h1>
 
         <table>
-            <tr>
-                <th>Name</th>
-                <th>Balance</th>
-                <th>Status</th>
-                <th>Payment Date</th>
-            </tr>
+        <tr>
+            <th>Name</th>
+            <th>Balance</th>
+            <th>Status</th>
+            <th>Payment Date</th>
+            <th>Mode of Payment</th>
+        </tr>
 
             <?php
             while ($row = mysqli_fetch_assoc($result)) {
@@ -66,12 +68,13 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     echo "<td class='paid-mark'>Paid</td>";
                 } else {
                     echo "<td class='action-cell'>
-            <button onclick=\"confirmAndArchive('{$row['id']}', '{$row['name']}', '{$row['payment_date']}', this)\" data-vendor-id='{$row['id']}'>Confirm</button>
-          </td>";
+                        <button onclick=\"confirmAndArchive('{$row['id']}', '{$row['name']}', '{$row['payment_date']}', '{$row['mop']}', this)\" data-vendor-id='{$row['id']}'>Confirm</button>
+                    </td>";
                 }
 
-                // Display the current date
+                // Display the current date and Mode of Payment
                 echo "<td>{$row['payment_date']}</td>";
+                echo "<td>{$row['mop']}</td>";
 
                 echo "</tr>";
             }
@@ -99,26 +102,27 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script>
-            function confirmAndArchive(id, name, payment_date, row) {
-                $.ajax({
-                    type: "POST",
-                    url: "confirm_and_archive_db.php",
-                    data: {
-                        vendorId: id,
-                        vendorName: name,
-                        paymentDate: payment_date
-                    },
-                    success: function(response) {
-                        alert(response); // Display the server's response (if needed)
+            function confirmAndArchive(id, name, payment_date, modeOfPayment, row) {
+            $.ajax({
+                type: "POST",
+                url: "confirm_and_archive_db.php",
+                data: {
+                    vendorId: id,
+                    vendorName: name,
+                    paymentDate: payment_date,
+                    modeOfPayment: modeOfPayment // Add the MOP parameter
+                },
+                success: function(response) {
+                    alert(response); // Display the server's response (if needed)
 
-                        // Update the content of the 'Action' cell to 'Paid'
-                        $(row).closest('tr').find('.action-cell').html('Paid');
-                    },
-                    error: function() {
-                        alert("Error confirming payment and archiving");
-                    }
-                });
-            }
+                    // Update the content of the 'Action' cell to 'Paid'
+                    $(row).closest('tr').find('.action-cell').html('Paid');
+                },
+                error: function() {
+                    alert("Error confirming payment and archiving");
+                }
+            });
+        }
 
             function confirmRemoveAll() {
             var confirmDelete = confirm("Are you sure you want to remove all confirmed payments?");

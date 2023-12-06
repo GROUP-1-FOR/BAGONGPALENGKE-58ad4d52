@@ -10,25 +10,28 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $vendorId = $_POST['vendorId'];
 
         // Fetch the vendor details from the database
-        $getVendorQuery = "SELECT name, balance FROM `ven_payments` WHERE `id` = ?";
+        $getVendorQuery = "SELECT name, balance, mop FROM `ven_payments` WHERE `id` = ?";
         $getVendorStatement = mysqli_prepare($connect, $getVendorQuery);
 
         if ($getVendorStatement) {
             mysqli_stmt_bind_param($getVendorStatement, "s", $vendorId); // Use "s" for VARCHAR
             mysqli_stmt_execute($getVendorStatement);
-            mysqli_stmt_bind_result($getVendorStatement, $vendorName, $vendorBalance);
+            mysqli_stmt_bind_result($getVendorStatement, $vendorName, $vendorBalance, $modeOfPayment);
             mysqli_stmt_fetch($getVendorStatement);
             mysqli_stmt_close($getVendorStatement);
 
             // Assuming $paymentDate is received from your form or any other source
             $paymentDate = $_POST['paymentDate']; // Change this line based on your form data
 
+            // Assuming $modeOfPayment is received from your form or any other source
+            $modeOfPayment = $_POST['modeOfPayment'];
+
             // Insert into the paid records table
-            $insertPaidQuery = "INSERT INTO `paid_records` (name, balance, payment_date) VALUES (?, ?, ?)";
+            $insertPaidQuery = "INSERT INTO `paid_records` (name, balance, payment_date, mop) VALUES (?, ?, ?, ?)";
             $insertPaidStatement = mysqli_prepare($connect, $insertPaidQuery);
 
             if ($insertPaidStatement) {
-                mysqli_stmt_bind_param($insertPaidStatement, "sds", $vendorName, $vendorBalance, $paymentDate); // Use "s" for VARCHAR, "d" for DECIMAL, and "s" for DATE
+                mysqli_stmt_bind_param($insertPaidStatement, "sdss", $vendorName, $vendorBalance, $paymentDate, $modeOfPayment); // Add the MOP parameter
                 $successPaid = mysqli_stmt_execute($insertPaidStatement);
 
                 if (!$successPaid) {
@@ -39,11 +42,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             }
 
             // Insert into the archive records table
-            $insertArchiveQuery = "INSERT INTO `archive_records` (name, balance, payment_date) VALUES (?, ?, ?)";
+            $insertArchiveQuery = "INSERT INTO `archive_records` (name, balance, payment_date, mop) VALUES (?, ?, ?, ?)";
             $insertArchiveStatement = mysqli_prepare($connect, $insertArchiveQuery);
 
             if ($insertArchiveStatement) {
-                mysqli_stmt_bind_param($insertArchiveStatement, "sds", $vendorName, $vendorBalance, $paymentDate); // Use "s" for VARCHAR, "d" for DECIMAL, and "s" for DATE
+                mysqli_stmt_bind_param($insertArchiveStatement, "sdss", $vendorName, $vendorBalance, $paymentDate, $modeOfPayment); // Use "s" for VARCHAR, "d" for DECIMAL, and "s" for DATE
                 $successArchive = mysqli_stmt_execute($insertArchiveStatement);
 
                 if (!$successArchive) {
