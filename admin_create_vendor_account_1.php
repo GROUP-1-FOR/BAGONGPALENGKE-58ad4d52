@@ -85,7 +85,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         }
 
         // Hash the password
-        $hashedVendorPassword = md5($vendor_password);
+        $hashedVendorPassword = password_hash($vendor_password, PASSWORD_BCRYPT);
         $vendor_full_name = $vendor_first_name . " " . $vendor_last_name;
 
         // Check if the account already exists

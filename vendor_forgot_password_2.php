@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    $hashedPassword = md5($vendor_new_password);
+    $hashedPassword = password_hash($vendor_new_password, PASSWORD_BCRYPT);
 
     $password_query = "UPDATE vendor_sign_in SET vendor_password = ? WHERE vendor_userid = ?";
     $stmt = mysqli_prepare($connect, $password_query);

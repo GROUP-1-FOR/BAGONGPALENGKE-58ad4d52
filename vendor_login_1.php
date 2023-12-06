@@ -21,7 +21,7 @@ if (isset($_POST["vendor_login_submit"])) {
         if (mysqli_num_rows($result) > 0) {
 
 
-            if (md5($vendor_password) === $row["vendor_password"]) {
+            if (password_verify($vendor_password, $row["vendor_password"])) {
                 $_SESSION["login"] = true;
                 $_SESSION["id"] = $row["vendor_id"];
                 $_SESSION["userid"] = $row["vendor_userid"];
