@@ -5,7 +5,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $admin_userid = $_SESSION["userid"];
 
     // Fetch paid records from the database
-    $query = "SELECT id, name, balance, payment_date, mop FROM paid_records";
+    $query = "SELECT id, name, balance, payment_date, mop, transaction_id FROM paid_records";
     $result = mysqli_query($connect, $query);
 
     if (!$result) {
@@ -55,6 +55,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 <th>Balance</th>
                 <th>Payment Date</th> <!-- Add this line for the payment date -->
                 <th>Mode of Payment</th>
+                <th>Transaction ID</th>
             </tr>
 
             <?php
@@ -65,6 +66,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 echo "<td>{$row['balance']}</td>";
                 echo "<td>{$row['payment_date']}</td>";
                 echo "<td>{$row['mop']}</td>";
+                echo "<td>{$row['transaction_id']}</td>";
                 echo "</tr>";
             }
             ?>
