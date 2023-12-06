@@ -6,7 +6,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     //to know last log in time of vendor
     include('vendor_login_time.php');   
     // Fetch user data using prepared statement
-    $sqlUserData = "SELECT * FROM vendor_sign_in WHERE vendor_userid = ?";
+    $sqlUserData = "SELECT * FROM vendor_balance WHERE vendor_userid = ?";
     $stmtUserData = $connect->prepare($sqlUserData);
     $stmtUserData->bind_param('s', $userid); // Use 's' for VARCHAR
     $stmtUserData->execute();
@@ -17,6 +17,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $vendorName = $rowUserData['vendor_name'];
         $stallNumber = $rowUserData['vendor_stall_number'];
         $balance = $rowUserData['balance'];
+        $transactionId = $rowUserData['transaction_id'];
     } else {
         // Handle the case where the user ID is not found or there's an issue with the database query
         die("User not found or database query issue.");
@@ -26,9 +27,9 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $paymentStatus = "To be paid";
 
     // Check if the payment has been sent but not confirmed
-    $sqlCheckPayment = "SELECT * FROM ven_payments WHERE id = ? AND name = ? AND confirmed = 0 AND archived = 0";
+    $sqlCheckPayment = "SELECT * FROM ven_payments WHERE id = ? AND name = ? AND transaction_id = ? AND confirmed = 0 AND archived = 0";
     $stmtCheckPayment = $connect->prepare($sqlCheckPayment);
-    $stmtCheckPayment->bind_param('is', $userid, $vendorName);
+    $stmtCheckPayment->bind_param('iss', $userid, $vendorName, $transactionId);
     $stmtCheckPayment->execute();
     $resultCheckPayment = $stmtCheckPayment->get_result();
 
@@ -36,18 +37,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $paymentStatus = "Payment has already been sent";
     }
 
-    // Check if the payment is confirmed
-    $sqlCheckPaymentConfirmation = "SELECT * FROM ven_payments WHERE id = ? AND name = ? AND confirmed = 1 AND archived = 1";
-    $stmtCheckPaymentConfirmation = $connect->prepare($sqlCheckPaymentConfirmation);
-    $stmtCheckPaymentConfirmation->bind_param('is', $userid, $vendorName);
-    $stmtCheckPaymentConfirmation->execute();
-    $resultCheckPaymentConfirmation = $stmtCheckPaymentConfirmation->get_result();
-
-    if ($resultCheckPaymentConfirmation->num_rows > 0) {
-        $paymentStatus = "The payment is confirmed";
-        // Set balance to 0 as payment is confirmed
-        $balance = $rowUserData['balance'];
-    }
 
     // Check for payment status in session and reset the session variable
     if (isset($_SESSION['payment_status'])) {
@@ -125,6 +114,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                             <input type="hidden" name="vendorUserId" value="<?php echo $userid; ?>">
                             <input type="hidden" name="vendorStallNumber" value="<?php echo $stallNumber; ?>">
                             <input type="hidden" name="balance" value="<?php echo $balance; ?>">
+                            <input type="hidden" name="transactionId" value="<?php echo $transactionId; ?>"> <!-- Add this line -->
                             <button type="submit" name="pay" onclick="return confirm('Are you sure you want to make the payment?')">Pay</button>
                         </form>
                     <?php endif; ?>
@@ -133,8 +123,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 <?php endif; ?>
                 <?php if ($paymentStatus === "Payment has already been sent"): ?>
                     <p>Payment has already been sent. Wait for confirmation.</p>
-                <?php elseif ($paymentStatus === "The payment is confirmed"): ?>
-                    <p>The payment is confirmed. You have no current balance.</p>
                 <?php endif; ?>
             </center>
         </td>

@@ -4,13 +4,20 @@
 // Include the configuration file
 require("config.php");
 
-// Check if the necessary POST data is set
-if (isset($_POST['vendorName']) && isset($_POST['vendorUserId']) && isset($_POST['vendorStallNumber']) && isset($_POST['balance'])) {
-    // Get data from POST variables
+// Check if the necessary POST data is set, including the transaction_id
+if (
+    isset($_POST['vendorName']) &&
+    isset($_POST['vendorUserId']) &&
+    isset($_POST['vendorStallNumber']) &&
+    isset($_POST['balance']) &&
+    isset($_POST['transactionId'])
+) {
+    // Get data from POST variables, including transaction_id
     $vendorName = $_POST['vendorName'];
     $vendorUserId = $_POST['vendorUserId'];
     $vendorStallNumber = $_POST['vendorStallNumber'];
     $balance = $_POST['balance'];
+    $transactionId = $_POST['transactionId'];
 } else {
     // Redirect to the main page if data is not set
     header("Location: vendor_index.php");
@@ -23,11 +30,10 @@ if (isset($_POST['pay_cash'])) {
     $paymentDate = date('Y-m-d H:i:s');
     $paymentMethod = "CASH"; // Set the payment method to "CASH"
     
-    $sqlInsertPayment = "INSERT INTO ven_payments (id, name, balance, archived, confirmed, payment_date, mop) VALUES (?, ?, ?, 0, 0, ?, ?)";
+    $sqlInsertPayment = "INSERT INTO ven_payments (id, name, balance, archived, confirmed, payment_date, mop, transaction_id) VALUES (?, ?, ?, 0, 0, ?, ?, ?)";
     $stmtInsertPayment = $connect->prepare($sqlInsertPayment);
-    $stmtInsertPayment->bind_param('ssdss', $vendorUserId, $vendorName, $balance, $paymentDate, $paymentMethod); // Use 's' for VARCHAR, 'd' for DOUBLE
+    $stmtInsertPayment->bind_param('ssdsss', $vendorUserId, $vendorName, $balance, $paymentDate, $paymentMethod, $transactionId); // Use 's' for VARCHAR, 'd' for DOUBLE
     $stmtInsertPayment->execute();
-
     // Set payment status to "Payment request sent" in session
     // $_SESSION['payment_status'] = "Payment request sent. Please wait for confirmation.";
 
@@ -98,8 +104,8 @@ if (isset($_POST['pay_gcash'])) {
         <p><strong>Vendor ID:</strong> <?php echo $vendorUserId; ?></p>
         <p><strong>Stall Number:</strong> <?php echo $vendorStallNumber; ?></p>
         <p><strong>Balance:</strong> $<?php echo number_format($balance, 2); ?></p>
-
-        <!-- Add more invoice details or calculations as needed -->
+        <!-- Add the Transaction ID -->
+        <p><strong>Transaction ID:</strong> <?php echo $transactionId; ?></p>
 
         <p><strong>Payment Status:</strong> To be paid</p>
         <!-- ... -->
@@ -111,6 +117,7 @@ if (isset($_POST['pay_gcash'])) {
                 <input type="hidden" name="vendorUserId" value="<?php echo $vendorUserId; ?>">
                 <input type="hidden" name="vendorStallNumber" value="<?php echo $vendorStallNumber; ?>">
                 <input type="hidden" name="balance" value="<?php echo $balance; ?>">
+                <input type="hidden" name="transactionId" value="<?php echo $transactionId; ?>">
                 <button type="submit" name="pay_cash" onclick="return confirm('Are you sure you want to pay with cash?')">Pay with Cash</button>
             </form>
 
@@ -120,6 +127,7 @@ if (isset($_POST['pay_gcash'])) {
                 <input type="hidden" name="vendorUserId" value="<?php echo $vendorUserId; ?>">
                 <input type="hidden" name="vendorStallNumber" value="<?php echo $vendorStallNumber; ?>">
                 <input type="hidden" name="balance" value="<?php echo $balance; ?>">
+                <input type="hidden" name="transactionId" value="<?php echo $transactionId; ?>">
                 <button type="submit" name="pay_gcash" onclick="return confirm('Are you sure you want to pay with GCash?')">Pay with GCash</button>
             </form>
         </div>

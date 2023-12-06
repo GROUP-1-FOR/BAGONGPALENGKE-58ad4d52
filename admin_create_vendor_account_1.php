@@ -5,6 +5,32 @@ $vendor_first_name_error  = $vendor_last_name_error  = $vendor_mobile_number_err
 //Error message for the second part
 $vendor_userid_error = $vendor_password_error = $vendor_confirm_password_error = "";
 
+function generateUniqueTransactionId($connect, $vendor_userid) {
+    // Set the maximum number of attempts to generate a unique ID
+    $maxAttempts = 10;
+    
+    for ($attempt = 0; $attempt < $maxAttempts; $attempt++) {
+        // Generate a secure random 6-digit number
+        $uniqueId = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        
+        // Concatenate vendor user ID and unique ID
+        $transactionId = $vendor_userid . '-' . $uniqueId;
+        
+        // Check if the generated transaction_id already exists in vendor_balance table
+        $checkIfExistsVendor = "SELECT transaction_id FROM vendor_balance WHERE transaction_id = '$transactionId'";
+        $resultVendor = $connect->query($checkIfExistsVendor);
+
+        // If not exists in vendor_balance table, break the loop
+        if ($resultVendor->num_rows === 0) {
+            return $transactionId;
+        }
+    }
+
+    // If maximum attempts are reached, handle the error (e.g., throw an exception)
+    throw new Exception("Failed to generate a unique transaction ID after $maxAttempts attempts");
+}
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Part 1 variables
     $vendor_first_name = isset($_POST["vendor_first_name"]) ? htmlspecialchars($_POST["vendor_first_name"]) : '';
@@ -69,19 +95,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // Perform database insertion (you might need to adjust table/column names)
-    $sql = "INSERT INTO vendor_sign_in (vendor_first_name, vendor_last_name, vendor_name, vendor_stall_number,vendor_mobile_number,vendor_product,vendor_email, vendor_userid, vendor_password, balance) 
-        VALUES ('$vendor_first_name','$vendor_last_name','$vendor_full_name', '$vendor_stall_number','$vendor_mobile_number','$vendor_product_type','$vendor_email', '$vendor_userid', '$hashedPassword', '0.00')";
+    // Call the function to get a unique transaction_id
+    $transactionId = generateUniqueTransactionId($connect, $vendor_userid);
+    // First insertion into vendor_sign_in table
+    $sql1 = "INSERT INTO vendor_sign_in (vendor_first_name, vendor_last_name, vendor_name, vendor_stall_number, vendor_mobile_number, vendor_product, vendor_email, vendor_userid, vendor_password) 
+    VALUES ('$vendor_first_name', '$vendor_last_name', '$vendor_full_name', '$vendor_stall_number', '$vendor_mobile_number', '$vendor_product_type', '$vendor_email', '$vendor_userid', '$hashedPassword')";
 
-    if ($connect->query($sql) === TRUE) {
+    // Second insertion into vendor_balance table
+    $sql2 = "INSERT INTO vendor_balance (vendor_name, vendor_stall_number, vendor_userid, balance, transaction_id) 
+    VALUES ('$vendor_full_name', '$vendor_stall_number', '$vendor_userid', '0.00', '$transactionId')";
+    if ($connect->query($sql1) === TRUE) {
+        if ($connect->query($sql2) === TRUE) {
+        // Both insertions successful
         echo '<script>';
         echo 'alert("Vendor Account Created Successfully!");';
         echo 'window.location.href = "admin_index.php";';
         echo '</script>';
+        } else {
+        // If the second insertion fails, display an error
+        echo "Error: " . $sql2 . "<br>" . $connect->error;
+        }
     } else {
-        echo "Error: " . $sql . "<br>" . $connect->error;
+    // If the first insertion fails, display an error
+    echo "Error: " . $sql1 . "<br>" . $connect->error;
     }
 
-    // Close the database connection
-    $connect->close();
+// Close the database connection
+$connect->close();
 }
