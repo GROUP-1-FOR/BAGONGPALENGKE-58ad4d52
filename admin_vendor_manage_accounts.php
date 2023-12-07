@@ -248,6 +248,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     // Close the database connection
     $connect->close();
 } else {
-    header("location:admin_login.php");
+    header("location:admin_logout.php");
 }
 ?>

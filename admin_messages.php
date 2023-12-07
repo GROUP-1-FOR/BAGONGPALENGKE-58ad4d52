@@ -41,87 +41,89 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             die("Error executing the query: " . $connect->error);
         }
 
-        ?>
+?>
 
-<!DOCTYPE html>
-<html>
+        <!DOCTYPE html>
+        <html>
 
-<head>
-    <title>Messages for <?php echo $recipient; ?></title>
-    <style>
-        body {
-            background-color: white;
-            color: maroon;
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
+        <head>
+            <title>Messages for <?php echo $recipient; ?></title>
+            <style>
+                body {
+                    background-color: white;
+                    color: maroon;
+                    font-family: Arial, sans-serif;
+                    margin: 20px;
+                }
 
-        h1 {
-            color: maroon;
-        }
+                h1 {
+                    color: maroon;
+                }
 
-        #message-container {
-            max-height: 300px; /* Adjust the max-height as needed */
-            overflow-y: auto;
-            background-color: white;
-            border: 1px solid maroon;
-            padding: 10px;
-        }
+                #message-container {
+                    max-height: 300px;
+                    /* Adjust the max-height as needed */
+                    overflow-y: auto;
+                    background-color: white;
+                    border: 1px solid maroon;
+                    padding: 10px;
+                }
 
-        #message-container p {
-            margin: 0;
-        }
+                #message-container p {
+                    margin: 0;
+                }
 
-        form {
-            margin-top: 10px;
-        }
+                form {
+                    margin-top: 10px;
+                }
 
-        button {
-            background-color: maroon;
-            color: white;
-            padding: 5px 10px;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
-</head>
+                button {
+                    background-color: maroon;
+                    color: white;
+                    padding: 5px 10px;
+                    border: none;
+                    cursor: pointer;
+                }
+            </style>
+        </head>
 
-<body>
-<center>
-    <h1>Messages for <?php echo $recipient; ?></h1>
+        <body>
+            <center>
+                <h1>Messages for <?php echo $recipient; ?></h1>
 
-    <!-- Display messages -->
-    <div id="message-container">
-        <?php
-        // Display messages
-        while ($message_row = $messages_result->fetch_assoc()) {
-            $message_type = ucfirst($message_row['message_type']);
-            $message_text = $message_row['message'];
-            $message_timestamp = $message_row['timestamp'];
+                <!-- Display messages -->
+                <div id="message-container">
+                    <?php
+                    // Display messages
+                    while ($message_row = $messages_result->fetch_assoc()) {
+                        $message_type = ucfirst($message_row['message_type']);
+                        $message_text = $message_row['message'];
+                        $message_timestamp = $message_row['timestamp'];
 
-            echo "<p>$message_type: $message_text</p>";
-            echo "<p>Timestamp: $message_timestamp</p>";
-            echo "-----------------------";
-        }
-        ?>
-    </div>
+                        echo "<p>$message_type: $message_text</p>";
+                        echo "<p>Timestamp: $message_timestamp</p>";
+                        echo "-----------------------";
+                    }
+                    ?>
+                </div>
 
-    <!-- Reply Form -->
-    <form action="process_admin_reply.php" method="post">
-        <input type="hidden" name="admin_name" value="<?php echo $_SESSION["admin_name"]; ?>">
-        <input type="hidden" name="recipient" value="<?php echo $recipient; ?>">
-        <input type="hidden" name="stall_number" value="<?php echo $stall_number; ?>">
-        <label for="admin_reply">Admin Reply:</label>
-        <textarea name="admin_reply" id="admin_reply" required></textarea>
-        <br>
-        <button type="submit">Reply</button>
-    </form>
-    <br>
-    <!-- Back button -->
-    <a href='admin_messages_preview.php'><button>Back</button></a>
-</body>
-    </center>
-</html>
+                <!-- Reply Form -->
+                <form action="process_admin_reply.php" method="post">
+                    <input type="hidden" name="admin_name" value="<?php echo $_SESSION["admin_name"]; ?>">
+                    <input type="hidden" name="recipient" value="<?php echo $recipient; ?>">
+                    <input type="hidden" name="stall_number" value="<?php echo $stall_number; ?>">
+                    <label for="admin_reply">Admin Reply:</label>
+                    <textarea name="admin_reply" id="admin_reply" required></textarea>
+                    <br>
+                    <button type="submit">Reply</button>
+                </form>
+                <br>
+                <!-- Back button -->
+                <a href='admin_messages_preview.php'><button>Back</button></a>
+        </body>
+        </center>
+
+        </html>
 
 <?php
     } else {
@@ -129,6 +131,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         header("location:admin_messages_preview.php");
     }
 } else {
-    header("location:admin_login.php");
+    header("location:admin_logout.php");
 }
 ?>

@@ -4,7 +4,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $id = $_SESSION["id"];
     $userid = $_SESSION["userid"];
     //to know last log in time of vendor
-    include('vendor_login_time.php');   
+    include('vendor_login_time.php');
     // Fetch user data using prepared statement
     $sqlUserData = "SELECT * FROM vendor_balance WHERE vendor_userid = ?";
     $stmtUserData = $connect->prepare($sqlUserData);
@@ -55,98 +55,98 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     }
 ?>
 
-<!DOCTYPE html>
-<html>
+    <!DOCTYPE html>
+    <html>
 
-<head>
-    <title>Main Page</title>
-    <style>
-        body {
-            text-align: center;
-            margin: 50px;
-            background-color: #f2f2f2;
-        }
+    <head>
+        <title>Main Page</title>
+        <style>
+            body {
+                text-align: center;
+                margin: 50px;
+                background-color: #f2f2f2;
+            }
 
-        #money-table {
-            width: 70%;
-            margin: auto;
-            border-collapse: collapse;
-            cursor: pointer;
-        }
+            #money-table {
+                width: 70%;
+                margin: auto;
+                border-collapse: collapse;
+                cursor: pointer;
+            }
 
-        #money-cell {
-            border: 3px solid #ccc;
-            padding: 50px;
-            background-color: #850F16;
-            color: white;
-            font-size: 2em;
-            /* Adjust the font size as needed */
-        }
+            #money-cell {
+                border: 3px solid #ccc;
+                padding: 50px;
+                background-color: #850F16;
+                color: white;
+                font-size: 2em;
+                /* Adjust the font size as needed */
+            }
 
-        #money-cell button {
-            margin-top: 10px;
-            padding: 40;
-            background-color: gray;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-        }
-    </style>
-</head>
+            #money-cell button {
+                margin-top: 10px;
+                padding: 40;
+                background-color: gray;
+                color: white;
+                border: none;
+                border-radius: 20px;
+                cursor: pointer;
+            }
+        </style>
+    </head>
 
-<body>
-    <h1><?php echo "Hi, " . $vendorName; ?>!</h1>
-    <!-- Display vendor information -->
-    <p>Stall No: <?php echo $stallNumber; ?></p>
-    <p>Vendor ID: <?php echo $userid; ?></p>
+    <body>
+        <h1><?php echo "Hi, " . $vendorName; ?>!</h1>
+        <!-- Display vendor information -->
+        <p>Stall No: <?php echo $stallNumber; ?></p>
+        <p>Vendor ID: <?php echo $userid; ?></p>
 
-    <!-- Vendor Pay Table -->
-    <table id="money-table">
-    <tr>
-        <td id="money-cell">
-            <center>
-                <?php if ($balance > 0): ?>
-                    $<?php echo number_format($balance, 2); ?>
-                    <?php if ($paymentStatus === "To be paid"): ?>
-                        <form method="post" action="vendor_invoice_summary.php">
-                            <input type="hidden" name="vendorName" value="<?php echo $vendorName; ?>">
-                            <input type="hidden" name="vendorUserId" value="<?php echo $userid; ?>">
-                            <input type="hidden" name="vendorStallNumber" value="<?php echo $stallNumber; ?>">
-                            <input type="hidden" name="balance" value="<?php echo $balance; ?>">
-                            <input type="hidden" name="transactionId" value="<?php echo $transactionId; ?>"> <!-- Add this line -->
-                            <button type="submit" name="pay" onclick="return confirm('Are you sure you want to make the payment?')">Pay</button>
-                        </form>
-                    <?php endif; ?>
-                <?php else: ?>
-                    $<?php echo number_format($balance, 2); ?>
-                <?php endif; ?>
-                <?php if ($paymentStatus === "Payment has already been sent"): ?>
-                    <p>Payment has already been sent. Wait for confirmation.</p>
-                <?php endif; ?>
-            </center>
-        </td>
-    </tr>
-</table>
-    <br>
-    <a href=vendor_edit_profile.php>
-        <h1>EDIT PROFILE</h1>
-    </a>
-    <a href=vendor_view_announcement.php>
-        <h1>SEE ANNOUNCEMENTS</h1>
-    </a>
-    <a href="vendor_messages.php">
-        <h1>MESSAGES</h1>
-    </a>
+        <!-- Vendor Pay Table -->
+        <table id="money-table">
+            <tr>
+                <td id="money-cell">
+                    <center>
+                        <?php if ($balance > 0) : ?>
+                            $<?php echo number_format($balance, 2); ?>
+                            <?php if ($paymentStatus === "To be paid") : ?>
+                                <form method="post" action="vendor_invoice_summary.php">
+                                    <input type="hidden" name="vendorName" value="<?php echo $vendorName; ?>">
+                                    <input type="hidden" name="vendorUserId" value="<?php echo $userid; ?>">
+                                    <input type="hidden" name="vendorStallNumber" value="<?php echo $stallNumber; ?>">
+                                    <input type="hidden" name="balance" value="<?php echo $balance; ?>">
+                                    <input type="hidden" name="transactionId" value="<?php echo $transactionId; ?>"> <!-- Add this line -->
+                                    <button type="submit" name="pay" onclick="return confirm('Are you sure you want to make the payment?')">Pay</button>
+                                </form>
+                            <?php endif; ?>
+                        <?php else : ?>
+                            $<?php echo number_format($balance, 2); ?>
+                        <?php endif; ?>
+                        <?php if ($paymentStatus === "Payment has already been sent") : ?>
+                            <p>Payment has already been sent. Wait for confirmation.</p>
+                        <?php endif; ?>
+                    </center>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <a href=vendor_edit_profile.php>
+            <h1>EDIT PROFILE</h1>
+        </a>
+        <a href=vendor_view_announcement.php>
+            <h1>SEE ANNOUNCEMENTS</h1>
+        </a>
+        <a href="vendor_messages.php">
+            <h1>MESSAGES</h1>
+        </a>
 
-    <a href=vendor_logout.php>
-        <h1>LOGOUT</h1>
-    </a>
-</body>
+        <a href=vendor_logout.php>
+            <h1>LOGOUT</h1>
+        </a>
+    </body>
 
-</html>
+    </html>
 <?php
 } else {
-    header("location:vendor_login.php");
+    header("location:vendor_logout.php");
 }
 ?>

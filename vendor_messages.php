@@ -38,7 +38,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     }
 
     // Fetch all messages (both vendor and admin) in ascending order of timestamp
-        $sqlFetchAllMessages = "
+    $sqlFetchAllMessages = "
         SELECT 'vendor' as message_type, vendor_chat as message, vendor_timestamp as timestamp
         FROM vendor_messages
         WHERE vendor_name = ? AND vendor_stall_number = ?
@@ -51,83 +51,86 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         ORDER BY timestamp ASC";
 
-        $stmtFetchAllMessages = $connect->prepare($sqlFetchAllMessages);
-        $stmtFetchAllMessages->bind_param('ssss', $vendorName, $vendorStallNumber, $vendorName, $vendorStallNumber);
-        $stmtFetchAllMessages->execute();
-        $resultFetchAllMessages = $stmtFetchAllMessages->get_result();
+    $stmtFetchAllMessages = $connect->prepare($sqlFetchAllMessages);
+    $stmtFetchAllMessages->bind_param('ssss', $vendorName, $vendorStallNumber, $vendorName, $vendorStallNumber);
+    $stmtFetchAllMessages->execute();
+    $resultFetchAllMessages = $stmtFetchAllMessages->get_result();
 
-    ?>
+?>
 
-<!DOCTYPE html>
-<html>
+    <!DOCTYPE html>
+    <html>
 
-<head>
-    <title>Vendor Messages</title>
-    <style>
-    body {
-        color: maroon;
-        font-family: Arial, sans-serif;
-    }
+    <head>
+        <title>Vendor Messages</title>
+        <style>
+            body {
+                color: maroon;
+                font-family: Arial, sans-serif;
+            }
 
-    #message-container {
-        max-height: 300px;
-        overflow-y: auto;
-        background-color: white; /* Set your desired background color */
-        border: 1px solid maroon;
-        padding: 10px;
-        width: 60%; /* Set the width to 60% */
-        margin: 0 auto; /* Center the container */
-    }
+            #message-container {
+                max-height: 300px;
+                overflow-y: auto;
+                background-color: white;
+                /* Set your desired background color */
+                border: 1px solid maroon;
+                padding: 10px;
+                width: 60%;
+                /* Set the width to 60% */
+                margin: 0 auto;
+                /* Center the container */
+            }
 
-    #message-container p {
-        margin: 0;
-    }
+            #message-container p {
+                margin: 0;
+            }
 
-    form {
-        margin-top: 10px;
-    }
+            form {
+                margin-top: 10px;
+            }
 
-    button {
-        background-color: maroon;
-        color: white;
-        padding: 5px 10px;
-        border: none;
-        cursor: pointer;
-    }
-</style>
-</head>
+            button {
+                background-color: maroon;
+                color: white;
+                padding: 5px 10px;
+                border: none;
+                cursor: pointer;
+            }
+        </style>
+    </head>
 
-<body>
-    <center>
-    <h1>Welcome, <?php echo $vendorName; ?>! </h1>
+    <body>
+        <center>
+            <h1>Welcome, <?php echo $vendorName; ?>! </h1>
 
-    <!-- Display messages -->
-    <div id="message-container">
-        <?php
-        while ($rowMessage = $resultFetchAllMessages->fetch_assoc()) :
-        ?>
-            <p><?php echo ucfirst($rowMessage['message_type']); ?>: <?php echo $rowMessage['message']; ?> (<?php echo $rowMessage['timestamp']; ?>)</p>
-        <?php endwhile; ?>
-    </div>
+            <!-- Display messages -->
+            <div id="message-container">
+                <?php
+                while ($rowMessage = $resultFetchAllMessages->fetch_assoc()) :
+                ?>
+                    <p><?php echo ucfirst($rowMessage['message_type']); ?>: <?php echo $rowMessage['message']; ?> (<?php echo $rowMessage['timestamp']; ?>)</p>
+                <?php endwhile; ?>
+            </div>
 
-    <!-- Form to send a message -->
-    <form method="post">
-        <textarea name="message_text" rows="4" cols="50" placeholder="Type your message here"></textarea>
-        <br>
-        <button type="submit" name="send_message">Send Message</button>
-    </form>
+            <!-- Form to send a message -->
+            <form method="post">
+                <textarea name="message_text" rows="4" cols="50" placeholder="Type your message here"></textarea>
+                <br>
+                <button type="submit" name="send_message">Send Message</button>
+            </form>
 
-    <br>
-    <a href="vendor_index.php">
-        <h1>BACK</h1>
-    </a>
+            <br>
+            <a href="vendor_index.php">
+                <h1>BACK</h1>
+            </a>
         </center>
-</body>
+    </body>
 
-</html>
+    </html>
 
 <?php
 } else {
-    header("location:vendor_login.php");
+    header("location:vendor_logout.php");
 }
 ?>

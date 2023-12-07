@@ -72,6 +72,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             echo '</script>';
         }
     }
+} else {
+    header("location:admin_logout.php");
 }
 
 // Function to handle incorrect credentials

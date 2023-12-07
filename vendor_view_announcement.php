@@ -48,6 +48,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     </html>
 
 <?php } else {
-    header("location:vendor_login.php");
+    header("location:vendor_logout.php");
 }
 ?>

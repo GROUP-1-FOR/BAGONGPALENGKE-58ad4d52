@@ -62,6 +62,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     </html>
 <?php } else {
-    header("location:admin_login.php");
+    header("location:admin_logout.php");
     exit();
 }

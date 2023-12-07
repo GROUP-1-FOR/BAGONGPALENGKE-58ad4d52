@@ -27,6 +27,5 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         exit();
     }
 } else {
-    header("location:admin_login.php");
+    header("location:admin_logout.php");
 }
-?>
