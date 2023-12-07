@@ -62,7 +62,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     // Loop through 75 tables
     for ($i = 1; $i <= 75; $i++) {
         echo '<div class="table" id="table' . $i . '" onclick="toggleAddButton(' . $i . ')">';
-        echo '<p>Stall ' . str_pad($i, 4, '0', STR_PAD_LEFT) . '</p>';
+        echo '<p>Stall ' . $i . '</p>'; // Display stall number without leading zeros
         echo '<a class="add-button" href="javascript:void(0);" onclick="confirmAdd(' . $i . ')">Add</a>';
         echo '</div>';
     }
