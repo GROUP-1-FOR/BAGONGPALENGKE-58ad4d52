@@ -26,8 +26,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             // Assuming $modeOfPayment is received from your form or any other source
             $modeOfPayment = $_POST['modeOfPayment'];
 
-            
-
             // Insert into the paid records table
             $insertPaidQuery = "INSERT INTO `paid_records` (name, balance, payment_date, mop, transaction_id) VALUES (?, ?, ?, ?, ?)";
             $insertPaidStatement = mysqli_prepare($connect, $insertPaidQuery);
@@ -69,31 +67,49 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 if (!$successUpdate) {
                     echo "Error updating ven_payments table: " . mysqli_error($connect);
                 } else {
-        // Update the balance in the vendor_user table
-        $newBalance = 0;
-        // Generate a new transaction ID
-        $newTransactionId = generateUniqueTransactionId($connect, $vendorId);
-        // Update the transaction_id and balance in the vendor_balance table
-        $updateVendorBalanceQuery = "UPDATE `vendor_balance` SET `transaction_id` = ?, `balance` = ? WHERE `vendor_userid` = ?";
-        $updateVendorBalanceStatement = mysqli_prepare($connect, $updateVendorBalanceQuery);
+                    // Update the balance in the vendor_user table
+                    $newBalance = 0;
+                    // Generate a new transaction ID
+                    $newTransactionId = generateUniqueTransactionId($connect, $vendorId);
+                    // Update the transaction_id and balance in the vendor_balance table
+                    $updateVendorBalanceQuery = "UPDATE `vendor_balance` SET `transaction_id` = ?, `balance` = ? WHERE `vendor_userid` = ?";
+                    $updateVendorBalanceStatement = mysqli_prepare($connect, $updateVendorBalanceQuery);
 
-        if ($updateVendorBalanceStatement) {
-            mysqli_stmt_bind_param($updateVendorBalanceStatement, "sds", $newTransactionId, $newBalance, $vendorId); // Use "s" for VARCHAR, "d" for DECIMAL
-            $successUpdateVendorBalance = mysqli_stmt_execute($updateVendorBalanceStatement);
+                    if ($updateVendorBalanceStatement) {
+                        mysqli_stmt_bind_param($updateVendorBalanceStatement, "sds", $newTransactionId, $newBalance, $vendorId); // Use "s" for VARCHAR, "d" for DECIMAL
+                        $successUpdateVendorBalance = mysqli_stmt_execute($updateVendorBalanceStatement);
 
-            if (!$successUpdateVendorBalance) {
-                echo "Error updating transaction_id and balance in vendor_balance table: " . mysqli_error($connect);
-            }
-        } else {
-            echo "Error preparing statement for updating transaction_id and balance in vendor_balance: " . mysqli_error($connect);
-        }
+                        if (!$successUpdateVendorBalance) {
+                            echo "Error updating transaction_id and balance in vendor_balance table: " . mysqli_error($connect);
+                        }
+                    } else {
+                        echo "Error preparing statement for updating transaction_id and balance in vendor_balance: " . mysqli_error($connect);
+                    }
+
+                    // Update the admin_stall_map table
+                    $updateStallMapQuery = "UPDATE `admin_stall_map` SET `balance` = ? WHERE `vendor_userid` = ?";
+                    $updateStallMapStatement = mysqli_prepare($connect, $updateStallMapQuery);
+
+                    if ($updateStallMapStatement) {
+                        mysqli_stmt_bind_param($updateStallMapStatement, "ds", $newBalance, $vendorId); // Use "d" for DECIMAL
+                        $successUpdateStallMap = mysqli_stmt_execute($updateStallMapStatement);
+
+                        if (!$successUpdateStallMap) {
+                            echo "Error updating balance in admin_stall_map table: " . mysqli_error($connect);
+                        }
+                    } else {
+                        echo "Error preparing statement for updating balance in admin_stall_map: " . mysqli_error($connect);
+                    }
+
+                    // Check for success in all updates
+                    if ($successPaid && $successArchive && $successUpdate && $successUpdateVendorBalance && $successUpdateStallMap) {
+                        echo "Payment confirmed and archived for Vendor: $vendorName";
+                    } else {
+                        echo "Error in one or more update operations.";
+                    }
                 }
             } else {
                 echo "Error preparing statement for updating ven_payments: " . mysqli_error($connect);
-            }
-
-            if ($successPaid && $successArchive && $successUpdate && $successUpdateVendorBalance) {
-                echo "Payment confirmed and archived for Vendor: $vendorName";
             }
         } else {
             echo "Error preparing statement to fetch vendor details: " . mysqli_error($connect);
