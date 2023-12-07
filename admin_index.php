@@ -77,7 +77,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
             <a href=admin_confirmpay.php>Confirm Payment</a>
 
-            <a href=''> View Market Rental Stalls </a>
+            <a href=interactive_map.php> View Market Rental Stalls </a>
 
             <a href="admin_send_announcement.php"> Send Announcements </a>
 

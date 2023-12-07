@@ -4,6 +4,13 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $admin_id = $_SESSION["id"];
     $admin_userid = $_SESSION["userid"];
 
+    if (isset($_GET['stall_number'])) {
+        $stallNumber = $_GET['stall_number'];
+        // Use $stallNumber as needed in your code
+        // For example, you can store it in the session for further processing
+        $_SESSION['vendor_stall_number'] = $stallNumber;
+    }
+
     function generateUserID($pdo)
     {
         while (true) {
