@@ -158,8 +158,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             } else {
                 echo "<tr><td colspan='2'>No vendors found</td></tr>";
             }
-            
-            
+
+
             ?>
         </table>
 

@@ -54,6 +54,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     // Clear session variables
                     unsetVendorSessionVariables();
                 } else {
+                    unsetVendorSessionVariables();
                     // If the insertion fails, display an error
                     echo "Error: " . $connect->error;
                 }
@@ -64,6 +65,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 handleIncorrectCredentials();
             }
         } else {
+            unsetVendorSessionVariables();
             echo '<script>';
             echo 'alert("No admin Found!");';
             echo 'window.location.href = "admin_index.php";';
