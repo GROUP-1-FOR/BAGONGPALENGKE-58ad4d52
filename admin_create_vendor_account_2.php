@@ -25,53 +25,57 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $vendor_password = $_SESSION['vendor_hashed_password'];
     $vendor_transaction_id = $_SESSION['vendor_transaction_id'];
 
-    // Check if the form is submitted
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $admin_password = htmlspecialchars($_POST["admin_password"]);
+   // Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $admin_password = htmlspecialchars($_POST["admin_password"]);
 
-        // Query the database for admin information
-        $result = mysqli_query($connect, "SELECT * FROM admin_sign_in WHERE admin_userid= '$admin_userid'");
-        $row = mysqli_fetch_assoc($result);
+    // Query the database for admin information
+    $result = mysqli_query($connect, "SELECT * FROM admin_sign_in WHERE admin_userid= '$admin_userid'");
+    $row = mysqli_fetch_assoc($result);
 
-        if (mysqli_num_rows($result) > 0) {
-            if (password_verify($admin_password, $row["admin_password"])) {
-                // Insert data into vendor_sign_in table
-                $sql1 = "INSERT INTO vendor_sign_in (vendor_first_name, vendor_last_name, vendor_name, vendor_stall_number, vendor_mobile_number, vendor_product, vendor_email, vendor_userid, vendor_password) 
-                    VALUES ('$vendor_first_name', '$vendor_last_name', '$vendor_full_name', '$vendor_stall_number', '$vendor_mobile_number', '$vendor_product_type', '$vendor_email', '$vendor_userid', '$vendor_password')";
+    if (mysqli_num_rows($result) > 0) {
+        if (password_verify($admin_password, $row["admin_password"])) {
+            // Insert data into vendor_sign_in table
+            $sql1 = "INSERT INTO vendor_sign_in (vendor_first_name, vendor_last_name, vendor_name, vendor_stall_number, vendor_mobile_number, vendor_product, vendor_email, vendor_userid, vendor_password) 
+                VALUES ('$vendor_first_name', '$vendor_last_name', '$vendor_full_name', '$vendor_stall_number', '$vendor_mobile_number', '$vendor_product_type', '$vendor_email', '$vendor_userid', '$vendor_password')";
 
-                // Insert data into vendor_balance table
-                $sql2 = "INSERT INTO vendor_balance (vendor_name, vendor_stall_number, vendor_userid, balance, transaction_id) 
-                    VALUES ('$vendor_full_name', '$vendor_stall_number', '$vendor_userid', '0.00', '$vendor_transaction_id')";
+            // Insert data into vendor_balance table
+            $sql2 = "INSERT INTO vendor_balance (vendor_name, vendor_stall_number, vendor_userid, balance, transaction_id) 
+                VALUES ('$vendor_full_name', '$vendor_stall_number', '$vendor_userid', '0.00', '$vendor_transaction_id')";
 
-                // Execute SQL queries
-                if ($connect->query($sql1) === TRUE && $connect->query($sql2) === TRUE) {
-                    // Both insertions successful
-                    echo '<script>';
-                    echo 'alert("Vendor Account Created Successfully!");';
-                    echo 'window.location.href = "admin_index.php";';
-                    echo '</script>';
+            // Insert data into admin_stall_map table
+            $sql3 = "INSERT INTO admin_stall_map (vendor_stall_number, vendor_name, vendor_userid, balance, vacant) 
+                VALUES ('$vendor_stall_number', '$vendor_full_name', '$vendor_userid', '0.00', '1')";
 
-                    // Clear session variables
-                    unsetVendorSessionVariables();
-                } else {
-                    unsetVendorSessionVariables();
-                    // If the insertion fails, display an error
-                    echo "Error: " . $connect->error;
-                }
+            // Execute SQL queries
+            if ($connect->query($sql1) === TRUE && $connect->query($sql2) === TRUE && $connect->query($sql3) === TRUE) {
+                // All insertions successful
+                echo '<script>';
+                echo 'alert("Vendor Account Created Successfully!");';
+                echo 'window.location.href = "admin_index.php";';
+                echo '</script>';
 
-                // Close the database connection
-                $connect->close();
+                // Clear session variables
+                unsetVendorSessionVariables();
             } else {
-                handleIncorrectCredentials();
+                unsetVendorSessionVariables();
+                // If any insertion fails, display an error
+                echo "Error: " . $connect->error;
             }
+
+            // Close the database connection
+            $connect->close();
         } else {
-            unsetVendorSessionVariables();
-            echo '<script>';
-            echo 'alert("No admin Found!");';
-            echo 'window.location.href = "admin_index.php";';
-            echo '</script>';
+            handleIncorrectCredentials();
         }
+    } else {
+        unsetVendorSessionVariables();
+        echo '<script>';
+        echo 'alert("No admin Found!");';
+        echo 'window.location.href = "admin_index.php";';
+        echo '</script>';
     }
+}
 }
 
 // Function to handle incorrect credentials
