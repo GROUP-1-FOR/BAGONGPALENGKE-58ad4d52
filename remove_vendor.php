@@ -28,8 +28,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $archiveResult = $archiveStmt->execute();
             $archiveStmt->close();
 
+            // If removal from vendor_sign_in is successful, remove from admin_stall_map
             if ($archiveResult) {
-                echo json_encode(['success' => true]);
+                $mapSql = "DELETE FROM admin_stall_map WHERE vendor_userid = ?";
+                $mapStmt = $connect->prepare($mapSql);
+                $mapStmt->bind_param("s", $vendorId);
+                $mapResult = $mapStmt->execute();
+                $mapStmt->close();
+
+                if ($mapResult) {
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Error removing from admin_stall_map']);
+                }
             } else {
                 echo json_encode(['success' => false, 'error' => 'Error archiving vendor']);
             }
@@ -42,3 +53,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $connect->close();
+?>
