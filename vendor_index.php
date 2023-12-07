@@ -6,7 +6,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     //to know last log in time of vendor
     include('vendor_login_time.php');
     // Check if the balance has already been updated in the current session
-    if (!isset($_SESSION['balance_updated'])) {
+   /* if (!isset($_SESSION['balance_updated'])) {
         // Fetch vendor payment basis and product from vendor_sign_in table
         $sqlVendorInfo = "SELECT vendor_product, vendor_payment_basis FROM vendor_sign_in WHERE vendor_userid = ?";
         $stmtVendorInfo = $connect->prepare($sqlVendorInfo);
@@ -55,7 +55,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 }
             }
         }
-    }
+    }*/
     // Fetch user data using prepared statement
     $sqlUserData = "SELECT * FROM vendor_balance WHERE vendor_userid = ?";
     $stmtUserData = $connect->prepare($sqlUserData);
