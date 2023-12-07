@@ -301,7 +301,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
 
 
-        <a href="admin_create_vendor_account.php?cancel=1">Back</a>
+        <a href="interactive_map.php?cancel=1">Back</a>
 
         <a href=admin_logout.php>
             <h1>LOGOUT</h1>
