@@ -90,7 +90,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     $tableColor = 'background-color: gray;';
                 }
         
-                echo '<div class="table" id="table' . $i . '" onclick="toggleAddButton(' . $i . ')" style="' . $tableColor . '">';
+                echo '<div class="table" id="table' . $i . '" data-count="' . $count . '" onclick="toggleAddButton(' . $i . ')" style="' . $tableColor . '">';
                 echo '<p>Stall ' . $i . '</p>'; // Display stall number without leading zeros
                 echo '<a class="add-button" href="javascript:void(0);" onclick="confirmAdd(' . $i . ')">Add</a>';
                 echo '</div>';
@@ -104,19 +104,27 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     <!-- Include your JavaScript file here -->
     <script src="interactive_map.js"></script>
     <script>
-        function toggleAddButton(tableNumber) {
-            var addButton = document.getElementById('table' + tableNumber).getElementsByClassName('add-button')[0];
+    function toggleAddButton(tableNumber) {
+        var table = document.getElementById('table' + tableNumber);
+        var addButton = table.getElementsByClassName('add-button')[0];
+
+        // Check if the count is greater than 0
+        var count = table.getAttribute('data-count');
+        if (count > 0) {
+            addButton.style.display = 'none';
+        } else {
             addButton.style.display = (addButton.style.display === 'none' || addButton.style.display === '') ? 'inline-block' : 'none';
         }
+    }
 
-        function confirmAdd(tableNumber) {
-            var confirmAddition = confirm('Are you sure you want to add a vendor?');
-            if (confirmAddition) {
-                var url = 'admin_create_vendor_account.php?stall_number=' + tableNumber;
-                window.location.href = url;
-            }
+    function confirmAdd(tableNumber) {
+        var confirmAddition = confirm('Are you sure you want to add a vendor?');
+        if (confirmAddition) {
+            var url = 'admin_create_vendor_account.php?stall_number=' + tableNumber;
+            window.location.href = url;
         }
-    </script>
+    }
+</script>
     <center>
         <button><a href="admin_index.php">Home</a></button>
     </center>
