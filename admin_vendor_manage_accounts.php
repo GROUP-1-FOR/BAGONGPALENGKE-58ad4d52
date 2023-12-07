@@ -163,7 +163,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             ?>
         </table>
 
-        <!-- Button to add vendors -->
+
+        <!--Button to add vendors -->
         <button id="addButton" onclick="redirectToAddVendors()">Add Vendor (+)</button>
 
         <a href=admin_index.php><button id="Button">Back</button></a>
@@ -202,8 +203,9 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             }
 
             function redirectToAddVendors() {
-                window.location.href = 'admin_create_vendor_account.php';
+                window.location.href = 'interactive_map.php';
             }
+
 
             function showSuggestions() {
                 const searchInput = document.getElementById('search');
