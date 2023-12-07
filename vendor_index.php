@@ -5,6 +5,57 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $userid = $_SESSION["userid"];
     //to know last log in time of vendor
     include('vendor_login_time.php');
+    // Check if the balance has already been updated in the current session
+    if (!isset($_SESSION['balance_updated'])) {
+        // Fetch vendor payment basis and product from vendor_sign_in table
+        $sqlVendorInfo = "SELECT vendor_product, vendor_payment_basis FROM vendor_sign_in WHERE vendor_userid = ?";
+        $stmtVendorInfo = $connect->prepare($sqlVendorInfo);
+        $stmtVendorInfo->bind_param('s', $userid);
+        $stmtVendorInfo->execute();
+        $resultVendorInfo = $stmtVendorInfo->get_result();
+
+        if ($resultVendorInfo->num_rows > 0) {
+            $rowVendorInfo = $resultVendorInfo->fetch_assoc();
+            $vendorProduct = $rowVendorInfo['vendor_product'];
+            $vendorPaymentBasis = $rowVendorInfo['vendor_payment_basis'];
+
+            // Fetch stall rate from rent_basis table based on vendor_product
+            $sqlStallRate = "SELECT stall_rate FROM rent_basis WHERE vendor_product = ?";
+            $stmtStallRate = $connect->prepare($sqlStallRate);
+            $stmtStallRate->bind_param('s', $vendorProduct);
+            $stmtStallRate->execute();
+            $resultStallRate = $stmtStallRate->get_result();
+
+            if ($resultStallRate->num_rows > 0) {
+                $rowStallRate = $resultStallRate->fetch_assoc();
+                $stallRate = $rowStallRate['stall_rate'];
+
+                // Calculate the balance based on vendor_payment_basis
+                if ($vendorPaymentBasis == "Daily") {
+                    $daysInMonth = cal_days_in_month(CAL_GREGORIAN, date("m"), date("Y"));
+                    $dailyRate = $stallRate / $daysInMonth;
+
+                    // Calculate the balance and update the vendor_balance table
+                    $balance = $dailyRate;
+                    $sqlUpdateBalance = "UPDATE vendor_balance SET balance = balance + ? WHERE vendor_userid = ?";
+                    $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+                    $stmtUpdateBalance->bind_param('ss', $balance, $userid);
+                    $stmtUpdateBalance->execute();
+
+                    // Update admin_stall_map table with the new balance
+                    $sqlUpdateAdminStallMap = "UPDATE admin_stall_map SET balance = balance + ? WHERE vendor_userid = ?";
+                    $stmtUpdateAdminStallMap = $connect->prepare($sqlUpdateAdminStallMap);
+                    $stmtUpdateAdminStallMap->bind_param('ss', $balance, $userid);
+                    $stmtUpdateAdminStallMap->execute();
+
+                    // Set session variable to indicate that the balance has been updated
+                    $_SESSION['balance_updated'] = true;
+                } else {
+                    // Handle other payment basis scenarios here
+                }
+            }
+        }
+    }
     // Fetch user data using prepared statement
     $sqlUserData = "SELECT * FROM vendor_balance WHERE vendor_userid = ?";
     $stmtUserData = $connect->prepare($sqlUserData);
