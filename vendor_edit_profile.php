@@ -100,8 +100,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             }
 
 
-        // Initialize variables to store initial values of form fields
-        var initialVendorFirstName = "<?php echo $vendorFirstName; ?>";
+            // Initialize variables to store initial values of form fields
+            var initialVendorFirstName = "<?php echo $vendorFirstName; ?>";
             var initialVendorLastName = "<?php echo $vendorLastName; ?>";
             var initialVendorMobileNumber = "<?php echo $vendorMobileNumber; ?>";
             var initialVendorEmail = "<?php echo $vendorEmail; ?>";
@@ -228,5 +228,5 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     </html>
 <?php } else {
-    header("location:vendor_login.php");
+    header("location:vendor_logout.php");
 }

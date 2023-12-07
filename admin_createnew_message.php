@@ -41,7 +41,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     while ($row = $result->fetch_assoc()) {
         $vendors[] = $row;
     }
-    ?>
+?>
 
     <!DOCTYPE html>
     <html>
@@ -84,6 +84,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
 <?php
 } else {
-    header("location:admin_login.php");
+    header("location:admin_logout.php");
 }
 ?>

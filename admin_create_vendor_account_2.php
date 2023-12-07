@@ -75,6 +75,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo 'window.location.href = "admin_index.php";';
         echo '</script>';
     }
+} else {
+    header("location:admin_logout.php");
 }
 }
 
