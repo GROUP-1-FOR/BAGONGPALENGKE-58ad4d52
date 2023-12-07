@@ -52,6 +52,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         unset($_SESSION['vendor_stall_number']);
         unset($_SESSION['vendor_mobile_number']);
         unset($_SESSION['vendor_product_type']);
+        unset($_SESSION['vendor_payment_basis']);
         unset($_SESSION['vendor_email']);
         unset($_SESSION['vendor_userid']);
         unset($_SESSION['vendor_hashed_password']);
@@ -271,6 +272,14 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 <option value="Wet" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Wet') ? 'selected' : ''; ?>>Wet</option>
                 <option value="Dry" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Dry') ? 'selected' : ''; ?>>Dry</option>
                 <option value="Other" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Other') ? 'selected' : ''; ?>>Other</option>
+            </select><br />
+
+
+            <label for="Vendor Payment basis">Vendor Payment Basis:</label>
+            <select name="vendor_payment_basis" required>
+                <option value="" disabled selected>Select Payment Basis</option>
+                <option value="Daily" <?php echo (isset($_SESSION['vendor_payment_basis']) && $_SESSION['vendor_payment_basis'] == 'Daily') ? 'selected' : ''; ?>>Daily</option>
+                <option value="Monthly" <?php echo (isset($_SESSION['vendor_payment_basis']) && $_SESSION['vendor_payment_basis'] == 'Monthly') ? 'selected' : ''; ?>>Monthly</option>
             </select><br />
 
             <br />
