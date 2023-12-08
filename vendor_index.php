@@ -30,7 +30,23 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $currentDay = $currentDate->format('d');
     $currentMonth = $currentDate->format('m');
     $currentYear = $currentDate->format('Y');
-    // Debugging output
+
+     // Fetch vendor_product and vendor_payment_basis
+     $vendorProduct = $rowUserData['vendor_product'];
+     $vendorPaymentBasis = $rowUserData['vendor_payment_basis'];
+
+     // Fetch stall_rate from rent_basis table based on vendor_product
+     $sqlStallRate = "SELECT stall_rate FROM rent_basis WHERE vendor_product = ?";
+     $stmtStallRate = $connect->prepare($sqlStallRate);
+     $stmtStallRate->bind_param('s', $vendorProduct);
+     $stmtStallRate->execute();
+     $resultStallRate = $stmtStallRate->get_result();
+
+     if ($resultStallRate->num_rows > 0) {
+         $rowStallRate = $resultStallRate->fetch_assoc();
+         $stallRate = $rowStallRate['stall_rate'];
+
+         // Debugging output
     echo "Current Day: $currentDay<br>";
     echo "Stored Day: {$rowUserData['day']}<br>";
     echo "Current Month: $currentMonth<br>";
@@ -43,20 +59,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     // Check if the day, month, and year in the database are different from the current date
     if ($rowUserData['day'] != $currentDay || $rowUserData['month'] != $currentMonth) {
-        // Fetch vendor_product and vendor_payment_basis
-        $vendorProduct = $rowUserData['vendor_product'];
-        $vendorPaymentBasis = $rowUserData['vendor_payment_basis'];
-
-        // Fetch stall_rate from rent_basis table based on vendor_product
-        $sqlStallRate = "SELECT stall_rate FROM rent_basis WHERE vendor_product = ?";
-        $stmtStallRate = $connect->prepare($sqlStallRate);
-        $stmtStallRate->bind_param('s', $vendorProduct);
-        $stmtStallRate->execute();
-        $resultStallRate = $stmtStallRate->get_result();
-
-        if ($resultStallRate->num_rows > 0) {
-            $rowStallRate = $resultStallRate->fetch_assoc();
-            $stallRate = $rowStallRate['stall_rate'];
 
         // Calculate rent balance based on vendor_payment_basis
         if ($vendorPaymentBasis == "Daily") {
