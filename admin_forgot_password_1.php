@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h2>REENTER ADMIN USER ID</h2>
             <form action="" onsubmit="return confirm('Proceed?');" method="post">
                 <label for="Admin User ID">Admin User ID:</label>
-                <input type="text" name="admin_userid" value="<?php echo $userid = isset($_GET['userid']) ? htmlspecialchars($_GET['userid']) : ''; ?>" required> <br />
+                <input type="text" name="admin_userid" value="<?php echo $userid = isset($_GET['userid']) ? htmlspecialchars($_GET['userid']) : ''; ?>" required readonly> <br />
                 <input type="submit" value="Enter"><br />
             </form>
         </div>
