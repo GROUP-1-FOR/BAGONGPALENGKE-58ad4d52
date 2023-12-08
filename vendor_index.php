@@ -26,11 +26,14 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     }
 
         // Get the current date
-    $currentDate = new DateTime();
-    $currentDay = $currentDate->format('d');
-    $currentMonth = $currentDate->format('m');
-    $currentYear = $currentDate->format('Y');
+        $currentDate = new DateTime();
+        $currentDay = intval($currentDate->format('d'));
+        $currentMonth = intval($currentDate->format('m'));
+        $currentYear = intval($currentDate->format('Y'));
 
+    $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
+
+    
      // Fetch vendor_product and vendor_payment_basis
      $vendorProduct = $rowUserData['vendor_product'];
      $vendorPaymentBasis = $rowUserData['vendor_payment_basis'];
@@ -62,7 +65,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         // Calculate rent balance based on vendor_payment_basis
         if ($vendorPaymentBasis == "Daily") {
-            $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
+           
             $rentBalance = ($currentDay - $rowUserData['day']) * ($stallRate / $daysInMonth);
             
             // Debugging output
@@ -71,10 +74,15 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         } elseif ($vendorPaymentBasis == "Monthly") {
             // If the current month is greater than the stored month, calculate the rent balance
             if ($currentMonth > $rowUserData['month']) {
-                $rentBalance = $stallRate;
-
-                 // Debugging output
-                 echo "Rent Balance: $rentBalance<br>";
+                $monthsDifference = $currentMonth - $rowUserData['month'];
+                $rentBalance = $monthsDifference * $stallRate;
+        
+                // Debugging output
+                echo "Current Month: $currentMonth<br>";
+                echo "Stored Month: {$rowUserData['month']}<br>";
+                echo "Months Difference: $monthsDifference<br>";
+                echo "Stall Rate: $stallRate<br>";
+                echo "Rent Balance: $rentBalance<br>";
             } else {
                 $rentBalance = 0; // No rent balance if the current month is not greater
             }
