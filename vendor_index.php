@@ -61,16 +61,17 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     echo "Stall Rate: $stallRate<br>";
 
     // Check if the day, month, and year in the database are different from the current date
-    if ($rowUserData['day'] != $currentDay || $rowUserData['month'] != $currentMonth) {
-
+    ///if ($rowUserData['day'] != $currentDay || $rowUserData['month'] != $currentMonth) {
+        if ($currentDay > $rowUserData['day'] || $currentMonth >$rowUserData['month']){
         // Calculate rent balance based on vendor_payment_basis
         if ($vendorPaymentBasis == "Daily") {
-           
+            if ($currentDay > $rowUserData['day']) {
             $rentBalance = ($currentDay - $rowUserData['day']) * ($stallRate / $daysInMonth);
             
             // Debugging output
             echo "Days in Month: $daysInMonth<br>";
             echo "Rent Balance: $rentBalance<br>";
+            }
         } elseif ($vendorPaymentBasis == "Monthly") {
             // If the current month is greater than the stored month, calculate the rent balance
             if ($currentMonth > $rowUserData['month']) {
