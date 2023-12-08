@@ -27,6 +27,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $vendor_password = $_SESSION['vendor_hashed_password'];
     $vendor_transaction_id = $_SESSION['vendor_transaction_id'];
 
+    $first_payment_date_breakdown = explode('-', $vendor_first_payment_date);
+    $year = intval($first_payment_date_breakdown[0]);
+    $month = intval($first_payment_date_breakdown[1]);
+    $day = intval($first_payment_date_breakdown[2]);
+
     $balanceValues = [
         'Wet' => 1100.51,
         'Dry' => 3200.30,
@@ -50,8 +55,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 VALUES ('$vendor_first_name', '$vendor_last_name', '$vendor_full_name', '$vendor_stall_number', '$vendor_mobile_number', '$vendor_product_type', '$vendor_payment_basis','$vendor_email', '$vendor_userid', '$vendor_password')";
 
                 // Insert data into vendor_balance table
-                $sql2 = "INSERT INTO vendor_balance (vendor_name, vendor_stall_number, vendor_product, vendor_userid, starting_date, balance, transaction_id, vendor_payment_basis, remaining_balance) 
-            VALUES ('$vendor_full_name', '$vendor_stall_number', '$vendor_product_type', '$vendor_userid','$vendor_first_payment_date', 0.00 , '$vendor_transaction_id', '$vendor_payment_basis', '$remaining_balance')";
+                $sql2 = "INSERT INTO vendor_balance (vendor_name, vendor_stall_number, vendor_product, vendor_userid, starting_date, balance, transaction_id, vendor_payment_basis, remaining_balance, month, day, year) 
+            VALUES ('$vendor_full_name', '$vendor_stall_number', '$vendor_product_type', '$vendor_userid','$vendor_first_payment_date', 0.00 , '$vendor_transaction_id', '$vendor_payment_basis', '$remaining_balance', '$month','$day','$year')";
 
                 // Insert data into admin_stall_map table
                 $sql3 = "INSERT INTO admin_stall_map (vendor_stall_number, vendor_name, vendor_userid, balance, vendor_payment_basis, vacant) 
