@@ -32,7 +32,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $currentYear = intval($currentDate->format('Y'));
 
     $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
-
     
      // Fetch vendor_product and vendor_payment_basis
      $vendorProduct = $rowUserData['vendor_product'];
@@ -62,9 +61,24 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     // Check if the day, month, and year in the database are different from the current date
     ///if ($rowUserData['day'] != $currentDay || $rowUserData['month'] != $currentMonth) {
-        if ($currentDay > $rowUserData['day'] || $currentMonth >$rowUserData['month']){
+        if ($currentDay > $rowUserData['day'] || $currentMonth >$rowUserData['month'] || $currentYear >$rowUserData['year']){
         // Calculate rent balance based on vendor_payment_basis
         if ($vendorPaymentBasis == "Daily") {
+        if ($currentMonth > $rowUserData['month']) {  
+            $monthsDifference = $currentMonth - $rowUserData['month'];
+            $rentBalance = $monthsDifference * $stallRate;
+            // Update the remaining_balance in the vendor_balance table
+            $sqlUpdateRemainingBalance = "UPDATE vendor_balance SET remaining_balance = ? WHERE vendor_userid = ?";
+            $stmtUpdateRemainingBalance = $connect->prepare($sqlUpdateRemainingBalance);
+            $newRemainingBalance = $rowUserData['remaining_balance'] + $rentBalance;
+            $stmtUpdateRemainingBalance->bind_param('ss', $newRemainingBalance, $userid);
+
+            if ($stmtUpdateRemainingBalance->execute()) {
+                echo "Successfully updated remaining_balance in vendor_balance table<br>";
+            } else {
+                echo "Error updating remaining_balance in vendor_balance table: " . $stmtUpdateRemainingBalance->error . "<br>";
+            }
+        }
             if ($currentDay > $rowUserData['day']) {
             $rentBalance = ($currentDay - $rowUserData['day']) * ($stallRate / $daysInMonth);
             
@@ -72,6 +86,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             echo "Days in Month: $daysInMonth<br>";
             echo "Rent Balance: $rentBalance<br>";
             }
+
         } elseif ($vendorPaymentBasis == "Monthly") {
             // If the current month is greater than the stored month, calculate the rent balance
             if ($currentMonth > $rowUserData['month']) {
@@ -96,17 +111,30 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         echo "Existing Balance: {$rowUserData['balance']}<br>";
         echo "New Balance: $newBalance<br>";
 
-        // Update the vendor_balance table with the new day, month, and year
+        
+       // Update the vendor_balance table with the new day, month, and year
         $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
         $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
         $stmtUpdateDate->bind_param('ssss', $currentDay, $currentMonth, $currentYear, $userid);
-        $stmtUpdateDate->execute();
+
+        if ($stmtUpdateDate->execute()) {
+            echo "Successfully updated day, month, and year in vendor_balance table<br>";
+        } else {
+            echo "Error updating day, month, and year in vendor_balance table: " . $stmtUpdateDate->error . "<br>";
+        }
+
 
         // Update the balance in the vendor_balance table
         $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
         $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
         $stmtUpdateBalance->bind_param('ss', $newBalance, $userid);
         $stmtUpdateBalance->execute();
+
+        // Update the balance in the admin_stall_map table
+        $sqlUpdateMap = "UPDATE admin_stall_map SET balance = ? WHERE vendor_userid = ?";
+        $stmtUpdateMap  = $connect->prepare($sqlUpdateMap );
+        $stmtUpdateMap ->bind_param('ss', $newBalance, $userid);
+        $stmtUpdateMap ->execute();
     }
 }
 
