@@ -32,7 +32,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $currentYear = $currentDate->format('Y');
 
     // Check if the day, month, and year in the database are different from the current date
-    if ($rowUserData['day'] != $currentDay || $rowUserData['month'] != $currentMonth || $rowUserData['year'] != $currentYear) {
+    if ($rowUserData['day'] != $currentDay || $rowUserData['month'] != $currentMonth) {
         // Fetch vendor_product and vendor_payment_basis
         $vendorProduct = $rowUserData['vendor_product'];
         $vendorPaymentBasis = $rowUserData['vendor_payment_basis'];
