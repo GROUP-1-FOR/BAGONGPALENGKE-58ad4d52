@@ -117,7 +117,9 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             }
         }*/ if ($vendorPaymentBasis == 'Monthly') {
             // Calculate balance based on Monthly payment basis
-            $monthlyremainingBalance = $rowUserData['remaining_balance'] + $stallRate;
+            $newstallRate = ($currentMonth - $rowUserData['month']) * $stallRate;
+            $monthlyremainingBalance = $rowUserData['remaining_balance'] + $newstallRate;
+
             if ($currentYear == $rowUserData['year'] && $currentMonth > $rowUserData['month']) {
                 $balance = ($currentMonth - $rowUserData['month']) * $stallRate;
             } elseif ($currentYear > $rowUserData['year']) {
