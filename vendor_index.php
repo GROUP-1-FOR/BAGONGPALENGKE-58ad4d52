@@ -35,6 +35,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     $startingDate = new DateTime($rowUserData['starting_date']);
     if ($currentDate >= $startingDate) {
+        if($currentDay > $rowUserData['day'] || $currentMonth > $rowUserData['month'] || $currentYear > $rowUserData['year']){
         // Perform actions when the current date is greater than or equal to the starting date
     
         // Fetch vendor_product and vendor_payment_basis
@@ -140,7 +141,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
             $stmtUpdateDate->bind_param('iiii', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
             $stmtUpdateDate->execute();
-    
+        }
     }
     /*     // Debugging output
     echo "Current Day: $currentDay<br>";
