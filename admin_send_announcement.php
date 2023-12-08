@@ -20,7 +20,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         <h1>Welcome, <?php echo $admin_userid ?>! </h1>
         <?php
-        $sql_sent_announcement = "SELECT DISTINCT announcement_text, announcement_time FROM announcements ORDER BY announcement_id DESC";
+        $sql_sent_announcement = "SELECT DISTINCT announcement_title,announcement_subject,announcement_text, announcement_time FROM announcements ORDER BY announcement_id DESC";
         $result_sent_announcement = $connect->query($sql_sent_announcement);
 
         $connect->close();
@@ -28,28 +28,27 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         if ($result_sent_announcement->num_rows > 0) {
             while ($row = $result_sent_announcement->fetch_assoc()) {
-                // Display sent announcements
-                echo "<p>Announcement: " . $row['announcement_text'] . "</p>";
-                echo "<p>Date and Time: " . $row['announcement_time'] . "</p><hr>";
-                echo "<hr />";
-            }
+        ?>
+                <p style="color: green;">Title:<?php echo $row['announcement_title']; ?> </p>
+                <p style="color: gray;">Subject:<?php echo $row['announcement_subject']; ?></p>
+                <p>Announcement: <?php echo $row['announcement_text']; ?></p>
+                <p>Date and Time: <?php echo $row['announcement_time']; ?></p>
+
+        <?php }
         } else {
             echo "<p>No sent announcements found.</p>";
         }
 
         ?>
 
-
-
-
-
-
-
         <h1>Send an Announcement:</h1>
 
         <form action="admin_send_announcement_1.php" method="post">
-            <label for="Market Vendors">To all Market Vendors:</label>
-            </select><br>
+            <h2>Market Vendors</h2>
+            <label for="admin_announcement_title">Announcement Title</label>
+            <input type="text" id="admin_announcement_title" name="admin_announcement_title" required><br />
+            <label for="admin_announcement_subject">Announcement Subject</label>
+            <input type="text" id="admin_announcement_subject" name="admin_announcement_subject" required><br />
             <label for="admin_announcement">Announcement Message</label>
             <textarea name="admin_announcement" id="admin_announcement" cols="30" rows="5" required></textarea><br>
             <input type="submit" value="Send announcement">
