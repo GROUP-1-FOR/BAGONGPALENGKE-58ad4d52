@@ -116,6 +116,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             }
         }*/ if ($vendorPaymentBasis == 'Monthly') {
             // Calculate balance based on Monthly payment basis
+            $monthlyremainingBalance = $rowUserData['remaining_balance'] + $stallRate;
             if ($currentYear == $rowUserData['year'] && $currentMonth > $rowUserData['month']) {
                 $balance = ($currentMonth - $rowUserData['month']) * $stallRate;
             } elseif ($currentYear > $rowUserData['year']) {
@@ -124,7 +125,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             }
              // Update current balance and remaining balance
                 $currentBalance = $balance + $rowUserData['balance'];
-                $currentremainingBalance = $rowUserData['remaining_balance'] -$balance;
+                $currentremainingBalance = $monthlyremainingBalance - $balance;
             
                 $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ?, remaining_balance = ? WHERE vendor_userid = ?";
                 $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
