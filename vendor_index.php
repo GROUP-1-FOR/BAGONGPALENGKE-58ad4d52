@@ -25,129 +25,122 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         die("User not found or database query issue.");
     }
 
-        // Get the current date
-        //$currentDate = new DateTime();
-        $currentDate = new DateTime('2023-12-15');
-        $currentDay = 15;//intval($currentDate->format('d')); 
-        $currentMonth = 12; //intval($currentDate->format('m'));
-        $currentYear = 2023;//intval($currentDate->format('Y'));
-
-// Compare with starting date from $rowUserData
-//$startingDate = new DateTime($rowUserData['starting_date']);
-$startingDate = new DateTime('2023-11-29');
-if ($currentDate >= $startingDate) {
-    // Perform actions when the current date is greater than or equal to the starting date
+     // Get the current date
+     $currentDate = new DateTime();
+     $currentDay = intval($currentDate->format('d'));
+     $currentMonth = intval($currentDate->format('m'));
+     $currentYear = intval($currentDate->format('Y'));
 
     $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
 
-    // Fetch vendor_product and vendor_payment_basis
-    $vendorProduct = $rowUserData['vendor_product'];
-    $vendorPaymentBasis = $rowUserData['vendor_payment_basis'];
-
-    // Fetch stall_rate from rent_basis table based on vendor_product
-    $sqlStallRate = "SELECT stall_rate FROM rent_basis WHERE vendor_product = ?";
-    $stmtStallRate = $connect->prepare($sqlStallRate);
-    $stmtStallRate->bind_param('s', $vendorProduct);
-    $stmtStallRate->execute();
-    $resultStallRate = $stmtStallRate->get_result();
-
-    if ($resultStallRate->num_rows > 0) {
-        $rowStallRate = $resultStallRate->fetch_assoc();
-        $stallRate = $rowStallRate['stall_rate'];
-    }
-
-    // Check $vendorPaymentBasis
-    if ($vendorPaymentBasis == 'Daily') {
-        // Calculate balance based on Daily payment basis
-        if ($currentYear == $rowUserData['year'] && $currentMonth == $rowUserData['month'] && $currentDay > $rowUserData['day']) {
-            $balance = ($currentDay - $rowUserData['day']) * ($stallRate / $daysInMonth);
-
-             // Update current balance and remaining balance
-             $currentBalance = $balance + $rowUserData['balance'];
-             $currentremainingBalance = $rowUserData['remaining_balance'] -$balance;
-         
-             $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ?, remaining_balance = ? WHERE vendor_userid = ?";
-             $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-             $stmtUpdateBalance->bind_param('ddi', $currentBalance, $currentremainingBalance, $userid); // Assuming vendor_userid is of type integer
-             $stmtUpdateBalance->execute();
-
-        } elseif ($currentYear == $rowUserData['year'] && $currentMonth > $rowUserData['month']) {
-
-            $balance = ($currentDay * ($stallRate / $daysInMonth)) + $rowUserData['remaining_balance'];
-
-            $newstallRate = ($currentMonth - $rowUserData['month']) * $stallRate;
-            $newremainingBalance = $rowUserData['remaining_balance'] + $newstallRate;
-
-            // Update remaining_balance
-            $sqlUpdateBalance = "UPDATE vendor_balance SET remaining_balance = ? WHERE vendor_userid = ?";
-            $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-            $stmtUpdateBalance->bind_param('di', $newremainingBalance, $userid); // Assuming vendor_userid is of type integer
-            $stmtUpdateBalance->execute();
-
-            // Update current balance and remaining balance
-            $currentBalance = $balance + $rowUserData['balance'];
-            $currentremainingBalance = $rowUserData['remaining_balance'] -$balance;
-        
-            $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ?, remaining_balance = ? WHERE vendor_userid = ?";
-            $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-            $stmtUpdateBalance->bind_param('ddi', $currentBalance, $currentremainingBalance, $userid); // Assuming vendor_userid is of type integer
-            $stmtUpdateBalance->execute();
-
-            
-        } elseif ($currentYear > $rowUserData['year']) {
-
-            $balance = ($currentDay * ($stallRate / $daysInMonth)) + $rowUserData['remaining_balance'];
-
-            $newcurrentMonth = ($currentYear - $rowUserData['year']) * 12 + $currentMonth;
-            $newstallRate = ($newcurrentMonth - $rowUserData['month']) * $stallRate;
-            $newremainingBalance = $rowUserData['remaining_balance'] + $newstallRate;
-
-            // Update remaining_balance
-            $sqlUpdateBalance = "UPDATE vendor_balance SET remaining_balance = ? WHERE vendor_userid = ?";
-            $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-            $stmtUpdateBalance->bind_param('di', $newremainingBalance, $userid); // Assuming vendor_userid is of type integer
-            $stmtUpdateBalance->execute();
-
-            // Update current balance and remaining balance
-            $currentBalance = $balance + $rowUserData['balance'];
-            $currentremainingBalance = $rowUserData['remaining_balance'] -$balance;
-        
-            $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ?, remaining_balance = ? WHERE vendor_userid = ?";
-            $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-            $stmtUpdateBalance->bind_param('ddi', $currentBalance, $currentremainingBalance, $userid); // Assuming vendor_userid is of type integer
-            $stmtUpdateBalance->execute();
-
-           
-
-        }
-    } elseif ($vendorPaymentBasis == 'Monthly') {
-        // Calculate balance based on Monthly payment basis
-        if ($currentYear == $rowUserData['year'] && $currentMonth > $rowUserData['month']) {
-            $balance = ($currentMonth - $rowUserData['month']) * $stallRate;
-        } elseif ($currentYear > $rowUserData['year']) {
-            $newcurrentMonth = ($currentYear - $rowUserData['year']) * 12 + $currentMonth;
-            $balance = ($newcurrentMonth - $rowUserData['month']) * $stallRate;
-        }
-         // Update current balance and remaining balance
-            $currentBalance = $balance + $rowUserData['balance'];
-            $currentremainingBalance = $rowUserData['remaining_balance'] -$balance;
-        
-            $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ?, remaining_balance = ? WHERE vendor_userid = ?";
-            $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-            $stmtUpdateBalance->bind_param('ddi', $currentBalance, $currentremainingBalance, $userid); // Assuming vendor_userid is of type integer
-            $stmtUpdateBalance->execute();
-    }
-
+    $startingDate = new DateTime($rowUserData['starting_date']);
+    if ($currentDate >= $startingDate) {
+        // Perform actions when the current date is greater than or equal to the starting date
     
-
-      // Update day, month, and year
-        $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
-        $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
-        $stmtUpdateDate->bind_param('iiii', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
-        $stmtUpdateDate->execute();
-
-}
-
+        // Fetch vendor_product and vendor_payment_basis
+        $vendorProduct = $rowUserData['vendor_product'];
+        $vendorPaymentBasis = $rowUserData['vendor_payment_basis'];
+    
+        // Fetch stall_rate from rent_basis table based on vendor_product
+        $sqlStallRate = "SELECT stall_rate FROM rent_basis WHERE vendor_product = ?";
+        $stmtStallRate = $connect->prepare($sqlStallRate);
+        $stmtStallRate->bind_param('s', $vendorProduct);
+        $stmtStallRate->execute();
+        $resultStallRate = $stmtStallRate->get_result();
+    
+        if ($resultStallRate->num_rows > 0) {
+            $rowStallRate = $resultStallRate->fetch_assoc();
+            $stallRate = $rowStallRate['stall_rate'];
+        }
+    /*
+        // Check $vendorPaymentBasis
+        if ($vendorPaymentBasis == 'Daily') {
+            // Calculate balance based on Daily payment basis
+            if ($currentYear == $rowUserData['year'] && $currentMonth == $rowUserData['month'] && $currentDay > $rowUserData['day']) {
+                $balance = ($currentDay - $rowUserData['day']) * ($stallRate / $daysInMonth);
+    
+                 // Update current balance and remaining balance
+                 $currentBalance = $balance + $rowUserData['balance'];
+                 $currentremainingBalance = $rowUserData['remaining_balance'] -$balance;
+             
+                 $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ?, remaining_balance = ? WHERE vendor_userid = ?";
+                 $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+                 $stmtUpdateBalance->bind_param('ddi', $currentBalance, $currentremainingBalance, $userid); // Assuming vendor_userid is of type integer
+                 $stmtUpdateBalance->execute();
+    
+            } elseif ($currentYear == $rowUserData['year'] && $currentMonth > $rowUserData['month']) {
+    
+                $balance = ($currentDay * ($stallRate / $daysInMonth)) + $rowUserData['remaining_balance'];
+    
+                $newstallRate = ($currentMonth - $rowUserData['month']) * $stallRate;
+                $newremainingBalance = $rowUserData['remaining_balance'] + $newstallRate;
+    
+                // Update remaining_balance
+                $sqlUpdateBalance = "UPDATE vendor_balance SET remaining_balance = ? WHERE vendor_userid = ?";
+                $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+                $stmtUpdateBalance->bind_param('di', $newremainingBalance, $userid); // Assuming vendor_userid is of type integer
+                $stmtUpdateBalance->execute();
+    
+                // Update current balance and remaining balance
+                $currentBalance = $balance + $rowUserData['balance'];
+                $currentremainingBalance = $rowUserData['remaining_balance'] -$balance;
+            
+                $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ?, remaining_balance = ? WHERE vendor_userid = ?";
+                $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+                $stmtUpdateBalance->bind_param('ddi', $currentBalance, $currentremainingBalance, $userid); // Assuming vendor_userid is of type integer
+                $stmtUpdateBalance->execute();
+    
+                
+            } elseif ($currentYear > $rowUserData['year']) {
+    
+                $balance = ($currentDay * ($stallRate / $daysInMonth)) + $rowUserData['remaining_balance'];
+    
+                $newcurrentMonth = ($currentYear - $rowUserData['year']) * 12 + $currentMonth;
+                $newstallRate = ($newcurrentMonth - $rowUserData['month']) * $stallRate;
+                $newremainingBalance = $rowUserData['remaining_balance'] + $newstallRate;
+    
+                // Update remaining_balance
+                $sqlUpdateBalance = "UPDATE vendor_balance SET remaining_balance = ? WHERE vendor_userid = ?";
+                $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+                $stmtUpdateBalance->bind_param('di', $newremainingBalance, $userid); // Assuming vendor_userid is of type integer
+                $stmtUpdateBalance->execute();
+    
+                // Update current balance and remaining balance
+                $currentBalance = $balance + $rowUserData['balance'];
+                $currentremainingBalance = $rowUserData['remaining_balance'] -$balance;
+            
+                $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ?, remaining_balance = ? WHERE vendor_userid = ?";
+                $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+                $stmtUpdateBalance->bind_param('ddi', $currentBalance, $currentremainingBalance, $userid); // Assuming vendor_userid is of type integer
+                $stmtUpdateBalance->execute();
+            }
+        }*/ if ($vendorPaymentBasis == 'Monthly') {
+            // Calculate balance based on Monthly payment basis
+            if ($currentYear == $rowUserData['year'] && $currentMonth > $rowUserData['month']) {
+                $balance = ($currentMonth - $rowUserData['month']) * $stallRate;
+            } elseif ($currentYear > $rowUserData['year']) {
+                $newcurrentMonth = ($currentYear - $rowUserData['year']) * 12 + $currentMonth;
+                $balance = ($newcurrentMonth - $rowUserData['month']) * $stallRate;
+            }
+             // Update current balance and remaining balance
+                $currentBalance = $balance + $rowUserData['balance'];
+                $currentremainingBalance = $rowUserData['remaining_balance'] -$balance;
+            
+                $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ?, remaining_balance = ? WHERE vendor_userid = ?";
+                $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+                $stmtUpdateBalance->bind_param('ddi', $currentBalance, $currentremainingBalance, $userid); // Assuming vendor_userid is of type integer
+                $stmtUpdateBalance->execute();
+        }
+    
+        
+    
+          // Update day, month, and year
+            $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
+            $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
+            $stmtUpdateDate->bind_param('iiii', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
+            $stmtUpdateDate->execute();
+    
+    }
     /*     // Debugging output
     echo "Current Day: $currentDay<br>";
     echo "Stored Day: {$rowUserData['day']}<br>";
