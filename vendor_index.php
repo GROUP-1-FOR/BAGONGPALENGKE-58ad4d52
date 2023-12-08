@@ -26,14 +26,15 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     }
 
         // Get the current date
-        $currentDate = new DateTime();
-        $currentDay = intval($currentDate->format('d'));
-        $currentMonth = intval($currentDate->format('m'));
-        $currentYear = intval($currentDate->format('Y'));
+        //$currentDate = new DateTime();
+        $currentDate = new DateTime('2023-12-15');
+        $currentDay = 15;//intval($currentDate->format('d')); 
+        $currentMonth = 12; //intval($currentDate->format('m'));
+        $currentYear = 2023;//intval($currentDate->format('Y'));
 
 // Compare with starting date from $rowUserData
-$startingDate = new DateTime($rowUserData['starting_date']);
-
+//$startingDate = new DateTime($rowUserData['starting_date']);
+$startingDate = new DateTime('2023-11-29');
 if ($currentDate >= $startingDate) {
     // Perform actions when the current date is greater than or equal to the starting date
 
@@ -61,6 +62,20 @@ if ($currentDate >= $startingDate) {
         if ($currentYear == $rowUserData['year'] && $currentMonth == $rowUserData['month'] && $currentDay > $rowUserData['day']) {
             $balance = ($currentDay - $rowUserData['day']) * ($stallRate / $daysInMonth);
         } elseif ($currentYear == $rowUserData['year'] && $currentMonth > $rowUserData['month']) {
+
+
+
+
+            // Update current balance and remaining balance
+            $currentBalance = $balance + $rowUserData['balance'];
+            $currentremainingBalance = $rowUserData['remaining_balance'] -$balance;
+        
+            $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ?, remaining_balance = ? WHERE vendor_userid = ?";
+            $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+            $stmtUpdateBalance->bind_param('ddi', $currentBalance, $currentremainingBalance, $userid); // Assuming vendor_userid is of type integer
+            $stmtUpdateBalance->execute();
+
+
             $newstallRate = ($currentMonth - $rowUserData['month']) * $stallRate;
             $newremainingBalance = $rowUserData['remaining_balance'] + $newstallRate;
 
@@ -72,6 +87,7 @@ if ($currentDate >= $startingDate) {
 
             $balance = ($currentDay * ($stallRate / $daysInMonth)) + $newremainingBalance;
         } elseif ($currentYear > $rowUserData['year']) {
+
             $newcurrentMonth = ($currentYear - $rowUserData['year']) * 12 + $currentMonth;
             $newstallRate = ($newcurrentMonth - $rowUserData['month']) * $stallRate;
             $newremainingBalance = $rowUserData['remaining_balance'] + $newstallRate;
@@ -93,7 +109,7 @@ if ($currentDate >= $startingDate) {
 
      // Update current balance and remaining balance
      $currentBalance = $balance + $rowUserData['balance'];
-     $currentremainingBalance = -$balance;
+     $currentremainingBalance = $rowUserData['remaining_balance'] -$balance;
  
      $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ?, remaining_balance = ? WHERE vendor_userid = ?";
      $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
