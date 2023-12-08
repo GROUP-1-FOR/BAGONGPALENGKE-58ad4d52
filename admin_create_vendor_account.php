@@ -282,7 +282,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 <option value="Monthly" <?php echo (isset($_SESSION['vendor_payment_basis']) && $_SESSION['vendor_payment_basis'] == 'Monthly') ? 'selected' : ''; ?>>Monthly</option>
             </select><br />
 
-            <label for="vendor_first_payment_date">Select Start of First Payment:</label>
+            <label for="vendor_first_payment_date">Select Start of Billing Period:</label>
             <input type="date" id="vendor_first_payment_date" name="vendor_first_payment_date" value="<?php echo isset($_SESSION['vendor_first_payment_date']) ? $_SESSION['vendor_first_payment_date'] : ''; ?>" required><br />
 
 
