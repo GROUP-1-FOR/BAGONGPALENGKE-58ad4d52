@@ -128,7 +128,12 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
              // Update current balance and remaining balance
                 $currentBalance = $balance + $rowUserData['balance'];
                
-                $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ?WHERE vendor_userid = ?";
+                $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
+                $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+                $stmtUpdateBalance->bind_param('di', $currentBalance, $userid); // Assuming vendor_userid is of type integer
+                $stmtUpdateBalance->execute();
+
+                $sqlUpdateBalance = "UPDATE admin_stall_map SET balance = ? WHERE vendor_userid = ?";
                 $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
                 $stmtUpdateBalance->bind_param('di', $currentBalance, $userid); // Assuming vendor_userid is of type integer
                 $stmtUpdateBalance->execute();
