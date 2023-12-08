@@ -30,6 +30,16 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $currentDay = $currentDate->format('d');
     $currentMonth = $currentDate->format('m');
     $currentYear = $currentDate->format('Y');
+    // Debugging output
+    echo "Current Day: $currentDay<br>";
+    echo "Stored Day: {$rowUserData['day']}<br>";
+    echo "Current Month: $currentMonth<br>";
+    echo "Stored Month: {$rowUserData['month']}<br>";
+    echo "Current Year: $currentYear<br>";
+    echo "Stored Year: {$rowUserData['year']}<br>";
+    echo "Vendor Product: $vendorProduct<br>";
+    echo "Vendor Payment Basis: $vendorPaymentBasis<br>";
+    echo "Stall Rate: $stallRate<br>";
 
     // Check if the day, month, and year in the database are different from the current date
     if ($rowUserData['day'] != $currentDay || $rowUserData['month'] != $currentMonth) {
@@ -48,16 +58,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             $rowStallRate = $resultStallRate->fetch_assoc();
             $stallRate = $rowStallRate['stall_rate'];
 
-            // Debugging output
-        echo "Current Day: $currentDay<br>";
-        echo "Stored Day: {$rowUserData['day']}<br>";
-        echo "Current Month: $currentMonth<br>";
-        echo "Stored Month: {$rowUserData['month']}<br>";
-        echo "Current Year: $currentYear<br>";
-        echo "Stored Year: {$rowUserData['year']}<br>";
-        echo "Vendor Product: $vendorProduct<br>";
-        echo "Vendor Payment Basis: $vendorPaymentBasis<br>";
-        echo "Stall Rate: $stallRate<br>";
         // Calculate rent balance based on vendor_payment_basis
         if ($vendorPaymentBasis == "Daily") {
             $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
