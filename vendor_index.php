@@ -61,19 +61,19 @@ if ($currentDate >= $startingDate) {
         // Calculate balance based on Daily payment basis
         if ($currentYear == $rowUserData['year'] && $currentMonth == $rowUserData['month'] && $currentDay > $rowUserData['day']) {
             $balance = ($currentDay - $rowUserData['day']) * ($stallRate / $daysInMonth);
+
+             // Update current balance and remaining balance
+             $currentBalance = $balance + $rowUserData['balance'];
+             $currentremainingBalance = $rowUserData['remaining_balance'] -$balance;
+         
+             $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ?, remaining_balance = ? WHERE vendor_userid = ?";
+             $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+             $stmtUpdateBalance->bind_param('ddi', $currentBalance, $currentremainingBalance, $userid); // Assuming vendor_userid is of type integer
+             $stmtUpdateBalance->execute();
+
         } elseif ($currentYear == $rowUserData['year'] && $currentMonth > $rowUserData['month']) {
 
-
             $balance = ($currentDay * ($stallRate / $daysInMonth)) + $rowUserData['remaining_balance'];
-
-            // Update current balance and remaining balance
-            $currentBalance = $balance + $rowUserData['balance'];
-            $currentremainingBalance = $rowUserData['remaining_balance'] -$balance;
-        
-            $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ?, remaining_balance = ? WHERE vendor_userid = ?";
-            $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-            $stmtUpdateBalance->bind_param('ddi', $currentBalance, $currentremainingBalance, $userid); // Assuming vendor_userid is of type integer
-            $stmtUpdateBalance->execute();
 
             $newstallRate = ($currentMonth - $rowUserData['month']) * $stallRate;
             $newremainingBalance = $rowUserData['remaining_balance'] + $newstallRate;
@@ -84,11 +84,6 @@ if ($currentDate >= $startingDate) {
             $stmtUpdateBalance->bind_param('di', $newremainingBalance, $userid); // Assuming vendor_userid is of type integer
             $stmtUpdateBalance->execute();
 
-            
-        } elseif ($currentYear > $rowUserData['year']) {
-
-            $balance = ($currentDay * ($stallRate / $daysInMonth)) + $rowUserData['remaining_balance'];
-
             // Update current balance and remaining balance
             $currentBalance = $balance + $rowUserData['balance'];
             $currentremainingBalance = $rowUserData['remaining_balance'] -$balance;
@@ -97,6 +92,11 @@ if ($currentDate >= $startingDate) {
             $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
             $stmtUpdateBalance->bind_param('ddi', $currentBalance, $currentremainingBalance, $userid); // Assuming vendor_userid is of type integer
             $stmtUpdateBalance->execute();
+
+            
+        } elseif ($currentYear > $rowUserData['year']) {
+
+            $balance = ($currentDay * ($stallRate / $daysInMonth)) + $rowUserData['remaining_balance'];
 
             $newcurrentMonth = ($currentYear - $rowUserData['year']) * 12 + $currentMonth;
             $newstallRate = ($newcurrentMonth - $rowUserData['month']) * $stallRate;
@@ -107,6 +107,17 @@ if ($currentDate >= $startingDate) {
             $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
             $stmtUpdateBalance->bind_param('di', $newremainingBalance, $userid); // Assuming vendor_userid is of type integer
             $stmtUpdateBalance->execute();
+
+            // Update current balance and remaining balance
+            $currentBalance = $balance + $rowUserData['balance'];
+            $currentremainingBalance = $rowUserData['remaining_balance'] -$balance;
+        
+            $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ?, remaining_balance = ? WHERE vendor_userid = ?";
+            $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+            $stmtUpdateBalance->bind_param('ddi', $currentBalance, $currentremainingBalance, $userid); // Assuming vendor_userid is of type integer
+            $stmtUpdateBalance->execute();
+
+           
 
         }
     } elseif ($vendorPaymentBasis == 'Monthly') {
