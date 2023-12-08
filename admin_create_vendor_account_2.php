@@ -41,8 +41,16 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 VALUES ('$vendor_first_name', '$vendor_last_name', '$vendor_full_name', '$vendor_stall_number', '$vendor_mobile_number', '$vendor_product_type', '$vendor_payment_basis','$vendor_email', '$vendor_userid', '$vendor_password')";
 
                 // Insert data into vendor_balance table
-                $sql2 = "INSERT INTO vendor_balance (vendor_name, vendor_stall_number, vendor_userid, balance, transaction_id, vendor_payment_basis) 
-                VALUES ('$vendor_full_name', '$vendor_stall_number', '$vendor_userid', '0.00', '$vendor_transaction_id','$vendor_payment_basis')";
+                if ($vendor_product_type == "Wet") {
+                    $sql2 = "INSERT INTO vendor_balance (vendor_name, vendor_stall_number, vendor_product, vendor_userid, balance, transaction_id, vendor_payment_basis) 
+                    VALUES ('$vendor_full_name', '$vendor_stall_number', '$vendor_product_type','$vendor_userid', '3000.00', '$vendor_transaction_id','$vendor_payment_basis')";
+                } elseif ($vendor_product_type == "Dry") {
+                    $sql2 = "INSERT INTO vendor_balance (vendor_name, vendor_stall_number, vendor_product, vendor_userid, balance, transaction_id, vendor_payment_basis) 
+                    VALUES ('$vendor_full_name', '$vendor_stall_number', '$vendor_product_type','$vendor_userid', '3200.00', '$vendor_transaction_id','$vendor_payment_basis')";
+                } elseif ($vendor_product_type == "Other") {
+                    $sql2 = "INSERT INTO vendor_balance (vendor_name, vendor_stall_number, vendor_product, vendor_userid, balance, transaction_id, vendor_payment_basis) 
+                    VALUES ('$vendor_full_name', '$vendor_stall_number','$vendor_product_type', '$vendor_userid', '4000.00', '$vendor_transaction_id','$vendor_payment_basis')";
+                }
 
                 // Insert data into admin_stall_map table
                 $sql3 = "INSERT INTO admin_stall_map (vendor_stall_number, vendor_name, vendor_userid, balance, vendor_payment_basis, vacant) 
