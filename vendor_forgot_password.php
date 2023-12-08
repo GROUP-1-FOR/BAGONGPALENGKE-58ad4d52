@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->close();
     } else {
         echo '<script>';
-        echo 'alert("Email Not Registered!");';
+        echo 'alert("Vendor User Not Found!");';
         echo 'window.location.href = "vendor_forgot_password.php";';
         echo '</script>';
     }
