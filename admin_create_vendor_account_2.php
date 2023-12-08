@@ -27,9 +27,9 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $vendor_transaction_id = $_SESSION['vendor_transaction_id'];
 
     $balanceValues = [
-        'Wet' => 3000.00,
-        'Dry' => 3200.00,
-        'Other' => 4000.00,
+        'Wet' => 1100.51,
+        'Dry' => 3200.30,
+        'Other' => 5800.50,
     ];
 
     $remaining_balance = $balanceValues[$vendor_product_type];
