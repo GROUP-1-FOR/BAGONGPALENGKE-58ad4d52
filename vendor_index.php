@@ -5,57 +5,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $userid = $_SESSION["userid"];
     //to know last log in time of vendor
     include('vendor_login_time.php');
-    // Check if the balance has already been updated in the current session
-   /* if (!isset($_SESSION['balance_updated'])) {
-        // Fetch vendor payment basis and product from vendor_sign_in table
-        $sqlVendorInfo = "SELECT vendor_product, vendor_payment_basis FROM vendor_sign_in WHERE vendor_userid = ?";
-        $stmtVendorInfo = $connect->prepare($sqlVendorInfo);
-        $stmtVendorInfo->bind_param('s', $userid);
-        $stmtVendorInfo->execute();
-        $resultVendorInfo = $stmtVendorInfo->get_result();
 
-        if ($resultVendorInfo->num_rows > 0) {
-            $rowVendorInfo = $resultVendorInfo->fetch_assoc();
-            $vendorProduct = $rowVendorInfo['vendor_product'];
-            $vendorPaymentBasis = $rowVendorInfo['vendor_payment_basis'];
 
-            // Fetch stall rate from rent_basis table based on vendor_product
-            $sqlStallRate = "SELECT stall_rate FROM rent_basis WHERE vendor_product = ?";
-            $stmtStallRate = $connect->prepare($sqlStallRate);
-            $stmtStallRate->bind_param('s', $vendorProduct);
-            $stmtStallRate->execute();
-            $resultStallRate = $stmtStallRate->get_result();
-
-            if ($resultStallRate->num_rows > 0) {
-                $rowStallRate = $resultStallRate->fetch_assoc();
-                $stallRate = $rowStallRate['stall_rate'];
-
-                // Calculate the balance based on vendor_payment_basis
-                if ($vendorPaymentBasis == "Daily") {
-                    $daysInMonth = cal_days_in_month(CAL_GREGORIAN, date("m"), date("Y"));
-                    $dailyRate = $stallRate / $daysInMonth;
-
-                    // Calculate the balance and update the vendor_balance table
-                    $balance = $dailyRate;
-                    $sqlUpdateBalance = "UPDATE vendor_balance SET balance = balance + ? WHERE vendor_userid = ?";
-                    $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-                    $stmtUpdateBalance->bind_param('ss', $balance, $userid);
-                    $stmtUpdateBalance->execute();
-
-                    // Update admin_stall_map table with the new balance
-                    $sqlUpdateAdminStallMap = "UPDATE admin_stall_map SET balance = balance + ? WHERE vendor_userid = ?";
-                    $stmtUpdateAdminStallMap = $connect->prepare($sqlUpdateAdminStallMap);
-                    $stmtUpdateAdminStallMap->bind_param('ss', $balance, $userid);
-                    $stmtUpdateAdminStallMap->execute();
-
-                    // Set session variable to indicate that the balance has been updated
-                    $_SESSION['balance_updated'] = true;
-                } else {
-                    // Handle other payment basis scenarios here
-                }
-            }
-        }
-    }*/
     // Fetch user data using prepared statement
     $sqlUserData = "SELECT * FROM vendor_balance WHERE vendor_userid = ?";
     $stmtUserData = $connect->prepare($sqlUserData);
@@ -73,6 +24,81 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         // Handle the case where the user ID is not found or there's an issue with the database query
         die("User not found or database query issue.");
     }
+
+        // Get the current date
+    $currentDate = new DateTime();
+    $currentDay = $currentDate->format('d');
+    $currentMonth = $currentDate->format('m');
+    $currentYear = $currentDate->format('Y');
+
+    // Check if the day, month, and year in the database are different from the current date
+    if ($rowUserData['day'] != $currentDay || $rowUserData['month'] != $currentMonth || $rowUserData['year'] != $currentYear) {
+        // Fetch vendor_product and vendor_payment_basis
+        $vendorProduct = $rowUserData['vendor_product'];
+        $vendorPaymentBasis = $rowUserData['vendor_payment_basis'];
+
+        // Fetch stall_rate from rent_basis table based on vendor_product
+        $sqlStallRate = "SELECT stall_rate FROM rent_basis WHERE vendor_product = ?";
+        $stmtStallRate = $connect->prepare($sqlStallRate);
+        $stmtStallRate->bind_param('s', $vendorProduct);
+        $stmtStallRate->execute();
+        $resultStallRate = $stmtStallRate->get_result();
+
+        if ($resultStallRate->num_rows > 0) {
+            $rowStallRate = $resultStallRate->fetch_assoc();
+            $stallRate = $rowStallRate['stall_rate'];
+
+            // Debugging output
+        echo "Current Day: $currentDay<br>";
+        echo "Stored Day: {$rowUserData['day']}<br>";
+        echo "Current Month: $currentMonth<br>";
+        echo "Stored Month: {$rowUserData['month']}<br>";
+        echo "Current Year: $currentYear<br>";
+        echo "Stored Year: {$rowUserData['year']}<br>";
+        echo "Vendor Product: $vendorProduct<br>";
+        echo "Vendor Payment Basis: $vendorPaymentBasis<br>";
+        echo "Stall Rate: $stallRate<br>";
+        // Calculate rent balance based on vendor_payment_basis
+        if ($vendorPaymentBasis == "Daily") {
+            $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
+            $rentBalance = ($currentDay - $rowUserData['day']) * ($stallRate / $daysInMonth);
+            
+            // Debugging output
+            echo "Days in Month: $daysInMonth<br>";
+            echo "Rent Balance: $rentBalance<br>";
+        } elseif ($vendorPaymentBasis == "Monthly") {
+            // If the current month is greater than the stored month, calculate the rent balance
+            if ($currentMonth > $rowUserData['month']) {
+                $rentBalance = $stallRate;
+
+                 // Debugging output
+                 echo "Rent Balance: $rentBalance<br>";
+            } else {
+                $rentBalance = 0; // No rent balance if the current month is not greater
+            }
+        }
+
+        // Calculate the new balance by adding rent balance to the existing balance
+        $newBalance = $rowUserData['balance'] + $rentBalance;
+
+        // Debugging output
+        echo "Existing Balance: {$rowUserData['balance']}<br>";
+        echo "New Balance: $newBalance<br>";
+
+        // Update the vendor_balance table with the new day, month, and year
+        $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
+        $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
+        $stmtUpdateDate->bind_param('ssss', $currentDay, $currentMonth, $currentYear, $userid);
+        $stmtUpdateDate->execute();
+
+        // Update the balance in the vendor_balance table
+        $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
+        $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+        $stmtUpdateBalance->bind_param('ss', $newBalance, $userid);
+        $stmtUpdateBalance->execute();
+    }
+}
+
 
     // Check the payment status
     $paymentStatus = "To be paid";
