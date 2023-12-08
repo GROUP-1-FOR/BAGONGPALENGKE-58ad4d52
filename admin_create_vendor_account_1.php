@@ -45,7 +45,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $vendor_email = isset($_POST["vendor_email"]) ? htmlspecialchars($_POST["vendor_email"]) : '';
         $vendor_product_type = isset($_POST["vendor_product"]) ? htmlspecialchars($_POST["vendor_product"]) : '';
         $vendor_payment_basis = isset($_POST["vendor_payment_basis"]) ? htmlspecialchars($_POST["vendor_payment_basis"]) : '';
-
+        $vendor_first_payment_date = isset($_POST["vendor_first_payment_date"]) ? htmlspecialchars($_POST["vendor_first_payment_date"]) : '';
         if (!preg_match("/^[a-zA-Z-' ]*$/", $vendor_first_name)) {
             $vendor_first_name_error = "Only letters are allowed";
             $_SESSION['vendor_first_name_error'] = $vendor_first_name_error;
@@ -112,6 +112,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $_SESSION['vendor_mobile_number'] = $vendor_mobile_number;
         $_SESSION['vendor_product_type'] = $vendor_product_type;
         $_SESSION['vendor_payment_basis'] = $vendor_payment_basis;
+        $_SESSION['vendor_first_payment_date'] = $vendor_first_payment_date;
         $_SESSION['vendor_email'] = $vendor_email;
         $_SESSION['vendor_userid'] = $vendor_userid;
         $_SESSION['vendor_hashed_password'] = $hashedVendorPassword;

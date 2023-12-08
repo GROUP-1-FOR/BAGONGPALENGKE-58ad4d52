@@ -22,6 +22,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $vendor_email = $_SESSION['vendor_email'];
     $vendor_product_type = $_SESSION['vendor_product_type'];
     $vendor_payment_basis = $_SESSION['vendor_payment_basis'];
+    $vendor_first_payment_date = $_SESSION['vendor_first_payment_date'];
     $vendor_userid = $_SESSION['vendor_userid'];
     $vendor_password = $_SESSION['vendor_hashed_password'];
     $vendor_transaction_id = $_SESSION['vendor_transaction_id'];
@@ -49,8 +50,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 VALUES ('$vendor_first_name', '$vendor_last_name', '$vendor_full_name', '$vendor_stall_number', '$vendor_mobile_number', '$vendor_product_type', '$vendor_payment_basis','$vendor_email', '$vendor_userid', '$vendor_password')";
 
                 // Insert data into vendor_balance table
-                $sql2 = "INSERT INTO vendor_balance (vendor_name, vendor_stall_number, vendor_product, vendor_userid, balance, transaction_id, vendor_payment_basis, remaining_balance) 
-            VALUES ('$vendor_full_name', '$vendor_stall_number', '$vendor_product_type', '$vendor_userid', 0.00 , '$vendor_transaction_id', '$vendor_payment_basis', '$remaining_balance')";
+                $sql2 = "INSERT INTO vendor_balance (vendor_name, vendor_stall_number, vendor_product, vendor_userid, starting_date, balance, transaction_id, vendor_payment_basis, remaining_balance) 
+            VALUES ('$vendor_full_name', '$vendor_stall_number', '$vendor_product_type', '$vendor_userid','$vendor_first_payment_date', 0.00 , '$vendor_transaction_id', '$vendor_payment_basis', '$remaining_balance')";
 
                 // Insert data into admin_stall_map table
                 $sql3 = "INSERT INTO admin_stall_map (vendor_stall_number, vendor_name, vendor_userid, balance, vendor_payment_basis, vacant) 
@@ -124,6 +125,7 @@ function unsetVendorSessionVariables()
     unset($_SESSION['vendor_email']);
     unset($_SESSION['vendor_product_type']);
     unset($_SESSION['vendor_payment_basis']);
+    unset($_SESSION['vendor_first_payment_date']);
     unset($_SESSION['vendor_userid']);
     unset($_SESSION['vendor_hashed_password']);
     unset($_SESSION['vendor_transaction_id']);
