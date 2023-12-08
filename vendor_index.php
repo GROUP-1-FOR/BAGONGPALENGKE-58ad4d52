@@ -117,8 +117,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             }
         }*/ if ($vendorPaymentBasis == 'Monthly') {
             // Calculate balance based on Monthly payment basis
-            $newstallRate = ($currentMonth - $rowUserData['month']) * $stallRate;
-            $monthlyremainingBalance = $rowUserData['remaining_balance'] + $newstallRate;
+            
 
             if ($currentYear == $rowUserData['year'] && $currentMonth > $rowUserData['month']) {
                 $balance = ($currentMonth - $rowUserData['month']) * $stallRate;
@@ -128,11 +127,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             }
              // Update current balance and remaining balance
                 $currentBalance = $balance + $rowUserData['balance'];
-                $currentremainingBalance = $monthlyremainingBalance - $balance;
-            
-                $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ?, remaining_balance = ? WHERE vendor_userid = ?";
+               
+                $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ?WHERE vendor_userid = ?";
                 $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-                $stmtUpdateBalance->bind_param('ddi', $currentBalance, $currentremainingBalance, $userid); // Assuming vendor_userid is of type integer
+                $stmtUpdateBalance->bind_param('di', $currentBalance, $userid); // Assuming vendor_userid is of type integer
                 $stmtUpdateBalance->execute();
         }
     
