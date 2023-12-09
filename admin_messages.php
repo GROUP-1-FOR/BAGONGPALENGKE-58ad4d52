@@ -17,29 +17,41 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     }
 
     // Check if the vendor_name and vendor_stall_number are set in the URL
-    if (isset($_GET['vendor_name']) && isset($_GET['vendor_stall_number'])) {
-        $recipient = $_GET['vendor_name'];
-        $stall_number = $_GET['vendor_stall_number'];
+if (isset($_GET['vendor_name']) && isset($_GET['vendor_stall_number'])) {
+    $recipient = $_GET['vendor_name'];
+    $stall_number = $_GET['vendor_stall_number'];
 
-        // Fetch messages for the selected vendor, both vendor and admin messages
-        $messages_query = "
-            SELECT 'vendor' as message_type, vendor_chat as message, vendor_timestamp as timestamp
-            FROM vendor_messages
-            WHERE vendor_name = '$recipient' AND vendor_stall_number = '$stall_number'
-            
-            UNION ALL
-            
-            SELECT 'admin' as message_type, admin_reply as message, admin_timestamp as timestamp
-            FROM admin_messages
-            WHERE vendor_name = '$recipient' AND vendor_stall_number = '$stall_number'
-            
-            ORDER BY timestamp ASC";
+    // Fetch the vendor_userid based on vendor_name and vendor_stall_number
+    $vendor_userid_query = "SELECT vendor_userid FROM vendor_sign_in WHERE vendor_name = '$recipient' AND vendor_stall_number = '$stall_number' LIMIT 1";
+    $vendor_userid_result = $connect->query($vendor_userid_query);
 
-        // Execute the query and handle errors
-        $messages_result = $connect->query($messages_query);
-        if (!$messages_result) {
-            die("Error executing the query: " . $connect->error);
-        }
+    if ($vendor_userid_result->num_rows > 0) {
+        $vendor_userid_row = $vendor_userid_result->fetch_assoc();
+        $vendor_userid = $vendor_userid_row['vendor_userid'];
+    } else {
+        // Handle the case where vendor_userid is not found
+        die("Error: Vendor userid not found.");
+    }
+
+    // Fetch messages for the selected vendor, both vendor and admin messages
+    $messages_query = "
+        SELECT 'vendor' as message_type, vendor_chat as message, vendor_timestamp as timestamp
+        FROM vendor_messages
+        WHERE vendor_userid = '$vendor_userid' AND vendor_name = '$recipient' AND vendor_stall_number = '$stall_number'
+        
+        UNION ALL
+        
+        SELECT 'admin' as message_type, admin_reply as message, admin_timestamp as timestamp
+        FROM admin_messages
+        WHERE vendor_userid = '$vendor_userid' AND vendor_name = '$recipient' AND vendor_stall_number = '$stall_number'
+        
+        ORDER BY timestamp ASC";
+
+    // Execute the query and handle errors
+    $messages_result = $connect->query($messages_query);
+    if (!$messages_result) {
+        die("Error executing the query: " . $connect->error);
+    }
 
 ?>
 

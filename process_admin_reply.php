@@ -1,6 +1,5 @@
 <?php
 require("config.php");
-session_start();
 
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $admin_id = $_SESSION["id"];
@@ -16,21 +15,33 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $stall_number = $_POST['stall_number'];
         $admin_reply = $_POST['admin_reply'];
 
-        // Insert admin reply into admin_messages table with vendor details
-        $insert_query = "INSERT INTO admin_messages (vendor_name, vendor_stall_number, admin_name, admin_reply, admin_timestamp) VALUES ('$recipient', '$stall_number', '$admin_name', '$admin_reply', NOW())";
+        // Fetch vendor_userid based on vendor_name and vendor_stall_number
+        $vendor_userid_query = "SELECT vendor_userid FROM vendor_sign_in WHERE vendor_name = '$recipient' AND vendor_stall_number = '$stall_number' LIMIT 1";
+        $vendor_userid_result = $connect->query($vendor_userid_query);
 
-        // Execute the query and handle errors
-        $insert_result = $connect->query($insert_query);
-        if (!$insert_result) {
-            die("Error executing the query: " . $connect->error);
+        if ($vendor_userid_result->num_rows > 0) {
+            $vendor_userid_row = $vendor_userid_result->fetch_assoc();
+            $vendor_userid = $vendor_userid_row['vendor_userid'];
+
+            // Insert admin reply into admin_messages table with vendor details
+            $insert_query = "INSERT INTO admin_messages (vendor_name, vendor_stall_number, vendor_userid, admin_name, admin_reply, admin_timestamp) VALUES ('$recipient', '$stall_number', '$vendor_userid', '$admin_name', '$admin_reply', NOW())";
+
+            // Execute the query and handle errors
+            $insert_result = $connect->query($insert_query);
+            if (!$insert_result) {
+                die("Error executing the query: " . $connect->error);
+            }
+
+            // Redirect back to the messages page
+            header("location: admin_messages.php?vendor_userid=$vendor_userid&vendor_name=$recipient&vendor_stall_number=$stall_number");
+        } else {
+            // Handle the case where vendor_userid is not found
+            die("Error: Vendor userid not found.");
         }
-
-        // Redirect back to the messages page
-        header("location: admin_messages.php?vendor_name=$recipient&vendor_stall_number=$stall_number");
     } else {
         // Redirect to the home page if accessed without a POST request
         header("location:admin_messages_preview.php");
     }
 } else {
-    header("location:admin_logout.php");
-}
+    header("location:admin_logout.php");}
+?>
