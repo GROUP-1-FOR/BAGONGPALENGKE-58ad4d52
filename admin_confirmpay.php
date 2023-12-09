@@ -104,25 +104,36 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script>
             function confirmAndArchive(vendorUserId, vendorName, paymentDate, modeOfPayment, transactionId, row) {
-                $.ajax({
-                    type: "POST",
-                    url: "confirm_and_archive_db.php",
-                    data: {
-                        vendorUserId: vendorUserId,
-                        vendorName: vendorName,
-                        paymentDate: paymentDate,
-                        modeOfPayment: modeOfPayment,
-                        transactionId: transactionId,
-                    },
-                    success: function(response) {
-                        alert(response);
-                        $(row).closest('tr').find('.action-cell').html('Paid');
-                    },
-                    error: function() {
-                        alert("Error confirming payment and archiving");
-                    }
-                });
+                // Display a confirmation dialog with the vendor's name
+                var isConfirmed = confirm("Are you sure you want to confirm and archive for vendor: " + vendorName + "?");
+
+                // Check the user's response
+                if (isConfirmed) {
+                    // User confirmed, proceed with the AJAX call
+                    $.ajax({
+                        type: "POST",
+                        url: "confirm_and_archive_db.php",
+                        data: {
+                            vendorUserId: vendorUserId,
+                            vendorName: vendorName,
+                            paymentDate: paymentDate,
+                            modeOfPayment: modeOfPayment,
+                            transactionId: transactionId,
+                        },
+                        success: function(response) {
+                            alert(response);
+                            $(row).closest('tr').find('.action-cell').html('Paid');
+                        },
+                        error: function() {
+                            alert("Error confirming payment and archiving");
+                        }
+                    });
+                } else {
+                    // User canceled, you can handle this as needed
+                    console.log("Action canceled by the user");
+                }
             }
+
 
             function confirmRemoveAll() {
                 var confirmDelete = confirm("Are you sure you want to remove all confirmed payments?");
