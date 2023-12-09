@@ -86,7 +86,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
             <a href=admin_messages_preview.php> Messages </a>
 
-            <a href=admin_feature_6.php> Feature 6 </a>
+            <a href=admin_send_report.php>Report </a>
 
 
         </div>
