@@ -58,7 +58,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 <ul class="dashboard-sidebar">
                     <li><a class="home-index" href=admin_index.php> Home </a></li>
                     <li><a class="manage-vendor" href=admin_vendor_manage_accounts.php> Manage Vendor Accounts </a></li>
-                    <li><a class="report-management" href="#"> Report Management </a></li>
+                    <li><a class="report-management" href=admin_send_report.php> Report </a></li>
                     <li><a class="help-button" href="#"> Help </a></li>
                 </ul>
             </div>
@@ -85,8 +85,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
 
             <a href=admin_messages_preview.php> Messages </a>
-
-            <a href=admin_send_report.php>Report </a>
 
 
         </div>
