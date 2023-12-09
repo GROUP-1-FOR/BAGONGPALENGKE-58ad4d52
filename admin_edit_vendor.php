@@ -121,7 +121,6 @@ if (isset($_GET['vendor_userid'])) {
 
                     $update_paid_records_stmt = $connect->prepare($update_paid_records_sql);
                     $update_paid_records_stmt->bind_param("ss", $new_vendor_name, $vendor_userid);
-
                     // Update archive_records table
                     $update_archive_records_sql = "UPDATE archive_records SET
                     vendor_name = ?

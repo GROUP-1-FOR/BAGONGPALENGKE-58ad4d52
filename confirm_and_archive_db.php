@@ -10,7 +10,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $transactionId = $_POST['transactionId']; // Retrieve the transaction_id
 
         // Fetch the vendor details from the database
-        $getVendorQuery = "SELECT name, balance, mop FROM `ven_payments` WHERE `vendor_userid` = ?";
+        $getVendorQuery = "SELECT vendor_name, balance, mop FROM `ven_payments` WHERE `vendor_userid` = ?";
         $getVendorStatement = mysqli_prepare($connect, $getVendorQuery);
 
         if ($getVendorStatement) {
@@ -27,7 +27,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             $modeOfPayment = $_POST['modeOfPayment'];
 
             // Insert into the paid records table
-            $insertPaidQuery = "INSERT INTO `paid_records` (vendor_userid, name, balance, payment_date, mop, transaction_id) VALUES (?, ?, ?, ?, ?, ?)";
+            $insertPaidQuery = "INSERT INTO `paid_records` (vendor_userid, vendor_name, balance, payment_date, mop, transaction_id) VALUES (?, ?, ?, ?, ?, ?)";
             $insertPaidStatement = mysqli_prepare($connect, $insertPaidQuery);
 
             if ($insertPaidStatement) {
@@ -42,7 +42,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             }
 
             // Insert into the archive records table
-            $insertArchiveQuery = "INSERT INTO `archive_records` (vendor_userid, name, balance, payment_date, mop, transaction_id) VALUES (?, ?, ?, ?, ?, ?)";
+            $insertArchiveQuery = "INSERT INTO `archive_records` (vendor_userid, vendor_name, balance, payment_date, mop, transaction_id) VALUES (?, ?, ?, ?, ?, ?)";
             $insertArchiveStatement = mysqli_prepare($connect, $insertArchiveQuery);
 
             if ($insertArchiveStatement) {

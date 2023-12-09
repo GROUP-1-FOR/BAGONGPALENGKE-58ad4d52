@@ -5,7 +5,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $admin_userid = $_SESSION["userid"];
 
 
-    $query = "SELECT vendor_userid, name, balance, confirmed, archived, payment_date, mop, transaction_id FROM ven_payments";
+    $query = "SELECT vendor_userid, vendor_name, balance, confirmed, archived, payment_date, mop, transaction_id FROM ven_payments";
     // Only select necessary columns
     $result = mysqli_query($connect, $query);
 
@@ -60,7 +60,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <?php
             while ($row = mysqli_fetch_assoc($result)) {
                 echo "<tr>";
-                echo "<td>{$row['name']}</td>";
+                echo "<td>{$row['vendor_name']}</td>";
                 echo "<td>{$row['balance']}</td>";
 
                 // Check if the payment is confirmed and archived
@@ -68,7 +68,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     echo "<td class='paid-mark'>Paid</td>";
                 } else {
                     echo "<td class='action-cell'>
-                        <button onclick=\"confirmAndArchive('{$row['vendor_userid']}', '{$row['name']}', '{$row['payment_date']}', '{$row['mop']}', '{$row['transaction_id']}', this)\" data-vendor-id='{$row['vendor_userid']}'>Confirm</button>
+                        <button onclick=\"confirmAndArchive('{$row['vendor_userid']}', '{$row['vendor_name']}', '{$row['payment_date']}', '{$row['mop']}', '{$row['transaction_id']}', this)\" data-vendor-id='{$row['vendor_userid']}'>Confirm</button>
                     </td>";
                 }
 
@@ -103,14 +103,14 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script>
-           function confirmAndArchive(vendorUserId, name, payment_date, modeOfPayment, transactionId, row) {
+           function confirmAndArchive(vendorUserId, vendorName, paymentDate, modeOfPayment, transactionId, row) {
             $.ajax({
                 type: "POST",
                 url: "confirm_and_archive_db.php",
                 data: {
-                    vendorUserId: vendorUserId,  // Change the parameter name
-                    vendorName: name,
-                    paymentDate: payment_date,
+                    vendorUserId: vendorUserId,
+                    vendorName: vendorName,
+                    paymentDate: paymentDate,
                     modeOfPayment: modeOfPayment,
                     transactionId: transactionId,
                 },

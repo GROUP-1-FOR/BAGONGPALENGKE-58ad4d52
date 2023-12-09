@@ -5,7 +5,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $admin_userid = $_SESSION["userid"];
 
     // Fetch paid records from the database
-    $query = "SELECT id, name, balance, payment_date, mop, transaction_id FROM paid_records";
+    $query = "SELECT id, vendor_name, balance, payment_date, mop, transaction_id FROM paid_records";
     $result = mysqli_query($connect, $query);
 
     if (!$result) {
@@ -62,7 +62,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             // Loop through the database results and display them in the table
             while ($row = mysqli_fetch_assoc($result)) {
                 echo "<tr>";
-                echo "<td>{$row['name']}</td>";
+                echo "<td>{$row['vendor_name']}</td>";
                 echo "<td>{$row['balance']}</td>";
                 echo "<td>{$row['payment_date']}</td>";
                 echo "<td>{$row['mop']}</td>";
