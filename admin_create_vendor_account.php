@@ -52,7 +52,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         unset($_SESSION['vendor_stall_number']);
         unset($_SESSION['vendor_mobile_number']);
         unset($_SESSION['vendor_product_type']);
-        unset($_SESSION['vendor_payment_basis']);
+        //unset($_SESSION['vendor_payment_basis']);
         unset($_SESSION['vendor_email']);
         unset($_SESSION['vendor_userid']);
         unset($_SESSION['vendor_hashed_password']);
@@ -274,13 +274,19 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 <option value="Other" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Other') ? 'selected' : ''; ?>>Other</option>
             </select><br />
 
-
+            <!--
             <label for="Vendor Payment basis">Vendor Payment Basis:</label>
             <select name="vendor_payment_basis" required>
                 <option value="" disabled selected>Select Payment Basis</option>
-                <option value="Daily" <?php echo (isset($_SESSION['vendor_payment_basis']) && $_SESSION['vendor_payment_basis'] == 'Daily') ? 'selected' : ''; ?>>Daily</option>
-                <option value="Monthly" <?php echo (isset($_SESSION['vendor_payment_basis']) && $_SESSION['vendor_payment_basis'] == 'Monthly') ? 'selected' : ''; ?>>Monthly</option>
+                <option value="Daily" <?php //echo (isset($_SESSION['vendor_payment_basis']) && $_SESSION['vendor_payment_basis'] == 'Daily') ? 'selected' : ''; 
+                                        ?>>Daily</option>
+                <option value="Monthly" <?php //echo (isset($_SESSION['vendor_payment_basis']) && $_SESSION['vendor_payment_basis'] == 'Monthly') ? 'selected' : ''; 
+                                        ?>>Monthly</option>
             </select><br />
+            -->
+
+
+
 
             <label for="vendor_first_payment_date">Select Start of Billing Period:</label>
             <input type="date" id="vendor_first_payment_date" name="vendor_first_payment_date" value="<?php echo isset($_SESSION['vendor_first_payment_date']) ? $_SESSION['vendor_first_payment_date'] : ''; ?>" min="<?php echo date('Y-m-d'); ?>" required><br />
