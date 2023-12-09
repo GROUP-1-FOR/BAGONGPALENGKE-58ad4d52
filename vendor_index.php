@@ -22,7 +22,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $transactionId = $rowUserData['transaction_id'];
     } else {
         // Handle the case where the user ID is not found or there's an issue with the database query
-        die("User not found or database query issue.");
+        header("location:vendor_login.php");
     }
 
      // Get the current date
