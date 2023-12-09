@@ -28,14 +28,14 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
      // Get the current date
      $currentDate = new DateTime();
      $currentDay = intval($currentDate->format('d'));
-     $currentMonth = intval($currentDate->format('m'));
+     $currentMonth =intval($currentDate->format('m'));
      $currentYear = intval($currentDate->format('Y'));
 
     $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
 
     $startingDate = new DateTime($rowUserData['starting_date']);
     if ($currentDate >= $startingDate) {
-        if($currentDay > $rowUserData['day'] || $currentMonth > $rowUserData['month'] || $currentYear > $rowUserData['year']){
+        if($currentMonth > $rowUserData['month'] || $currentYear > $rowUserData['year']){
         // Perform actions when the current date is greater than or equal to the starting date
     
         // Fetch vendor_product and vendor_payment_basis

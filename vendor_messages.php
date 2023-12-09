@@ -7,7 +7,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $vendorName = ''; // Initialize vendor name
 
     // Fetch vendor data using prepared statement
-    $sqlVendorData = "SELECT vendor_name, vendor_stall_number FROM vendor_sign_in WHERE vendor_userid = ?";
+    $sqlVendorData = "SELECT vendor_name, vendor_stall_number, vendor_userid FROM vendor_sign_in WHERE vendor_userid = ?";
     $stmtVendorData = $connect->prepare($sqlVendorData);
     $stmtVendorData->bind_param('s', $userid);
     $stmtVendorData->execute();
@@ -17,6 +17,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $rowVendorData = $resultVendorData->fetch_assoc();
         $vendorName = $rowVendorData['vendor_name'];
         $vendorStallNumber = $rowVendorData['vendor_stall_number'];
+        $vendorUserId = $rowVendorData['vendor_userid']; // New line to fetch vendor_userid
     } else {
         // Handle the case where the vendor data is not found or there's an issue with the database query
         die("Vendor data not found or database query issue.");
@@ -27,9 +28,9 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $messageText = $_POST['message_text'];
 
         // Insert the message into the vendor_message table with the current timestamp
-        $sqlInsertMessage = "INSERT INTO vendor_messages (vendor_name, vendor_stall_number, vendor_chat, vendor_timestamp) VALUES (?, ?, ?, NOW())";
+        $sqlInsertMessage = "INSERT INTO vendor_messages (vendor_name, vendor_stall_number, vendor_chat, vendor_timestamp, vendor_userid) VALUES (?, ?, ?, NOW(), ?)";
         $stmtInsertMessage = $connect->prepare($sqlInsertMessage);
-        $stmtInsertMessage->bind_param('sss', $vendorName, $vendorStallNumber, $messageText);
+        $stmtInsertMessage->bind_param('ssss', $vendorName, $vendorStallNumber, $messageText, $vendorUserId);
         $stmtInsertMessage->execute();
 
         // Redirect to the same page after processing the form
