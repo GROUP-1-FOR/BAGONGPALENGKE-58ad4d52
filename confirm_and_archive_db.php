@@ -2,7 +2,8 @@
 require_once('config.php');
 
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $id = $_SESSION["id"];
+
+    $admin_id = $_SESSION["id"];
     $admin_userid = $_SESSION["userid"];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
