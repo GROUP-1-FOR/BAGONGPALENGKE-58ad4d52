@@ -51,16 +51,16 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         if (mysqli_num_rows($result) > 0) {
             if (password_verify($admin_password, $row["admin_password"])) {
                 // Insert data into vendor_sign_in table
-                $sql1 = "INSERT INTO vendor_sign_in (vendor_first_name, vendor_last_name, vendor_name, vendor_stall_number, vendor_mobile_number, vendor_product, vendor_email, vendor_userid, vendor_password) 
-                VALUES ('$vendor_first_name', '$vendor_last_name', '$vendor_full_name', '$vendor_stall_number', '$vendor_mobile_number', '$vendor_product_type','$vendor_email', '$vendor_userid', '$vendor_password')";
+                $sql1 = "INSERT INTO vendor_sign_in (vendor_first_name, vendor_last_name, vendor_name, vendor_stall_number, vendor_mobile_number, vendor_product, vendor_payment_basis, vendor_email, vendor_userid, vendor_password) 
+                VALUES ('$vendor_first_name', '$vendor_last_name', '$vendor_full_name', '$vendor_stall_number', '$vendor_mobile_number', '$vendor_product_type', 'Monthly','$vendor_email', '$vendor_userid', '$vendor_password')";
 
                 // Insert data into vendor_balance table
-                $sql2 = "INSERT INTO vendor_balance (vendor_name, vendor_stall_number, vendor_product, vendor_userid, starting_date, balance, transaction_id, remaining_balance, month, day, year) 
-            VALUES ('$vendor_full_name', '$vendor_stall_number', '$vendor_product_type', '$vendor_userid','$vendor_first_payment_date', 0.00 , '$vendor_transaction_id', '$remaining_balance', '$month','$day','$year')";
+                $sql2 = "INSERT INTO vendor_balance (vendor_name, vendor_stall_number, vendor_product, vendor_userid, starting_date, balance, transaction_id, vendor_payment_basis, remaining_balance, month, day, year) 
+            VALUES ('$vendor_full_name', '$vendor_stall_number', '$vendor_product_type', '$vendor_userid','$vendor_first_payment_date', 0.00 , '$vendor_transaction_id', 'Monthly', '$remaining_balance', '$month','$day','$year')";
 
                 // Insert data into admin_stall_map table
-                $sql3 = "INSERT INTO admin_stall_map (vendor_stall_number, vendor_name, vendor_userid, balance, vacant) 
-                VALUES ('$vendor_stall_number', '$vendor_full_name', '$vendor_userid', '0.00', '1')";
+                $sql3 = "INSERT INTO admin_stall_map (vendor_stall_number, vendor_name, vendor_userid, balance, vendor_payment_basis, vacant) 
+                VALUES ('$vendor_stall_number', '$vendor_full_name', '$vendor_userid', '0.00', 'Monthly', '1')";
 
                 // Execute SQL queries
                 if ($connect->query($sql1) === TRUE && $connect->query($sql2) === TRUE && $connect->query($sql3) === TRUE) {
@@ -129,7 +129,7 @@ function unsetVendorSessionVariables()
     unset($_SESSION['vendor_mobile_number']);
     unset($_SESSION['vendor_email']);
     unset($_SESSION['vendor_product_type']);
-    // unset($_SESSION['vendor_payment_basis']);
+    //  unset($_SESSION['vendor_payment_basis']);
     unset($_SESSION['vendor_first_payment_date']);
     unset($_SESSION['vendor_userid']);
     unset($_SESSION['vendor_hashed_password']);
