@@ -5,7 +5,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $admin_userid = $_SESSION["userid"];
 
 
-    $query = "SELECT id, name, balance, confirmed, archived, payment_date, mop, transaction_id FROM ven_payments";
+    $query = "SELECT vendor_userid, name, balance, confirmed, archived, payment_date, mop, transaction_id FROM ven_payments";
     // Only select necessary columns
     $result = mysqli_query($connect, $query);
 
@@ -68,7 +68,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     echo "<td class='paid-mark'>Paid</td>";
                 } else {
                     echo "<td class='action-cell'>
-                        <button onclick=\"confirmAndArchive('{$row['id']}', '{$row['name']}', '{$row['payment_date']}', '{$row['mop']}', '{$row['transaction_id']}', this)\" data-vendor-id='{$row['id']}'>Confirm</button>
+                        <button onclick=\"confirmAndArchive('{$row['vendor_userid']}', '{$row['name']}', '{$row['payment_date']}', '{$row['mop']}', '{$row['transaction_id']}', this)\" data-vendor-id='{$row['vendor_userid']}'>Confirm</button>
                     </td>";
                 }
 
@@ -103,28 +103,26 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script>
-            function confirmAndArchive(id, name, payment_date, modeOfPayment, transactionId, row) {
-                $.ajax({
-                    type: "POST",
-                    url: "confirm_and_archive_db.php",
-                    data: {
-                        vendorId: id,
-                        vendorName: name,
-                        paymentDate: payment_date,
-                        modeOfPayment: modeOfPayment, // Add the MOP parameter
-                        transactionId: transactionId, // Add the transaction_id parameter
-                    },
-                    success: function(response) {
-                        alert(response); // Display the server's response (if needed)
-
-                        // Update the content of the 'Action' cell to 'Paid'
-                        $(row).closest('tr').find('.action-cell').html('Paid');
-                    },
-                    error: function() {
-                        alert("Error confirming payment and archiving");
-                    }
-                });
-            }
+           function confirmAndArchive(vendorUserId, name, payment_date, modeOfPayment, transactionId, row) {
+            $.ajax({
+                type: "POST",
+                url: "confirm_and_archive_db.php",
+                data: {
+                    vendorUserId: vendorUserId,  // Change the parameter name
+                    vendorName: name,
+                    paymentDate: payment_date,
+                    modeOfPayment: modeOfPayment,
+                    transactionId: transactionId,
+                },
+                success: function(response) {
+                    alert(response);
+                    $(row).closest('tr').find('.action-cell').html('Paid');
+                },
+                error: function() {
+                    alert("Error confirming payment and archiving");
+                }
+            });
+        }
 
             function confirmRemoveAll() {
                 var confirmDelete = confirm("Are you sure you want to remove all confirmed payments?");

@@ -33,7 +33,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $paymentDate = date('Y-m-d H:i:s');
         $paymentMethod = "CASH"; // Set the payment method to "CASH"
 
-        $sqlInsertPayment = "INSERT INTO ven_payments (id, name, balance, archived, confirmed, payment_date, mop, transaction_id) VALUES (?, ?, ?, 0, 0, ?, ?, ?)";
+        $sqlInsertPayment = "INSERT INTO ven_payments (vendor_userid, name, balance, archived, confirmed, payment_date, mop, transaction_id) VALUES (?, ?, ?, 0, 0, ?, ?, ?)";
         $stmtInsertPayment = $connect->prepare($sqlInsertPayment);
         $stmtInsertPayment->bind_param('ssdsss', $vendorUserId, $vendorName, $balance, $paymentDate, $paymentMethod, $transactionId); // Use 's' for VARCHAR, 'd' for DOUBLE
         $stmtInsertPayment->execute();

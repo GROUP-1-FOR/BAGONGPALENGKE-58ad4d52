@@ -168,7 +168,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $paymentStatus = "To be paid";
 
     // Check if the payment has been sent but not confirmed
-    $sqlCheckPayment = "SELECT * FROM ven_payments WHERE id = ? AND name = ? AND transaction_id = ? AND confirmed = 0 AND archived = 0";
+    $sqlCheckPayment = "SELECT * FROM ven_payments WHERE vendor_userid = ? AND name = ? AND transaction_id = ? AND confirmed = 0 AND archived = 0";
     $stmtCheckPayment = $connect->prepare($sqlCheckPayment);
     $stmtCheckPayment->bind_param('iss', $userid, $vendorName, $transactionId);
     $stmtCheckPayment->execute();

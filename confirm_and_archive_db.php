@@ -6,15 +6,15 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $userid = $_SESSION["userid"];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $vendorId = $_POST['vendorId'];
+        $vendorUserId = $_POST['vendorUserId'];
         $transactionId = $_POST['transactionId']; // Retrieve the transaction_id
 
         // Fetch the vendor details from the database
-        $getVendorQuery = "SELECT name, balance, mop FROM `ven_payments` WHERE `id` = ?";
+        $getVendorQuery = "SELECT name, balance, mop FROM `ven_payments` WHERE `vendor_userid` = ?";
         $getVendorStatement = mysqli_prepare($connect, $getVendorQuery);
 
         if ($getVendorStatement) {
-            mysqli_stmt_bind_param($getVendorStatement, "s", $vendorId); // Use "s" for VARCHAR
+            mysqli_stmt_bind_param($getVendorStatement, "s", $vendorUserId); // Use "s" for VARCHAR
             mysqli_stmt_execute($getVendorStatement);
             mysqli_stmt_bind_result($getVendorStatement, $vendorName, $vendorBalance, $modeOfPayment);
             mysqli_stmt_fetch($getVendorStatement);
@@ -27,11 +27,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             $modeOfPayment = $_POST['modeOfPayment'];
 
             // Insert into the paid records table
-            $insertPaidQuery = "INSERT INTO `paid_records` (name, balance, payment_date, mop, transaction_id) VALUES (?, ?, ?, ?, ?)";
+            $insertPaidQuery = "INSERT INTO `paid_records` (vendor_userid, name, balance, payment_date, mop, transaction_id) VALUES (?, ?, ?, ?, ?, ?)";
             $insertPaidStatement = mysqli_prepare($connect, $insertPaidQuery);
 
             if ($insertPaidStatement) {
-                mysqli_stmt_bind_param($insertPaidStatement, "sdsss", $vendorName, $vendorBalance, $paymentDate, $modeOfPayment, $transactionId); // Use the new transaction ID
+                mysqli_stmt_bind_param($insertPaidStatement, "ssdsss",$vendorUserId, $vendorName, $vendorBalance, $paymentDate, $modeOfPayment, $transactionId); // Use the new transaction ID
                 $successPaid = mysqli_stmt_execute($insertPaidStatement);
 
                 if (!$successPaid) {
@@ -42,11 +42,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             }
 
             // Insert into the archive records table
-            $insertArchiveQuery = "INSERT INTO `archive_records` (name, balance, payment_date, mop, transaction_id) VALUES (?, ?, ?, ?, ?)";
+            $insertArchiveQuery = "INSERT INTO `archive_records` (vendor_userid, name, balance, payment_date, mop, transaction_id) VALUES (?, ?, ?, ?, ?, ?)";
             $insertArchiveStatement = mysqli_prepare($connect, $insertArchiveQuery);
 
             if ($insertArchiveStatement) {
-                mysqli_stmt_bind_param($insertArchiveStatement, "sdsss", $vendorName, $vendorBalance, $paymentDate, $modeOfPayment, $transactionId); // Use the new transaction ID
+                mysqli_stmt_bind_param($insertArchiveStatement, "ssdsss",$vendorUserId, $vendorName, $vendorBalance, $paymentDate, $modeOfPayment, $transactionId); // Use the new transaction ID
                 $successArchive = mysqli_stmt_execute($insertArchiveStatement);
 
                 if (!$successArchive) {
@@ -57,11 +57,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             }
 
             // Update the ven_payments table for confirmation and archiving
-            $updateQuery = "UPDATE `ven_payments` SET `confirmed` = 1, `archived` = 1 WHERE `id` = ?";
+            $updateQuery = "UPDATE `ven_payments` SET `confirmed` = 1, `archived` = 1 WHERE `vendor_userid` = ?";
             $updateStatement = mysqli_prepare($connect, $updateQuery);
 
             if ($updateStatement) {
-                mysqli_stmt_bind_param($updateStatement, "s", $vendorId); // Use "s" for VARCHAR
+                mysqli_stmt_bind_param($updateStatement, "s", $vendorUserId); // Use "s" for VARCHAR
                 $successUpdate = mysqli_stmt_execute($updateStatement);
 
                 if (!$successUpdate) {
@@ -70,13 +70,13 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     // Update the balance in the vendor_user table
                     $newBalance = 0;
                     // Generate a new transaction ID
-                    $newTransactionId = generateUniqueTransactionId($connect, $vendorId);
+                    $newTransactionId = generateUniqueTransactionId($connect, $vendorUserId);
                     // Update the transaction_id and balance in the vendor_balance table
                     $updateVendorBalanceQuery = "UPDATE `vendor_balance` SET `transaction_id` = ?, `balance` = ? WHERE `vendor_userid` = ?";
                     $updateVendorBalanceStatement = mysqli_prepare($connect, $updateVendorBalanceQuery);
 
                     if ($updateVendorBalanceStatement) {
-                        mysqli_stmt_bind_param($updateVendorBalanceStatement, "sds", $newTransactionId, $newBalance, $vendorId); // Use "s" for VARCHAR, "d" for DECIMAL
+                        mysqli_stmt_bind_param($updateVendorBalanceStatement, "sds", $newTransactionId, $newBalance, $vendorUserId); // Use "s" for VARCHAR, "d" for DECIMAL
                         $successUpdateVendorBalance = mysqli_stmt_execute($updateVendorBalanceStatement);
 
                         if (!$successUpdateVendorBalance) {
@@ -91,7 +91,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     $updateStallMapStatement = mysqli_prepare($connect, $updateStallMapQuery);
 
                     if ($updateStallMapStatement) {
-                        mysqli_stmt_bind_param($updateStallMapStatement, "ds", $newBalance, $vendorId); // Use "d" for DECIMAL
+                        mysqli_stmt_bind_param($updateStallMapStatement, "ds", $newBalance, $vendorUserId); // Use "d" for DECIMAL
                         $successUpdateStallMap = mysqli_stmt_execute($updateStallMapStatement);
 
                         if (!$successUpdateStallMap) {
@@ -122,7 +122,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 }
 
 // Function to generate a unique transaction ID
-function generateUniqueTransactionId($connect, $vendorId) {
+function generateUniqueTransactionId($connect, $vendorUserId) {
     // Set the maximum number of attempts to generate a unique ID
     $maxAttempts = 10;
 
@@ -131,7 +131,7 @@ function generateUniqueTransactionId($connect, $vendorId) {
         $uniqueId = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
         // Concatenate vendor user ID and unique ID
-        $transactionId = $vendorId . '-' . $uniqueId;
+        $transactionId = $vendorUserId . '-' . $uniqueId;
 
         // Check if the generated transaction_id already exists in vendor_balance table
         $checkIfExistsVendor = "SELECT transaction_id FROM vendor_balance WHERE transaction_id = '$transactionId'";
