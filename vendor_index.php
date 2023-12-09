@@ -28,7 +28,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
      // Get the current date
      $currentDate = new DateTime();
      $currentDay = intval($currentDate->format('d'));
-     $currentMonth =intval($currentDate->format('m'));
+     $currentMonth = intval($currentDate->format('m'));
      $currentYear = intval($currentDate->format('Y'));
 
     $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
@@ -75,15 +75,15 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
                 $stmtUpdateBalance->bind_param('di', $currentBalance, $userid); // Assuming vendor_userid is of type integer
                 $stmtUpdateBalance->execute();
-        }
-    
-        
-    
-          // Update day, month, and year
+
+                // Update day, month, and year
             $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
             $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
             $stmtUpdateDate->bind_param('iiii', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
             $stmtUpdateDate->execute();
+        }
+    
+        
         }
     }
     /*     // Debugging output
@@ -106,7 +106,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $paymentStatus = "To be paid";
 
     // Check if the payment has been sent but not confirmed
-    $sqlCheckPayment = "SELECT * FROM ven_payments WHERE vendor_userid = ? AND name = ? AND transaction_id = ? AND confirmed = 0 AND archived = 0";
+    $sqlCheckPayment = "SELECT * FROM ven_payments WHERE vendor_userid = ? AND vendor_name = ? AND transaction_id = ? AND confirmed = 0 AND archived = 0";
     $stmtCheckPayment = $connect->prepare($sqlCheckPayment);
     $stmtCheckPayment->bind_param('iss', $userid, $vendorName, $transactionId);
     $stmtCheckPayment->execute();
