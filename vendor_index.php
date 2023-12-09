@@ -25,47 +25,47 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         die("User not found or database query issue.");
     }
 
-     // Get the current date
-     $currentDate = new DateTime();
-     $currentDay = intval($currentDate->format('d'));
-     $currentMonth = intval($currentDate->format('m'));
-     $currentYear = intval($currentDate->format('Y'));
+    // Get the current date
+    $currentDate = new DateTime();
+    $currentDay = intval($currentDate->format('d'));
+    $currentMonth = intval($currentDate->format('m'));
+    $currentYear = intval($currentDate->format('Y'));
 
     $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
 
     $startingDate = new DateTime($rowUserData['starting_date']);
     if ($currentDate >= $startingDate) {
-        if($currentMonth > $rowUserData['month'] || $currentYear > $rowUserData['year']){
-        // Perform actions when the current date is greater than or equal to the starting date
-    
-        // Fetch vendor_product and vendor_payment_basis
-        $vendorProduct = $rowUserData['vendor_product'];
-        $vendorPaymentBasis = $rowUserData['vendor_payment_basis'];
-    
-        // Fetch stall_rate from rent_basis table based on vendor_product
-        $sqlStallRate = "SELECT stall_rate FROM rent_basis WHERE vendor_product = ?";
-        $stmtStallRate = $connect->prepare($sqlStallRate);
-        $stmtStallRate->bind_param('s', $vendorProduct);
-        $stmtStallRate->execute();
-        $resultStallRate = $stmtStallRate->get_result();
-    
-        if ($resultStallRate->num_rows > 0) {
-            $rowStallRate = $resultStallRate->fetch_assoc();
-            $stallRate = $rowStallRate['stall_rate'];
-        }
-    if ($vendorPaymentBasis == 'Monthly') {
-            // Calculate balance based on Monthly payment basis
-            
+        if ($currentMonth > $rowUserData['month'] || $currentYear > $rowUserData['year']) {
+            // Perform actions when the current date is greater than or equal to the starting date
 
-            if ($currentYear == $rowUserData['year'] && $currentMonth > $rowUserData['month']) {
-                $balance = ($currentMonth - $rowUserData['month']) * $stallRate;
-            } elseif ($currentYear > $rowUserData['year']) {
-                $newcurrentMonth = ($currentYear - $rowUserData['year']) * 12 + $currentMonth;
-                $balance = ($newcurrentMonth - $rowUserData['month']) * $stallRate;
+            // Fetch vendor_product and vendor_payment_basis
+            $vendorProduct = $rowUserData['vendor_product'];
+            $vendorPaymentBasis = $rowUserData['vendor_payment_basis'];
+
+            // Fetch stall_rate from rent_basis table based on vendor_product
+            $sqlStallRate = "SELECT stall_rate FROM rent_basis WHERE vendor_product = ?";
+            $stmtStallRate = $connect->prepare($sqlStallRate);
+            $stmtStallRate->bind_param('s', $vendorProduct);
+            $stmtStallRate->execute();
+            $resultStallRate = $stmtStallRate->get_result();
+
+            if ($resultStallRate->num_rows > 0) {
+                $rowStallRate = $resultStallRate->fetch_assoc();
+                $stallRate = $rowStallRate['stall_rate'];
             }
-             // Update current balance and remaining balance
+            if ($vendorPaymentBasis == 'Monthly') {
+                // Calculate balance based on Monthly payment basis
+
+
+                if ($currentYear == $rowUserData['year'] && $currentMonth > $rowUserData['month']) {
+                    $balance = ($currentMonth - $rowUserData['month']) * $stallRate;
+                } elseif ($currentYear > $rowUserData['year']) {
+                    $newcurrentMonth = ($currentYear - $rowUserData['year']) * 12 + $currentMonth;
+                    $balance = ($newcurrentMonth - $rowUserData['month']) * $stallRate;
+                }
+                // Update current balance and remaining balance
                 $currentBalance = $balance + $rowUserData['balance'];
-               
+
                 $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
                 $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
                 $stmtUpdateBalance->bind_param('di', $currentBalance, $userid); // Assuming vendor_userid is of type integer
@@ -77,13 +77,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 $stmtUpdateBalance->execute();
 
                 // Update day, month, and year
-            $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
-            $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
-            $stmtUpdateDate->bind_param('iiii', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
-            $stmtUpdateDate->execute();
-        }
-    
-        
+                $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
+                $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
+                $stmtUpdateDate->bind_param('iiii', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
+                $stmtUpdateDate->execute();
+            }
         }
     }
     /*     // Debugging output
@@ -211,6 +209,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <a href=vendor_edit_profile.php>
             <h1>EDIT PROFILE</h1>
         </a>
+
+        <a href=vendor_transaction_history.php>
+            <h1>TRANSACTIONS</h1>
+        </a>
+
         <a href=vendor_view_announcement.php>
             <h1>SEE ANNOUNCEMENTS</h1>
         </a>

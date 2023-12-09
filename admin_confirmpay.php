@@ -103,26 +103,26 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script>
-           function confirmAndArchive(vendorUserId, vendorName, paymentDate, modeOfPayment, transactionId, row) {
-            $.ajax({
-                type: "POST",
-                url: "confirm_and_archive_db.php",
-                data: {
-                    vendorUserId: vendorUserId,
-                    vendorName: vendorName,
-                    paymentDate: paymentDate,
-                    modeOfPayment: modeOfPayment,
-                    transactionId: transactionId,
-                },
-                success: function(response) {
-                    alert(response);
-                    $(row).closest('tr').find('.action-cell').html('Paid');
-                },
-                error: function() {
-                    alert("Error confirming payment and archiving");
-                }
-            });
-        }
+            function confirmAndArchive(vendorUserId, vendorName, paymentDate, modeOfPayment, transactionId, row) {
+                $.ajax({
+                    type: "POST",
+                    url: "confirm_and_archive_db.php",
+                    data: {
+                        vendorUserId: vendorUserId,
+                        vendorName: vendorName,
+                        paymentDate: paymentDate,
+                        modeOfPayment: modeOfPayment,
+                        transactionId: transactionId,
+                    },
+                    success: function(response) {
+                        alert(response);
+                        $(row).closest('tr').find('.action-cell').html('Paid');
+                    },
+                    error: function() {
+                        alert("Error confirming payment and archiving");
+                    }
+                });
+            }
 
             function confirmRemoveAll() {
                 var confirmDelete = confirm("Are you sure you want to remove all confirmed payments?");

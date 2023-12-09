@@ -3,18 +3,18 @@ require_once('config.php');
 
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $id = $_SESSION["id"];
-    $userid = $_SESSION["userid"];
+    $admin_userid = $_SESSION["userid"];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $vendorUserId = $_POST['vendorUserId'];
         $transactionId = $_POST['transactionId']; // Retrieve the transaction_id
 
         // Fetch the vendor details from the database
-        $getVendorQuery = "SELECT vendor_name, balance, mop FROM `ven_payments` WHERE `vendor_userid` = ?";
+        $getVendorQuery = "SELECT vendor_name, balance, mop FROM `ven_payments` WHERE `transaction_id` = ?";
         $getVendorStatement = mysqli_prepare($connect, $getVendorQuery);
 
         if ($getVendorStatement) {
-            mysqli_stmt_bind_param($getVendorStatement, "s", $vendorUserId); // Use "s" for VARCHAR
+            mysqli_stmt_bind_param($getVendorStatement, "s", $transactionId); // Use "s" for VARCHAR
             mysqli_stmt_execute($getVendorStatement);
             mysqli_stmt_bind_result($getVendorStatement, $vendorName, $vendorBalance, $modeOfPayment);
             mysqli_stmt_fetch($getVendorStatement);
@@ -26,12 +26,15 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             // Assuming $modeOfPayment is received from your form or any other source
             $modeOfPayment = $_POST['modeOfPayment'];
 
+            $receiptNumber = generateReceiptNumber();
+            $vendor_receipt_number = $receiptNumber;
+
             // Insert into the paid records table
-            $insertPaidQuery = "INSERT INTO `paid_records` (vendor_userid, vendor_name, balance, payment_date, mop, transaction_id) VALUES (?, ?, ?, ?, ?, ?)";
+            $insertPaidQuery = "INSERT INTO `paid_records` (vendor_userid, vendor_name, receipt_number, balance, payment_date, mop, transaction_id, admin_userid) VALUES (?, ?,?, ?, ?, ?, ?, ?)";
             $insertPaidStatement = mysqli_prepare($connect, $insertPaidQuery);
 
             if ($insertPaidStatement) {
-                mysqli_stmt_bind_param($insertPaidStatement, "ssdsss",$vendorUserId, $vendorName, $vendorBalance, $paymentDate, $modeOfPayment, $transactionId); // Use the new transaction ID
+                mysqli_stmt_bind_param($insertPaidStatement, "sssdssss", $vendorUserId, $vendorName, $vendor_receipt_number, $vendorBalance, $paymentDate, $modeOfPayment, $transactionId, $admin_userid); // Use the new transaction ID
                 $successPaid = mysqli_stmt_execute($insertPaidStatement);
 
                 if (!$successPaid) {
@@ -46,7 +49,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             $insertArchiveStatement = mysqli_prepare($connect, $insertArchiveQuery);
 
             if ($insertArchiveStatement) {
-                mysqli_stmt_bind_param($insertArchiveStatement, "ssdsss",$vendorUserId, $vendorName, $vendorBalance, $paymentDate, $modeOfPayment, $transactionId); // Use the new transaction ID
+                mysqli_stmt_bind_param($insertArchiveStatement, "ssdsss", $vendorUserId, $vendorName, $vendorBalance, $paymentDate, $modeOfPayment, $transactionId); // Use the new transaction ID
                 $successArchive = mysqli_stmt_execute($insertArchiveStatement);
 
                 if (!$successArchive) {
@@ -118,11 +121,12 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         echo "Invalid request method";
     }
 } else {
-    header("location:admin_login.php");
+    header("location:admin_logout.php");
 }
 
 // Function to generate a unique transaction ID
-function generateUniqueTransactionId($connect, $vendorUserId) {
+function generateUniqueTransactionId($connect, $vendorUserId)
+{
     // Set the maximum number of attempts to generate a unique ID
     $maxAttempts = 10;
 
@@ -147,7 +151,28 @@ function generateUniqueTransactionId($connect, $vendorUserId) {
         }
     }
 
+
     // If maximum attempts are reached, handle the error (e.g., throw an exception)
     throw new Exception("Failed to generate a unique transaction ID after $maxAttempts attempts");
 }
-?>
+
+function generateReceiptNumber()
+{
+    // Generate a unique identifier (you can use a function like uniqid())
+    $uniqueId = uniqid();
+
+    // Extract only the numerical part of the unique identifier
+    $numericPart = hexdec(substr($uniqueId, 6, 8));
+
+    // Get the current date and time
+    $currentDateTime = new DateTime();
+    $formattedDateTime = $currentDateTime->format('YmdHis');
+
+    // Combine the numeric part and date/time
+    $combinedString = $formattedDateTime . '_' . $numericPart;
+
+    // Take the last 5 characters to limit the length to 5 digits
+    $receiptNumber = substr($combinedString, -5);
+
+    return $receiptNumber;
+}
