@@ -9,7 +9,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $vendorUserId = $_POST['vendorUserId'];
-        $transactionId = $_POST['transactionId']; // Retrieve the transaction_id
+        $transactionId = $_POST['transactionId'];
+        $balance = $_POST['balance']; // Retrieve the balance from the AJAX request
 
         // Fetch the vendor details from the database
         $getVendorQuery = "SELECT vendor_name, balance, mop FROM `ven_payments` WHERE `transaction_id` = ?";
@@ -72,16 +73,18 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 if (!$successUpdate) {
                     echo "Error updating ven_payments table: " . mysqli_error($connect);
                 } else {
-                    // Update the balance in the vendor_user table
-                    $newBalance = 0;
+                   // Update the balance in the vendor_user table
+                    $newBalance = 0 - $balance; // Subtract $balance from the existing balance
+
                     // Generate a new transaction ID
                     $newTransactionId = generateUniqueTransactionId($connect, $vendorUserId);
+
                     // Update the transaction_id and balance in the vendor_balance table
-                    $updateVendorBalanceQuery = "UPDATE `vendor_balance` SET `transaction_id` = ?, `balance` = ? WHERE `vendor_userid` = ?";
+                    $updateVendorBalanceQuery = "UPDATE `vendor_balance` SET `transaction_id` = ?, `balance` = `balance` + ? WHERE `vendor_userid` = ?";
                     $updateVendorBalanceStatement = mysqli_prepare($connect, $updateVendorBalanceQuery);
 
                     if ($updateVendorBalanceStatement) {
-                        mysqli_stmt_bind_param($updateVendorBalanceStatement, "sds", $newTransactionId, $newBalance, $vendorUserId); // Use "s" for VARCHAR, "d" for DECIMAL
+                        mysqli_stmt_bind_param($updateVendorBalanceStatement, "sds", $newTransactionId, $newBalance, $vendorUserId);
                         $successUpdateVendorBalance = mysqli_stmt_execute($updateVendorBalanceStatement);
 
                         if (!$successUpdateVendorBalance) {
@@ -92,11 +95,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     }
 
                     // Update the admin_stall_map table
-                    $updateStallMapQuery = "UPDATE `admin_stall_map` SET `balance` = ? WHERE `vendor_userid` = ?";
+                    $updateStallMapQuery = "UPDATE `admin_stall_map` SET `balance` = `balance` + ? WHERE `vendor_userid` = ?";
                     $updateStallMapStatement = mysqli_prepare($connect, $updateStallMapQuery);
 
                     if ($updateStallMapStatement) {
-                        mysqli_stmt_bind_param($updateStallMapStatement, "ds", $newBalance, $vendorUserId); // Use "d" for DECIMAL
+                        mysqli_stmt_bind_param($updateStallMapStatement, "ds", $newBalance, $vendorUserId);
                         $successUpdateStallMap = mysqli_stmt_execute($updateStallMapStatement);
 
                         if (!$successUpdateStallMap) {
