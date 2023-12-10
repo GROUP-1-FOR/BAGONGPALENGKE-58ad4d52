@@ -138,7 +138,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <!-- Add any additional information or details about the invoice -->
             <!-- ... -->
 
-            <p><a href="vendor_index.php">Back to Main Page</a></p>
+            <p><a href="vendor_index.php">Back</a></p>
         </div>
     </body>
 
