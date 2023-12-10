@@ -119,6 +119,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                             paymentDate: paymentDate,
                             modeOfPayment: modeOfPayment,
                             transactionId: transactionId,
+                            balance: $(row).closest('tr').find('td:eq(1)').text() // Fetch balance from the second cell of the current row
                         },
                         success: function(response) {
                             alert(response);
