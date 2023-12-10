@@ -50,7 +50,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <img class="profile-design" src="assets\images\sign-in\profile-design.png">
         </div>
         </ul>
-
         <div class="sidebar-inside">
             <ul class="dashboard-sidebar">
                 <li><a class="home-index" href=admin_index.php> Home </a></li>
