@@ -100,7 +100,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             </div>
         </div>
 
-        <a href=vendor_transaction_history.php style="display: none;" id="back-link">
+        <a href=vendor_transaction_history.php id="back-link">
             <h1>Back</h1>
         </a>
     </body>
