@@ -12,6 +12,15 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $announcement_text = htmlspecialchars($_POST["admin_announcement"]);
 
 
+        if (empty($announcement_title) || empty($announcement_subject) || empty($announcement_text)) {
+            // Handle the error (e.g., display a message or redirect with an error flag)
+            echo '<script>';
+            echo 'alert("All fields are required!");';
+            echo 'window.location.href = "admin_send_announcement.php";';
+            echo '</script>';
+            exit();
+        }
+
         // Insert a message for each user
         $sql = "INSERT INTO announcements (admin_id,announcement_title, announcement_subject, announcement_text) VALUES ('$admin_id', '$announcement_title','$announcement_subject','$announcement_text')";
 

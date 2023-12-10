@@ -29,10 +29,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         if ($result_sent_announcement->num_rows > 0) {
             while ($row = $result_sent_announcement->fetch_assoc()) {
         ?>
-                <p style="color: green;">Title:<?php echo $row['announcement_title']; ?> </p>
-                <p style="color: gray;">Subject:<?php echo $row['announcement_subject']; ?></p>
-                <p>Announcement: <?php echo $row['announcement_text']; ?></p>
-                <p>Date and Time: <?php echo $row['announcement_time']; ?></p>
+                <h1 style="color: green;"><?php echo $row['announcement_title']; ?> </h1>
+                <h2 style="color: gray;"><?php echo $row['announcement_subject']; ?></h2>
+                <p><?php echo $row['announcement_text']; ?></p>
+                <p><?php echo $row['announcement_time']; ?></p>
 
         <?php }
         } else {

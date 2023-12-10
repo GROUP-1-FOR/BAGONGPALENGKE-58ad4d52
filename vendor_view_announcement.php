@@ -26,13 +26,12 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <?php
         if ($result_messages->num_rows > 0) {
             while ($row = $result_messages->fetch_assoc()) {
-                // Display messages
-                echo "<hr />";
-                echo "<p>Treasury Office: </p>";
-                echo "<p>Announcement: " . $row['announcement_text'] . "</p>";
-                echo "<p>Date and Time: " . $row['announcement_time'] . "</p><hr>";
-                echo "<hr />";
-            }
+        ?>
+                <h1 style="color: green;"><?php echo $row['announcement_title']; ?> </h1>
+                <h2 style="color: gray;"><?php echo $row['announcement_subject']; ?></h2>
+                <p> <?php echo $row['announcement_text']; ?></p>
+                <p><?php echo $row['announcement_time']; ?></p>
+        <?php  }
         } else {
             echo "<p>No announcements found in your inbox.</p>";
         }
