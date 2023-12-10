@@ -8,7 +8,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $vendor_last_name = isset($_POST["vendor_last_name"]) ? htmlspecialchars($_POST["vendor_last_name"]) : '';
     $vendor_mobile_number = isset($_POST["vendor_mobile_number"]) ? trim(htmlspecialchars($_POST["vendor_mobile_number"])) : '';
     $vendor_email = isset($_POST["vendor_email"]) ? htmlspecialchars($_POST["vendor_email"]) : '';
-    $vendor_product_type = isset($_POST["vendor_product"]) ? htmlspecialchars($_POST["vendor_product"]) : '';
 
     // Fetch vendor_userid from session (Assuming you store it during login)
     $vendor_userid = isset($_SESSION['userid']) ? $_SESSION['userid'] : '';
@@ -40,8 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     // Perform database insertion (you might need to adjust table/column names)
-    $sql = "INSERT INTO vendor_edit_profile (vendor_userid, vendor_first_name, vendor_last_name, vendor_name, vendor_mobile_number, vendor_product, vendor_email) 
-    VALUES ('$vendor_userid', '$vendor_first_name', '$vendor_last_name', '$vendor_full_name', '$vendor_mobile_number', '$vendor_product_type', '$vendor_email')";
+    $sql = "INSERT INTO vendor_edit_profile (vendor_userid, vendor_first_name, vendor_last_name, vendor_name, vendor_mobile_number, vendor_email) 
+    VALUES ('$vendor_userid', '$vendor_first_name', '$vendor_last_name', '$vendor_full_name', '$vendor_mobile_number', '$vendor_email')";
     if ($connect->query($sql) === TRUE) {
         echo '<script>';
         echo 'alert("Vendor Account Update On Process!");';

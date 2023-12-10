@@ -11,7 +11,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $vendor_userid = $_GET['vendor_userid'];
 
         // Fetch vendor information from the database
-        $sql = "SELECT vendor_name, vendor_first_name, vendor_last_name, vendor_userid, vendor_email, vendor_mobile_number, vendor_product FROM vendor_edit_profile WHERE vendor_userid = ?";
+        $sql = "SELECT vendor_name, vendor_first_name, vendor_last_name, vendor_userid, vendor_email, vendor_mobile_number FROM vendor_edit_profile WHERE vendor_userid = ?";
         $stmt = $connect->prepare($sql);
         $stmt->bind_param("s", $vendor_userid);
         $stmt->execute();
@@ -62,9 +62,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     <label for="vendor_mobile_number">Mobile Number:</label>
                     <input type="text" id="vendor_mobile_number" name="vendor_mobile_number" value="<?= $vendor_data['vendor_mobile_number'] ?>" readonly><br>
 
-                    <label for="vendor_product">Product:</label>
-                    <input type="text" id="vendor_product" name="vendor_product" value="<?= $vendor_data['vendor_product'] ?>" readonly><br>
-
                     <input type="submit" name="update" value="Update">
 
                 </form>
@@ -83,7 +80,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                         $new_vendor_last_name = $_POST['vendor_last_name'];
                         $new_vendor_email = $_POST['vendor_email'];
                         $new_vendor_mobile_number = $_POST['vendor_mobile_number'];
-                        $new_vendor_product = $_POST['vendor_product'];
 
                         // Update vendor_sign_in table
                         $update_vendor_signin_sql = "UPDATE vendor_sign_in SET
@@ -91,12 +87,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     vendor_first_name = ?,
                     vendor_last_name = ?,
                     vendor_email = ?,
-                    vendor_mobile_number = ?,
-                    vendor_product = ?
+                    vendor_mobile_number = ?
                     WHERE vendor_userid = ?";
 
                         $update_vendor_signin_stmt = $connect->prepare($update_vendor_signin_sql);
-                        $update_vendor_signin_stmt->bind_param("sssssss", $new_vendor_name, $new_vendor_first_name, $new_vendor_last_name, $new_vendor_email, $new_vendor_mobile_number, $new_vendor_product, $vendor_userid);
+                        $update_vendor_signin_stmt->bind_param("ssssss", $new_vendor_name, $new_vendor_first_name, $new_vendor_last_name, $new_vendor_email, $new_vendor_mobile_number, $vendor_userid);
 
                         // Update admin_messages table
                         $update_admin_messages_sql = "UPDATE admin_messages SET

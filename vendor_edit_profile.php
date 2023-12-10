@@ -6,7 +6,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $userid = $_SESSION["userid"];
 
     // Fetch user details from the database based on the session user ID
-    $query = "SELECT vendor_first_name, vendor_last_name, vendor_mobile_number, vendor_email, vendor_product FROM vendor_sign_in WHERE vendor_userid = '$userid'";
+    $query = "SELECT vendor_first_name, vendor_last_name, vendor_mobile_number, vendor_email FROM vendor_sign_in WHERE vendor_userid = '$userid'";
     $result = mysqli_query($connect, $query);
 
     if ($result) {
@@ -17,7 +17,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $vendorLastName = $userDetails['vendor_last_name'];
         $vendorMobileNumber = $userDetails['vendor_mobile_number'];
         $vendorEmail = $userDetails['vendor_email'];
-        $vendorProduct = $userDetails['vendor_product'];
     } else {
         // Handle database query error
         die("Database query failed: " . mysqli_error($connect));
@@ -105,7 +104,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             var initialVendorLastName = "<?php echo $vendorLastName; ?>";
             var initialVendorMobileNumber = "<?php echo $vendorMobileNumber; ?>";
             var initialVendorEmail = "<?php echo $vendorEmail; ?>";
-            var initialVendorProduct = "<?php echo $vendorProduct; ?>";
 
             function hasFormChanged() {
                 // Check if any of the form fields have changed
@@ -113,14 +111,19 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     document.getElementById("vendor_first_name").value !== initialVendorFirstName ||
                     document.getElementById("vendor_last_name").value !== initialVendorLastName ||
                     document.getElementById("vendor_mobile_number").value !== initialVendorMobileNumber ||
-                    document.getElementById("vendor_email").value !== initialVendorEmail ||
-                    document.getElementById("vendor_product").value !== initialVendorProduct
+                    document.getElementById("vendor_email").value !== initialVendorEmail
                 );
             }
 
             function updateSubmitButton() {
                 var submitButton = document.querySelector('button[type="submit"]');
-                submitButton.disabled = !hasFormChanged();
+                var firstName = document.getElementById("vendor_first_name").value;
+                var lastName = document.getElementById("vendor_last_name").value;
+                var mobileNumber = document.getElementById("vendor_mobile_number").value;
+                var email = document.getElementById("vendor_email").value;
+
+                // Check if any of the fields are empty
+                submitButton.disabled = !hasFormChanged() || firstName === "" || lastName === "" || mobileNumber === "" || email === "";
             }
 
             function validateForm() {
@@ -195,15 +198,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 }
                 ?>
             </span>
-
-            <br />
-            <label for="Product Type">Products:</label>
-            <select name="vendor_product" required>
-                <option value="" disabled>Select Product Type</option>
-                <option value="Wet" <?php if ($vendorProduct == 'Wet') echo 'selected'; ?>>Wet</option>
-                <option value="Dry" <?php if ($vendorProduct == 'Dry') echo 'selected'; ?>>Dry</option>
-                <option value="Other" <?php if ($vendorProduct == 'Other') echo 'selected'; ?>>Other</option>
-            </select><br />
 
             <br />
             <br />
