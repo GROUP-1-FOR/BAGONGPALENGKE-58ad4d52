@@ -30,30 +30,77 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     <head>
         <title>View Receipt</title>
-        <!-- Add your styles or include a separate CSS file -->
+        <style>
+            body {
+                text-align: center;
+                margin: 50px;
+                background-color: #f2f2f2;
+            }
+
+            #receipt-details {
+                width: 50%;
+                margin: auto;
+                border: 3px solid #ccc;
+                padding: 20px;
+                background-color: #fff;
+            }
+
+            #receipt-details h1 {
+                color: #850F16;
+            }
+
+            #receipt-details p {
+                font-size: 1.2em;
+                margin: 10px 0;
+            }
+
+            #payment-buttons {
+                margin-top: 20px;
+            }
+
+            #payment-buttons button {
+                margin: 10px;
+                padding: 10px;
+                background-color: #850F16;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            /* Media query to hide the buttons when printing */
+            @media print {
+
+                #payment-buttons,
+                #back-link {
+                    display: none;
+                }
+            }
+        </style>
     </head>
 
     <body>
 
-        <h1>RECEIPT</h1>
+        <div id="receipt-details">
+            <h1>RECEIPT</h1>
+            <div>
+                <p>Receipt No: <?php echo $details['receipt_number']; ?></p>
+                <p>Transaction ID: <?php echo $details['transaction_id']; ?></p>
+                <p>Date: <?php echo $details['payment_date']; ?></p>
+                <p>Vendor Name: <?php echo $details['vendor_name']; ?></p>
+                <p>Vendor User ID: <?php echo $details['vendor_userid']; ?></p>
+                <p>Balance: <?php echo $details['balance']; ?></p>
+                <p>Mode of Payment: <?php echo $details['mop']; ?></p>
+                <p>Received By: <?php echo $details['admin_userid']; ?></p>
+                <!-- Add more details as needed -->
+            </div>
 
-        <div>
-            <p>Date: <?php echo $details['payment_date']; ?></p>
-            <p>Transaction ID: <?php echo $details['transaction_id']; ?></p>
-            <p>Vendor User ID: <?php echo $details['vendor_userid']; ?></p>
-            <p>Vendor Name: <?php echo $details['vendor_name']; ?></p>
-            <p>Receipt No: <?php echo $details['receipt_number']; ?></p>
-            <p>Received By: <?php echo $details['admin_userid']; ?></p>
-            <p>Balance: <?php echo $details['balance']; ?></p>
-            <p>Mode of Payment: <?php echo $details['mop']; ?></p>
-            <!-- Add more details as needed -->
+            <div id="payment-buttons">
+                <button onclick="window.print()">Print Receipt</button>
+            </div>
         </div>
 
-
-        <button onclick="window.print()">Print Receipt</button>
-
-
-        <a href=vendor_transaction_history.php>
+        <a href=vendor_transaction_history.php style="display: none;" id="back-link">
             <h1>Back</h1>
         </a>
     </body>

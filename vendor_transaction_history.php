@@ -1,5 +1,6 @@
 <?php
 require("config.php");
+
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $id = $_SESSION["id"];
     $userid = $_SESSION["userid"];
@@ -7,18 +8,15 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $queryTransaction = "SELECT transaction_id, vendor_userid, vendor_name, balance, payment_date, mop 
     FROM paid_records 
     WHERE vendor_userid = '$userid' 
-    ORDER BY payment_date DESC";;
+    ORDER BY payment_date DESC";
 
     $result = mysqli_query($connect, $queryTransaction);
 
     if (!$result) {
         die('Error: Unable to fetch data from the database');
     }
-
-
-
-
 ?>
+
     <!DOCTYPE html>
     <html>
 
@@ -54,17 +52,22 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <h1>Vendor Transaction Details</h1>
 
         <?php
-        // Loop through the result set and display each record
-        while ($row = mysqli_fetch_assoc($result)) {
+        // Check if there are no transactions
+        if (mysqli_num_rows($result) === 0) {
+            echo "<p>No transactions found.</p>";
+        } else {
+            // Loop through the result set and display each record
+            while ($row = mysqli_fetch_assoc($result)) {
         ?>
-            <div class='transaction-record'>
-                <div class='transaction-details'>
-                    <p style="color:green ;">Paid a Rent</p>
-                    <p>Transaction ID: <?php echo $row['transaction_id']; ?></p>
+                <div class='transaction-record'>
+                    <div class='transaction-details'>
+                        <p style="color:green ;">Paid a Rent</p>
+                        <p>Transaction ID: <?php echo $row['transaction_id']; ?></p>
+                    </div>
+                    <button class='action-button' onclick="viewDetails('<?php echo $row['transaction_id']; ?>')">View Details</button>
                 </div>
-                <button class='action-button' onclick="viewDetails('<?php echo $row['transaction_id']; ?>')">View Details</button>
-            </div>
         <?php
+            }
         }
         ?>
 
@@ -84,11 +87,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <h1>Back</h1>
         </a>
 
-
     </body>
 
-
     </html>
+
 <?php
 } else {
     header("location:vendor_logout.php");
