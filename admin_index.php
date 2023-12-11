@@ -1,8 +1,10 @@
 <?php
 require("config.php");
+
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $admin_id = $_SESSION["id"];
     $admin_userid = $_SESSION["userid"];
+
 
     include('admin_login_time.php');
 
@@ -65,10 +67,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         </div>
     </div>
     <h3 class="announcement-text"> Announcement</h3>
-    <h3 class="messages-text"> Messages</h3>
-    <h3 class="map"> Interactive Map</h3>
-    <h3 class="confirm-payments"> Confirm Payment</h3>
-    <h3 class="notifications"> Notifications</h3>
+    <h3 class="message-text"> Messages</h3>
+    <h3 class="map"> Interactive Map </h3>
+    <h3 class="confirm-payment"> Confirm Payment </h3>
+    <h3 class="notifications"> Notification </h3>
     <div class="flex-box">
     <main class="main-container">
         <div class="dashboard-announcement">
@@ -94,26 +96,44 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             </div>
             <div class="sending-message">
             <form action="admin_send_announcement_1.php" method="post">
-                <label class= "title-subject" for="Market Vendors">TITLE:</label><br>
-                <label class= "title-subject" for="Market Vendors">SUBJECT:</label>
-                </select><br>
-                <label for="admin_announcement"></label>
-                <textarea class="text-box" name="admin_announcement" id="admin_announcement" cols="30" rows="5" placeholder="Write Something here... "required ></textarea><br>
-                <input class="sending-button" type="submit" value="Send">
+            <label class= "title-subject" for="admin_announcement_title">TITLE: </label>
+            <input class="title" type="text" id="admin_announcement_title" name="admin_announcement_title" required><br />
+            <label class= "title-subject" for="admin_announcement_subject">SUBJECT:</label>
+            <input class="subject" type="text" id="admin_announcement_subject" name="admin_announcement_subject" required><br />
+            <textarea class="text-box" name="admin_announcement" id="admin_announcement" cols="30" rows="5" required></textarea><br>
+            <input class="sending-button" type="submit" value="Send">
             </form>
+            
+
             </div>
-                    <div class="dashboard-message">
+            <div class="dashboard-message">
+            <iframe class="admin-messages-box" src="admin_messages_preview.php" width="600" height="400" frameborder="0"></iframe>
+            <div class="view-button">
+            <a href='admin_messages.php'><button>View</button></a>
+            </div>
             </div>
             <!-- <a href=admin_index.php> THIS IS THE BACK BUTTON
                 <h1>BACK</h1>
             </a> -->
     </main>
     </div>
-    </div>
+        </div>
+
     <div class="flex-box">
-    <div class="dashboard-map"></div>
-    <div class="dashboard-payment-notif"></div>
-    <div class="dashboard-notif"></div>
+    <div class="dashboard-map">
+
+    </div>
+
+    <div class="dashboard-payment-notif">
+    <iframe class="admin-messages-box" src="admin_confirmpay.php" width="600" height="400" frameborder="0"></iframe>
+    <div style="padding-top: 10px" class="view-button"><a href=admin_payment_records.php><button>VIEW</button></a>
+    </div>
+    </div>
+
+    <div class="dashboard-notif">
+
+    </div>
+
     </div>
     <footer></footer>
     </body>

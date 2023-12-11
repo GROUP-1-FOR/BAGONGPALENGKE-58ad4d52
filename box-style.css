@@ -1,0 +1,439 @@
+.box {
+  border: 1px solid black;
+  background-color: grey;
+  margin: 5px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  width: auto;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.box.green {
+  background-color: green;
+}
+
+/* box sizes */
+.box-1, .box-2, .box-5, .box-6 {
+  width: 52px;
+
+  height: 33px;
+}
+
+.box-3, .box-4{
+  width: 53px;
+  height: 40px;
+} 
+
+.box-7, .box-8, .box-9, .box-10, .box-11, 
+.box-12, .box-19, .box-20, .box-21, .box-22, 
+.box-23, .box-24{
+  width: 37px;
+  height: 52px;
+}
+
+.box-13, .box-14, .box-15, .box-16, .box-17, .box-18, 
+.box-25, .box-26, .box-27, .box-28, .box-29, .box-30{
+  width: 37px;
+  height: 38px;
+}
+
+.box-31, .box-32, .box-33,.box-34,.box-35{
+  width: 37px;
+  height: 37px
+}
+
+.box-36, .box-37, .box-38, .box-39, .box-40, .box-41, 
+.box-42, .box-43, .box-44, .box-45,.box-66, .box-67,
+.box-68, .box-69, .box-70, .box-71, .box-72, .box-73, 
+.box-74 {
+  width: 56px;
+  height: 37px;
+}
+
+.box-46, .box-47, .box-48, .box-49, .box-50, 
+.box-51, .box-52, .box-53, .box-54, .box-55, 
+.box-56, .box-57, .box-58, .box-59, .box-60,
+.box-61, .box-62, .box-63, .box-64, .box-65{
+  width: 61px;
+  height: 37px; 
+}
+
+/* box position */
+.box-1 { 
+  top: 50px; 
+  left: 151px;
+}
+.box-2 { 
+  top: 83px; 
+  left: 151px;
+}
+
+.box-3 { 
+  top: 178px; 
+  left: 151px;
+}
+
+.box-4 { 
+  top: 249px; 
+  left: 151px;
+}
+
+.box-5 { 
+  top: 353px; 
+  left: 151px;
+}
+
+.box-6 { 
+  top: 385px; 
+  left: 151px;
+}
+
+.box-7 { 
+  top: 50px; 
+  left: 243px;
+}
+
+.box-8 { 
+  top: 50px; 
+  left: 280px;
+}
+.box-9 { 
+  top: 50px; 
+  left: 317px;
+}
+
+.box-10 { 
+  top: 50px; 
+  left: 354px;
+}
+.box-11 {
+  top: 50px; 
+  left: 391px; 
+
+}
+.box-12 { 
+  top: 50px; 
+  left: 428px;
+}
+
+.box-13 { 
+  top: 50px; 
+  left: 576px;
+}
+
+.box-14 { 
+  top: 50px; 
+  left: 613px;
+}
+
+.box-15 { 
+  top: 50px; 
+  left: 650px;
+}
+
+.box-16 { 
+  top: 50px; 
+  left: 687px;
+}
+
+.box-17 { 
+  top: 50px; 
+  left: 724px;
+}
+
+.box-18 { 
+  top: 50px; 
+  left: 761px;
+}
+
+.box-19 { 
+  top: 368px; 
+  left: 243px;
+}
+
+.box-20 { 
+  top: 368px;  
+  left: 280px;
+}
+.box-21 { 
+  top: 368px; 
+  left: 317px;
+}
+
+.box-22 { 
+  top: 368px; 
+  left: 354px;
+}
+.box-23 {
+  top: 368px; 
+  left: 391px; 
+
+}
+.box-24 { 
+  top: 368px; 
+  left: 428px;
+}
+
+.box-25 { 
+  top: 380px; 
+  left: 576px;
+}
+
+.box-26 { 
+  top: 380px; 
+  left: 613px;
+}
+
+.box-27 { 
+  top: 380px; 
+  left: 650px;
+}
+
+.box-28 { 
+  top: 380px; 
+  left: 687px;
+}
+
+.box-29 { 
+  top: 380px; 
+  left: 724px;
+}
+
+.box-30 { 
+  top: 380px; 
+  left: 761px;
+}
+
+.box-31 { 
+  top: 382px; 
+  left: 853px;
+}
+.box-32 { 
+  top: 345px; 
+  left: 853px;
+}
+.box-33 { 
+  top: 308px; 
+  left: 853px;
+}
+.box-34 { 
+  top: 271px; 
+  left: 853px;
+}
+.box-35 { 
+  top: 234px; 
+  left: 853px;
+}
+
+
+.box-36 { 
+  top: 141px; 
+  left: 243px;
+}
+.box-37 { 
+  top: 178px; 
+  left: 243px;
+}
+.box-38 { 
+  top: 215px; 
+  left: 243px;
+}
+.box-39 { 
+  top: 252px; 
+  left: 243px;
+}
+.box-40 { 
+  top: 289px; 
+  left: 243px;
+}
+
+
+
+.box-41 { 
+  top: 141px; 
+  left: 299px;;
+}
+.box-42 { 
+  top: 178px; 
+  left: 299px;
+}
+.box-43 { 
+  top: 215px; 
+  left: 299px;
+}
+.box-44 { 
+  top: 252px; 
+  left: 299px;
+}
+.box-45 { 
+  top: 289px; 
+  left: 299px;
+}
+
+
+
+
+.box-46 { 
+  top: 141px; 
+  left: 385px;
+}
+.box-47 { 
+  top: 178px; 
+  left: 385px;
+}
+.box-48 { 
+  top: 215px; 
+  left: 385px;
+}
+.box-49 { 
+  top: 252px; 
+  left: 385px;
+}
+.box-50 { 
+  top: 289px; 
+  left: 385px;
+}
+
+
+
+
+
+.box-51 { 
+  top: 141px; 
+  left: 446px;
+}
+.box-52 { 
+  top: 178px; 
+  left: 446px;
+}
+.box-53 { 
+  top: 215px; 
+  left: 446px;
+}
+.box-54 { 
+  top: 252px; 
+  left: 446px;
+}
+.box-55 { 
+  top: 289px; 
+  left: 446px;
+}
+
+
+
+
+
+.box-56 { 
+  top: 141px; 
+  left: 536px;
+}
+.box-57 { 
+  top: 178px; 
+  left: 536px;
+}
+.box-58 { 
+  top: 215px; 
+  left: 536px;
+}
+.box-59 { 
+  top: 252px; 
+  left: 536px;
+}
+.box-60 { 
+  top: 289px; 
+  left: 536px;
+}
+
+
+
+
+
+
+.box-61 { 
+  top: 141px; 
+  left: 597px;
+}
+.box-62 { 
+  top: 178px; 
+  left: 597px;
+}
+.box-63 { 
+  top: 215px; 
+  left: 597px;
+}
+.box-64 { 
+  top: 252px; 
+  left: 597px;
+}
+.box-65 { 
+  top: 289px; 
+  left: 597px;
+}
+
+
+
+
+
+.box-66 { 
+  top: 141px; 
+  left: 687px;
+}
+.box-67 { 
+  top: 178px; 
+  left: 687px;
+}
+.box-68 { 
+  top: 215px; 
+  left: 687px;
+}
+.box-69 { 
+  top: 252px; 
+  left: 687px;
+}
+.box-70 { 
+  top: 289px; 
+  left: 687px;
+}
+
+
+
+
+
+.box-71 { 
+  top: 178px; 
+  left: 743px;
+}
+.box-72 { 
+  top: 215px; 
+  left: 743px;
+}
+.box-73 { 
+  top: 252px; 
+  left: 743px;
+}
+.box-74 { 
+  top: 289px; 
+  left: 743px;
+}
+
+.box-arrangement{
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+
+
+/* Add the following code
+.box-arrangement::before {
+  content: "box-" counter(box-counter);
+  counter-increment: box-counter;
+} */

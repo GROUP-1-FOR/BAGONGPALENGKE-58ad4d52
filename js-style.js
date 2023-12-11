@@ -1,3 +1,16 @@
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+
+function handleBoxClick(tableNumber) {
+        var confirmAddition = confirm('Add vendor to Stall ' + tableNumber + '?');
+        if (confirmAddition) {
+            var url = 'admin_create_vendor_account.php?stall_number=' + tableNumber;
+            window.location.href = url;
+        }
+    }
+
 document.addEventListener("DOMContentLoaded", function () {
   var boxes = document.querySelectorAll('.box');
 
@@ -72,3 +85,58 @@ function togglePassword() {
 }
 
 
+
+function confirmAndArchive(vendorUserId, vendorName, paymentDate, modeOfPayment, transactionId, row) {
+    // Display a confirmation dialog with the vendor's name
+    var isConfirmed = confirm("Are you sure you want to confirm and archive for vendor: " + vendorName + "?");
+
+    // Check the user's response
+    if (isConfirmed) {
+        // User confirmed, proceed with the AJAX call
+        $.ajax({
+            type: "POST",
+            url: "confirm_and_archive_db.php",
+            data: {
+                vendorUserId: vendorUserId,
+                vendorName: vendorName,
+                paymentDate: paymentDate,
+                modeOfPayment: modeOfPayment,
+                transactionId: transactionId,
+                balance: $(row).closest('tr').find('td:eq(1)').text() // Fetch balance from the second cell of the current row
+            },
+            success: function(response) {
+                alert(response);
+                $(row).closest('tr').find('.action-cell').html('Paid');
+            },
+            error: function() {
+                alert("Error confirming payment and archiving");
+            }
+        });
+    } else {
+        // User canceled, you can handle this as needed
+        console.log("Action canceled by the user");
+    }
+}
+
+
+function confirmRemoveAll() {
+    var confirmDelete = confirm("Are you sure you want to remove all confirmed payments?");
+    if (confirmDelete) {
+        removeAllConfirmedPayments();
+    }
+}
+
+function removeAllConfirmedPayments() {
+    $.ajax({
+        type: "POST",
+        url: "remove_all_confirmed_payments.php", // Create this file to handle the removal
+        success: function(response) {
+            alert(response); // Display the server's response (if needed)
+            // Reload the page or update the table if needed
+            location.reload();
+        },
+        error: function() {
+            alert("Error removing confirmed payments");
+        }
+    });
+}

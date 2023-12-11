@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body class="bagongpgalengke-v2">
-  <header><img src="assets\images\sign-in\Santa-Rosa-Logo.svg" class="logo-src"></header>
+  <header></header>
 
   <div class="website-title-v2">
     <h1 class="title4"> Re-enter<br>Treasury User ID</h1>

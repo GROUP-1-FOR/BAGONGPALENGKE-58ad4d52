@@ -24,6 +24,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $admin_name_error = "No results found for user ID $admin_userId";
     }
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -40,8 +41,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 </head>
 
 <body>
-    <header> LOGO</header>
-
+    <header><img src="assets\images\sign-in\Santa-Rosa-Logo.svg" class="logo-src"></header>
     <div class="main-sidebar">
         <ul class="sidebar-outside">
         <div class="profile-container">
