@@ -69,65 +69,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Manage Vendor Accounts</title>
-        <style>
-            table {
-                border-collapse: collapse;
-                width: 100%;
-                margin: 20px;
-            }
-
-            th,
-            td {
-                border: 1px solid #dddddd;
-                text-align: left;
-                padding: 100px;
-            }
-
-            th {
-                background-color: #f2f2f2;
-            }
-
-            button {
-                padding: 5px 10px;
-            }
-
-            #addButton {
-                display: block;
-                margin: 100px auto;
-            }
-
-            #searchForm {
-                float: right;
-                margin-right: 20px;
-            }
-            #searchForm label {
-    display: block;
-    text-align: center;
-}
-
-
-            #autocomplete {
-                position: absolute;
-                border: 1px solid #ddd;
-                max-height: 150px;
-                overflow-y: auto;
-                z-index: 1;
-                background-color: #fff;
-            }
-
-            #autocomplete div {
-                padding: 10px;
-                cursor: pointer;
-            }
-
-            #autocomplete div:hover {
-                background-color: #f1f1f1;
-            }
-
-            .search{
-                padding: 50p;
-            }
-        </style>
     </head>
 <head>
     <meta charset="UTF-8">
@@ -165,7 +106,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         </div>
     </div>
     <body>
-
+<div class="dashboard-announcement">
         <h2>Manage Vendor Accounts</h2>
         <!-- Search form -->
         <form class="seach"id="searchForm" method="get">
@@ -230,7 +171,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <button id="addButton" onclick="redirectToAddVendors()">Add Vendor (+)</button>
 
         <a href=admin_index.php><button id="Button">Back</button></a>
-
+</div>
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script>
             function editVendor(vendorId) {

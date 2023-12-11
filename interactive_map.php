@@ -112,7 +112,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         }
     }
 </script>
-<footer> </footer>
 </body>
 </html>
 <?php } else {

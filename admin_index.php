@@ -75,24 +75,26 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     <main class="main-container">
         <div class="dashboard-announcement">
   
-            <?php
-            $sql_sent_announcement = "SELECT DISTINCT announcement_text, announcement_time FROM announcements ORDER BY announcement_id DESC";
-            $result_sent_announcement = $connect->query($sql_sent_announcement);
+        <?php
+        $sql_sent_announcement = "SELECT DISTINCT announcement_title,announcement_subject,announcement_text, announcement_time FROM announcements ORDER BY announcement_id DESC";
+        $result_sent_announcement = $connect->query($sql_sent_announcement);
+        $connect->close();
+        if ($result_sent_announcement->num_rows > 0) {
+            while ($row = $result_sent_announcement->fetch_assoc()) {
+        ?>
+        <div class="announcement-container">
+        <p class="announcement-datetime"> <?php echo $row['announcement_time']; ?></p>
+                <h1 class='title-holder'style="color: green;"><?php echo $row['announcement_title']; ?> </h1>
+                <h2 class='subtitle-holder' style="color: gray;"><?php echo $row['announcement_subject']; ?></h2>
+                <p class='announcement'><?php echo $row['announcement_text']; ?></p>
+            
+        </div>
+        <?php }
+        } else {
+            echo "<p>No sent announcements found.</p>";
+}
 
-            $connect->close();
-
-            if ($result_sent_announcement->num_rows > 0) {
-                while ($row = $result_sent_announcement->fetch_assoc()) {
-                    
-                    echo "<div class='announcement-container'>";
-                    echo "<p class='announcement-datetime'>Date and Time: " . $row['announcement_time'] . "</p>";
-                    echo "<h1 class='title-holder'>Announcement Title Placeholder</h1>";
-                    echo "<h1 class='subtitle-holder'>Announcement Subject Placeholder</h1>";
-                    echo "<div><p class='announcement'>" . $row['announcement_text'] . "</p></div>";
-                    echo "</div>";
-                }
-            } else {echo "<p>No sent announcements found.</p>";}
-            ?>
+        ?>
             </div>
             <div class="sending-message">
             <form action="admin_send_announcement_1.php" method="post">
@@ -121,7 +123,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     <div class="flex-box">
     <div class="dashboard-map">
-    <a href='admin_messages.php'><button>View</button></a>
+    <a href='interactive_map.php'><button>View</button></a>
 
     </div>
 

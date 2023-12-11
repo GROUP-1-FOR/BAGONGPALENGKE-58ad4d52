@@ -6,7 +6,7 @@
   box-sizing: border-box;
   list-style: none;
   text-decoration: none;
-  font-family: 'Montserrat', sans-serif,Arial, Helvetica, sans-serif;
+  font-family: 'Montserrat', sans-serif,Arial, Helvetica, sans-serif !important;
 
 }
 
@@ -36,7 +36,7 @@ footer {
 
 body {
  
-  
+  font-family: 'Montserrat', sans-serif,Arial, Helvetica, sans-serif !important;
   padding: 0;
   margin: 0;
   display: flex;
