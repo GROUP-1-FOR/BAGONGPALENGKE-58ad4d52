@@ -1,5 +1,6 @@
 <?php
 require("config.php");
+
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $admin_id = $_SESSION["id"];
     $admin_userid = $_SESSION["userid"];
@@ -8,14 +9,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     $sql = "SELECT admin_name FROM admin_sign_in WHERE admin_userid = '$admin_userid'";
 
-    // Execute the query
     $result = $connect->query($sql);
     $admin_name = "";
     $admin_name_error = "";
 
-    // Check if any rows were returned
     if ($result->num_rows > 0) {
-        // Output data for each row
         while ($row = $result->fetch_assoc()) {
             $admin_name = $row['admin_name'];
         }
@@ -23,10 +21,22 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $admin_name_error = "No results found for user ID $admin_userId";
     }
 
+    $query = "SELECT vendor_name, vendor_stall_number, MAX(latest_timestamp) as latest_timestamp FROM (
+        SELECT vendor_name, vendor_stall_number, vendor_timestamp as latest_timestamp
+        FROM vendor_messages
+        UNION
+        SELECT vendor_name, vendor_stall_number, admin_timestamp as latest_timestamp
+        FROM admin_messages
+    ) as combined_messages
+    GROUP BY vendor_name, vendor_stall_number
+    ORDER BY latest_timestamp DESC";
 
-
-
+    $result = $connect->query($query);
+    if (!$result) {
+        die("Error executing the query: " . $connect->error);
+    }
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -66,9 +76,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     </div>
     <h3 class="announcement-text"> Announcement</h3>
     <h3 class="messages-text"> Messages</h3>
-    <h3 class="map"> Interactive Map</h3>
-    <h3 class="confirm-payments"> Confirm Payment</h3>
-    <h3 class="notifications"> Notifications</h3>
     <div class="flex-box">
     <main class="main-container">
         <div class="dashboard-announcement">
@@ -101,9 +108,18 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 <textarea class="text-box" name="admin_announcement" id="admin_announcement" cols="30" rows="5" placeholder="Write Something here... "required ></textarea><br>
                 <input class="sending-button" type="submit" value="Send">
             </form>
+
+         
             </div>
+
                     <div class="dashboard-message">
+  
             </div>
+
+            
+
+
+
             <!-- <a href=admin_index.php> THIS IS THE BACK BUTTON
                 <h1>BACK</h1>
             </a> -->
@@ -116,9 +132,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     <div class="dashboard-notif"></div>
     </div>
     <footer></footer>
-    </body>
+</body>
+</html>
 
-    </html>
-<?php } else {
-    header("location:admin_logout.php");
+<?php
+} else {
+    header("location:admin_login.php");
 }
+?>

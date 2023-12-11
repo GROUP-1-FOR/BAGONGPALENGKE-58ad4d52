@@ -311,17 +311,29 @@ h2, .resend-otp, .verify-otp{
   color: grey;
 }
 
+
 .announcement-text{
   margin-top: 70px;
   margin-left: 282px;
-  color:white;
-  position: absolute;
-  z-index: 3;
+}
+.messages-text{
+  margin-top: 508px;
+  margin-left: 282px;
+}
+.map{
+  margin-top: 70px;
+  margin-left: 1040px;
+}
+.confirm-payments{
+  margin-top: 290px;
+  margin-left: 1040px;
+}
+.notifications{
+  margin-top: 510px;
+  margin-left: 1040px;
 }
 
-.messages-text{
-  margin-top: 465px;
-  margin-left: 282px;
+.messages-text, .announcement-text, .map, .confirm-payments, .notifications{
   color:white;
   position: absolute;
   z-index: 3;
@@ -367,7 +379,8 @@ h2, .resend-otp, .verify-otp{
   margin-left: 20px;
   margin-top: 5px;
   border-top: 40px solid maroon;
-  background-color: #D9D9D9;
+  border-bottom: 40px solid #D9D9D9;
+  background-color: #FFFFFF;
   color:white;
   flex: 1;
   border-radius: 10px;
