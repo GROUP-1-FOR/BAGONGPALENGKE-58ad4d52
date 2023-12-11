@@ -121,6 +121,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     <div class="flex-box">
     <div class="dashboard-map">
+    <a href='admin_messages.php'><button>View</button></a>
 
     </div>
 

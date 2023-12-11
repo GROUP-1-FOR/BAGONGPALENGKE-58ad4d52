@@ -21,15 +21,11 @@ header {
   top: 0;
   z-index: 3 !important;
 }
-p{
-  overflow-y: hidden; 
-  overflow-x: hidden;
-}
 
 footer {
   position: fixed;
   background-color: #850F16;
-  width: 100%;
+  width: 200%;
   padding: 10px;
   text-align: center;
   color: black;
@@ -92,6 +88,11 @@ h2, .resend-otp, .verify-otp{
   margin-left: 0%;
   border-image: linear-gradient(to right, rgba(255, 0, 0, 0), rgba(255, 0, 0, 1), rgba(255, 0, 0, 0)) 1;
   z-index: 1; /* Lower z-index */
+}
+
+.search{
+  position: absolute;
+  margin-top: 30%;
 }
 
 .profile-container {

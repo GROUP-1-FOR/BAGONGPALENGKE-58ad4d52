@@ -80,7 +80,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             td {
                 border: 1px solid #dddddd;
                 text-align: left;
-                padding: 8px;
+                padding: 100px;
             }
 
             th {
@@ -93,13 +93,18 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
             #addButton {
                 display: block;
-                margin: 20px auto;
+                margin: 100px auto;
             }
 
             #searchForm {
                 float: right;
                 margin-right: 20px;
             }
+            #searchForm label {
+    display: block;
+    text-align: center;
+}
+
 
             #autocomplete {
                 position: absolute;
@@ -117,6 +122,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
             #autocomplete div:hover {
                 background-color: #f1f1f1;
+            }
+
+            .search{
+                padding: 50p;
             }
         </style>
     </head>
@@ -158,12 +167,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     <body>
 
         <h2>Manage Vendor Accounts</h2>
-
         <!-- Search form -->
-        <form id="searchForm" method="get">
+        <form class="seach"id="searchForm" method="get">
             <label for="search">Search:</label>
             <input type="text" id="search" name="search" placeholder="Enter vendor name" oninput="showSuggestions()">
-            <input type="submit" value="Search">
+            <input class="seach" type="submit" value="Search">
             <div id="autocomplete"></div>
         </form>
 
@@ -297,7 +305,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             }
         </script>
     </body>
-
+<footer></footer>
     </html>
 
 <?php
