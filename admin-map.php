@@ -71,15 +71,49 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <img src="assets\images\sign-in\bagong-palengke-map.svg" class="palengke-map">
         <div class="box-arrangement">
         <?php
-                // Loop to generate boxes
-                for ($i = 1; $i <= 74; $i++) {
-                    echo '<div class="box box-' . $i . '">' . $i . '</div>';
-                }
-                ?>
-        </div>
-    </div>
-</div>
-    <script src="js-style.js"></script>
+    // Loop to generate boxes
+    for ($i = 1; $i <= 74; $i++) {
+        // Fetch data from the database for the current box
+        $query = "SELECT COUNT(*) as count, balance, vacant FROM admin_stall_map WHERE vendor_stall_number = ?";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("i", $i);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $count = $row['count'];
+        $balance = $row['balance'];
+        $vacant = $row['vacant'];
+
+        // Set the box color based on the fetched data
+        $boxColor = '';
+        if ($count > 0) {
+            if ($balance == 0) {
+                $boxColor = 'background-color: green;';
+            } elseif ($balance > 0) {
+                $boxColor = 'background-color: red;';
+            }
+        } else {
+            $boxColor = 'background-color: gray;';
+        }
+
+        // Output the box with the determined color and clickable status
+        if ($vacant == 0) {
+            echo '<div class="box box-' . $i . '" style="' . $boxColor . '" onclick="handleBoxClick(' . $i . ')">' . $i . '</div>';
+        } else {
+            echo '<div class="box box-' . $i . '" style="' . $boxColor . ' pointer-events: none; opacity: 0.5;">' . $i . '</div>';
+        }
+    }
+?>
+
+<script>
+    function handleBoxClick(tableNumber) {
+        var confirmAddition = confirm('Add vendor to Stall ' + tableNumber + '?');
+        if (confirmAddition) {
+            var url = 'admin_create_vendor_account.php?stall_number=' + tableNumber;
+            window.location.href = url;
+        }
+    }
+</script>
     <footer></footer>
 </body>
 </html>

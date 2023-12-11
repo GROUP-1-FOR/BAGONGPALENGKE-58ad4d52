@@ -4,6 +4,13 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $admin_id = $_SESSION["id"];
     $admin_userid = $_SESSION["userid"];
 
+    if (isset($_GET['stall_number'])) {
+        $stallNumber = $_GET['stall_number'];
+        // Use $stallNumber as needed in your code
+        // For example, you can store it in the session for further processing
+        $_SESSION['vendor_stall_number'] = $stallNumber;
+    }
+
     function generateUserID($pdo)
     {
         while (true) {
@@ -36,6 +43,26 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     } catch (PDOException $e) {
         die("Connection failed: " . $e->getMessage());
     }
+
+
+    if (isset($_GET['cancel'])) {
+        unset($_SESSION['vendor_first_name']);
+        unset($_SESSION['vendor_last_name']);
+        unset($_SESSION['vendor_full_name']);
+        unset($_SESSION['vendor_stall_number']);
+        unset($_SESSION['vendor_mobile_number']);
+        unset($_SESSION['vendor_product_type']);
+        //unset($_SESSION['vendor_payment_basis']);
+        unset($_SESSION['vendor_email']);
+        unset($_SESSION['vendor_userid']);
+        unset($_SESSION['vendor_hashed_password']);
+        unset($_SESSION['vendor_transaction_id']);
+
+        // Redirect to another page after cancellation
+        header("Location: admin_vendor_manage_accounts.php");
+        exit();
+    }
+
 
 
 ?>
@@ -180,7 +207,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <h2>Vendor Information</h2>
 
             <label for="Vendor First Name">Vendor First Name</label>
-            <input type="text" name="vendor_first_name" id="vendor_first_name" required oninput="validateVendorFirstName(); updateSubmitButton()">
+            <input type="text" name="vendor_first_name" id="vendor_first_name" value="<?php echo isset($_SESSION['vendor_first_name']) ? $_SESSION['vendor_first_name'] : ''; ?>" required oninput="validateVendorFirstName(); updateSubmitButton()">
             <!-- Display an error message if it exists in the session -->
             <span style="color: red;" id="vendor_first_name_error_span">
 
@@ -194,7 +221,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             </span>
             <br />
             <label for="Vendor Last Name">Vendor Last Name</label>
-            <input type="text" name="vendor_last_name" id="vendor_last_name" required oninput="validateVendorLastName(); updateSubmitButton()">
+            <input type="text" name="vendor_last_name" id="vendor_last_name" value="<?php echo isset($_SESSION['vendor_last_name']) ? $_SESSION['vendor_last_name'] : ''; ?>" required oninput="validateVendorLastName(); updateSubmitButton()">
             <!-- Display an error message if it exists in the session -->
             <span style="color: red;" id="vendor_last_name_error_span">
 
@@ -209,10 +236,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
             <br />
             <label for="Stall Number">Stall No:</label>
-            <input type="number" name="vendor_stall_number" required><br />
+            <input type="number" name="vendor_stall_number" value="<?php echo isset($_SESSION['vendor_stall_number']) ? $_SESSION['vendor_stall_number'] : ''; ?>" required readonly><br />
 
             <label for="Mobile Number">Mobile Number</label>
-            <input type="tel" name="vendor_mobile_number" id="vendor_mobile_number" maxlength="11" placeholder="09XXXXXXXXX" oninput="validateVendorMobileNumber(); updateSubmitButton()">
+            <input type="tel" name="vendor_mobile_number" id="vendor_mobile_number" maxlength="11" placeholder="09XXXXXXXXX" value="<?php echo isset($_SESSION['vendor_mobile_number']) ? $_SESSION['vendor_mobile_number'] : ''; ?>" oninput="validateVendorMobileNumber(); updateSubmitButton()">
             <!-- Display an error message if it exists in the session -->
             <span style="color: red;" id="vendor_mobile_number_error_span">
                 <?php
@@ -226,7 +253,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
             <br />
             <label for="Email">Email:</label>
-            <input type="email" name="vendor_email" id="vendor_email" required oninput="validateVendorEmail(); updateSubmitButton()">
+            <input type="email" name="vendor_email" id="vendor_email" value="<?php echo isset($_SESSION['vendor_email']) ? $_SESSION['vendor_email'] : ''; ?>" required oninput="validateVendorEmail(); updateSubmitButton()">
             <!-- Display an error message if it exists in the session -->
             <span style="color: red;" id="vendor_email_error_span">
                 <?php
@@ -242,10 +269,28 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <label for="Product Type">Products:</label>
             <select name="vendor_product" required>
                 <option value="" disabled selected>Select Product Type</option>
-                <option value="Wet">Wet</option>
-                <option value="Dry">Dry</option>
-                <option value="Other">Other</option>
+                <option value="Wet" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Wet') ? 'selected' : ''; ?>>Wet</option>
+                <option value="Dry" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Dry') ? 'selected' : ''; ?>>Dry</option>
+                <option value="Other" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Other') ? 'selected' : ''; ?>>Other</option>
             </select><br />
+
+            <!--
+            <label for="Vendor Payment basis">Vendor Payment Basis:</label>
+            <select name="vendor_payment_basis" required>
+                <option value="" disabled selected>Select Payment Basis</option>
+                <option value="Daily" <?php //echo (isset($_SESSION['vendor_payment_basis']) && $_SESSION['vendor_payment_basis'] == 'Daily') ? 'selected' : ''; 
+                                        ?>>Daily</option>
+                <option value="Monthly" <?php //echo (isset($_SESSION['vendor_payment_basis']) && $_SESSION['vendor_payment_basis'] == 'Monthly') ? 'selected' : ''; 
+                                        ?>>Monthly</option>
+            </select><br />
+            -->
+
+
+
+
+            <label for="vendor_first_payment_date">Select Start of Billing Period:</label>
+            <input type="date" id="vendor_first_payment_date" name="vendor_first_payment_date" value="<?php echo isset($_SESSION['vendor_first_payment_date']) ? $_SESSION['vendor_first_payment_date'] : ''; ?>" min="<?php echo date('Y-m-d'); ?>" required><br />
+
 
             <br />
             <br />
@@ -275,9 +320,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
 
 
-        <a href=admin_vendor_manage_accounts.php>
-            <h1>BACK</h1>
-        </a>
+        <a href="admin-map.php?cancel=1">Back</a>
 
         <a href=admin_logout.php>
             <h1>LOGOUT</h1>
@@ -287,5 +330,5 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     </html>
 <?php } else {
-    header("location:admin_login.php");
+    header("location:admin_logout.php");
 }
