@@ -14,7 +14,7 @@
 <body class="bagongpalengke-bg">
   <header> <img src="assets\images\sign-in\Santa-Rosa-Logo.svg" class="logo-src"> </header>
   <div class="website-title">
-    <h1 class="title1"> WELCOME TO </h1>
+    <h1 class="title1"> WELCOME TO HOTDOG </h1>
     <h1 class="title2"> SANTA ROSA PUBLIC MARKET </h1>
   </div>
   <div>
