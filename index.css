@@ -688,12 +688,14 @@ h2, .resend-otp, .verify-otp{
   color: rgb(103, 102, 100);
   cursor: pointer;
 }
+
+.login-verif,
 .resend-button,
 .submit-button,
 .login-btn{
   background-color: #850F16;
   font-weight: bolder;
-  color: white;
+  color: white!important;
   border-radius: 4px;
   height: 25px;
   width: 70px;
@@ -701,9 +703,10 @@ h2, .resend-otp, .verify-otp{
   border-color: transparent;
   white-space: nowrap;
 }
-.login-btn{
+.login-btn,.login-verif{
   margin-top: 15px;
   margin-bottom: 5px;
+
 }
 
 .resend-button,
@@ -744,6 +747,7 @@ h2, .resend-otp, .verify-otp{
 /* BUTTON STYLE*/
 
 
+.send-verification,
 .admin-button
 .button-style,
 .signin-button,
@@ -803,7 +807,6 @@ h2, .resend-otp, .verify-otp{
 
 /* LOCATION STYLE */
 
-
 .button-style,
 .signin-button,
 .market-button,
@@ -852,6 +855,7 @@ h2, .resend-otp, .verify-otp{
 .resend-button:hover,
 .submit-button:hover,
 .login-btn:hover,
+.login-verif:hover, 
 .button-style:hover,
 .signin-button:hover,
 .market-button:hover,

@@ -18,3 +18,11 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
 });
+
+
+function togglePassword() {
+    const passwordInput = document.getElementById('passwordInput');
+
+    // Toggle between text and password
+    passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+}

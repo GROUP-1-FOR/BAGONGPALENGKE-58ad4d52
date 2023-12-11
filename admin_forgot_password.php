@@ -76,7 +76,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-    <div align="center">
         <div>
             <h2>Forgot Password?</h2>
             <form action="" method="post">
@@ -86,7 +85,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="email" name="admin_email" required> <br />
                 <input type="submit" value="Send Verification"><br />
             </form>
-        </div>
 
         <div>
             <a href=admin_login.php>
