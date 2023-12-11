@@ -12,14 +12,15 @@
 </head>
 
 <body class="bagongpalengke-bg">
-  <header> LOGO </header>
+  <header> <img src="assets\images\sign-in\Santa-Rosa-Logo.svg" class="logo-src"> </header>
   <div class="website-title">
     <h1 class="title1"> WELCOME TO </h1>
     <h1 class="title2"> SANTA ROSA PUBLIC MARKET </h1>
   </div>
   <div>
+    
     <img class="tech-line-tr" src="assets\\images\\sign-in\\tech-line-tr.png" alt="tech-line-tr">
-    <img class="tech-line-bl" src="assets\\images\\sign-in\\tech-line-bl.png" alt="tech-line-bl">
+    <img class="tech-line-bl" src="assets\images\\sign-in\\tech-line-bl.png" alt="tech-line-bl">
     <img class="front-layer" src="assets\\images\\sign-in\\front.svg" alt="front-layer">
     <img class="back-layer" src="assets\\images\\sign-in\\back.svg" alt="back-layer">
   </div>

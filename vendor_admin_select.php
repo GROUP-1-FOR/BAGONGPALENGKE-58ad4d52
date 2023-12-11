@@ -12,7 +12,7 @@
 </head>
 
 <body class="bagongpalengke-bg">
-  <header> LOGO </header>
+  <header><img src="assets\images\sign-in\Santa-Rosa-Logo.svg" class="logo-src"></header>
   <div class="website-title">
     <h1 class="title1"> WELCOME TO </h1>
     <h1 class="title2"> SANTA ROSA PUBLIC MARKET </h1>
@@ -25,7 +25,7 @@
   </div>
   <div>
     <a href="vendor_login.php"><button class="vendor-button"> VENDOR </button></a>
-    <a href="admin_login.php"><button class="admin-button"> ADMIN </button></a>
+    <a href="admin_login.php"><button class="admin-button"> TREASURY </button></a>
     <a href="first_signin.php"><button class="back-button"> &lt; BACK </button></a>
   </div>
   <section> </section>

@@ -27,48 +27,93 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
 
 ?>
-    <!DOCTYPE html>
-    <html>
-
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title> HOMEPAGE </title>
-        <link rel="stylesheet" type="text/css" href="index.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    </head>
-
-    <body>
-
-
-
-        <div class="sidebar">
-            <ul class="sidebar-outside">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> SIGN IN </title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <img src="assets\images\sign-in\Santa-Rosa-Logo.svg" class="logo-src">
+    </header>
+    <div class="main-sidebar">
+        <ul class="sidebar-outside">
+            <div class="profile-container">
+                <img class="profile-pic-holder" src="assets\images\sign-in\profile-pic.svg">
                 <img class="profile-design" src="assets\images\sign-in\profile-design.png">
-
-
-
-
-                </a>
-
+                <p class="vendor-name">Welcome, <?php echo $admin_name; ?>! </p>
+            </div>
+        </ul>
+        <div class="sidebar-inside">
+            <ul class="dashboard-sidebar">
+                <li><a class="home-index" href=admin_index.php> Home </a></li>
+                <li><a class="manage-vendor" href=admin_vendor_manage_accounts.php> Manage Vendor Accounts </a></li>
+                <li><a class="report-management" href="#"> Report Management </a></li>
+                <li><a class="help-button" href="#"> Help </a></li>
             </ul>
-            <div class="sidebar-inside">
-                <ul class="dashboard-sidebar">
-                    <li><a class="home-index" href=admin_index.php> Home </a></li>
-                    <li><a class="manage-vendor" href=admin_vendor_manage_accounts.php> Manage Vendor Accounts </a></li>
-                    <li><a class="report-management" href=admin_send_report.php> Report </a></li>
-                    <li><a class="help-button" href="admin_faq.php"> Help </a></li>
-                </ul>
-            </div>
-            <div class="logout-button">
-                <a href=admin_logout.php>
-                    <h1>LOGOUT</h1>
-                </a>
-            </div>
         </div>
+        <div>
+            <a href=admin_logout.php>
+                <h1 class="logout-button">LOGOUT</h1>
+            </a>
         </div>
+    </div>
+    <h3 class="announcement-text"> Announcement</h3>
+    <h3 class="messages-text"> Messages</h3>
+    <div class="flex-box">
+    <main class="main-container">
+        <div class="dashboard-announcement">
+  
+            <?php
+            $sql_sent_announcement = "SELECT DISTINCT announcement_text, announcement_time FROM announcements ORDER BY announcement_id DESC";
+            $result_sent_announcement = $connect->query($sql_sent_announcement);
+
+            $connect->close();
+
+            if ($result_sent_announcement->num_rows > 0) {
+                while ($row = $result_sent_announcement->fetch_assoc()) {
+                    
+                    echo "<div class='announcement-container'>";
+                    echo "<p class='announcement-datetime'>Date and Time: " . $row['announcement_time'] . "</p>";
+                    echo "<h1 class='title-holder'>Announcement Title Placeholder</h1>";
+                    echo "<h1 class='subtitle-holder'>Announcement Subject Placeholder</h1>";
+                    echo "<div><p class='announcement'>" . $row['announcement_text'] . "</p></div>";
+                    echo "</div>";
+                }
+            } else {echo "<p>No sent announcements found.</p>";}
+            ?>
+            </div>
+            <div class="sending-message">
+            <form action="admin_send_announcement_1.php" method="post">
+                <label class= "title-subject" for="Market Vendors">TITLE:</label><br>
+                <label class= "title-subject" for="Market Vendors">SUBJECT:</label>
+                </select><br>
+                <label for="admin_announcement"></label>
+                <textarea class="text-box" name="admin_announcement" id="admin_announcement" cols="30" rows="5" placeholder="Write Something here... "required ></textarea><br>
+                <input class="sending-button" type="submit" value="Send">
+            </form>
+
+         
+            </div>
+
+                    <div class="dashboard-message">
+  
+            </div>
+
+            
+
+
+
+            <!-- <a href=admin_index.php> THIS IS THE BACK BUTTON
+                <h1>BACK</h1>
+            </a> -->
+    </main>
 
 
         <div class="content">
