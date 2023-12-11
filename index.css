@@ -1,6 +1,6 @@
-/* MAIN BODY COMPOSITION */
+ /* MAIN BODY COMPOSITION */
 
-* {
+ * {
   margin: 0%;
   padding: 0%;
   box-sizing: border-box;
@@ -39,15 +39,26 @@ body {
   padding: 0;
   margin: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
-  background-size: cover;
   overflow: hidden;
   height: 100%;
   width: 100%;
+}
+
+section{
+  height: 200vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-align: start;
+}
+
+.about-page{
+  scroll-snap-type: mandatory;
+  overflow-y: scroll;
+}
+
+.one {
+  scroll-snap-align: start;
 }
 
 h2, .resend-otp, .verify-otp{
@@ -68,66 +79,410 @@ h2, .resend-otp, .verify-otp{
 }
 
 .profile-design{
+  position: relative;
+  padding-bottom: 33%;
+  margin-top: 0%;
   width: 100%;
+  height: 110%;
+  margin-left: 0%;
+  border-image: linear-gradient(to right, rgba(255, 0, 0, 0), rgba(255, 0, 0, 1), rgba(255, 0, 0, 0)) 1;
+  z-index: 1; /* Lower z-index */
+}
+
+.profile-container {
+  position: relative;
+}
+
+.profile-pic-holder{
+  padding-bottom: 0%!important;
+  padding: 5%;
+  margin-top: 7%;
+  margin-left: 23%;
+  position: absolute;
+  height: 125px; /* Set the container height to 100% of the viewport height */
+  z-index: 2; /* Higher z-index */
+}
+
+.admin-name, .vendor-name{
+  padding-bottom: 30px;
+  margin-left: 15%;
+  position: absolute;
+  height: 125px; /* Set the container height to 100% of the viewport height */
+  z-index: 2; /* Higher z-index */
+}
+
+.map-background {
+  width: 60%;
+  height: 80%;
+  position: relative;
+  margin: auto; /* Center horizontally */
+  background-color: white;
+  border: 2px solid black;
+  display: flex;
+  justify-content: center; /* Center horizontally within .map-background */
+  align-items: center; /* Center vertically within .map-background */
+}
+
+.palengke-map {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  /* margin: 20px;
+  padding-right: 10%; */
+  
+}
+.bagong-palengke{
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.logo-src{
+  margin-top: -35px;
+  height: 150px;
+  width: 150px;
 }
 
 .logout-button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: auto; /* Push the logout button to the bottom */
-    padding: 10px; /* Add some padding for better aesthetics */
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto; /* Push the logout button to the bottom */
+  padding-bottom: 40px; /* Add some padding for better aesthetics */
+  padding-top: 10px;
 }
 
 /* side bar */
 
-.container {
+.super-container {
+  padding-top: 30px;
   display: flex;
+  background-color: #D9D9D9;
+  border: 1px solid black; /* Border style and color */
+  border-top: 50px solid maroon; /* Top border size and color */
+  border-radius: 10px;
+  flex-direction: column;
+  width: 50%;
+  height: 600px;
+  max-width: 800px; /* Adjust the maximum width as needed */
+  margin-left: 10px;
+  margin-right: auto;
+  overflow-y: auto; 
+  overflow-x: hidden; /* Hide the vertical scrollbar */
 }
 
+.text-box{
+  height: 50px;
+  width: 100%;
+  margin-left: 10px;
+}
+.button-send{
+  display: flex;
+}
+.send-button{
+  margin-left: -50px;
+}
+
+.announcement{
+  font-size: 10px;
+}
+
+.announcement-container {
+  background-color: #F4F1EC;
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: maroon;
+  color: black;
+  display: flex;
+  height: auto;
+  padding: 20px;
+  padding-top: 5px;
+  padding-left: 5px;
+  margin: 20px;
+  margin-top: 2px!important;
+  max-width: 700px;
+  flex-direction: column;
+  width: 110%; /* Make sure the container takes the full width */
+ 
+}
+
+
+
  /* SIDE BAR */
-.sidebar {
+.main-sidebar {
+  align-items: center;
   width: 250px;
   background-color: maroon;
   color: #fff;
-  padding: 0;
+  padding-top: 3%;
+  margin-bottom:50px;
   height: 100vh;
   display: flex;
   flex-direction: column;
+  
 }
 
 .sidebar-inside{
-  height: 82%;
+  padding: 0%;
+  margin-top: 10%;
+  height: 80%;
   width: 100%;
   background-color: #F4F1EC;
-  overflow-y: auto; /* Add overflow-y to make the content scrollable if it exceeds the height */
 }
 
 .dashboard-sidebar{
   text-align: right;
   position: relative;
-  margin-top: 70%;
-
+  margin-top: 20%;
 }
 
+
 .home-index, .manage-vendor, .report-management, .help-button{
-  margin-right: 20px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: 10px;
+
   padding: 10px;
-  border-radius: 5px;
-  border: none;
-  background-color: transparent;
-  color: black;
+  line-height: 4;
+  /* border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px ;
+  border-style: solid;
+  border-color: black;
+  border-right: none;
+  border-width: 1px; */
+  /* background-color: white;
+  background-size: 50% 50%; */
+  color: maroon;
   font-weight: bolder;
   font-size: 15px;
   white-space: nowrap;
 }
 
-.content {
+.home-index:hover, .manage-vendor:hover, .report-management:hover, .help-button:hover{
+
+  padding: 10px;
+  line-height: 4;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px ;
+  border-style: solid;
+  border-color: black;
+  border-right: none;
+  border-width: 1px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* Adjust the shadow values as needed */
+  background-color: white;
+  background-size: 50% 50%;
+  color: rgb(210, 7, 7);
+  font-weight: bolder;
+  font-size: 15px;
+  white-space: nowrap;
+}
+.announcement{
+  margin-top: 2px;
+}
+
+
+.announcement-item{
+  display: flex;
+  flex-direction: column;
+  padding: 2%;
+  background-color: #F4F1EC;
+  border-radius: 5px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: maroon;
+  height: 50%;
+  width: 80%; /* Adjust the width of your announcement items */
+  margin-bottom: 20px; /* Adjust the spacing between announcement items */
+  margin-left:10px;
+}
+
+.title-holder{
+  font-size: 15px;
+  color: maroon;
+}
+
+.subtitle-holder{
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 10px;
+  color: grey;
+}
+
+.announcement-text{
+  margin-top: 70px;
+  margin-left: 282px;
+  color:white;
+  position: absolute;
+  z-index: 3;
+}
+
+.messages-text{
+  margin-top: 465px;
+  margin-left: 282px;
+  color:white;
+  position: absolute;
+  z-index: 3;
+}
+
+.announcement-datetime{
+  position: relative;
+  font-size: x-small;
+  padding-top: 5px;
+  padding-bottom: 2px;
+  text-align: right;
+
+}
+
+.dashboard-announcement{
+  border: gray;
+  border-width: 2PX;
+  border-style: solid;
+  border-bottom: 20px #D9D9D9 solid;
+  overflow-y: scroll; 
+  overflow-x: hidden; 
+  height: 300px;
+  max-width: 900px;
+  margin-left: 20px;
+  margin-top: 40px;
+  border-top: 40px solid maroon;
+  border-bottom: 20px;
+  background-color: #D9D9D9;
+  color:white;
   flex: 1;
-  padding: 20px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  padding: 10px;
+}
+.dashboard-message{
+  border: gray;
+  border-width: 2PX;
+  border-style: solid;
+  /* border-bottom: 20px maroon solid; */
+  overflow-y: scroll; 
+  height: 200px;
+  max-width: 900px;
+  margin-left: 20px;
+  margin-top: 5px;
+  border-top: 40px solid maroon;
+  background-color: #D9D9D9;
+  color:white;
+  flex: 1;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.dashboard-map{
+  border: gray;
+  border-width: 2PX;
+  border-style: solid;
+  /* border-bottom: 20px maroon solid; */
+  /* overflow-y: scroll;  */
+  height: 210px;
+  max-width: 500px;
+  margin-left: 15px;
+  margin-top: 40px;
+  border-top: 40px solid maroon;
+  background-color: #D9D9D9;
+  color:white;
+  flex: 1;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.dashboard-payment-notif{
+  border: gray;
+  border-width: 2PX;
+  border-style: solid;
+  /* border-bottom: 20px maroon solid; */
+  /* overflow-y: scroll;  */
+  height: 210px;
+  max-width: 500px;
+  margin-left: 15px;
+  margin-top: 10px;
+  border-top: 40px solid maroon;
+  background-color: #D9D9D9;
+  color:white;
+  flex: 1;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.dashboard-notif{
+  border: gray;
+  border-width: 2PX;
+  border-style: solid;
+  /* border-bottom: 20px maroon solid; */
+  /* overflow-y: scroll;  */
+  height: 200px;
+  max-width: 500px;
+  margin-left: 15px;
+  margin-top: 10px;
+  border-top: 40px solid maroon;
+  background-color: #D9D9D9;
+  color:white;
+  flex: 1;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+
+.text-box{
+  padding-top: 10px;
+  padding-left: 3px;
+  margin-left: 30px;
+  height: 50px;
+  width: 700px;
+  border-radius: 15px;
+}
+
+.title-subject{
+  font-size: 10px;
+  font-weight: light;
+  color:maroon
+}
+.sending-message{
+  border-color: grey;
+  border-width: 2px;
+  border-style: solid;
+  height: 135px;
+  max-width: 900px;
+  margin-left: 20px;
+  background-color: #D9D9D9;
+  color:white;
+  flex: 1;
+  border-top-color: transparent;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  padding: 10px;
+}
+
+.sending-button{
+  border-style: solid;
+  border-color: transparent;
+  position: absolute;
+  margin-left: 675px;
+  background-color: maroon;
+  color: white;
+  font-weight: bold;
+  border-radius: 10px;
+  height: 25px;
+  width: 50px;
+  font-size: 13px;
+
+}
+.flex-box{
+  margin-top: 20px;
+  max-width: 100%;
+  width: 800px;
+}
+.title-placement{
+  position:absolute;
+  margin-top: 0.5%;
+  margin-left: 2%;
+  color: white;
 }
 
 /* side bar  */
@@ -151,6 +506,7 @@ h2, .resend-otp, .verify-otp{
 
 .front-layer{
   position: absolute;
+  background-attachment:scroll;
   top:0%;
   right: 0%;
   z-index: 2;
@@ -159,6 +515,7 @@ h2, .resend-otp, .verify-otp{
 
 .back-layer{
   position: absolute;
+  background-attachment:scroll;
   top:0%;
   right: 0%;
   z-index: 2;
@@ -168,7 +525,7 @@ h2, .resend-otp, .verify-otp{
 .front-layer-v2{
   width: auto;
   height: -50%;
-    position: relative;
+  position: relative;
   overflow: hidden;
   position: absolute;
   top:0%;
@@ -215,6 +572,8 @@ h2, .resend-otp, .verify-otp{
 }
 
 .website-title-v2 {
+  margin-top: 4%;
+  margin-left: 3%;
   z-index: 3;
   height: 70%; /* Added to make sure it takes full height */
   width: 95%; /* Added to make sure it takes full width */
@@ -279,6 +638,11 @@ h2, .resend-otp, .verify-otp{
   margin-bottom: 10px;
 }
 
+.button-container{
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .form-group input:focus {
   outline: none;
   border-color: #3498db;
@@ -324,12 +688,14 @@ h2, .resend-otp, .verify-otp{
   color: rgb(103, 102, 100);
   cursor: pointer;
 }
+
+.login-verif,
 .resend-button,
 .submit-button,
 .login-btn{
   background-color: #850F16;
   font-weight: bolder;
-  color: white;
+  color: white!important;
   border-radius: 4px;
   height: 25px;
   width: 70px;
@@ -337,9 +703,10 @@ h2, .resend-otp, .verify-otp{
   border-color: transparent;
   white-space: nowrap;
 }
-.login-btn{
+.login-btn,.login-verif{
   margin-top: 15px;
   margin-bottom: 5px;
+
 }
 
 .resend-button,
@@ -349,9 +716,16 @@ h2, .resend-otp, .verify-otp{
   margin-top: 5px;
   margin-bottom: 5px;
 }
-.container{
-  display: flex;
+
+.send-button{
+  width: 100px;
+  text-align: center;
+  align-items: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 170px;
 }
+
 
 .otp-box{
   margin-bottom: 10px;
@@ -373,6 +747,7 @@ h2, .resend-otp, .verify-otp{
 /* BUTTON STYLE*/
 
 
+.send-verification,
 .admin-button
 .button-style,
 .signin-button,
@@ -432,7 +807,6 @@ h2, .resend-otp, .verify-otp{
 
 /* LOCATION STYLE */
 
-
 .button-style,
 .signin-button,
 .market-button,
@@ -481,6 +855,7 @@ h2, .resend-otp, .verify-otp{
 .resend-button:hover,
 .submit-button:hover,
 .login-btn:hover,
+.login-verif:hover, 
 .button-style:hover,
 .signin-button:hover,
 .market-button:hover,
@@ -496,8 +871,33 @@ h2, .resend-otp, .verify-otp{
   cursor: pointer;
 }
 
+
+/* SCROLL BAR STYLE */
+
+
+.dashboard-announcement::-webkit-scrollbar, .dashboard-message::-webkit-scrollbar {
+  width: 10px;
+  height: 100px; /* Updated height to 100px */
+}
+
+.dashboard-announcement::-webkit-scrollbar-thumb, .dashboard-message::-webkit-scrollbar-thumb  {
+  background-color: maroon;
+  border-radius: 30px;
+}
+
+.dashboard-announcement::-webkit-scrollbar-thumb:hover, .dashboard-message::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(138, 49, 49);
+  border-radius: 30px;
+}
+
+.dashboard-announcement::-webkit-scrollbar-track, .dashboard-message::-webkit-scrollbar-track {
+  background-color: grey;
+  height: 5px; /* Updated height to 5px */
+}
+
 @media (min-width: 768px) {
   body::after {
     width: 100%;
   }
 }
+
