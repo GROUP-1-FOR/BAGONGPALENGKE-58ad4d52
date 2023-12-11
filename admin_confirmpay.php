@@ -5,7 +5,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $admin_userid = $_SESSION["userid"];
 
 
-    $query = "SELECT id, name, balance, confirmed, archived, payment_date FROM ven_payments"; // Only select necessary columns
+    $query = "SELECT vendor_userid, vendor_name, balance, confirmed, archived, payment_date, mop, transaction_id FROM ven_payments";
+    // Only select necessary columns
     $result = mysqli_query($connect, $query);
 
     if (!$result) {
@@ -53,12 +54,13 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 <th>Balance</th>
                 <th>Status</th>
                 <th>Payment Date</th>
+                <th>Mode of Payment</th>
             </tr>
 
             <?php
             while ($row = mysqli_fetch_assoc($result)) {
                 echo "<tr>";
-                echo "<td>{$row['name']}</td>";
+                echo "<td>{$row['vendor_name']}</td>";
                 echo "<td>{$row['balance']}</td>";
 
                 // Check if the payment is confirmed and archived
@@ -66,12 +68,14 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     echo "<td class='paid-mark'>Paid</td>";
                 } else {
                     echo "<td class='action-cell'>
-            <button onclick=\"confirmAndArchive('{$row['id']}', '{$row['name']}', '{$row['payment_date']}', this)\" data-vendor-id='{$row['id']}'>Confirm</button>
-          </td>";
+                        <button onclick=\"confirmAndArchive('{$row['vendor_userid']}', '{$row['vendor_name']}', '{$row['payment_date']}', '{$row['mop']}', '{$row['transaction_id']}', this)\" data-vendor-id='{$row['vendor_userid']}'>Confirm</button>
+                    </td>";
                 }
 
-                // Display the current date
+                // Display the current date, Mode of Payment, and Transaction ID
                 echo "<td>{$row['payment_date']}</td>";
+                echo "<td>{$row['mop']}</td>";
+                //echo "<td>{$row['transaction_id']}</td>";
 
                 echo "</tr>";
             }
@@ -99,48 +103,60 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script>
-            function confirmAndArchive(id, name, payment_date, row) {
+            function confirmAndArchive(vendorUserId, vendorName, paymentDate, modeOfPayment, transactionId, row) {
+                // Display a confirmation dialog with the vendor's name
+                var isConfirmed = confirm("Are you sure you want to confirm and archive for vendor: " + vendorName + "?");
+
+                // Check the user's response
+                if (isConfirmed) {
+                    // User confirmed, proceed with the AJAX call
+                    $.ajax({
+                        type: "POST",
+                        url: "confirm_and_archive_db.php",
+                        data: {
+                            vendorUserId: vendorUserId,
+                            vendorName: vendorName,
+                            paymentDate: paymentDate,
+                            modeOfPayment: modeOfPayment,
+                            transactionId: transactionId,
+                            balance: $(row).closest('tr').find('td:eq(1)').text() // Fetch balance from the second cell of the current row
+                        },
+                        success: function(response) {
+                            alert(response);
+                            $(row).closest('tr').find('.action-cell').html('Paid');
+                        },
+                        error: function() {
+                            alert("Error confirming payment and archiving");
+                        }
+                    });
+                } else {
+                    // User canceled, you can handle this as needed
+                    console.log("Action canceled by the user");
+                }
+            }
+
+
+            function confirmRemoveAll() {
+                var confirmDelete = confirm("Are you sure you want to remove all confirmed payments?");
+                if (confirmDelete) {
+                    removeAllConfirmedPayments();
+                }
+            }
+
+            function removeAllConfirmedPayments() {
                 $.ajax({
                     type: "POST",
-                    url: "confirm_and_archive_db.php",
-                    data: {
-                        vendorId: id,
-                        vendorName: name,
-                        paymentDate: payment_date
-                    },
+                    url: "remove_all_confirmed_payments.php", // Create this file to handle the removal
                     success: function(response) {
                         alert(response); // Display the server's response (if needed)
-
-                        // Update the content of the 'Action' cell to 'Paid'
-                        $(row).closest('tr').find('.action-cell').html('Paid');
+                        // Reload the page or update the table if needed
+                        location.reload();
                     },
                     error: function() {
-                        alert("Error confirming payment and archiving");
+                        alert("Error removing confirmed payments");
                     }
                 });
             }
-
-            function confirmRemoveAll() {
-            var confirmDelete = confirm("Are you sure you want to remove all confirmed payments?");
-            if (confirmDelete) {
-                removeAllConfirmedPayments();
-            }
-        }
-
-        function removeAllConfirmedPayments() {
-            $.ajax({
-                type: "POST",
-                url: "remove_all_confirmed_payments.php", // Create this file to handle the removal
-                success: function(response) {
-                    alert(response); // Display the server's response (if needed)
-                    // Reload the page or update the table if needed
-                    location.reload();
-                },
-                error: function() {
-                    alert("Error removing confirmed payments");
-                }
-            });
-        }
         </script>
 
 
@@ -161,5 +177,5 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     </html>
 <?php } else {
-    header("location:admin_login.php");
+    header("location:admin_logout.php");
 }

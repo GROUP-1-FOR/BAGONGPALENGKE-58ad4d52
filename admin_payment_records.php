@@ -5,7 +5,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $admin_userid = $_SESSION["userid"];
 
     // Fetch paid records from the database
-    $query = "SELECT id, name, balance, payment_date FROM paid_records";
+    $query = "SELECT id, vendor_name, balance, payment_date, mop, transaction_id FROM paid_records";
     $result = mysqli_query($connect, $query);
 
     if (!$result) {
@@ -54,15 +54,19 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 <th>Name</th>
                 <th>Balance</th>
                 <th>Payment Date</th> <!-- Add this line for the payment date -->
+                <th>Mode of Payment</th>
+                <th>Transaction ID</th>
             </tr>
 
             <?php
             // Loop through the database results and display them in the table
             while ($row = mysqli_fetch_assoc($result)) {
                 echo "<tr>";
-                echo "<td>{$row['name']}</td>";
+                echo "<td>{$row['vendor_name']}</td>";
                 echo "<td>{$row['balance']}</td>";
                 echo "<td>{$row['payment_date']}</td>";
+                echo "<td>{$row['mop']}</td>";
+                echo "<td>{$row['transaction_id']}</td>";
                 echo "</tr>";
             }
             ?>
@@ -109,5 +113,5 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 <?php
 
 } else {
-    header("location:admin_login.php");
+    header("location:admin_logout.php");
 }

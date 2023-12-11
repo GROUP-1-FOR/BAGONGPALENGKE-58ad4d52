@@ -24,10 +24,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     // Fetch vendors who have not been contacted yet
     $query = "SELECT vendor_name, vendor_stall_number FROM vendor_sign_in 
-              WHERE CONCAT(vendor_name, '-', vendor_stall_number) NOT IN (
-                  SELECT CONCAT(vendor_name, '-', vendor_stall_number) FROM admin_messages
+              WHERE vendor_userid NOT IN (
+                  SELECT vendor_userid FROM admin_messages
                   UNION
-                  SELECT CONCAT(vendor_name, '-', vendor_stall_number) FROM vendor_messages
+                  SELECT vendor_userid FROM vendor_messages
               )";
 
     // Execute the query and handle errors
@@ -41,7 +41,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     while ($row = $result->fetch_assoc()) {
         $vendors[] = $row;
     }
-    ?>
+?>
 
     <!DOCTYPE html>
     <html>
@@ -84,6 +84,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
 <?php
 } else {
-    header("location:admin_login.php");
+    header("location:admin_logout.php");
 }
 ?>

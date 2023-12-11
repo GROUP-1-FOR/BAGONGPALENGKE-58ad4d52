@@ -158,12 +158,13 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             } else {
                 echo "<tr><td colspan='2'>No vendors found</td></tr>";
             }
-            
-            
+
+
             ?>
         </table>
 
-        <!-- Button to add vendors -->
+
+        <!--Button to add vendors -->
         <button id="addButton" onclick="redirectToAddVendors()">Add Vendor (+)</button>
 
         <a href=admin_index.php><button id="Button">Back</button></a>
@@ -202,8 +203,9 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             }
 
             function redirectToAddVendors() {
-                window.location.href = 'admin_create_vendor_account.php';
+                window.location.href = 'interactive_map.php';
             }
+
 
             function showSuggestions() {
                 const searchInput = document.getElementById('search');
@@ -248,6 +250,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     // Close the database connection
     $connect->close();
 } else {
-    header("location:admin_login.php");
+    header("location:admin_logout.php");
 }
 ?>
