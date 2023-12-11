@@ -203,7 +203,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             }
 
             function redirectToAddVendors() {
-                window.location.href = 'interactive_map.php';
+                window.location.href = 'admin-map.php';
             }
 
 
