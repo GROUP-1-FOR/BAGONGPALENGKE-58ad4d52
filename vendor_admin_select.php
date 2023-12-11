@@ -25,7 +25,7 @@
   </div>
   <div>
     <a href="vendor_login.php"><button class="vendor-button"> VENDOR </button></a>
-    <a href="admin_login.php"><button class="admin-button"> ADMIN </button></a>
+    <a href="admin_login.php"><button class="admin-button"> TREASURY </button></a>
     <a href="first_signin.php"><button class="back-button"> &lt; BACK </button></a>
   </div>
   <section> </section>

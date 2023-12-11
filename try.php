@@ -1,68 +1,45 @@
 <?php
-// Include your database connection file
 require("config.php");
-
-
-//token expires after 5 mins
-function generateToken($length = 32, $expirationTime = 20)
-{
-    // Generate a random token
-    $token = bin2hex(random_bytes($length));
-
-    // Calculate expiration time (current time + expirationTime)
-    $expirationTimestamp = time() + $expirationTime;
-
-    // Append the expiration time to the token
-    $expiringToken = $token . '|' . $expirationTimestamp;
-
-    return $expiringToken;
-}
-
-
-// Function to send email with the password reset link
-
+$userid = isset($_GET['userid']) ? htmlspecialchars($_GET['userid']) : '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get the email address from the form
-    $email = htmlspecialchars($_POST["admin_email"]);
-    $userid = htmlspecialchars($_POST["admin_userid"]);
 
-    // If the email is valid, generate a unique token
+    $admin_new_password = isset($_POST["admin_new_password"]) ? htmlspecialchars($_POST["admin_new_password"]) : '';
+    $admin_confirm_new_password = isset($_POST["admin_confirm_new_password"]) ? htmlspecialchars($_POST["admin_confirm_new_password"]) : '';
 
-    $result = mysqli_query($connect, "SELECT admin_userid, admin_email FROM admin_sign_in WHERE admin_userid = '$userid' && admin_email= '$email'");
-    $row = mysqli_fetch_assoc($result);
-
-    if (mysqli_num_rows($result) > 0) {
-        $token = generateToken();
-        $email_query = "UPDATE admin_sign_in SET admin_token = ? WHERE admin_userid = ?";
-        $stmt = mysqli_prepare($connect, $email_query);
-
-        // Use "ss" for two string parameters
-        $stmt->bind_param("ss", $token, $userid);
-
-        $stmt->execute();
-
-        if ($stmt->affected_rows > 0) {
-            echo '<script>';
-            echo 'alert("View Email!");';
-            echo 'window.location.href = "admin_forgot_password_1.php?userid=' . urlencode($userid) . '";';
-            echo '</script>';
-        } else {
-            echo "Failed to send token.";
-            exit();
-        }
-
-        // Close the statement
-        $stmt->close();
-    } else {
+    if ($admin_new_password !== $admin_confirm_new_password) {
         echo '<script>';
-        echo 'alert("Email Not Registered!");';
-        echo 'window.location.href = "admin_forgot_password.php";';
+        echo 'alert("Passwords do not match!");';
+        echo 'window.location.href = "admin_forgot_password_2.php";';
         echo '</script>';
+        exit();
     }
 
-    $connect->close();
+    $hashedPassword = md5($admin_new_password);
+
+    $password_query = "UPDATE admin_sign_in SET admin_password = ? WHERE admin_userid = ?";
+    $stmt = mysqli_prepare($connect, $password_query);
+
+    // Use "ss" for two string parameters
+    $stmt->bind_param("ss", $hashedPassword, $userid);
+
+    $stmt->execute();
+
+    if ($stmt->affected_rows > 0) {
+        echo '<script>';
+        echo 'alert("Password Updated!");';
+        echo 'window.location.href = "admin_login.php";';
+        echo '</script>';
+    } else {
+        echo '<script>';
+        echo 'alert("Password is the same with the previous!");';
+        echo 'window.location.href = "admin_login.php";';
+        echo '</script>';
+        exit();
+    }
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -84,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <header><img src="assets\images\sign-in\Santa-Rosa-Logo.svg" class="logo-src"></header>
 
   <div class="website-title-v2">
-    <h1 class="title4"> FORGOT<br>PASSWORD?</h1>
+    <h1 class="title4"> Re-enter<br>Treasury User ID</h1>
   </div>
 
   <div>
@@ -94,30 +71,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </div>
 
   <div class="login-form">
-    <h2>Enter your credentials</h2>
-    <form class="form-group" action="" method="post">
-        <label for="Admin User ID">Admin User ID:</label>
-        <input type="text" name="admin_userid" required> <br />
-        <label for="email">Email:</label>
-        <input type="email" name="admin_email" required> <br />
-        <button class="login-verif" type="submit"> SUBMIT </button><br />
-    </form>
+  <form action="" method="post" onsubmit="return confirm('Proceed?');">
+            <label for="Admin User ID">Admin User ID:</label>
+            <input type="text" name="admin_userid" value="<?php echo $userid; ?>" required readonly> <br />
 
+            <label for="admin_username">New Password:</label>
+            <input type="password" name="admin_new_password" id="admin_new_password" placeholder="8 characters and above" oninput="checkPasswordMatch()"> <br />
+
+            <label for="new_password">Confirm Password:</label>
+            <input type="password" name="admin_confirm_new_password" id="admin_confirm_new_password" required oninput="checkPasswordMatch()">
+            <span id="passwordMatchMessage"></span><br />
+            <button class="login-verif" type="submit"> SUBMIT </button><br />
+        </form>
     <a class="" href="vendor_admin_select.php"> Back</a>
   </div>
   <footer> </footer>
 </body>
-
-
 </html>
-
-
-
-
-
-
-
-
-
-
 

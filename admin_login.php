@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <h2>LOGIN</h2>
 
     <form class="form-group" action="admin_login_1.php" method="post" autocomplete="off">
-      <label for="Admin User ID"> Admin User ID: </label>
+      <label for="Admin User ID"> Treasury User ID: </label>
       <input type="text" name="admin_userid" id="admin_userid" required value=""> <br />
       <label for="Password"> Password: </label>
       <input type="password" id="password" placeholder="PASSWORD" name="admin_password" id="admin_password" required value=""><br />
