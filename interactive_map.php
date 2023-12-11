@@ -103,7 +103,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         }
     }
 ?>
-
 <script>
     function handleBoxClick(tableNumber) {
         var confirmAddition = confirm('Add vendor to Stall ' + tableNumber + '?');
@@ -113,7 +112,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         }
     }
 </script>
-    <footer></footer>
+<footer> </footer>
 </body>
 </html>
 <?php } else {
