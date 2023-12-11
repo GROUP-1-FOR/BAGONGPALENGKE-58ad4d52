@@ -105,7 +105,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             </a>
         </div>
     </div>
-    <body>
+    <div class="flex-box">
+    <main class="main-container">
 <div class="dashboard-announcement">
         <h2>Manage Vendor Accounts</h2>
         <!-- Search form -->
@@ -171,7 +172,9 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <button id="addButton" onclick="redirectToAddVendors()">Add Vendor (+)</button>
 
         <a href=admin_index.php><button id="Button">Back</button></a>
-</div>
+    </div>
+        </main>
+        </div>
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script>
             function editVendor(vendorId) {

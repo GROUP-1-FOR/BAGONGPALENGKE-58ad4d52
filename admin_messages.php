@@ -99,7 +99,7 @@ if (isset($_GET['vendor_name']) && isset($_GET['vendor_stall_number'])) {
             </style>
         </head>
 
-        <body class="dashboard-messages">
+        <body >
             <center>
                 <h1>Messages for <?php echo $recipient; ?></h1>
 
@@ -120,7 +120,7 @@ if (isset($_GET['vendor_name']) && isset($_GET['vendor_stall_number'])) {
                 </div>
 
                 <!-- Reply Form -->
-                <form class="dashboard-messages"action="process_admin_reply.php" method="post">
+                <form action="process_admin_reply.php" method="post">
                     <input type="hidden" name="admin_name" value="<?php echo $_SESSION["admin_name"]; ?>">
                     <input type="hidden" name="recipient" value="<?php echo $recipient; ?>">
                     <input type="hidden" name="stall_number" value="<?php echo $stall_number; ?>">

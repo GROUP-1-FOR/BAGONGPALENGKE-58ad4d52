@@ -109,7 +109,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
             </div>
             <div class="dashboard-message">
-            <iframe class="admin-messages-box" src="admin_messages_preview.php" width="600" height="400" frameborder="0"></iframe>
+            <iframe class="admin-messages-box" src="admin_messages.php" width="600" height="400" frameborder="0"></iframe>
             <div class="view-button">
             <a href='admin_messages.php'><button>View</button></a>
             </div>
