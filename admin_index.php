@@ -56,8 +56,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <ul class="dashboard-sidebar">
                 <li><a class="home-index" href=admin_index.php> Home </a></li>
                 <li><a class="manage-vendor" href=admin_vendor_manage_accounts.php> Manage Vendor Accounts </a></li>
-                <li><a class="report-management" href="#"> Report Management </a></li>
-                <li><a class="help-button" href="#"> Help </a></li>
+                <li><a class="report-management" href="admin_send_report.php"> Report Management </a></li>
+                <li><a class="help-button" href="admin_faq.php"> Help </a></li>
             </ul>
         </div>
         <div>
@@ -75,6 +75,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     <main class="main-container">
         <div class="dashboard-announcement">
   
+
         <?php
         $sql_sent_announcement = "SELECT DISTINCT announcement_title,announcement_subject,announcement_text, announcement_time FROM announcements ORDER BY announcement_id DESC";
         $result_sent_announcement = $connect->query($sql_sent_announcement);
@@ -109,8 +110,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
             </div>
             <div class="dashboard-message">
-            <iframe class="admin-messages-box" src="admin_messages.php" width="600" height="400" frameborder="0"></iframe>
-            <div class="view-button">
+            <!-- <iframe class="admin-messages-box" src="admin_messages_preview.php" width="600" height="400" frameborder="0"></iframe> -->
+      
             <a href='admin_messages.php'><button>View</button></a>
             </div>
             </div>
@@ -127,9 +128,9 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     </div>
 
-    <div class="dashboard-payment-notif">
+    <div class="dashboard-payment-notif"  href=admin_confirmpay.php>
     <iframe class="admin-messages-box" src="admin_confirmpay.php" width="600" height="400" frameborder="0"></iframe>
-    <div style="padding-top: 10px" class="view-button"><a href=admin_payment_records.php><button>VIEW</button></a>
+    <div style="padding-top: 10px" class="view-button"><a href=admin_confirmpay.php><button>VIEW</button></a>
     </div>
     </div>
 

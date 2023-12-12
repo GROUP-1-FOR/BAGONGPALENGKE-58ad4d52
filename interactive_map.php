@@ -51,10 +51,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         </ul>
         <div class="sidebar-inside">
             <ul class="dashboard-sidebar">
-                <li><a class="home-index" href=admin_index.php> Home </a></li>
+            <li><a class="home-index" href=admin_index.php> Home </a></li>
                 <li><a class="manage-vendor" href=admin_vendor_manage_accounts.php> Manage Vendor Accounts </a></li>
-                <li><a class="report-management" href="#"> Report Management </a></li>
-                <li><a class="help-button" href="#"> Help </a></li>
+                <li><a class="report-management" href="admin_send_report.php"> Report Management </a></li>
+                <li><a class="help-button" href="admin_faq.php"> Help </a></li>
             </ul>
         </div>
 

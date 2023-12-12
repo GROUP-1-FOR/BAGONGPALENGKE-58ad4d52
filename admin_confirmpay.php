@@ -160,8 +160,16 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         </script>
 
 
+        <a href=admin_index.php>
+            <h1>BACK</h1>
+        </a>
 
 
+
+
+        <a href=admin_payment_records.php>
+            <h1>VIEW VENDOR PAYMENT HISTORY</h1>
+        </a>
 
 
     </body>

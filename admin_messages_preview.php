@@ -8,6 +8,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     // Include database connection or functions
     // Example: include('db_connection.php');
 
+
     // Fetch vendor messages with the latest message for each vendor
     $query = "SELECT vendor_userid, vendor_name, vendor_stall_number, MAX(latest_timestamp) as latest_timestamp FROM (
                     SELECT vendor_userid, vendor_name, vendor_stall_number, vendor_timestamp as latest_timestamp
@@ -57,7 +58,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
-<body>
+<body style="color: black;">
     <header>
         <img src="assets\images\sign-in\Santa-Rosa-Logo.svg" class="logo-src">
     </header>
@@ -73,8 +74,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <ul class="dashboard-sidebar">
                 <li><a class="home-index" href=admin_index.php> Home </a></li>
                 <li><a class="manage-vendor" href=admin_vendor_manage_accounts.php> Manage Vendor Accounts </a></li>
-                <li><a class="report-management" href="#"> Report Management </a></li>
-                <li><a class="help-button" href="#"> Help </a></li>
+                <li><a class="report-management" href="admin_send_report.php"> Report Management </a></li>
+                <li><a class="help-button" href="admin_faq.php"> Help </a></li>
             </ul>
         </div>
         <div>
@@ -83,6 +84,9 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             </a>
         </div>
     </div>
+    <div class="flex-box">
+    <main class="main-container">
+<div class="dashboard-announcement">
     <?php
     // Loop through each vendor to display the preview
     while ($row = $result->fetch_assoc()) {
@@ -138,6 +142,9 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     <!-- Back button -->
     <a href='admin_index.php'><button>Back</button></a>
+    </main>
+    <main>
+<div>
 </body>
 
 </html>
