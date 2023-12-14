@@ -18,10 +18,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <style>
+
+.eye {
+  position: relative;
+  cursor: pointer;
+}
+
+.eye::before {
+  content: '\1F441'; /* Unicode for eye icon */
+  font-size: 18px;
+  color: #aaa;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+input[type="password"] {
+  padding-right: 30px; /* Ensure the eye icon doesn't overlap with the text */
+}
+  </style>
+
 </head>
 
 <body class="bagongpgalengke-v2">
-  <header> LOGO </header>
+<header><img src="assets\images\sign-in\Santa-Rosa-Logo.svg" class="logo-src"></header>
 
   <div class="website-title-v2">
     <h1 class="title3"> WELCOME TO </h1>
@@ -41,7 +64,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <label for="Admin User ID"> Admin User ID: </label>
       <input type="text" name="admin_userid" id="admin_userid" required value=""> <br />
       <label for="Password"> Password: </label>
-      <input type="password" id="password" placeholder="PASSWORD" name="admin_password" id="admin_password" required value=""><br />
+      
+      <input type="password" id="password" placeholder="PASSWORD" name="admin_password" id="admin_password" required value="">
+     
+     
       <span style="color: red;">
         <?php
         if (isset($_SESSION['wrong_credentials'])) {
@@ -59,8 +85,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <a class="forgot-password" href="admin_forgot_password.php"> Forgot Password?</a> <br />
     <a class="" href="vendor_admin_select.php"> Back</a>
   </div>
+
+  <script>
+  document.querySelector('.toggle-password').addEventListener('click', function () {
+    const passwordInput = document.querySelector('#password');
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+  });
+</script>
   <footer> </footer>
+  
 </body>
+
+
 
 
 </html>
