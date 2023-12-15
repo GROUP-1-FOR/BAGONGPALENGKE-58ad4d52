@@ -231,18 +231,10 @@ h2, .resend-otp, .verify-otp{
   margin-top: 20%;
 }
 
-.public-market-pic {
-  height: 180px;
-  margin-top: 70px;
-  margin-left: 5px;
-  margin-right: 0%;
-
-}
-
-.head{
+.head {
   width: 100%;
   height: 100%;
-  object-fit: none; /* Do not maintain the original aspect ratio */
+  object-fit: cover; /* Do not maintain the original aspect ratio */
   display: flex;
   width: auto;
   flex-direction: column;
@@ -250,44 +242,40 @@ h2, .resend-otp, .verify-otp{
   /* margin-left: -400px; */
 }
 
-.head-bottom{
+.head-bottom {
   margin-top: 5px;
+  /* margin-left: -100px; */
   display: flex;
   flex-direction: row;
   object-fit: none;
-
 }
 
-.public-market-pic, .head-bottom img {
-
-  object-fit: none; /* Do not maintain the original aspect ratio */
-  border-radius: 50px;
-  border-style: solid;
-  border-color: transparent;
-  /* margin-left: -45px; */
-  width: 100%;
-
-
+.public-market-pic {
+  margin-top: 60px;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 40px;
+  width: 1230px; /* Set the desired width */
+  height: 180px; /* Set the desired height */
+  object-fit: cover; /* Optional: maintain aspect ratio and cover the container */
 }
 
-
-.head-bottom-1{
-  width: 100%;
+.head-bottom-1 {
+  max-width: 1080px;
   height: 100%;
-  border-style: transparent;
-  border-radius: 50px;
-  object-fit: none; /* Do not maintain the original aspect ratio */
+  object-fit: cover; /* Do not maintain the original aspect ratio */
 }
 
-.head-bottom-2{
-  width: 600px;
-  height: 120px;
-  margin-left: -40px;
-  object-fit: none; /* Do not maintain the original aspect ratio */
+.head-bottom-2 {
+  max-width: 1080px;
+  height: 100%;
+  margin-left: 110px;
 }
 
-
-.home-index, .manage-vendor, .report-management, .help-button{
+.home-index,
+.manage-vendor,
+.report-management,
+.help-button {
   width: 100%;
   margin-bottom: 20px;
   height: 30px;
@@ -440,20 +428,17 @@ h2, .resend-otp, .verify-otp{
   border: gray;
   border-width: 2PX;
   border-style: solid;
-  border-bottom: 20px #D9D9D9 solid;
-  overflow-y: scroll; 
+  overflow-y: hidden; 
   overflow-x: hidden; 
   height: 300px;
-  max-width: 900px;
-  margin-left: 20px;
-  margin-top: 40px;
+  max-width: 750px;
+  margin-left: 10px;
+  margin-top: 10px;
   border-top: 40px solid maroon;
-  border-bottom: 20px;
   background-color: #D9D9D9;
   color:white;
   flex: 1;
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
+  border-radius: 20px;
   padding: 10px;
 }
 
@@ -490,10 +475,10 @@ h2, .resend-otp, .verify-otp{
   border-style: solid;
   /* border-bottom: 20px maroon solid; */
   /* overflow-y: scroll;  */
-  height: 210px;
-  max-width: 540px;
-  margin-left: 15px;
-  margin-top: 40px;
+  height: 300px;
+  max-width: 400px;
+  margin-left: 65px;
+  margin-top: 10px;
   border-top: 40px solid maroon;
   background-color: #D9D9D9;
   color:white;
@@ -1008,12 +993,12 @@ margin-left: 21px!important;
 /* SCROLL BAR STYLE */
 
 
-.dashboard-announcement::-webkit-scrollbar, .dashboard-message::-webkit-scrollbar, .admin-messages-box::-webkit-scrollbar{
+/* .dashboard-announcement::-webkit-scrollbar, .dashboard-message::-webkit-scrollbar, .admin-messages-box::-webkit-scrollbar{
   width: 10px;
-  height: 100px; /* Updated height to 100px */
-}
+  height: 50px; /* Updated height to 100px 
+}  */
 
-.dashboard-announcement::-webkit-scrollbar-thumb, .dashboard-message::-webkit-scrollbar-thumb, .admin-messages-box::-webkit-scrollbar-thumb{
+/* .dashboard-announcement::-webkit-scrollbar-thumb, .dashboard-message::-webkit-scrollbar-thumb, .admin-messages-box::-webkit-scrollbar-thumb{
   background-color: maroon;
   border-radius: 30px;
 }
@@ -1025,8 +1010,8 @@ margin-left: 21px!important;
 
 .dashboard-announcement::-webkit-scrollbar-track, .dashboard-message::-webkit-scrollbar-track,.admin-messages-box::-webkit-scrollbar-track {
   background-color: grey;
-  height: 5px; /* Updated height to 5px */
-}
+  height: 5px; /* Updated height to 5px 
+} */
 
 @media (min-width: 768px) {
   body::after {

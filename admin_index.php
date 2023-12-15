@@ -46,10 +46,12 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <img class="head-bottom-1" src="assets\images\sign-in\name-holder.svg" alt="back-layer">
         <img class="head-bottom-2" src="assets\images\sign-in\datetime-holder.svg" alt="back-layer">
     </div>
-    <!-- <div class="head-bottom">
-        <img class="head-bottom-1" src="assets\images\sign-in\name-holder.svg" alt="back-layer">
-        <img class="head-bottom-2" src="assets\images\sign-in\datetime-holder.svg" alt="back-layer">
-    </div> -->
+    <div class="head-bottom">
+    <div class="dashboard-announcement"></div>
+    <div class="dashboard-map"></div>
+
+
+    </div>
     </div>
 
 
