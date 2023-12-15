@@ -37,10 +37,22 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <header></header>
     <?php include 'sidebar.php'; ?>
 
-    <img class="public-market-pic" src="assets\\images\sign-in\public-market.svg" alt="">
-    <img class="back-layer" src="assets\\images\\sign-in\\Group 83.png" alt="back-layer">
+    <div class ="head">
+        <img class="public-market-pic" src="assets\images\sign-in\public-market-head.svg" alt="back-layer">
+    <div class="head-bottom">
+        <img class="head-bottom-1" src="assets\images\sign-in\name-holder.svg" alt="back-layer">
+        <img class="head-bottom-2" src="assets\images\sign-in\datetime-holder.svg" alt="back-layer">
+    </div>
+    <!-- <div class="head-bottom">
+        <img class="head-bottom-1" src="assets\images\sign-in\name-holder.svg" alt="back-layer">
+        <img class="head-bottom-2" src="assets\images\sign-in\datetime-holder.svg" alt="back-layer">
+    </div> -->
+    </div>
+
+
 
     <!-- <h3 class="announcement-text">Announcement</h3>
     <div class="flex-box">
