@@ -32,6 +32,16 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 die("Error executing the query: " . $connect->error);
             }
 
+             // Insert into vendor_notification table
+             $notifTitle = "You have a Message!";
+             $messageValue = 1; // Set the confirm value to 1
+             $messageDate = date('Y-m-d H:i:s');
+ 
+             $sqlInsertNotification = "INSERT INTO vendor_notification (vendor_userid, title, message, notif_date, admin_name) VALUES (?, ?, ?, ?, ?)";
+             $stmtInsertNotification = $connect->prepare($sqlInsertNotification);
+             $stmtInsertNotification->bind_param('ssiss', $vendor_userid, $notifTitle, $messageValue, $messageDate, $admin_name);
+             $stmtInsertNotification->execute();
+
             // Redirect back to the messages page
             header("location: admin_messages.php?vendor_userid=$vendor_userid&vendor_name=$recipient&vendor_stall_number=$stall_number");
         } else {

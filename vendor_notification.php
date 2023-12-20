@@ -71,15 +71,17 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 echo '<h3><a href="vendor_transaction_history.php">' . $row['title'] . '</a></h3>';
                 echo '<p>Transaction ID: ' . $row['transaction_id'] . '</p>';
                 echo '<p>MOP: ' . $row['mop'] . '</p>';
+                echo '<p>By: ' . $row['admin_name'] . '</p>';
             } elseif ($row['message'] == 1) {
                 echo '<h3><a href="vendor_messages.php">' . $row['title'] . '</a></h3>';
+                echo '<p>From: ' . $row['admin_name'] . '</p>';
             } elseif ($row['announcement'] == 1) {
                 echo '<h3><a href="vendor_index.php">' . $row['title'] . '</a></h3>';
             } elseif ($row['edit'] == 1) {
                 echo '<h3><a href="vendor_index.php">' . $row['title'] . '</a></h3>';
+                echo '<p>By: ' . $row['admin_name'] . '</p>';
             }
             
-            echo '<p>By: ' . $row['admin_name'] . '</p>';
             
             echo '</div>';
         }

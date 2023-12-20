@@ -65,10 +65,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
              // Insert into vendor_notification table
             $notifTitle = "Payment Confirmed";
             $confirmValue = 1; // Set the confirm value to 1
+            $confirmDate = date('Y-m-d H:i:s');
 
             $sqlInsertNotification = "INSERT INTO vendor_notification (vendor_userid, transaction_id, title, confirm, mop, notif_date, admin_name) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmtInsertNotification = $connect->prepare($sqlInsertNotification);
-            $stmtInsertNotification->bind_param('sssisss', $vendorUserId, $transactionId, $notifTitle, $confirmValue, $modeOfPayment, $paymentDate, $adminName);
+            $stmtInsertNotification->bind_param('sssisss', $vendorUserId, $transactionId, $notifTitle, $confirmValue, $modeOfPayment, $confirmDate, $adminName);
             $stmtInsertNotification->execute();
 
 
