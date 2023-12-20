@@ -33,6 +33,16 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             $stmtInsertMessage->bind_param('sssss', $vendorName, $vendorStallNumber, $vendorUserId, $messageText, $adminName);
             $stmtInsertMessage->execute();
 
+            // Insert into vendor_notification table
+            $notifTitle = "You have a Message!";
+            $messageValue = 1; // Set the confirm value to 1
+            $messageDate = date('Y-m-d H:i:s');
+
+            $sqlInsertNotification = "INSERT INTO vendor_notification (vendor_userid, title, message, notif_date, admin_name) VALUES (?, ?, ?, ?, ?)";
+            $stmtInsertNotification = $connect->prepare($sqlInsertNotification);
+            $stmtInsertNotification->bind_param('ssiss', $vendorUserId, $notifTitle, $messageValue, $messageDate, $adminName);
+            $stmtInsertNotification->execute();
+
             // Redirect to the messages preview page after processing the form
             header("Location: admin_messages_preview.php");
             exit();
