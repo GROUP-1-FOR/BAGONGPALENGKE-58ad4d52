@@ -11,6 +11,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $vendorUserId = $_POST['vendorUserId'];
         $transactionId = $_POST['transactionId'];
         $balance = $_POST['balance']; // Retrieve the balance from the AJAX request
+        $adminName = $_POST['adminName'];
 
         // Fetch the vendor details from the database
         $getVendorQuery = "SELECT vendor_name, balance, mop FROM `ven_payments` WHERE `transaction_id` = ?";
@@ -61,6 +62,15 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             } else {
                 echo "Error preparing statement for archive records: " . mysqli_error($connect);
             }
+             // Insert into vendor_notification table
+            $notifTitle = "Payment Confirmed";
+            $confirmValue = 1; // Set the confirm value to 1
+
+            $sqlInsertNotification = "INSERT INTO vendor_notification (vendor_userid, transaction_id, title, confirm, mop, notif_date, admin_name) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stmtInsertNotification = $connect->prepare($sqlInsertNotification);
+            $stmtInsertNotification->bind_param('sssisss', $vendorUserId, $transactionId, $notifTitle, $confirmValue, $modeOfPayment, $paymentDate, $adminName);
+            $stmtInsertNotification->execute();
+
 
             // Update the ven_payments table for confirmation and archiving
             $updateQuery = "UPDATE `ven_payments` SET `confirmed` = 1, `archived` = 1 WHERE `vendor_userid` = ?";

@@ -4,6 +4,17 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $admin_id = $_SESSION["id"];
     $admin_userid = $_SESSION["userid"];
 
+     // Query to get admin_name based on admin_userid
+     $adminNameQuery = "SELECT admin_name FROM admin_sign_in WHERE admin_userid = '$admin_userid'";
+     $adminNameResult = mysqli_query($connect, $adminNameQuery);
+ 
+     if (!$adminNameResult) {
+         die('Error: Unable to fetch admin_name from the database');
+     }
+ 
+     $adminRow = mysqli_fetch_assoc($adminNameResult);
+     $admin_name = $adminRow['admin_name'];
+
 
     $query = "SELECT vendor_userid, vendor_name, balance, confirmed, archived, payment_date, mop, transaction_id FROM ven_payments";
     // Only select necessary columns
@@ -119,7 +130,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                             paymentDate: paymentDate,
                             modeOfPayment: modeOfPayment,
                             transactionId: transactionId,
-                            balance: $(row).closest('tr').find('td:eq(1)').text() // Fetch balance from the second cell of the current row
+                            balance: $(row).closest('tr').find('td:eq(1)').text(),
+                            adminName: "<?php echo $admin_name; ?>" // Pass admin_name from PHP to JavaScript
                         },
                         success: function(response) {
                             alert(response);

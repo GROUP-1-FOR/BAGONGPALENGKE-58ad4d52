@@ -221,6 +221,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <h1>MESSAGES</h1>
         </a>
 
+        <a href="vendor_notification.php">
+            <h1>NOTIFICATIONS</h1>
+        </a>
+
         <a href="vendor_send_report.php">
             <h1>REPORT</h1>
         </a>
