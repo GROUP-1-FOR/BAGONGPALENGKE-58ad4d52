@@ -81,69 +81,79 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                         $new_vendor_email = $_POST['vendor_email'];
                         $new_vendor_mobile_number = $_POST['vendor_mobile_number'];
 
+                         // Insert into vendor_notification table
+                        $notifTitle = "Profile Updated!";
+                        $editValue = 1; // Set the confirm value to 1
+                        $editDate = date('Y-m-d H:i:s');
+            
+                        $sqlInsertNotification = "INSERT INTO vendor_notification (vendor_userid, title, edit, notif_date) VALUES (?, ?, ?, ?)";
+                        $stmtInsertNotification = $connect->prepare($sqlInsertNotification);
+                        $stmtInsertNotification->bind_param('ssis', $vendor_userid, $notifTitle, $editValue, $editDate);
+                        $stmtInsertNotification->execute();
+
                         // Update vendor_sign_in table
                         $update_vendor_signin_sql = "UPDATE vendor_sign_in SET
-                    vendor_name = ?,
-                    vendor_first_name = ?,
-                    vendor_last_name = ?,
-                    vendor_email = ?,
-                    vendor_mobile_number = ?
-                    WHERE vendor_userid = ?";
+                        vendor_name = ?,
+                        vendor_first_name = ?,
+                        vendor_last_name = ?,
+                        vendor_email = ?,
+                        vendor_mobile_number = ?
+                        WHERE vendor_userid = ?";
 
                         $update_vendor_signin_stmt = $connect->prepare($update_vendor_signin_sql);
                         $update_vendor_signin_stmt->bind_param("ssssss", $new_vendor_name, $new_vendor_first_name, $new_vendor_last_name, $new_vendor_email, $new_vendor_mobile_number, $vendor_userid);
 
                         // Update admin_messages table
                         $update_admin_messages_sql = "UPDATE admin_messages SET
-                    vendor_name = ?
-                    WHERE vendor_userid = ?";
+                        vendor_name = ?
+                        WHERE vendor_userid = ?";
 
                         $update_admin_messages_stmt = $connect->prepare($update_admin_messages_sql);
                         $update_admin_messages_stmt->bind_param("ss", $new_vendor_name, $vendor_userid);
 
                         // Update vendor_messages table
                         $update_vendor_messages_sql = "UPDATE vendor_messages SET
-                    vendor_name = ?
-                    WHERE vendor_userid = ?";
+                        vendor_name = ?
+                        WHERE vendor_userid = ?";
 
                         $update_vendor_messages_stmt = $connect->prepare($update_vendor_messages_sql);
                         $update_vendor_messages_stmt->bind_param("ss", $new_vendor_name, $vendor_userid);
 
                         // Update paid_records table
                         $update_paid_records_sql = "UPDATE paid_records SET
-                    vendor_name = ?
-                    WHERE vendor_userid = ?";
+                        vendor_name = ?
+                        WHERE vendor_userid = ?";
 
                         $update_paid_records_stmt = $connect->prepare($update_paid_records_sql);
                         $update_paid_records_stmt->bind_param("ss", $new_vendor_name, $vendor_userid);
                         // Update archive_records table
                         $update_archive_records_sql = "UPDATE archive_records SET
-                    vendor_name = ?
-                    WHERE vendor_userid = ?";
+                        vendor_name = ?
+                        WHERE vendor_userid = ?";
 
                         $update_archive_records_stmt = $connect->prepare($update_archive_records_sql);
                         $update_archive_records_stmt->bind_param("ss", $new_vendor_name, $vendor_userid);
 
                         // Update vendor_balance table
                         $update_vendor_balance_sql = "UPDATE vendor_balance SET
-                    vendor_name = ?
-                    WHERE vendor_userid = ?";
+                        vendor_name = ?
+                        WHERE vendor_userid = ?";
 
                         $update_vendor_balance_stmt = $connect->prepare($update_vendor_balance_sql);
                         $update_vendor_balance_stmt->bind_param("ss", $new_vendor_name, $vendor_userid);
 
                         // Update admin_stall_map table
                         $update_admin_stall_map_sql = "UPDATE admin_stall_map SET
-                    vendor_name = ?
-                    WHERE vendor_userid = ?";
+                        vendor_name = ?
+                        WHERE vendor_userid = ?";
 
                         $update_admin_stall_map_stmt = $connect->prepare($update_admin_stall_map_sql);
                         $update_admin_stall_map_stmt->bind_param("ss", $new_vendor_name, $vendor_userid);
 
                         // Update ven_payments table
                         $update_ven_payments_sql = "UPDATE ven_payments SET
-                    vendor_name = ?
-                    WHERE vendor_userid = ?";
+                        vendor_name = ?
+                        WHERE vendor_userid = ?";
 
                         $update_ven_payments_stmt = $connect->prepare($update_ven_payments_sql);
                         $update_ven_payments_stmt->bind_param("ss", $new_vendor_name, $vendor_userid);
@@ -193,6 +203,16 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                         $update_ven_payments_stmt->close();
                         $delete_vendor_profile_stmt->close();
                     } elseif (isset($_POST['remove'])) {
+
+                        // Insert into vendor_notification table
+                        $notifTitle = "Edit Request Removed";
+                        $editValue = 1; // Set the confirm value to 1
+                        $editDate = date('Y-m-d H:i:s');
+            
+                        $sqlInsertNotification = "INSERT INTO vendor_notification (vendor_userid, title, edit, notif_date) VALUES (?, ?, ?, ?)";
+                        $stmtInsertNotification = $connect->prepare($sqlInsertNotification);
+                        $stmtInsertNotification->bind_param('ssis', $vendor_userid, $notifTitle, $editValue, $editDate);
+                        $stmtInsertNotification->execute();
                         // Remove logic
                         $delete_vendor_profile_sql = "DELETE FROM vendor_edit_profile WHERE vendor_userid = ?";
                         $delete_vendor_profile_stmt = $connect->prepare($delete_vendor_profile_sql);

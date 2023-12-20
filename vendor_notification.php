@@ -79,7 +79,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 echo '<h3><a href="vendor_index.php">' . $row['title'] . '</a></h3>';
             } elseif ($row['edit'] == 1) {
                 echo '<h3><a href="vendor_index.php">' . $row['title'] . '</a></h3>';
-                echo '<p>By: ' . $row['admin_name'] . '</p>';
             }
             
             
