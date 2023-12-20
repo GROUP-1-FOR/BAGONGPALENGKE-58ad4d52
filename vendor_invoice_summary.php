@@ -56,10 +56,9 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     // Check if the "GCash" button is clicked
     if (isset($_POST['pay_gcash'])) {
-        // Insert GCash payment data into ven_payments table (modify as needed)
-        // ...
-        // Redirect to the same page or another page based on your logic
-        // ...
+        // Redirect to the vendor_gcash.php page
+        header("Location: vendor_gcash.php");
+        exit();
     }
 ?>
 
@@ -133,7 +132,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 </form>
 
                 <!-- GCash Payment Button -->
-                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                <form method="post"  action="vendor_gcash.php">
                     <input type="hidden" name="vendorName" value="<?php echo $vendorName; ?>">
                     <input type="hidden" name="vendorUserId" value="<?php echo $vendorUserId; ?>">
                     <input type="hidden" name="vendorStallNumber" value="<?php echo $vendorStallNumber; ?>">
