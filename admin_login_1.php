@@ -25,16 +25,17 @@ if (isset($_POST["admin_login_submit"])) {
                 $_SESSION["login"] = true;
                 $_SESSION["id"] = $row["admin_id"];
                 $_SESSION["userid"] = $row["admin_userid"];
+                $_SESSION["admin_email"] = $row["admin_email"];
 
 
-                $admin_id = $_SESSION["id"];
+                $admin_userid = $_SESSION["userid"];
 
 
                 //OTP Generation
                 include("admin_otp_generation.php");
                 echo '<script>';
                 echo 'alert("OTP Generated!");';
-                echo 'window.location.href = "admin_otp_email_simulation.php";';
+                echo 'window.location.href = "admin_otp_verification.php";';
                 echo '</script>';
             } else {
                 $wrong_credentials = "Wrong Credentials!";

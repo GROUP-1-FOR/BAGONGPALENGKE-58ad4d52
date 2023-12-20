@@ -11,7 +11,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $max_trials = 3;
 
         // Retrieve the stored OTP and trials from the database
-        $select_query = "SELECT admin_otp, admin_otp_trials FROM admin_sign_in WHERE admin_id = $admin_id";
+        $select_query = "SELECT admin_otp, admin_otp_trials FROM admin_sign_in WHERE admin_userid = '$admin_userid'";
         $result = mysqli_query($connect, $select_query);
         $row = mysqli_fetch_assoc($result);
 
@@ -22,7 +22,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             // Check if entered OTP matches the stored OTP
             if ($entered_otp == $stored_otp) {
                 // OTP verification successful
-                $reset_trials_query = "UPDATE admin_sign_in SET admin_otp_trials = 0 WHERE admin_id = $admin_id";
+                $reset_trials_query = "UPDATE admin_sign_in SET admin_otp_trials = 0 WHERE admin_userid = '$admin_userid'";
                 mysqli_query($connect, $reset_trials_query);
                 echo '<script>';
                 echo 'alert("OTP Verified!");';
@@ -33,7 +33,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 // Increment OTP trials
                 $otp_trials++;
                 // Update the database with the new trials count
-                $update_trials_query = "UPDATE admin_sign_in SET admin_otp_trials = $otp_trials WHERE admin_id = $admin_id";
+                $update_trials_query = "UPDATE admin_sign_in SET admin_otp_trials = $otp_trials WHERE admin_userid = '$admin_userid'";
 
                 mysqli_query($connect, $update_trials_query);
 
@@ -43,11 +43,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 // Check if trials exceed the limit
                 if ($otp_trials >= $max_trials) {
                     // Redirect the user to the login page
-                    $reset_trials_query = "UPDATE admin_sign_in SET admin_otp_trials = 0 WHERE admin_id = $admin_id";
+                    $reset_trials_query = "UPDATE admin_sign_in SET admin_otp_trials = 0 WHERE admin_userid = '$admin_userid'";
                     mysqli_query($connect, $reset_trials_query);
                     echo '<script>';
                     echo 'alert("Reached Maximum OTP Trials!");';
-                    echo 'window.location.href = "admin_login.php";';
+                    echo 'window.location.href = "admin_logout.php";';
                     echo '</script>';
                     exit();
                 }
@@ -59,21 +59,18 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["admin_resend_otp"])) {
-        unset($_SESSION['admin_otp_message']);
         include("admin_otp_generation.php");
-        $reset_trials_query = "UPDATE admin_sign_in SET admin_otp_trials = 0 WHERE admin_id = $admin_id";
+        $reset_trials_query = "UPDATE admin_sign_in SET admin_otp_trials = 0 WHERE admin_userid = '$admin_userid'";
         mysqli_query($connect, $reset_trials_query);
         echo '<script>';
         echo 'alert("OTP Resent!");';
-        echo 'window.location.href = "admin_otp_email_simulation.php";';
         echo '</script>';
     }
 
 
     if (isset($_GET['cancel_button'])) {
         // Execute the SQL query
-        unset($_SESSION['admin_otp_message']);
-        $reset_trials_query = "UPDATE admin_sign_in SET admin_otp_trials = 0 WHERE admin_id = $admin_id";
+        $reset_trials_query = "UPDATE admin_sign_in SET admin_otp_trials = 0 WHERE admin_userid = '$admin_userid'";
         mysqli_query($connect, $reset_trials_query);
 
         header("Location: admin_logout.php");

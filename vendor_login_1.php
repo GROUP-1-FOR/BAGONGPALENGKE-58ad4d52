@@ -25,16 +25,18 @@ if (isset($_POST["vendor_login_submit"])) {
                 $_SESSION["login"] = true;
                 $_SESSION["id"] = $row["vendor_id"];
                 $_SESSION["userid"] = $row["vendor_userid"];
+                $_SESSION["vendor_email"] = $row["vendor_email"];
 
 
-                $id = $_SESSION["id"];
+
+                $vendor_userid = $_SESSION["userid"];
 
 
                 //OTP Generation
                 include("vendor_otp_generation.php");
                 echo '<script>';
                 echo 'alert("OTP Generated!");';
-                echo 'window.location.href = "vendor_otp_email_simulation.php";';
+                echo 'window.location.href = "vendor_otp_verification.php";';
                 echo '</script>';
             } else {
                 $wrong_credentials = "Wrong Credentials!";
