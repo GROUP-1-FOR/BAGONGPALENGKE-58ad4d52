@@ -23,6 +23,16 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         // Insert a message for each user
         $sql = "INSERT INTO announcements (admin_id,announcement_title, announcement_subject, announcement_text) VALUES ('$admin_id', '$announcement_title','$announcement_subject','$announcement_text')";
+        // Insert into vendor_notification table
+        $notifTitle = "See New Announcement!";
+        $announceValue = 1; // Set the confirm value to 1
+        $announceDate = date('Y-m-d H:i:s');
+        $vendor_userid = "ALL";
+
+        $sqlInsertNotification = "INSERT INTO vendor_notification (vendor_userid, title, announcement, notif_date) VALUES (?, ?, ?, ?)";
+        $stmtInsertNotification = $connect->prepare($sqlInsertNotification);
+        $stmtInsertNotification->bind_param('ssis', $vendor_userid, $notifTitle, $announceValue, $announceDate);
+        $stmtInsertNotification->execute();
 
         if ($connect->query($sql) !== TRUE) {
             echo "Error sending announcement to vendors!" . $connect->error;

@@ -54,7 +54,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $userid = $_SESSION["userid"];
 
     // Fetch notifications using prepared statement
-    $sqlNotifications = "SELECT * FROM vendor_notification WHERE vendor_userid = ? ORDER BY notif_date DESC";
+    $sqlNotifications = "SELECT * FROM vendor_notification WHERE vendor_userid = ? OR vendor_userid = 'ALL' ORDER BY notif_date DESC";
     $stmtNotifications = $connect->prepare($sqlNotifications);
     $stmtNotifications->bind_param('s', $userid); // Use 's' for VARCHAR
     $stmtNotifications->execute();
@@ -76,7 +76,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 echo '<h3><a href="vendor_messages.php">' . $row['title'] . '</a></h3>';
                 echo '<p>From: ' . $row['admin_name'] . '</p>';
             } elseif ($row['announcement'] == 1) {
-                echo '<h3><a href="vendor_index.php">' . $row['title'] . '</a></h3>';
+                echo '<h3><a href="vendor_view_announcement.php">' . $row['title'] . '</a></h3>';
             } elseif ($row['edit'] == 1) {
                 echo '<h3><a href="vendor_index.php">' . $row['title'] . '</a></h3>';
             }
