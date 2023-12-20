@@ -37,10 +37,18 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $stmtInsertPayment = $connect->prepare($sqlInsertPayment);
         $stmtInsertPayment->bind_param('ssdsss', $vendorUserId, $vendorName, $balance, $paymentDate, $paymentMethod, $transactionId); // Use 's' for VARCHAR, 'd' for DOUBLE
         $stmtInsertPayment->execute();
-        // Set payment status to "Payment request sent" in session
-        // $_SESSION['payment_status'] = "Payment request sent. Please wait for confirmation.";
 
-        // Redirect to the same page to avoid form resubmission on refresh
+        // Insert into admin_notification table
+        $notifTitle = "Payment Confirmation Request";
+        $confirmValue = 1; // Set the confirm value to 1
+
+        $sqlInsertNotification = "INSERT INTO admin_notification (vendor_userid, vendor_name, transaction_id, title, confirm, mop, notif_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stmtInsertNotification = $connect->prepare($sqlInsertNotification);
+        $stmtInsertNotification->bind_param('ssssiss', $vendorUserId, $vendorName, $transactionId, $notifTitle, $confirmValue, $paymentMethod, $paymentDate);
+        $stmtInsertNotification->execute();
+
+
+       
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
     }

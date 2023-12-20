@@ -80,6 +80,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <a href=interactive_map.php> View Market Rental Stalls </a>
 
             <a href="admin_send_announcement.php"> Send Announcements </a>
+            <a href=admin_notification.php>Notification</a>
+
 
 
 

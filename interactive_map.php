@@ -67,7 +67,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <?php
         // Loop through 75 tables
         if (isset($connect) && $connect instanceof mysqli && !$connect->connect_error) {
-            for ($i = 1; $i <= 75; $i++) {
+            for ($i = 1; $i <= 74; $i++) {
                 // Check if the value of $i exists in the admin_stall_map table
                 $query = "SELECT COUNT(*) as count, balance FROM admin_stall_map WHERE vendor_stall_number = ?";
                 $stmt = $connect->prepare($query);
