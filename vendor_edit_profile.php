@@ -123,9 +123,16 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 var email = document.getElementById("vendor_email").value;
 
                 // Check if any of the fields are empty
-                submitButton.disabled = !hasFormChanged() || firstName === "" || lastName === "" || mobileNumber === "" || email === "";
-            }
+                 submitButton.disabled = !hasFormChanged() || firstName === "" || lastName === "" || mobileNumber === "" || email === "";
 
+                // Check if vendor_userid exists
+                <?php
+                $queryCheckVendor = "SELECT COUNT(*) FROM vendor_edit_profile WHERE vendor_userid = '$userid'";
+                $resultCheckVendor = mysqli_query($connect, $queryCheckVendor);
+                $countVendor = mysqli_fetch_row($resultCheckVendor)[0];
+                ?>
+                submitButton.disabled = submitButton.disabled || <?php echo $countVendor; ?> > 0;
+                }
             function validateForm() {
                 return hasFormChanged() && validateVendorFirstName() && validateVendorLastName() && validateVendorMobileNumber() && validateVendorEmail();
             }
