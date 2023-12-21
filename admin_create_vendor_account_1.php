@@ -5,7 +5,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $admin_userid = $_SESSION["userid"];
 
     //Error message for the first part of the form
-    $vendor_first_name_error  = $vendor_last_name_error  = $vendor_mobile_number_error = $vendor_email_error = "";
+    $vendor_first_name_error  = $vendor_last_name_error  = $vendor_mobile_number_error = $vendor_email_error = $vendor_product_type_error = $vendor_first_payment_date_error = "";
     //Error message for the second part
     $vendor_userid_error = $vendor_password_error = $vendor_confirm_password_error = "";
 
@@ -35,6 +35,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         throw new Exception("Failed to generate a unique transaction ID after $maxAttempts attempts");
     }
 
+    function endsWith($haystack, $needle)
+    {
+        return substr($haystack, -strlen($needle)) === $needle;
+    }
+
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Part 1 variables
@@ -46,21 +51,23 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $vendor_product_type = isset($_POST["vendor_product"]) ? htmlspecialchars($_POST["vendor_product"]) : '';
         // $vendor_payment_basis = isset($_POST["vendor_payment_basis"]) ? htmlspecialchars($_POST["vendor_payment_basis"]) : '';
         $vendor_first_payment_date = isset($_POST["vendor_first_payment_date"]) ? htmlspecialchars($_POST["vendor_first_payment_date"]) : '';
+
         if (!preg_match("/^[a-zA-Z-' ]*$/", $vendor_first_name)) {
-            $vendor_first_name_error = "Only letters are allowed";
+            $vendor_first_name_error = "Please enter the vendor name without numbers or symbols.";
             $_SESSION['vendor_first_name_error'] = $vendor_first_name_error;
         }
 
         if (!preg_match("/^[a-zA-Z-' ]*$/", $vendor_last_name)) {
-            $vendor_last_name_error = "Only letters are allowed";
+            $vendor_last_name_error = "Please enter the vendor name without numbers or symbols.";
             $_SESSION['vendor_last_name_error'] = $vendor_last_name_error;
         }
 
-        if (!is_numeric($vendor_mobile_number)) {
-            $vendor_mobile_number_error = "Only numbers are allowed";
+        if (!is_numeric($vendor_mobile_number) || substr($vendor_mobile_number, 0, 2) !== "09" || strlen($vendor_mobile_number) !== 11) {
+            $vendor_mobile_number_error = "Please enter a valid mobile number.";
             $_SESSION['vendor_mobile_number_error'] = $vendor_mobile_number_error;
         }
-        if (!filter_var($vendor_email, FILTER_VALIDATE_EMAIL)) {
+
+        if (!filter_var($vendor_email, FILTER_VALIDATE_EMAIL) || !endsWith($vendor_email, "@gmail.com")) {
             $vendor_email_error = "Wrong email format";
             $_SESSION['vendor_email_error'] = $vendor_email_error;
         }
@@ -69,12 +76,21 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $resultEmailUniqueChecker = $connect->query($sqlEmailUniqueChecker);
 
         if ($resultEmailUniqueChecker->num_rows > 0) {
-            $vendor_email_error = "Email is in use";
+            $vendor_email_error = "Email is taken";
             $_SESSION['vendor_email_error'] = $vendor_email_error;
         }
 
+        if ($vendor_product_type === "") {
+            $vendor_product_type_error = "Select Product Type";
+            $_SESSION['vendor_product_type_error'] =  $vendor_product_type_error;
+        }
 
-        if (isset($_SESSION['vendor_first_name_error']) || isset($_SESSION['vendor_last_name_error']) || isset($_SESSION['vendor_mobile_number_error']) || isset($_SESSION['vendor_email_error'])) {
+        if ($vendor_first_payment_date === "") {
+            $vendor_first_payment_date_error = "Pick Billing Date";
+            $_SESSION['vendor_first_payment_date_error '] =  $vendor_first_payment_date_error;
+        }
+
+        if (isset($_SESSION['vendor_first_name_error']) || isset($_SESSION['vendor_last_name_error']) || isset($_SESSION['vendor_mobile_number_error']) || isset($_SESSION['vendor_email_error']) || isset($_SESSION['vendor_product_type_error']) || isset($_SESSION['vendor_first_payment_date_error '])) {
             header("Location: admin_create_vendor_account.php");
             exit();
         }

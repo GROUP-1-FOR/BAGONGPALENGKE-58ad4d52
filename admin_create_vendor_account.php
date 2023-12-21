@@ -49,7 +49,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         unset($_SESSION['vendor_first_name']);
         unset($_SESSION['vendor_last_name']);
         unset($_SESSION['vendor_full_name']);
-        unset($_SESSION['vendor_stall_number']);
         unset($_SESSION['vendor_mobile_number']);
         unset($_SESSION['vendor_product_type']);
         //unset($_SESSION['vendor_payment_basis']);
@@ -59,7 +58,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         unset($_SESSION['vendor_transaction_id']);
 
         // Redirect to another page after cancellation
-        header("Location: admin_vendor_manage_accounts.php");
+        header("Location: interactive_map.php");
         exit();
     }
 
@@ -74,12 +73,39 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     <head>
         <title>Create Vendor Account</title>
         <script>
+            function validateForm() {
+                return (
+                    validateVendorFirstName() &&
+                    validateVendorLastName() &&
+                    validateVendorMobileNumber() &&
+                    validateVendorEmail() &&
+                    validateVendorProductType() &&
+                    validateVendorFirstPaymentDate() &&
+                    checkPasswordMatch()
+                );
+            }
+
             function validateVendorFirstName() {
                 var vendor_name = document.getElementById("vendor_first_name").value;
                 var vendor_name_error_span = document.getElementById("vendor_first_name_error_span");
 
                 // Check if the input contains any numbers or symbols
-                if (vendor_name.length > 0 && /[0-9!@#$%^&*(),.?":{}|<>]/.test(vendor_name)) {
+                if (vendor_name.length > 0 && /[^a-zA-Z\s]/.test(vendor_name)) {
+                    vendor_name_error_span.textContent = "Please enter the vendor name without numbers or symbols.";
+                    return false; // Prevent form submission
+                } else {
+                    vendor_name_error_span.textContent = "";
+                }
+                // If the input is valid, you can proceed with form submission
+                return true;
+            }
+
+            function validateVendorLastName() {
+                var vendor_name = document.getElementById("vendor_last_name").value;
+                var vendor_name_error_span = document.getElementById("vendor_last_name_error_span");
+
+                // Check if the input contains any numbers or symbols
+                if (vendor_name.length > 0 && /[^a-zA-Z\s]/.test(vendor_name)) {
                     vendor_name_error_span.textContent = "Please enter the vendor name without numbers or symbols.";
                     return false; // Prevent form submission
                 } else {
@@ -90,20 +116,30 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 return true;
             }
 
-            function validateVendorLastName() {
-                var vendor_name = document.getElementById("vendor_last_name").value;
-                var vendor_name_error_span = document.getElementById("vendor_last_name_error_span");
+            function capitalizeFirstName() {
+                var firstNameInput = document.getElementById("vendor_first_name");
+                var names = firstNameInput.value.split(' ');
 
-                // Check if the input contains any numbers or symbols
-                if (vendor_name.length > 0 && /[0-9!@#$%^&*(),.?":{}|<>]/.test(vendor_name)) {
-                    vendor_name_error_span.textContent = "Please enter the vendor name without numbers or symbols.";
-                    return false; // Prevent form submission
-                } else {
-                    vendor_name_error_span.textContent = "";
+                // Capitalize the first letter of each name
+                for (var i = 0; i < names.length; i++) {
+                    names[i] = names[i].charAt(0).toUpperCase() + names[i].slice(1).toLowerCase();
                 }
 
-                // If the input is valid, you can proceed with form submission
-                return true;
+                // Join the names back together with spaces
+                firstNameInput.value = names.join(' ');
+            }
+
+            function capitalizeLastName() {
+                var lastNameInput = document.getElementById("vendor_last_name");
+                var names = lastNameInput.value.split(' ');
+
+                // Capitalize the first letter of each name
+                for (var i = 0; i < names.length; i++) {
+                    names[i] = names[i].charAt(0).toUpperCase() + names[i].slice(1).toLowerCase();
+                }
+
+                // Join the names back together with spaces
+                lastNameInput.value = names.join(' ');
             }
 
 
@@ -126,22 +162,63 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             }
 
             function validateVendorEmail() {
-                var vendor_email = document.getElementById("vendor_email").value;
+                var vendor_email_input = document.getElementById("vendor_email");
+                var vendor_email = vendor_email_input.value.trim().toLowerCase();
                 var vendor_email_error_span = document.getElementById("vendor_email_error_span");
 
-                // Use the built-in email validation
-                if (vendor_email.length > 0 && !document.getElementById("vendor_email").checkValidity()) {
-                    // Show error message
+                // Check if the input is not empty and contains a valid email address
+                if (vendor_email.length > 0 && !vendor_email_input.checkValidity()) {
+                    // Show error message for general email validation
                     vendor_email_error_span.textContent = "Please enter a valid email address.";
                     return false; // Prevent form submission
                 } else {
-                    // Clear error message
+                    // Clear general email error message
+                    vendor_email_error_span.textContent = "";
+                }
+
+                // Check if the email ends with gmail.com
+                if (vendor_email.length > 0 && !vendor_email.endsWith("@gmail.com")) {
+                    // Show error message for Gmail.com validation
+                    vendor_email_error_span.textContent = "only @gmail.com is accepted";
+                    return false; // Prevent form submission
+                } else {
+                    // Clear Gmail.com email error message
                     vendor_email_error_span.textContent = "";
                 }
 
                 // If the input is valid, you can proceed with form submission
                 return true;
             }
+
+            function validateVendorProductType() {
+                var productType = document.getElementById("vendor_product").value;
+                var productType_error_span = document.getElementById("vendor_product_type_error_span");
+
+                if (productType === "") {
+                    productType_error_span.textContent = "";
+                    return false; // Prevent form submission
+                } else {
+                    productType_error_span.textContent = "";
+                }
+
+                return true;
+            }
+
+            function validateVendorFirstPaymentDate() {
+                var firstPaymentDate = document.getElementById("vendor_first_payment_date").value;
+                var first_payment_error_span = document.getElementById("vendor_first_payment_date_error_span");
+
+                if (firstPaymentDate === "") {
+                    first_payment_error_span = "";
+                    return false; // Prevent form submission
+                } else {
+                    first_payment_error_span = "";
+                }
+
+                return true;
+
+            }
+
 
             function checkPasswordMatch() {
                 var password = document.getElementsByName("vendor_password")[0].value;
@@ -188,10 +265,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
             function updateSubmitButton() {
                 var submitButton = document.querySelector('button[type="submit"]');
-
-
-                var formIsValid = validateVendorFirstName() && validateVendorLastName() && validateVendorMobileNumber() && validateVendorEmail() && checkPasswordMatch();
+                var formIsValid = validateVendorFirstName() && validateVendorLastName() && validateVendorMobileNumber() && validateVendorEmail() && validateVendorProductType() && validateVendorFirstPaymentDate() && checkPasswordMatch();
                 submitButton.disabled = !formIsValid;
+
+                console.log("Update submit button called. Form is valid: ", formIsValid);
             }
         </script>
 
@@ -206,8 +283,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
             <h2>Vendor Information</h2>
 
-            <label for="Vendor First Name">Vendor First Name</label>
-            <input type="text" name="vendor_first_name" id="vendor_first_name" value="<?php echo isset($_SESSION['vendor_first_name']) ? $_SESSION['vendor_first_name'] : ''; ?>" required oninput="validateVendorFirstName(); updateSubmitButton()">
+            <label for="vendor_first_name">First Name</label>
+            <input type="text" name="vendor_first_name" id="vendor_first_name" maxlength="35" value="<?php echo isset($_SESSION['vendor_first_name']) ? $_SESSION['vendor_first_name'] : ''; ?>" required oninput="capitalizeFirstName(); validateVendorFirstName(); updateSubmitButton()">
             <!-- Display an error message if it exists in the session -->
             <span style="color: red;" id="vendor_first_name_error_span">
 
@@ -220,8 +297,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 ?>
             </span>
             <br />
-            <label for="Vendor Last Name">Vendor Last Name</label>
-            <input type="text" name="vendor_last_name" id="vendor_last_name" value="<?php echo isset($_SESSION['vendor_last_name']) ? $_SESSION['vendor_last_name'] : ''; ?>" required oninput="validateVendorLastName(); updateSubmitButton()">
+            <label for="vendor_last_name">Last Name</label>
+            <input type="text" name="vendor_last_name" id="vendor_last_name" maxlength="35" value="<?php echo isset($_SESSION['vendor_last_name']) ? $_SESSION['vendor_last_name'] : ''; ?>" required oninput="capitalizeLastName();validateVendorLastName(); updateSubmitButton()">
             <!-- Display an error message if it exists in the session -->
             <span style="color: red;" id="vendor_last_name_error_span">
 
@@ -235,10 +312,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             </span>
 
             <br />
-            <label for="Stall Number">Stall No:</label>
-            <input type="number" name="vendor_stall_number" value="<?php echo isset($_SESSION['vendor_stall_number']) ? $_SESSION['vendor_stall_number'] : ''; ?>" required readonly><br />
+            <label for="vendor_stall_number">Stall No:</label>
+            <input type="number" id="vendor_stall_number" name="vendor_stall_number" value="<?php echo isset($_SESSION['vendor_stall_number']) ? $_SESSION['vendor_stall_number'] : ''; ?>" required readonly><br />
 
-            <label for="Mobile Number">Mobile Number</label>
+            <label for="vendor_mobile_number">Mobile Number</label>
             <input type="tel" name="vendor_mobile_number" id="vendor_mobile_number" maxlength="11" placeholder="09XXXXXXXXX" value="<?php echo isset($_SESSION['vendor_mobile_number']) ? $_SESSION['vendor_mobile_number'] : ''; ?>" oninput="validateVendorMobileNumber(); updateSubmitButton()">
             <!-- Display an error message if it exists in the session -->
             <span style="color: red;" id="vendor_mobile_number_error_span">
@@ -252,8 +329,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             </span>
 
             <br />
-            <label for="Email">Email:</label>
-            <input type="email" name="vendor_email" id="vendor_email" value="<?php echo isset($_SESSION['vendor_email']) ? $_SESSION['vendor_email'] : ''; ?>" required oninput="validateVendorEmail(); updateSubmitButton()">
+            <label for="vendor_email">Email:</label>
+            <input type="email" name="vendor_email" id="vendor_email" maxlength="254" value="<?php echo isset($_SESSION['vendor_email']) ? $_SESSION['vendor_email'] : ''; ?>" required oninput="validateVendorEmail(); updateSubmitButton()">
             <!-- Display an error message if it exists in the session -->
             <span style="color: red;" id="vendor_email_error_span">
                 <?php
@@ -266,13 +343,21 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             </span>
 
             <br />
-            <label for="Product Type">Products:</label>
-            <select name="vendor_product" required>
+            <label for="vendor_product">Products:</label>
+            <select name="vendor_product" id="vendor_product" required onchange="validateVendorProductType(); updateSubmitButton()">
                 <option value="" disabled selected>Select Product Type</option>
                 <option value="Wet" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Wet') ? 'selected' : ''; ?>>Wet</option>
                 <option value="Dry" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Dry') ? 'selected' : ''; ?>>Dry</option>
                 <option value="Other" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Other') ? 'selected' : ''; ?>>Other</option>
-            </select><br />
+            </select><span style="color: red;" id="vendor_product_type_error_span">
+                <?php
+                if (isset($_SESSION['vendor_product_type_error'])) {
+                    echo $_SESSION['vendor_product_type_error'];
+                    // Unset the session variable after displaying the error
+                    unset($_SESSION['vendor_product_type_error']);
+                }
+                ?>
+            </span><br />
 
             <!--
             <label for="Vendor Payment basis">Vendor Payment Basis:</label>
@@ -289,7 +374,17 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
 
             <label for="vendor_first_payment_date">Select Start of Billing Period:</label>
-            <input type="date" id="vendor_first_payment_date" name="vendor_first_payment_date" value="<?php echo isset($_SESSION['vendor_first_payment_date']) ? $_SESSION['vendor_first_payment_date'] : ''; ?>" required><br />
+            <input type="date" id="vendor_first_payment_date" name="vendor_first_payment_date" value="<?php echo isset($_SESSION['vendor_first_payment_date']) ? $_SESSION['vendor_first_payment_date'] : ''; ?>" required onkeydown="return false" required onchange="validateVendorFirstPaymentDate(); updateSubmitButton()">
+            <span style="color: red;" id=" vendor_first_payment_date_error_span">
+                <?php
+
+                if (isset($_SESSION['vendor_first_payment_date_error'])) {
+                    echo $_SESSION['vendor_first_payment_date_error'];
+                    // Unset the session variable after displaying the error
+                    unset($_SESSION['vendor_first_payment_date_error']);
+                }
+                ?>
+            </span><br />
 
 
             <br />
@@ -297,26 +392,20 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
 
             <h2>Vendor Account</h2>
-            <label>Vendor User ID</label>
-            <input type="text" name="vendor_userid" value="<?php echo $new_vendor_userid = generateUserID($pdo); ?>" readonly><br />
+            <label for="vendor_userid">User ID</label>
+            <input type="text" id="vendor_userid" name="vendor_userid" value="<?php echo $new_vendor_userid = generateUserID($pdo); ?>" readonly><br />
 
-            <label>Password</label>
-            <input type="password" name="vendor_password" placeholder="8 characters and above" oninput="checkPasswordMatch(); updateSubmitButton()"><br />
+            <label for="vendor_password">Password</label>
+            <input type="password" id="vendor_password" name="vendor_password" placeholder="8-16 characters" maxlength="16" oninput="checkPasswordMatch(); updateSubmitButton()"><br />
 
-            <label>Confirm Password</label>
-            <input type="password" name="vendor_confirm_password" required oninput="checkPasswordMatch(); updateSubmitButton()">
+            <label for="vendor_confirm_password">Confirm Password</label>
+            <input type="password" id="vendor_confirm_password" name="vendor_confirm_password" maxlength="16" required oninput="checkPasswordMatch(); updateSubmitButton()">
             <span id="passwordMatchMessage"></span><br />
 
 
 
             <button type="submit" disabled>Submit</button>
         </form>
-
-        <script>
-            function validateForm() {
-                return validateVendorFirstName() && validateVendorLastName() && validateVendorMobileNumber() && validateVendorEmail() && checkPasswordMatch();
-            }
-        </script>
 
 
 
