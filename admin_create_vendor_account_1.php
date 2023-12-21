@@ -65,6 +65,15 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             $_SESSION['vendor_email_error'] = $vendor_email_error;
         }
 
+        $sqlEmailUniqueChecker = "SELECT vendor_email FROM vendor_sign_in WHERE vendor_email = '$vendor_email'";
+        $resultEmailUniqueChecker = $connect->query($sqlEmailUniqueChecker);
+
+        if ($resultEmailUniqueChecker->num_rows > 0) {
+            $vendor_email_error = "Email is in use";
+            $_SESSION['vendor_email_error'] = $vendor_email_error;
+        }
+
+
         if (isset($_SESSION['vendor_first_name_error']) || isset($_SESSION['vendor_last_name_error']) || isset($_SESSION['vendor_mobile_number_error']) || isset($_SESSION['vendor_email_error'])) {
             header("Location: admin_create_vendor_account.php");
             exit();

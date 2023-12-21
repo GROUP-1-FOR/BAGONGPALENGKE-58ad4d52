@@ -136,7 +136,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         <script>
             $(document).ready(function() {
-                var cooldownTime = 60; // 1 minute in seconds
+                var cooldownTime = 45; // 45 seconds
                 var isCooldown = true;
 
                 // Display cooldown message on page load
