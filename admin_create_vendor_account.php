@@ -81,6 +81,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     validateVendorEmail() &&
                     validateVendorProductType() &&
                     validateVendorFirstPaymentDate() &&
+                    validatePassword() &&
                     checkPasswordMatch()
                 );
             }
@@ -219,6 +220,44 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
             }
 
+            function validatePassword() {
+                var passwordInput = document.getElementById("vendor_password");
+                var password = passwordInput.value;
+                var passwordValidationMessage = document.getElementById("passwordValidationMessage");
+
+                // Define the password patterns
+                var lengthPattern = /.{8,16}/;
+                var uppercasePattern = /[A-Z]/;
+                var lowercasePattern = /[a-z]/;
+                var digitPattern = /\d/;
+                var specialCharPattern = /[!@#$%^&*()_+]/;
+
+                // Check each pattern and provide feedback
+                var isValid = true;
+                if (!lengthPattern.test(password)) {
+                    isValid = false;
+                    passwordValidationMessage.textContent = "Password must be 8-16 characters.";
+                } else if (!uppercasePattern.test(password)) {
+                    isValid = false;
+                    passwordValidationMessage.textContent = "Include at least one uppercase letter.";
+                } else if (!lowercasePattern.test(password)) {
+                    isValid = false;
+                    passwordValidationMessage.textContent = "Include at least one lowercase letter.";
+                } else if (!digitPattern.test(password)) {
+                    isValid = false;
+                    passwordValidationMessage.textContent = "Include at least one number.";
+                } else if (!specialCharPattern.test(password)) {
+                    isValid = false;
+                    passwordValidationMessage.textContent = "Include at least one special character.";
+                } else {
+                    passwordValidationMessage.textContent = "";
+                }
+
+                return isValid;
+            }
+
+
+
 
             function checkPasswordMatch() {
                 var password = document.getElementsByName("vendor_password")[0].value;
@@ -235,14 +274,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     if (confirmPassword.length > 0) {
                         // Check if passwords match
                         if (password === confirmPassword) {
-                            // Check if passwords have at least 8 characters
-                            if (password.length >= 8 && confirmPassword.length >= 8) {
-                                messageElement.innerHTML = "Passwords match and meet the minimum length requirement.";
-                                messageElement.style.color = "green";
-                            } else {
-                                messageElement.innerHTML = "Passwords match but do not meet the minimum length requirement (8 characters).";
-                                messageElement.style.color = "red";
-                            }
+                            messageElement.innerHTML = "Passwords match";
+                            messageElement.style.color = "green";
                         } else {
                             messageElement.innerHTML = "Passwords do not match.";
                             messageElement.style.color = "red";
@@ -257,7 +290,15 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     confirmPasswordInput.value = "";
                 }
 
-                return password === confirmPassword && password.length >= 8 && confirmPassword.length >= 8;
+                return password === confirmPassword;
+            }
+
+            function togglePasswordVisibility() {
+                var passwordInput = document.getElementById("vendor_password");
+                var showPasswordCheckbox = document.getElementById("showPassword");
+
+                // Toggle the password visibility
+                passwordInput.type = showPasswordCheckbox.checked ? "text" : "password";
             }
 
 
@@ -265,7 +306,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
             function updateSubmitButton() {
                 var submitButton = document.querySelector('button[type="submit"]');
-                var formIsValid = validateVendorFirstName() && validateVendorLastName() && validateVendorMobileNumber() && validateVendorEmail() && validateVendorProductType() && validateVendorFirstPaymentDate() && checkPasswordMatch();
+                var formIsValid = validateVendorFirstName() && validateVendorLastName() && validateVendorMobileNumber() && validateVendorEmail() && validateVendorProductType() && validateVendorFirstPaymentDate() && validatePassword() && checkPasswordMatch();
                 submitButton.disabled = !formIsValid;
 
                 console.log("Update submit button called. Form is valid: ", formIsValid);
@@ -396,7 +437,12 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <input type="text" id="vendor_userid" name="vendor_userid" value="<?php echo $new_vendor_userid = generateUserID($pdo); ?>" readonly><br />
 
             <label for="vendor_password">Password</label>
-            <input type="password" id="vendor_password" name="vendor_password" placeholder="8-16 characters" maxlength="16" oninput="checkPasswordMatch(); updateSubmitButton()"><br />
+            <input type="password" id="vendor_password" name="vendor_password" placeholder="8-16 characters" maxlength="16" oninput="validatePassword(); checkPasswordMatch(); updateSubmitButton()">
+            <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()">
+            <label for="showPassword">Show Password</label>
+
+            <span style="color:red" id="passwordValidationMessage"> </span> <br />
+
 
             <label for="vendor_confirm_password">Confirm Password</label>
             <input type="password" id="vendor_confirm_password" name="vendor_confirm_password" maxlength="16" required oninput="checkPasswordMatch(); updateSubmitButton()">
