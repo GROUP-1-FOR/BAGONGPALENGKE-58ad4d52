@@ -15,15 +15,15 @@ $mail = new PHPMailer(true);
 $mail->isSMTP();
 $mail->Host = 'smtp.gmail.com';
 $mail->SMTPAuth = true;
-$mail->Username = 'blacqueswan@gmail.com';
-$mail->Password = 'brvtgvombbkvwugy';
+$mail->Username = 'argojosafor@gmail.com';
+$mail->Password = 'tuymblznanvyhppt';
 
 $mail->SMTPSecure = 'ssl';
 $mail->Port = 465;
 
 $admin_email = $_SESSION["admin_email"];
 
-$mail->setFrom('blacqueswan@gmail.com');
+$mail->setFrom('argojosafor@gmail.com');
 $mail->addAddress($admin_email);
 $mail->isHTML(true);
 $mail->Subject = 'OTP Code';
@@ -31,7 +31,7 @@ $otp_code = $_SESSION["admin_otp_message"];
 
 unset($_SESSION["admin_otp_message"]);
 
-$mail->Body = $otp_code;
+$mail->Body = $otp_code . " is your OTP code. For your protection, do not share this code with anyone.";
 
 $mail->send();
 
