@@ -101,6 +101,22 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $vendor_password = isset($_POST["vendor_password"]) ? htmlspecialchars($_POST["vendor_password"]) : '';
         $vendor_confirm_password = isset($_POST["vendor_confirm_password"]) ? htmlspecialchars($_POST["vendor_confirm_password"]) : '';
 
+        $lengthPattern = '/^.{8,16}$/';
+        $uppercasePattern = '/[A-Z]/';
+        $lowercasePattern = '/[a-z]/';
+        $digitPattern = '/\d/';
+        $specialCharPattern = '/[!@#$%^&*()_+]/';
+
+        if (
+            !preg_match($lengthPattern, $vendor_password) || !preg_match($uppercasePattern, $vendor_password) || !preg_match($lowercasePattern, $vendor_password)
+            || !preg_match($digitPattern, $vendor_password) ||  !preg_match($specialCharPattern, $vendor_password)
+        ) {
+            echo '<script>';
+            echo 'alert("Password did not meet requirements!");';
+            echo 'window.location.href = "admin_create_vendor_account.php";';
+            echo '</script>';
+            exit();
+        }
 
         if ($vendor_password !== $vendor_confirm_password) {
             echo '<script>';
