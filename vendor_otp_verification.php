@@ -87,6 +87,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>VENDOR OTP Verification</title>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 
     </head>
 
@@ -126,11 +128,35 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <div>
             <br />
 
-            <form action="" method="post">
-                <button type="form" id="resendOTPButton" name="vendor_resend_otp">Resend OTP</button>
+            <form action="" method="post" id="resendOTPForm">
+                <button type="submit" id="resendOTPButton" name="vendor_resend_otp" disabled>Resend OTP</button>
                 <div id="resendOTPMessage"></div>
             </form>
         </div>
+
+        <script>
+            $(document).ready(function() {
+                var cooldownTime = 60; // 1 minute in seconds
+                var isCooldown = true;
+
+                // Display cooldown message on page load
+                $("#resendOTPMessage").text(cooldownTime + " seconds");
+
+                // Start the cooldown timer
+                var timer = setInterval(function() {
+                    cooldownTime--;
+                    $("#resendOTPMessage").text(cooldownTime + " seconds");
+
+                    if (cooldownTime <= 0) {
+                        // Enable the button after cooldown
+                        $("#resendOTPButton").prop("disabled", false);
+                        $("#resendOTPMessage").text(" ");
+                        isCooldown = false;
+                        clearInterval(timer);
+                    }
+                }, 1000);
+            });
+        </script>
 
 
         <a href="?cancel_button=1"> CANCEL </a>

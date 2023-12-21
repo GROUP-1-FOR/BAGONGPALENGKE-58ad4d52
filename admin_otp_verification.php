@@ -89,6 +89,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     </head>
 
     <body class="bagongpgalengke-v2">
@@ -121,11 +122,36 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     </span>
                 </form>
                 <div>
-                    <form action="" method="post">
-                        <button class="resend-button" type="form" id="resendOTPButton" name="admin_resend_otp">Resend OTP</button>
+                    <form action="" method="post" id="resendOTPForm">
+                        <button class="resend-button" type="submit" id="resendOTPButton" name="admin_resend_otp" disabled>Resend OTP</button>
                         <div id="resendOTPMessage"></div>
                     </form>
                 </div>
+
+                <script>
+                    $(document).ready(function() {
+                        var cooldownTime = 60; // 1 minute in seconds
+                        var isCooldown = true;
+
+                        // Display cooldown message on page load
+                        $("#resendOTPMessage").text(cooldownTime + " seconds");
+
+                        // Start the cooldown timer
+                        var timer = setInterval(function() {
+                            cooldownTime--;
+                            $("#resendOTPMessage").text(cooldownTime + " seconds");
+
+                            if (cooldownTime <= 0) {
+                                // Enable the button after cooldown
+                                $("#resendOTPButton").prop("disabled", false);
+                                $("#resendOTPMessage").text(" ");
+                                isCooldown = false;
+                                clearInterval(timer);
+                            }
+                        }, 1000);
+                    });
+                </script>
+
             </div>
             <a href="?cancel_button=1"> CANCEL </a>
         </div>
