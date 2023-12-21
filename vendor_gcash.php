@@ -38,7 +38,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         } else {
             // Display an error message for an invalid mobile number format
             $errorMessage = "Invalid mobile number format. Please enter a valid 10-digit number starting with 9.";
-            echo "$inputedNumber";
         }
     }
 ?>
