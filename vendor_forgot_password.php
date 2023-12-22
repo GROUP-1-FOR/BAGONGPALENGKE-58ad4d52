@@ -3,57 +3,37 @@
 require("config.php");
 
 
-//token expires after 5 mins
-function generateToken($length = 32, $expirationTime = 60)
-{
-    // Generate a random token
-    $token = bin2hex(random_bytes($length));
-
-    // Calculate expiration time (current time + expirationTime)
-    $expirationTimestamp = time() + $expirationTime;
-
-    // Append the expiration time to the token
-    $expiringToken = $token . '|' . $expirationTimestamp;
-
-    return $expiringToken;
-}
-
-
 // Function to send email with the password reset link
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get the email address from the form
     $email = htmlspecialchars($_POST["vendor_email"]);
-    $userid = htmlspecialchars($_POST["vendor_userid"]);
+
+
+    function endsWith($haystack, $needle)
+    {
+        return substr($haystack, -strlen($needle)) === $needle;
+    }
+
+    //server side validation
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL) || !endsWith($email, "@gmail.com")) {
+        echo '<script>';
+        echo 'alert("Invalid Email!");';
+        echo 'window.location.href = "vendor_forgot_password.php";';
+        echo '</script>';
+    }
 
     // If the email is valid, generate a unique token
-
-    $result = mysqli_query($connect, "SELECT vendor_userid, vendor_email FROM vendor_sign_in WHERE vendor_userid = '$userid' && vendor_email= '$email'");
+    $result = mysqli_query($connect, "SELECT vendor_email FROM vendor_sign_in WHERE vendor_email= '$email'");
     $row = mysqli_fetch_assoc($result);
 
     if (mysqli_num_rows($result) > 0) {
-        $token = generateToken();
-        $email_query = "UPDATE vendor_sign_in SET vendor_token = ? WHERE vendor_userid = ?";
-        $stmt = mysqli_prepare($connect, $email_query);
-
-        // Use "ss" for two string parameters
-        $stmt->bind_param("ss", $token, $userid);
-
-        $stmt->execute();
-
-        if ($stmt->affected_rows > 0) {
-            echo '<script>';
-            echo 'alert("View Email!");';
-            echo 'window.location.href = "vendor_forgot_password_1.php?userid=' . urlencode($userid) . '";';
-            echo '</script>';
-        } else {
-            echo "Failed to send token.";
-            exit();
-        }
-
-        // Close the statement
-        $stmt->close();
+        include('vendor_forgot_password_1.php');
+        echo '<script>';
+        echo 'alert("Token sent to ' . $email . '");';  // Corrected concatenation
+        echo 'window.location.href = "vendor_token_verification_forgot_password.php?email=' . urlencode($email) . '";';
+        echo '</script>';
     } else {
         echo '<script>';
         echo 'alert("Vendor User Not Found!");';
@@ -73,19 +53,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forgot Password</title>
-</head>
+    <script>
+        //client side validation
+        function validateEmail() {
+            // Get the email input value
+            var emailInput = document.forms["email_form"]["vendor_email"].value;
 
+            // Validate the email format using a regular expression
+            var emailRegex = /^[^\s@]+@gmail\.com$/;
+
+            // Get the element to display validation messages
+            var messageElement = document.getElementById("emailValidationMessage");
+
+            // Display validation message
+            if (emailRegex.test(emailInput)) {
+                messageElement.innerHTML = "Valid email address";
+                messageElement.style.color = "green";
+                // Enable the submit button
+                document.getElementById("submitBtn").disabled = false;
+            } else {
+                messageElement.innerHTML = "Only '@gmail.com' is accepted";
+                messageElement.style.color = "red";
+                // Disable the submit button
+                document.getElementById("submitBtn").disabled = true;
+            }
+        }
+    </script>
+</head>
 
 <body>
     <div align="center">
         <div>
             <h2>Forgot Password?</h2>
-            <form action="" method="post">
-                <label for="Vendor User ID">Vendor User ID:</label>
-                <input type="text" name="vendor_userid" placeholder="VSR-00000" value="VSR-" maxlength="9" required value=""><br />
+            <form name="email_form" action="" method="post">
                 <label for="email">Email:</label>
-                <input type="email" name="vendor_email" required> <br />
-                <input type="submit" value="Send Verification"><br />
+                <input type="email" name="vendor_email" maxlength="254" oninput="validateEmail()">
+                <div id="emailValidationMessage"></div>
+                <br />
+                <input type="submit" id="submitBtn" value="Send Verification" disabled>
             </form>
         </div>
 

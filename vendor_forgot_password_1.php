@@ -1,84 +1,90 @@
 <?php
-require("config.php");
 
-function isTokenValid($token)
+$select_query_FetchVendorUserId = "SELECT vendor_userid FROM vendor_sign_in WHERE vendor_email = '$email'";
+$resultFetchVendorUserId = mysqli_query($connect, $select_query_FetchVendorUserId);
+$rowFetchVendorUserId = mysqli_fetch_assoc($resultFetchVendorUserId);
+
+if ($rowFetchVendorUserId) {
+    // vendor user found, you can access $rowFetchVendorUserId['vendor_userid'] for further processing
+    $vendor_userid = $rowFetchVendorUserId['vendor_userid'];
+} else {
+    // vendor user not found, display alert and redirect
+    echo '<script>';
+    echo 'alert("Vendor User Not Found!");';
+    echo 'window.location.href = "vendor_forgot_password.php";';
+    echo '</script>';
+}
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+
+require 'phpmailer/src/Exception.php';
+require 'phpmailer/src/PHPMailer.php';
+require 'phpmailer/src/SMTP.php';
+
+generateAndSaveToken($vendor_userid, $connect);
+
+
+$mail = new PHPMailer(true);
+$mail->isSMTP();
+$mail->Host = 'smtp.gmail.com';
+$mail->SMTPAuth = true;
+$mail->Username = 'argojosafor@gmail.com';
+$mail->Password = 'tuymblznanvyhppt';
+
+$mail->SMTPSecure = 'ssl';
+$mail->Port = 465;
+
+$mail->setFrom('argojosafor@gmail.com');
+$mail->addAddress($email);
+$mail->isHTML(true);
+$mail->Subject = 'Reset Password Token';
+$otp_token = $_SESSION["reset_password_token"];
+
+unset($_SESSION["reset_password_token"]);
+
+$mail->Body = '<font color="#008000">' . $otp_token . '</font> is your Reset Password Token. For your protection, do not share this code with anyone.';
+
+$mail->send();
+
+
+
+function generateAndSaveToken($vendor_userid, $connect)
 {
-    // Split the token into the actual token and the expiration timestamp
-    $tokenParts = explode('|', $token);
+    // Generate a random 6-character alphanumeric token
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $token_length = 6;
+    $vendor_token = '';
 
-    if (count($tokenParts) === 2) {
-        // Extract the expiration timestamp
-        $expirationTimestamp = $tokenParts[1];
-
-        // Check if the token is still within the expiration time
-        return time() <= $expirationTimestamp;
+    for ($i = 0; $i < $token_length; $i++) {
+        $vendor_token .= $characters[rand(0, strlen($characters) - 1)];
     }
 
-    return false;
-}
+    // Update the database with the generated token
+    $token_query = "UPDATE vendor_sign_in SET vendor_token = ? WHERE vendor_userid = ?";
+    $stmt = mysqli_prepare($connect, $token_query);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $userid = htmlspecialchars($_POST["vendor_userid"]);
+    // Check if the statement was prepared successfully
+    if ($stmt) {
+        // Bind the parameters
+        mysqli_stmt_bind_param($stmt, "ss", $vendor_token, $vendor_userid);
 
-    $query = "SELECT vendor_token FROM vendor_sign_in WHERE vendor_userid = '$userid'";
-    // Perform the query
-    $result = mysqli_query($connect, $query);
+        // Execute the statement
+        mysqli_stmt_execute($stmt);
 
-    if ($result) {
-        // Fetch the user data as an associative array
-        $vendor_token = mysqli_fetch_assoc($result);
+        $vendor_token_message = $vendor_token;
+        $_SESSION['reset_password_token'] = $vendor_token_message;
 
-        if ($vendor_token && isTokenValid($vendor_token['vendor_token'])) {
-
-            header("Location: vendor_forgot_password_2.php?userid=" . urlencode($userid));
+        // Check for success or failure
+        if (mysqli_stmt_affected_rows($stmt) == 0) {
+            echo "Failed to Generate Token!";
             exit();
-        } else {
-
-            echo '<script>';
-            echo 'alert("Token Expired!");';
-            echo 'window.location.href = "vendor_login.php";';
-            echo '</script>';
         }
+
+        // Close the statement
+        mysqli_stmt_close($stmt);
     } else {
-        // Handle the query error
         echo "Error: " . mysqli_error($connect);
-        echo '<script>';
-        echo 'alert("Wrong Vendor User ID!");';
-        echo 'window.location.href = "vendor_login.php";';
-        echo '</script>';
     }
 }
-?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forgot Password</title>
-</head>
-
-<body>
-    <div align="center">
-        <div>
-            <h2>REENTER VENDOR USER ID</h2>
-            <form action="" onsubmit="return confirm('Proceed?');" method="post">
-                <label for="Vendor User ID">Vendor User ID:</label>
-                <input type="text" name="vendor_userid" value="<?php echo $userid = isset($_GET['userid']) ? htmlspecialchars($_GET['userid']) : ''; ?>" required readonly> <br />
-                <input type="submit" value="Enter"><br />
-            </form>
-        </div>
-        <script>
-            // Testing the confirm function
-            // alert(confirm('Testing confirm function. Proceed?'));
-        </script>
-
-        <div>
-            <a href=vendor_login.php>
-                <h2>Back</h2> <br />
-            </a>
-        </div>
-    </div>
-</body>
-
-</html>
