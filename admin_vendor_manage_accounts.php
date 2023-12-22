@@ -42,209 +42,177 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     }
 ?>
 
-    <!DOCTYPE html>
-    <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Manage Vendor Accounts</title>
-        <style>
-            table {
-                border-collapse: collapse;
-                width: 100%;
-                margin: 20px;
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Vendor Accounts</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px;
+        }
 
-            th,
-            td {
-                border: 1px solid #dddddd;
-                text-align: left;
-                padding: 8px;
-            }
+        th,
+        td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
 
-            th {
-                background-color: #f2f2f2;
-            }
+        th {
+            background-color: #f2f2f2;
+        }
 
-            button {
-                padding: 5px 10px;
-            }
+        button {
+            padding: 5px 10px;
+        }
 
-            #addButton {
-                display: block;
-                margin: 20px auto;
-            }
+        #addButton {
+            display: block;
+            margin: 20px auto;
+        }
 
-            #searchForm {
-                float: right;
-                margin-right: 20px;
-            }
+        #searchForm {
+            float: right;
+            margin-right: 20px;
+        }
 
-            #autocomplete {
-                position: absolute;
-                border: 1px solid #ddd;
-                max-height: 150px;
-                overflow-y: auto;
-                z-index: 1;
-                background-color: #fff;
-            }
+        #autocomplete {
+            position: absolute;
+            border: 1px solid #ddd;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 1;
+            background-color: #fff;
+        }
 
-            #autocomplete div {
-                padding: 10px;
-                cursor: pointer;
-            }
+        #autocomplete div {
+            padding: 10px;
+            cursor: pointer;
+        }
 
-            #autocomplete div:hover {
-                background-color: #f1f1f1;
-            }
-        </style>
-    </head>
+        #autocomplete div:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
 
-    <body>
+<body>
 
-        <h2>Manage Vendor Accounts</h2>
+    <h2>Manage Vendor Accounts</h2>
 
-        <!-- Search form -->
-        <form id="searchForm" method="get">
-            <label for="search">Search:</label>
-            <input type="text" id="search" name="search" placeholder="Enter vendor name" oninput="showSuggestions()">
-            <input type="submit" value="Search">
-            <div id="autocomplete"></div>
-        </form>
+    <!-- Search form -->
+    <form id="searchForm" method="get">
+        <label for="search">Search:</label>
+        <input type="text" id="search" name="search" placeholder="Enter vendor name" oninput="showSuggestions()" maxlength="15">
+        <input type="submit" value="Search">
+        <div id="autocomplete"></div>
+    </form>
 
-        <table>
-            <tr>
-                <th>Vendor Information</th>
-                <th>Action</th>
-            </tr>
+    <table>
+        <tr>
+            <th>Vendor Information</th>
+            <th>Action</th>
+        </tr>
 
-            <?php
-            // Function to check if vendor is editable
-            function isVendorEditable($vendorId)
-            {
-                global $connect;
+        <?php
+        // Function to check if vendor is editable
+        function isVendorEditable($vendorId)
+        {
+            global $connect;
+
+            // Check if vendor_userid exists in vendor_edit_profile table and vendor_edit column is equal to 0
+            $sql = "SELECT vendor_userid FROM vendor_edit_profile WHERE vendor_userid = ? AND vendor_edit = 0";
+            $stmt = $connect->prepare($sql);
+            $stmt->bind_param("s", $vendorId);
+            $stmt->execute();
+            $stmt->store_result();
+            $rowCount = $stmt->num_rows;
+            $stmt->close();
+
+            return $rowCount > 0;
+        }
+
+        // Display data in a table
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . $row["vendor_name"] . "<br>Vendor ID: " . $row["vendor_userid"] . "</td>";
+                echo "<td>";
 
                 // Check if vendor_userid exists in vendor_edit_profile table and vendor_edit column is equal to 0
-                $sql = "SELECT vendor_userid FROM vendor_edit_profile WHERE vendor_userid = ? AND vendor_edit = 0";
-                $stmt = $connect->prepare($sql);
-                $stmt->bind_param("s", $vendorId);
-                $stmt->execute();
-                $stmt->store_result();
-                $rowCount = $stmt->num_rows;
-                $stmt->close();
+                $editButtonVisible = isVendorEditable($row["vendor_userid"]);
 
-                return $rowCount > 0;
-            }
-
-            // Display data in a table
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $row["vendor_name"] . "<br>Vendor ID: " . $row["vendor_userid"] . "</td>";
-                    echo "<td>";
-
-                    // Check if vendor_userid exists in vendor_edit_profile table and vendor_edit column is equal to 0
-                    $editButtonVisible = isVendorEditable($row["vendor_userid"]);
-
-                    if ($editButtonVisible) {
-                        echo "<button onclick='editVendor(\"" . $row["vendor_userid"] . "\")'>Edit</button>";
-                    }
-
-                    echo "<button onclick='removeVendor(\"" . $row["vendor_userid"] . "\")'>Remove</button>";
-                    echo "</td>";
-                    echo "</tr>";
+                if ($editButtonVisible) {
+                    echo "<button onclick='editVendor(\"" . $row["vendor_userid"] . "\")'>Edit</button>";
                 }
-            } else {
-                echo "<tr><td colspan='2'>No vendors found</td></tr>";
+
+                echo "</td>";
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='2'>No vendors found</td></tr>";
+        }
+        ?>
+    </table>
+
+    <!--Button to add vendors -->
+    <button id="addButton" onclick="redirectToAddVendors()">Add Vendor (+)</button>
+
+    <a href=admin_index.php><button id="Button">Back</button></a>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        function editVendor(vendorId) {
+            window.location.href = 'admin_edit_vendor.php?vendor_userid=' + encodeURIComponent(vendorId);
+        }
+
+        function redirectToAddVendors() {
+            window.location.href = 'interactive_map.php';
+        }
+
+        function showSuggestions() {
+            const searchInput = document.getElementById('search');
+            const autocompleteContainer = document.getElementById('autocomplete');
+
+            if (searchInput.value.length === 0) {
+                autocompleteContainer.innerHTML = '';
+                return;
             }
 
-
-            ?>
-        </table>
-
-
-        <!--Button to add vendors -->
-        <button id="addButton" onclick="redirectToAddVendors()">Add Vendor (+)</button>
-
-        <a href=admin_index.php><button id="Button">Back</button></a>
-
-        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-        <script>
-            function editVendor(vendorId) {
-                window.location.href = 'admin_edit_vendor.php?vendor_userid=' + encodeURIComponent(vendorId);
-            }
-
-            function removeVendor(vendorId) {
-                // Ask for user confirmation
-                var confirmation = confirm("Are you sure you want to remove this vendor?");
-                if (confirmation) {
-                    // User confirmed, make AJAX request to remove vendor
-                    $.ajax({
-                        url: 'remove_vendor.php', // Replace with the actual PHP file to handle removal
-                        type: 'POST',
-                        data: {
-                            vendorId: vendorId
-                        },
-                        success: function(data) {
-                            // If removal from the database is successful, remove the corresponding row from the table
-                            if (data.success) {
-                                var rowToRemove = $("button[data-vendor-id='" + vendorId + "']").closest('tr');
-                                rowToRemove.remove();
-                            } else {
-                                console.error('Error removing vendor:', data.error);
-                            }
-                        },
-                        error: function(error) {
-                            console.error('Error removing vendor:', error);
-                        }
-                    });
-                }
-            }
-
-            function redirectToAddVendors() {
-                window.location.href = 'interactive_map.php';
-            }
-
-
-            function showSuggestions() {
-                const searchInput = document.getElementById('search');
-                const autocompleteContainer = document.getElementById('autocomplete');
-
-                if (searchInput.value.length === 0) {
+            // Simulate an AJAX request to get search suggestions
+            const searchTerm = searchInput.value;
+            $.ajax({
+                url: 'search_get_suggestions.php', // Replace with the actual PHP file to handle suggestions
+                type: 'GET',
+                data: {
+                    search: searchTerm
+                },
+                success: function(data) {
                     autocompleteContainer.innerHTML = '';
-                    return;
+                    data.forEach(suggestion => {
+                        const suggestionDiv = document.createElement('div');
+                        suggestionDiv.innerHTML = suggestion.vendor_name + ' (ID: ' + suggestion.vendor_userid + ')';
+                        suggestionDiv.onclick = function() {
+                            searchInput.value = suggestion.vendor_name;
+                            autocompleteContainer.innerHTML = '';
+                        };
+                        autocompleteContainer.appendChild(suggestionDiv);
+                    });
+                },
+                error: function(error) {
+                    console.error('Error fetching suggestions:', error);
                 }
+            });
+        }
+    </script>
+</body>
 
-                // Simulate an AJAX request to get search suggestions
-                const searchTerm = searchInput.value;
-                $.ajax({
-                    url: 'search_get_suggestions.php', // Replace with the actual PHP file to handle suggestions
-                    type: 'GET',
-                    data: {
-                        search: searchTerm
-                    },
-                    success: function(data) {
-                        autocompleteContainer.innerHTML = '';
-                        data.forEach(suggestion => {
-                            const suggestionDiv = document.createElement('div');
-                            suggestionDiv.innerHTML = suggestion.vendor_name + ' (ID: ' + suggestion.vendor_userid + ')';
-                            suggestionDiv.onclick = function() {
-                                searchInput.value = suggestion.vendor_name;
-                                autocompleteContainer.innerHTML = '';
-                            };
-                            autocompleteContainer.appendChild(suggestionDiv);
-                        });
-                    },
-                    error: function(error) {
-                        console.error('Error fetching suggestions:', error);
-                    }
-                });
-            }
-        </script>
-    </body>
-
-    </html>
+</html>
 
 <?php
     // Close the database connection
