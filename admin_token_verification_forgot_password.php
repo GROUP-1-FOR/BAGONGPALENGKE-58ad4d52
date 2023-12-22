@@ -43,7 +43,7 @@ if (isset($_POST["admin_token"])) {
     <div align="center">
         <div>
             <form action="" method="post">
-                <input class="otp-box" type="text" pattern="[0-9]{6}" maxlength="6" id="otp" name="admin_token" title="Please enter six numbers" placeholder="Enter Token" required>
+                <input class="otp-box" type="text" maxlength="6" id="otp" name="admin_token" title="Please enter six characters" placeholder="Enter Token" required>
                 <button class="submit-button" type="submit">Verify Token</button> <br />
                 <span style="color: red">
                     <?php echo $admin_token_error; ?>

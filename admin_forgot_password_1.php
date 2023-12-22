@@ -52,14 +52,16 @@ $mail->send();
 
 function generateAndSaveToken($admin_userid, $connect)
 {
-    // Generate a random 6-digit OTP
-    $random_numbers = [];
-    for ($i = 0; $i < 6; $i++) {
-        $random_numbers[] = rand(0, 9);
-    }
-    $admin_token = implode('', $random_numbers);
+    // Generate a random 6-character alphanumeric token
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $token_length = 6;
+    $admin_token = '';
 
-    // Update the database with the generated OTP
+    for ($i = 0; $i < $token_length; $i++) {
+        $admin_token .= $characters[rand(0, strlen($characters) - 1)];
+    }
+
+    // Update the database with the generated token
     $token_query = "UPDATE admin_sign_in SET admin_token = ? WHERE admin_userid = ?";
     $stmt = mysqli_prepare($connect, $token_query);
 
@@ -73,7 +75,6 @@ function generateAndSaveToken($admin_userid, $connect)
 
         $admin_token_message = $admin_token;
         $_SESSION['reset_password_token'] = $admin_token_message;
-
 
         // Check for success or failure
         if (mysqli_stmt_affected_rows($stmt) == 0) {
