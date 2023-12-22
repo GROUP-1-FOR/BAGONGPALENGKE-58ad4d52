@@ -31,7 +31,7 @@ $otp_code = $_SESSION["vendor_otp_message"];
 
 unset($_SESSION["vendor_otp_message"]);
 
-$mail->Body = $otp_code . " is your OTP code. For your protection, do not share this code with anyone.";
+$mail->Body = '<font color="#008000">' . $otp_code . "</font> is your OTP code. For your protection, do not share this code with anyone.";
 
 $mail->send();
 
