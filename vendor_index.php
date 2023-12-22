@@ -138,73 +138,137 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     <head>
         <title>Main Page</title>
         <style>
-            body {
-                text-align: center;
-                margin: 50px;
-                background-color: #f2f2f2;
-            }
+        body {
+            text-align: center;
+            margin: 50px;
+            background-color: #f2f2f2;
+        }
 
-            #money-table {
-                width: 70%;
-                margin: auto;
-                border-collapse: collapse;
-                cursor: pointer;
-            }
+        #money-table {
+            width: 70%;
+            margin: auto;
+            border-collapse: collapse;
+            cursor: pointer;
+        }
 
-            #money-cell {
-                border: 3px solid #ccc;
-                padding: 50px;
-                background-color: #850F16;
-                color: white;
-                font-size: 2em;
-                /* Adjust the font size as needed */
-            }
+        #money-cell {
+            border: 3px solid #ccc;
+            padding: 50px;
+            background-color: #850F16;
+            color: white;
+            font-size: 2em;
+            /* Adjust the font size as needed */
+        }
 
-            #money-cell button {
-                margin-top: 10px;
-                padding: 40;
-                background-color: gray;
-                color: white;
-                border: none;
-                border-radius: 20px;
-                cursor: pointer;
-            }
-        </style>
-    </head>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
 
-    <body>
-        <h1><?php echo "Hi, " . $vendorName; ?>!</h1>
-        <!-- Display vendor information -->
-        <p>Stall No: <?php echo $stallNumber; ?></p>
-        <p>Vendor ID: <?php echo $userid; ?></p>
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 70%;
+            text-align: center;
+        }
 
-        <!-- Vendor Pay Table -->
-        <table id="money-table">
-            <tr>
-                <td id="money-cell">
-                    <center>
-                        <?php if ($balance > 0) : ?>
-                            $<?php echo number_format($balance, 2); ?>
-                            <?php if ($paymentStatus === "To be paid") : ?>
-                                <form method="post" action="vendor_invoice_summary.php">
-                                    <input type="hidden" name="vendorName" value="<?php echo $vendorName; ?>">
-                                    <input type="hidden" name="vendorUserId" value="<?php echo $userid; ?>">
-                                    <input type="hidden" name="vendorStallNumber" value="<?php echo $stallNumber; ?>">
-                                    <input type="hidden" name="balance" value="<?php echo $balance; ?>">
-                                    <input type="hidden" name="transactionId" value="<?php echo $transactionId; ?>"> <!-- Add this line -->
-                                    <button type="submit" name="pay" onclick="return confirm('Are you sure you want to make the payment?')">Pay</button>
-                                </form>
-                            <?php endif; ?>
-                        <?php else : ?>
-                            $<?php echo number_format($balance, 2); ?>
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Add this style for the "Pay" button inside the modal */
+        #payButton {
+            margin-top: 10px;
+            padding: 15px;
+            background-color: gray;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        function openModal() {
+            document.getElementById('myModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('myModal').style.display = 'none';
+        }
+
+        function pay() {
+            // Now, submit the form
+            document.getElementById('paymentForm').submit();
+            closeModal();
+        }
+    </script>
+</head>
+
+<body>
+    <h1><?php echo "Hi, " . $vendorName; ?>!</h1>
+    <!-- Display vendor information -->
+    <p>Stall No: <?php echo $stallNumber; ?></p>
+    <p>Vendor ID: <?php echo $userid; ?></p>
+
+    <!-- Vendor Pay Table -->
+    <table id="money-table">
+        <tr>
+            <td id="money-cell">
+                <center>
+                    <?php if ($balance > 0) : ?>
+                        $<?php echo number_format($balance, 2); ?>
+                        <?php if ($paymentStatus === "To be paid") : ?>
+                            <!-- The "Pay" button triggers the modal directly -->
+                            <br>
+                            <button type="button" name="pay" onclick="openModal()">Pay</button>
+                            <!-- The form to be submitted -->
+                            <form id="paymentForm" method="post" action="vendor_invoice_summary.php">
+                                <input type="hidden" name="vendorName" value="<?php echo $vendorName; ?>">
+                                <input type="hidden" name="vendorUserId" value="<?php echo $userid; ?>">
+                                <input type="hidden" name="vendorStallNumber" value="<?php echo $stallNumber; ?>">
+                                <input type="hidden" name="balance" value="<?php echo $balance; ?>">
+                                <input type="hidden" name="transactionId" value="<?php echo $transactionId; ?>"> <!-- Add this line -->
+                            </form>
                         <?php endif; ?>
-                        <?php if ($paymentStatus === "Payment has already been sent") : ?>
-                            <p>Payment has already been sent. Wait for confirmation.</p>
-                        <?php endif; ?>
-                    </center>
-                </td>
-            </tr>
-        </table>
+                    <?php else : ?>
+                        $<?php echo number_format($balance, 2); ?>
+                    <?php endif; ?>
+                    <?php if ($paymentStatus === "Payment has already been sent") : ?>
+                        <p>Payment has already been sent. Wait for confirmation.</p>
+                    <?php endif; ?>
+                </center>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p>Are you sure you want to make the payment?</p>
+            <!-- The "Pay" button inside the modal -->
+            <button id="payButton" type="button" onclick="pay()">Pay</button>
+        </div>
+    </div>
         <br>
         <a href=vendor_edit_profile.php>
             <h1>EDIT PROFILE</h1>
