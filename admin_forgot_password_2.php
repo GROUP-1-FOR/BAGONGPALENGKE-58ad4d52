@@ -46,14 +46,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <head>
     <title>Forgot Password</title>
-
     <script>
+        function validateForm() {
+            return (
+                validatePassword() &&
+                checkPasswordMatch()
+            );
+        }
+
+        function validatePassword() {
+            var passwordInput = document.getElementById("admin_new_password");
+            var password = passwordInput.value;
+            var passwordValidationMessage = document.getElementById("passwordValidationMessage");
+
+            // Define the password patterns
+            var lengthPattern = /.{8,16}/;
+            var uppercasePattern = /[A-Z]/;
+            var lowercasePattern = /[a-z]/;
+            var digitPattern = /\d/;
+            var specialCharPattern = /[!@#$%^&*()_+]/;
+
+            // Check each pattern and provide feedback
+            var isValid = true;
+            if (!lengthPattern.test(password)) {
+                isValid = false;
+                passwordValidationMessage.textContent = "Password must be 8-16 characters.";
+            } else if (!uppercasePattern.test(password)) {
+                isValid = false;
+                passwordValidationMessage.textContent = "Include at least one uppercase letter.";
+            } else if (!lowercasePattern.test(password)) {
+                isValid = false;
+                passwordValidationMessage.textContent = "Include at least one lowercase letter.";
+            } else if (!digitPattern.test(password)) {
+                isValid = false;
+                passwordValidationMessage.textContent = "Include at least one number.";
+            } else if (!specialCharPattern.test(password)) {
+                isValid = false;
+                passwordValidationMessage.textContent = "Include at least one special character from the list ! @ # $ % ^ & * ( ) _ +";
+            } else {
+                passwordValidationMessage.textContent = "";
+            }
+
+            return isValid;
+        }
+
         function checkPasswordMatch() {
             var password = document.getElementsByName("admin_new_password")[0].value;
             var confirmPassword = document.getElementsByName("admin_confirm_new_password")[0].value;
             var messageElement = document.getElementById("passwordMatchMessage");
             var confirmPasswordInput = document.getElementsByName("admin_confirm_new_password")[0];
-            var submitButton = document.querySelector('input[type="submit"]');
 
             // Enable or disable Confirm Password based on whether Password is empty
             confirmPasswordInput.disabled = password.length === 0;
@@ -64,20 +105,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (confirmPassword.length > 0) {
                     // Check if passwords match
                     if (password === confirmPassword) {
-                        // Check if passwords have at least 8 characters
-                        if (password.length >= 8 && confirmPassword.length >= 8) {
-                            messageElement.innerHTML = "Passwords match and meet the minimum length requirement.";
-                            messageElement.style.color = "green";
-                            submitButton.disabled = false; // Enable the button
-                        } else {
-                            messageElement.innerHTML = "Passwords match but do not meet the minimum length requirement (8 characters).";
-                            messageElement.style.color = "red";
-                            submitButton.disabled = true; // Enable the button
-                        }
+                        messageElement.innerHTML = "Passwords match";
+                        messageElement.style.color = "green";
                     } else {
                         messageElement.innerHTML = "Passwords do not match.";
                         messageElement.style.color = "red";
-                        submitButton.disabled = true; // Enable the button
                     }
                 } else {
                     // "Confirm Password" field is empty, clear the message
@@ -89,7 +121,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 confirmPasswordInput.value = "";
             }
 
-            return password === confirmPassword && password.length >= 8 && confirmPassword.length >= 8;
+            return password === confirmPassword;
+        }
+
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById("admin_new_password");
+            var showPasswordCheckbox = document.getElementById("showPassword");
+
+            // Toggle the password visibility
+            passwordInput.type = showPasswordCheckbox.checked ? "text" : "password";
+        }
+
+        function updateSubmitButton() {
+            var submitButton = document.querySelector('button[type="submit"]');
+            var formIsValid = validatePassword() && checkPasswordMatch();
+            submitButton.disabled = !formIsValid;
+
+            console.log("Update submit button called. Form is valid: ", formIsValid);
         }
     </script>
 
@@ -98,20 +146,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div>
         <h1>New Password</h1><br />
-        <form action="" method="post" onsubmit="return confirm('Proceed?');">
+        <form action="" method="post" onsubmit="return validateForm()">
+            <label for="admin_new_password">New Password:</label>
+            <input type="password" name="admin_new_password" id="admin_new_password" maxlength="16" placeholder="8-16 characters" oninput="validatePassword(); checkPasswordMatch(); updateSubmitButton()">
+            <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()">
+            <label for="showPassword">Show Password</label>
+            <span style="color: red;" id="passwordValidationMessage"></span><br />
 
-            <label for="admin_username">New Password:</label>
-            <input type="password" name="admin_new_password" id="admin_new_password" placeholder="8 characters and above" oninput="checkPasswordMatch()"> <br />
-
-            <label for="new_password">Confirm Password:</label>
-            <input type="password" name="admin_confirm_new_password" id="admin_confirm_new_password" required oninput="checkPasswordMatch()">
+            <label for="admin_confirm_new_password">Confirm Password:</label>
+            <input type="password" name="admin_confirm_new_password" id="admin_confirm_new_password" maxlength="16" required oninput="checkPasswordMatch(); updateSubmitButton()">
             <span id="passwordMatchMessage"></span><br />
 
-            <input type="submit" value="Update Password" disabled>
-
-
+            <button type="submit" disabled>Update Password</button>
         </form>
     </div>
+
 
     <div><a href="admin_login.php">Back</a></div>
 
