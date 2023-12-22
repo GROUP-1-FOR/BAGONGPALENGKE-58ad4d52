@@ -45,7 +45,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     }
 
 
-    if (isset($_GET['cancel'])) {
+    if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
         unset($_SESSION['vendor_first_name']);
         unset($_SESSION['vendor_last_name']);
         unset($_SESSION['vendor_full_name']);
@@ -455,7 +455,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
 
 
-        <a href="interactive_map.php?cancel=1">Back</a>
+        <a href="?cancel_button=1"> Back </a>
 
         <a href=admin_logout.php>
             <h1>LOGOUT</h1>
