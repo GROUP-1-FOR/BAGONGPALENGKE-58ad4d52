@@ -44,7 +44,7 @@ $otp_token = $_SESSION["reset_password_token"];
 
 unset($_SESSION["reset_password_token"]);
 
-$mail->Body = $otp_token . " is your Reset Password Token. For your protection, do not share this code with anyone.";
+$mail->Body = '<font color="#008000">' . $otp_token . '</font> is your Reset Password Token. For your protection, do not share this code with anyone.';
 
 $mail->send();
 
