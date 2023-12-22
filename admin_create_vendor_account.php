@@ -248,7 +248,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     passwordValidationMessage.textContent = "Include at least one number.";
                 } else if (!specialCharPattern.test(password)) {
                     isValid = false;
-                    passwordValidationMessage.textContent = "Include at least one special character.";
+                    passwordValidationMessage.textContent = "Include at least one special character from the list ! @ # $ % ^ & * ( ) _ +";
                 } else {
                     passwordValidationMessage.textContent = "";
                 }
