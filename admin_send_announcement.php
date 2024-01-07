@@ -15,6 +15,16 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Send Announcement</title>
 
+        <style>
+            .error {
+                color: red;
+            }
+
+            .counter {
+                font-size: 12px;
+                color: gray;
+            }
+        </style>
 
         <script>
             function editAnnouncement(announcementId) {
@@ -28,6 +38,60 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 if (confirmed) {
                     window.location.href = "admin_remove_announcement.php?id=" + announcementId;
                 }
+            }
+
+            function validateForm() {
+                var title = document.getElementById("admin_announcement_title").value;
+                var subject = document.getElementById("admin_announcement_subject").value;
+                var message = document.getElementById("admin_announcement").value;
+                var date = document.getElementById("admin_announcement_time").value;
+
+                document.getElementById("error_title").innerHTML = "";
+                document.getElementById("error_subject").innerHTML = "";
+                document.getElementById("error_message").innerHTML = "";
+                document.getElementById("error_date").innerHTML = "";
+
+                var isValid = true;
+
+                if (title.trim() === "") {
+                    document.getElementById("error_title").innerHTML = "Title is required";
+                    isValid = false;
+                } else if (title.length > 50) {
+                    document.getElementById("error_title").innerHTML = "Title cannot exceed 50 characters";
+                    isValid = false;
+                }
+
+                if (subject.trim() === "") {
+                    document.getElementById("error_subject").innerHTML = "Subject is required";
+                    isValid = false;
+                } else if (subject.length > 100) {
+                    document.getElementById("error_subject").innerHTML = "Subject cannot exceed 100 characters";
+                    isValid = false;
+                }
+
+                if (message.trim() === "") {
+                    document.getElementById("error_message").innerHTML = "Message is required";
+                    isValid = false;
+                } else if (message.length > 500) {
+                    document.getElementById("error_message").innerHTML = "Message cannot exceed 500 characters";
+                    isValid = false;
+                }
+
+                if (date.trim() === "") {
+                    document.getElementById("error_date").innerHTML = "Date is required";
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            function updateCounter(inputId, counterId, maxLength) {
+                var input = document.getElementById(inputId);
+                var counter = document.getElementById(counterId);
+                var currentChars = input.value.length;
+                var remainingChars = maxLength - currentChars;
+
+                counter.innerHTML = currentChars + '/' + maxLength;
             }
         </script>
 
@@ -64,16 +128,28 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         <h1>Send an Announcement:</h1>
 
-        <form action="admin_send_announcement_1.php" method="post">
+        <form action="admin_send_announcement_1.php" method="post" onsubmit="return validateForm()">
             <h2>Market Vendors</h2>
+
             <label for="admin_announcement_title">Announcement Title</label>
-            <input type="text" id="admin_announcement_title" name="admin_announcement_title" required><br />
+            <input type="text" id="admin_announcement_title" name="admin_announcement_title" required maxlength="50" oninput="updateCounter('admin_announcement_title', 'title_counter', 50)">
+            <span id="title_counter" class="counter">0/50</span>
+            <span id="error_title" class="error"></span><br />
+
             <label for="admin_announcement_subject">Announcement Subject</label>
-            <input type="text" id="admin_announcement_subject" name="admin_announcement_subject" required><br />
+            <input type="text" id="admin_announcement_subject" name="admin_announcement_subject" required maxlength="100" oninput="updateCounter('admin_announcement_subject', 'subject_counter', 100)">
+            <span id="subject_counter" class="counter">0/100</span>
+            <span id="error_subject" class="error"></span><br />
+
             <label for="admin_announcement">Announcement Message</label>
-            <textarea name="admin_announcement" id="admin_announcement" cols="30" rows="5" required></textarea><br>
+            <textarea name="admin_announcement" id="admin_announcement" cols="30" rows="5" required maxlength="500" oninput="updateCounter('admin_announcement', 'message_counter', 500)"></textarea>
+            <span id="message_counter" class="counter">0/500</span>
+            <span id="error_message" class="error"></span><br>
+
             <label for="admin_announcement_time">Announcement Date</label>
-            <input type="date" id="admin_announcement_time" name="admin_announcement_time" min="<?php echo date('Y-m-d'); ?>" required><br>
+            <input type="date" id="admin_announcement_time" name="admin_announcement_time" min="<?php echo date('Y-m-d'); ?>" required>
+            <span id="error_date" class="error"></span><br>
+
             <input type="submit" value="Send announcement">
         </form>
 
