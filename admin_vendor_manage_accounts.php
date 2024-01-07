@@ -4,42 +4,45 @@ require_once "config.php";
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $admin_id = $_SESSION["id"];
     $admin_userid = $_SESSION["userid"];
+} else {
+    header("location:admin_logout.php");
+}
 
-    // Fetch data from the database
-    $sql = "SELECT vendor_userid, vendor_name FROM vendor_sign_in";
-    $result = $connect->query($sql);
+// Fetch data from the database
+$sql = "SELECT vendor_userid, vendor_name FROM vendor_sign_in";
+$result = $connect->query($sql);
 
-    // Function to handle the search
-    if (isset($_GET['search'])) {
-        $searchTerm = $_GET['search'];
-        // Use a prepared statement to prevent SQL injection
-        $sql = "SELECT vendor_userid, vendor_name FROM vendor_sign_in WHERE vendor_name LIKE ? OR vendor_userid LIKE ?";
-        $stmt = $connect->prepare($sql);
-        // Bind parameters
-        $searchParam = "%" . $searchTerm . "%";
-        $stmt->bind_param("ss", $searchParam, $searchParam);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $stmt->close();
+// Function to handle the search
+if (isset($_GET['search'])) {
+    $searchTerm = $_GET['search'];
+    // Use a prepared statement to prevent SQL injection
+    $sql = "SELECT vendor_userid, vendor_name FROM vendor_sign_in WHERE vendor_name LIKE ? OR vendor_userid LIKE ?";
+    $stmt = $connect->prepare($sql);
+    // Bind parameters
+    $searchParam = "%" . $searchTerm . "%";
+    $stmt->bind_param("ss", $searchParam, $searchParam);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+}
+
+// Function to fetch search suggestions
+function getSearchSuggestions($searchTerm)
+{
+    global $connect;
+    $sql = "SELECT vendor_userid, vendor_name FROM vendor_sign_in WHERE vendor_name LIKE ? OR vendor_userid LIKE ?";
+    $stmt = $connect->prepare($sql);
+    // Bind parameters
+    $searchParam = "%" . $searchTerm . "%";
+    $stmt->bind_param("ss", $searchParam, $searchParam);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $suggestions = array();
+    while ($row = $result->fetch_assoc()) {
+        $suggestions[] = $row;
     }
-
-    // Function to fetch search suggestions
-    function getSearchSuggestions($searchTerm)
-    {
-        global $connect;
-        $sql = "SELECT vendor_userid, vendor_name FROM vendor_sign_in WHERE vendor_name LIKE ? OR vendor_userid LIKE ?";
-        $stmt = $connect->prepare($sql);
-        // Bind parameters
-        $searchParam = "%" . $searchTerm . "%";
-        $stmt->bind_param("ss", $searchParam, $searchParam);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $suggestions = array();
-        while ($row = $result->fetch_assoc()) {
-            $suggestions[] = $row;
-        }
-        return $suggestions;
-    }
+    return $suggestions;
+}
 ?>
 
 <!DOCTYPE html>
@@ -162,21 +165,21 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         ?>
     </table>
 
-     <!-- Add Vendor button -->
-     <center>
-    <div id="addButton">
-    <button onclick="redirectToAddVendors()">Add Vendor (+)</button>
-    <!-- Remove Vendor button -->
-    <button id="removeButton" onclick="removeSelectedVendors()" disabled>Remove Vendor</button><br>
-    </div>
+    <!-- Add Vendor button -->
+    <center>
+        <div id="addButton">
+            <button onclick="redirectToAddVendors()">Add Vendor (+)</button>
+            <!-- Remove Vendor button -->
+            <button id="removeButton" onclick="removeSelectedVendors()" disabled>Remove Vendor</button><br>
+        </div>
 
-    <a href=admin_index.php><button id="Button">Back</button></a>
+        <a href=admin_index.php><button id="Button">Back</button></a>
     </center>
-    
+
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
-         // Function to handle the checkbox selection
-         function handleCheckboxSelection() {
+        // Function to handle the checkbox selection
+        function handleCheckboxSelection() {
             const checkboxes = document.querySelectorAll('.vendorCheckbox');
             const removeButton = document.getElementById('removeButton');
 
@@ -209,7 +212,9 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 $.ajax({
                     url: 'remove_vendor.php',
                     type: 'POST', // Use POST to submit the selected vendor_userids
-                    data: { vendorIds: selectedVendorIds }, // Pass selected vendor IDs to the server
+                    data: {
+                        vendorIds: selectedVendorIds
+                    }, // Pass selected vendor IDs to the server
                     dataType: 'json', // Expect JSON response
                     success: function(response) {
                         // Handle the response as needed
@@ -228,25 +233,25 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             }
         }
 
-// Function to dynamically update the table after removing vendors
-function updateTable(selectedVendorIds) {
-    // Remove the corresponding table rows
-    selectedVendorIds.forEach(vendorId => {
-        const rowToRemove = document.querySelector(`[data-vendorid="${vendorId}"]`);
-        if (rowToRemove) {
-            rowToRemove.remove();
+        // Function to dynamically update the table after removing vendors
+        function updateTable(selectedVendorIds) {
+            // Remove the corresponding table rows
+            selectedVendorIds.forEach(vendorId => {
+                const rowToRemove = document.querySelector(`[data-vendorid="${vendorId}"]`);
+                if (rowToRemove) {
+                    rowToRemove.remove();
+                }
+            });
+
+            // Clear the checkbox selection and disable the Remove button
+            const checkboxes = document.querySelectorAll('.vendorCheckbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+            const removeButton = document.getElementById('removeButton');
+            removeButton.disabled = true;
         }
-    });
-
-    // Clear the checkbox selection and disable the Remove button
-    const checkboxes = document.querySelectorAll('.vendorCheckbox');
-    checkboxes.forEach(checkbox => {
-        checkbox.checked = false;
-    });
-
-    const removeButton = document.getElementById('removeButton');
-    removeButton.disabled = true;
-}
 
         function editVendor(vendorId) {
             window.location.href = 'admin_edit_vendor.php?vendor_userid=' + encodeURIComponent(vendorId);
@@ -294,11 +299,3 @@ function updateTable(selectedVendorIds) {
 </body>
 
 </html>
-
-<?php
-    // Close the database connection
-    $connect->close();
-} else {
-    header("location:admin_logout.php");
-}
-?>

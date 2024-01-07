@@ -3,88 +3,91 @@ require("config.php");
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $id = $_SESSION["id"];
     $userid = $_SESSION["userid"];
-    //to know last log in time of vendor
-    include('vendor_login_time.php');
+} else {
+    header("location:vendor_logout.php");
+}
+//to know last log in time of vendor
+include('vendor_login_time.php');
 
 
-    // Fetch user data using prepared statement
-    $sqlUserData = "SELECT * FROM vendor_balance WHERE vendor_userid = ?";
-    $stmtUserData = $connect->prepare($sqlUserData);
-    $stmtUserData->bind_param('s', $userid); // Use 's' for VARCHAR
-    $stmtUserData->execute();
-    $resultUserData = $stmtUserData->get_result();
+// Fetch user data using prepared statement
+$sqlUserData = "SELECT * FROM vendor_balance WHERE vendor_userid = ?";
+$stmtUserData = $connect->prepare($sqlUserData);
+$stmtUserData->bind_param('s', $userid); // Use 's' for VARCHAR
+$stmtUserData->execute();
+$resultUserData = $stmtUserData->get_result();
 
-    if ($resultUserData->num_rows > 0) {
-        $rowUserData = $resultUserData->fetch_assoc();
-        $vendorName = $rowUserData['vendor_name'];
-        $stallNumber = $rowUserData['vendor_stall_number'];
-        $balance = $rowUserData['balance'];
-        $transactionId = $rowUserData['transaction_id'];
-    } else {
-        // Handle the case where the user ID is not found or there's an issue with the database query
-        header("location:vendor_login.php");
-    }
+if ($resultUserData->num_rows > 0) {
+    $rowUserData = $resultUserData->fetch_assoc();
+    $vendorName = $rowUserData['vendor_name'];
+    $stallNumber = $rowUserData['vendor_stall_number'];
+    $balance = $rowUserData['balance'];
+    $transactionId = $rowUserData['transaction_id'];
+} else {
+    // Handle the case where the user ID is not found or there's an issue with the database query
+    header("location:vendor_login.php");
+}
 
-    // Get the current date
-    $currentDate = new DateTime();
-    $currentDay = intval($currentDate->format('d'));
-    $currentMonth = intval($currentDate->format('m'));
-    $currentYear = intval($currentDate->format('Y'));
+// Get the current date
+$currentDate = new DateTime();
+$currentDay = intval($currentDate->format('d'));
+$currentMonth = intval($currentDate->format('m'));
+$currentYear = intval($currentDate->format('Y'));
 
-    $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
+$daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
 
-    $startingDate = new DateTime($rowUserData['starting_date']);
-    if ($currentDate >= $startingDate) {
-        if ($currentMonth > $rowUserData['month'] || $currentYear > $rowUserData['year']) {
-            // Perform actions when the current date is greater than or equal to the starting date
+$startingDate = new DateTime($rowUserData['starting_date']);
+if ($currentDate >= $startingDate) {
+    if ($currentMonth > $rowUserData['month'] || $currentYear > $rowUserData['year']) {
+        // Perform actions when the current date is greater than or equal to the starting date
 
-            // Fetch vendor_product and vendor_payment_basis
-            $vendorProduct = $rowUserData['vendor_product'];
-            $vendorPaymentBasis = $rowUserData['vendor_payment_basis'];
+        // Fetch vendor_product and vendor_payment_basis
+        $vendorProduct = $rowUserData['vendor_product'];
+        $vendorPaymentBasis = $rowUserData['vendor_payment_basis'];
 
-            // Fetch stall_rate from rent_basis table based on vendor_product
-            $sqlStallRate = "SELECT stall_rate FROM rent_basis WHERE vendor_product = ?";
-            $stmtStallRate = $connect->prepare($sqlStallRate);
-            $stmtStallRate->bind_param('s', $vendorProduct);
-            $stmtStallRate->execute();
-            $resultStallRate = $stmtStallRate->get_result();
+        // Fetch stall_rate from rent_basis table based on vendor_product
+        $sqlStallRate = "SELECT stall_rate FROM rent_basis WHERE vendor_product = ?";
+        $stmtStallRate = $connect->prepare($sqlStallRate);
+        $stmtStallRate->bind_param('s', $vendorProduct);
+        $stmtStallRate->execute();
+        $resultStallRate = $stmtStallRate->get_result();
 
-            if ($resultStallRate->num_rows > 0) {
-                $rowStallRate = $resultStallRate->fetch_assoc();
-                $stallRate = $rowStallRate['stall_rate'];
+        if ($resultStallRate->num_rows > 0) {
+            $rowStallRate = $resultStallRate->fetch_assoc();
+            $stallRate = $rowStallRate['stall_rate'];
+        }
+        if ($vendorPaymentBasis == 'Monthly') {
+            // Calculate balance based on Monthly payment basis
+
+
+            if ($currentYear == $rowUserData['year'] && $currentMonth > $rowUserData['month']) {
+                $balance = ($currentMonth - $rowUserData['month']) * $stallRate;
+            } elseif ($currentYear > $rowUserData['year']) {
+                $newcurrentMonth = ($currentYear - $rowUserData['year']) * 12 + $currentMonth;
+                $balance = ($newcurrentMonth - $rowUserData['month']) * $stallRate;
             }
-            if ($vendorPaymentBasis == 'Monthly') {
-                // Calculate balance based on Monthly payment basis
+            // Update current balance and remaining balance
+            $currentBalance = $balance + $rowUserData['balance'];
 
+            $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
+            $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+            $stmtUpdateBalance->bind_param('di', $currentBalance, $userid); // Assuming vendor_userid is of type integer
+            $stmtUpdateBalance->execute();
 
-                if ($currentYear == $rowUserData['year'] && $currentMonth > $rowUserData['month']) {
-                    $balance = ($currentMonth - $rowUserData['month']) * $stallRate;
-                } elseif ($currentYear > $rowUserData['year']) {
-                    $newcurrentMonth = ($currentYear - $rowUserData['year']) * 12 + $currentMonth;
-                    $balance = ($newcurrentMonth - $rowUserData['month']) * $stallRate;
-                }
-                // Update current balance and remaining balance
-                $currentBalance = $balance + $rowUserData['balance'];
+            $sqlUpdateBalance = "UPDATE admin_stall_map SET balance = ? WHERE vendor_userid = ?";
+            $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+            $stmtUpdateBalance->bind_param('di', $currentBalance, $userid); // Assuming vendor_userid is of type integer
+            $stmtUpdateBalance->execute();
 
-                $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
-                $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-                $stmtUpdateBalance->bind_param('di', $currentBalance, $userid); // Assuming vendor_userid is of type integer
-                $stmtUpdateBalance->execute();
-
-                $sqlUpdateBalance = "UPDATE admin_stall_map SET balance = ? WHERE vendor_userid = ?";
-                $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-                $stmtUpdateBalance->bind_param('di', $currentBalance, $userid); // Assuming vendor_userid is of type integer
-                $stmtUpdateBalance->execute();
-
-                // Update day, month, and year
-                $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
-                $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
-                $stmtUpdateDate->bind_param('iiii', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
-                $stmtUpdateDate->execute();
-            }
+            // Update day, month, and year
+            $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
+            $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
+            $stmtUpdateDate->bind_param('iiii', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
+            $stmtUpdateDate->execute();
         }
     }
-    /*     // Debugging output
+}
+/*     // Debugging output
     echo "Current Day: $currentDay<br>";
     echo "Stored Day: {$rowUserData['day']}<br>";
     echo "Current Month: $currentMonth<br>";
@@ -100,44 +103,44 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
 
 
-    // Check the payment status
-    $paymentStatus = "To be paid";
+// Check the payment status
+$paymentStatus = "To be paid";
 
-    // Check if the payment has been sent but not confirmed
-    $sqlCheckPayment = "SELECT * FROM ven_payments WHERE vendor_userid = ? AND vendor_name = ? AND transaction_id = ? AND confirmed = 0 AND archived = 0";
-    $stmtCheckPayment = $connect->prepare($sqlCheckPayment);
-    $stmtCheckPayment->bind_param('iss', $userid, $vendorName, $transactionId);
-    $stmtCheckPayment->execute();
-    $resultCheckPayment = $stmtCheckPayment->get_result();
+// Check if the payment has been sent but not confirmed
+$sqlCheckPayment = "SELECT * FROM ven_payments WHERE vendor_userid = ? AND vendor_name = ? AND transaction_id = ? AND confirmed = 0 AND archived = 0";
+$stmtCheckPayment = $connect->prepare($sqlCheckPayment);
+$stmtCheckPayment->bind_param('iss', $userid, $vendorName, $transactionId);
+$stmtCheckPayment->execute();
+$resultCheckPayment = $stmtCheckPayment->get_result();
 
-    if ($resultCheckPayment->num_rows > 0) {
-        $paymentStatus = "Payment has already been sent";
+if ($resultCheckPayment->num_rows > 0) {
+    $paymentStatus = "Payment has already been sent";
+}
+
+
+// Check for payment status in session and reset the session variable
+if (isset($_SESSION['payment_status'])) {
+    echo $_SESSION['payment_status'];
+    unset($_SESSION['payment_status']);
+}
+// Check if the conditions allow redirecting to the invoice summary
+if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
+    // Check if there is an unconfirmed payment before redirecting
+    if ($resultCheckPayment->num_rows === 0) {
+        header("Location: vendor_invoice_summary.php?vendorName=$vendorName&vendorUserId=$userid&vendorStallNumber=$stallNumber&balance=$balance");
+        exit();
+    } else {
+        echo "Cannot redirect to invoice summary because payment has already been sent but not confirmed.";
     }
-
-
-    // Check for payment status in session and reset the session variable
-    if (isset($_SESSION['payment_status'])) {
-        echo $_SESSION['payment_status'];
-        unset($_SESSION['payment_status']);
-    }
-    // Check if the conditions allow redirecting to the invoice summary
-    if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
-        // Check if there is an unconfirmed payment before redirecting
-        if ($resultCheckPayment->num_rows === 0) {
-            header("Location: vendor_invoice_summary.php?vendorName=$vendorName&vendorUserId=$userid&vendorStallNumber=$stallNumber&balance=$balance");
-            exit();
-        } else {
-            echo "Cannot redirect to invoice summary because payment has already been sent but not confirmed.";
-        }
-    }
+}
 ?>
 
-    <!DOCTYPE html>
-    <html>
+<!DOCTYPE html>
+<html>
 
-    <head>
-        <title>Main Page</title>
-        <style>
+<head>
+    <title>Main Page</title>
+    <style>
         body {
             text-align: center;
             margin: 50px;
@@ -269,38 +272,33 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <button id="payButton" type="button" onclick="pay()">Pay</button>
         </div>
     </div>
-        <br>
-        <a href=vendor_edit_profile.php>
-            <h1>EDIT PROFILE</h1>
-        </a>
+    <br>
+    <a href=vendor_edit_profile.php>
+        <h1>EDIT PROFILE</h1>
+    </a>
 
-        <a href=vendor_transaction_history.php>
-            <h1>TRANSACTIONS</h1>
-        </a>
+    <a href=vendor_transaction_history.php>
+        <h1>TRANSACTIONS</h1>
+    </a>
 
-        <a href=vendor_view_announcement.php>
-            <h1>SEE ANNOUNCEMENTS</h1>
-        </a>
-        <a href="vendor_messages.php">
-            <h1>MESSAGES</h1>
-        </a>
+    <a href=vendor_view_announcement.php>
+        <h1>SEE ANNOUNCEMENTS</h1>
+    </a>
+    <a href="vendor_messages.php">
+        <h1>MESSAGES</h1>
+    </a>
 
-        <a href="vendor_notification.php">
-            <h1>NOTIFICATIONS</h1>
-        </a>
+    <a href="vendor_notification.php">
+        <h1>NOTIFICATIONS</h1>
+    </a>
 
-        <a href="vendor_send_report.php">
-            <h1>REPORT</h1>
-        </a>
+    <a href="vendor_send_report.php">
+        <h1>REPORT</h1>
+    </a>
 
-        <a href=vendor_logout.php>
-            <h1>LOGOUT</h1>
-        </a>
-    </body>
+    <a href=vendor_logout.php>
+        <h1>LOGOUT</h1>
+    </a>
+</body>
 
-    </html>
-<?php
-} else {
-    header("location:vendor_logout.php");
-}
-?>
+</html>

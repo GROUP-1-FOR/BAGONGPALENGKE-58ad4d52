@@ -1,3 +1,14 @@
+<?php
+
+require("config.php");
+
+if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
+    $userid = $_SESSION["userid"];
+} else {
+    header("location:vendor_logout.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,8 +42,10 @@
         }
 
         .back-button {
-            width: 100px; /* Adjust the width as needed */
-            margin: 20px auto; /* Center the button horizontally */
+            width: 100px;
+            /* Adjust the width as needed */
+            margin: 20px auto;
+            /* Center the button horizontally */
             padding: 10px;
             background-color: #850F16;
             color: #fff;
@@ -47,11 +60,8 @@
 
 <body>
 
-<?php
-require("config.php");
+    <?php
 
-if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $userid = $_SESSION["userid"];
 
     // Fetch notifications using prepared statement
     $sqlNotifications = "SELECT * FROM vendor_notification WHERE vendor_userid = ? OR vendor_userid = 'ALL' ORDER BY notif_date DESC";
@@ -65,7 +75,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         while ($row = $resultNotifications->fetch_assoc()) {
             // Display the notification banner
             echo '<div class="notification-banner">';
-            
+
             // Make the title clickable and redirect to the appropriate page based on the notification type
             if ($row['confirm'] == 1) {
                 echo '<h3><a href="vendor_transaction_history.php">' . $row['title'] . '</a></h3>';
@@ -80,11 +90,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             } elseif ($row['edit'] == 1) {
                 echo '<h3><a href="vendor_index.php">' . $row['title'] . '</a></h3>';
             }
-            
-            
+
+
             echo '</div>';
         }
-        
+
         // Add a back button
         echo '<a href="vendor_index.php" class="back-button">Home</a>';
     } else {
@@ -98,12 +108,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $stmtNotifications->close();
     // Close the database connection
     $connect->close();
-} else {
-    // Redirect the user to the login page or display a message
-    header("Location: login.php");
-    exit();
-}
-?>
+
+    ?>
 </body>
 
 </html>

@@ -4,12 +4,15 @@ require("config.php");
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $admin_id = $_SESSION["id"];
     $admin_userid = $_SESSION["userid"];
+} else {
+    header("location:admin_logout.php");
+}
 
-    // Include database connection or functions
-    // Example: include('db_connection.php');
+// Include database connection or functions
+// Example: include('db_connection.php');
 
-    // Fetch vendor messages with the latest message for each vendor
-    $query = "SELECT vendor_userid, vendor_name, vendor_stall_number, MAX(latest_timestamp) as latest_timestamp FROM (
+// Fetch vendor messages with the latest message for each vendor
+$query = "SELECT vendor_userid, vendor_name, vendor_stall_number, MAX(latest_timestamp) as latest_timestamp FROM (
                     SELECT vendor_userid, vendor_name, vendor_stall_number, vendor_timestamp as latest_timestamp
                     FROM vendor_messages
                     UNION
@@ -19,11 +22,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                  GROUP BY vendor_userid, vendor_name, vendor_stall_number
                  ORDER BY latest_timestamp DESC";
 
-    // Execute the query and handle errors
-    $result = $connect->query($query);
-    if (!$result) {
-        die("Error executing the query: " . $connect->error);
-    }
+// Execute the query and handle errors
+$result = $connect->query($query);
+if (!$result) {
+    die("Error executing the query: " . $connect->error);
+}
 
 ?>
 
@@ -95,9 +98,3 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 </body>
 
 </html>
-
-<?php
-} else {
-    header("location:admin_logout.php");
-}
-?>

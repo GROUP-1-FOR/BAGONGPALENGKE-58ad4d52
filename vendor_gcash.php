@@ -6,40 +6,43 @@ require("config.php");
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $id = $_SESSION["id"];
     $userid = $_SESSION["userid"];
+} else {
+    header("location:vendor_logout.php");
+}
 
-    if (isset($_POST['gcash_mobile'])) {
-        $inputedNumber = $_POST['gcash_mobile'];
+if (isset($_POST['gcash_mobile'])) {
+    $inputedNumber = $_POST['gcash_mobile'];
 
-        // Validate the mobile number format
-        if (preg_match('/^9[0-9]{9}$/', $inputedNumber)) {
-            // Check if the next button is clicked
-            if (isset($_POST['next_button'])) {
-                // Check if the mobile number matches the one in the vendor_sign_in table
-                $sqlCheckMobile = "SELECT vendor_mobile_number FROM vendor_sign_in WHERE vendor_userid = ?";
-                $stmtCheckMobile = $connect->prepare($sqlCheckMobile);
-                $stmtCheckMobile->bind_param('s', $userid); // Change $vendorUserId to $userid
-                $stmtCheckMobile->execute();
-                $stmtCheckMobile->bind_result($vendorMobileNumber);
-                $stmtCheckMobile->fetch();
-                $stmtCheckMobile->close();
+    // Validate the mobile number format
+    if (preg_match('/^9[0-9]{9}$/', $inputedNumber)) {
+        // Check if the next button is clicked
+        if (isset($_POST['next_button'])) {
+            // Check if the mobile number matches the one in the vendor_sign_in table
+            $sqlCheckMobile = "SELECT vendor_mobile_number FROM vendor_sign_in WHERE vendor_userid = ?";
+            $stmtCheckMobile = $connect->prepare($sqlCheckMobile);
+            $stmtCheckMobile->bind_param('s', $userid); // Change $vendorUserId to $userid
+            $stmtCheckMobile->execute();
+            $stmtCheckMobile->bind_result($vendorMobileNumber);
+            $stmtCheckMobile->fetch();
+            $stmtCheckMobile->close();
 
-                $checkinputedNumber = "0" . $inputedNumber;
+            $checkinputedNumber = "0" . $inputedNumber;
 
-                // If the mobile number matches, proceed to the next step
-                if ($vendorMobileNumber == $checkinputedNumber) {
-                    // Redirect to the next step or perform additional actions
-                    header("Location: gcash_pay.php"); // Replace with the actual next step file
-                    exit();
-                } else {
-                    // Display an error message
-                    $errorMessage = "Mobile number does not match. Please try again.";
-                }
+            // If the mobile number matches, proceed to the next step
+            if ($vendorMobileNumber == $checkinputedNumber) {
+                // Redirect to the next step or perform additional actions
+                header("Location: gcash_pay.php"); // Replace with the actual next step file
+                exit();
+            } else {
+                // Display an error message
+                $errorMessage = "Mobile number does not match. Please try again.";
             }
-        } else {
-            // Display an error message for an invalid mobile number format
-            $errorMessage = "Invalid mobile number format. Please enter a valid 10-digit number starting with 9.";
         }
+    } else {
+        // Display an error message for an invalid mobile number format
+        $errorMessage = "Invalid mobile number format. Please enter a valid 10-digit number starting with 9.";
     }
+}
 ?>
 
 <!DOCTYPE html>
@@ -70,9 +73,3 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 </body>
 
 </html>
-
-<?php
-} else {
-    header("location: vendor_logout.php");
-}
-?>

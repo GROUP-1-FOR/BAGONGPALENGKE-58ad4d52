@@ -4,6 +4,8 @@ require("config.php");
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $admin_id = $_SESSION["id"];
     $admin_userid = $_SESSION["userid"];
+} else {
+    header("location:admin_logout.php");
 }
 
 ?>
@@ -77,7 +79,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 $row = $result->fetch_assoc();
                 $count = $row['count'];
                 $balance = $row['balance'];
-        
+
                 // Set the table color based on whether the value exists in the database and balance
                 $tableColor = '';
                 if ($count > 0) {
@@ -89,7 +91,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 } else {
                     $tableColor = 'background-color: gray;';
                 }
-        
+
                 echo '<div class="table" id="table' . $i . '" data-count="' . $count . '" onclick="toggleAddButton(' . $i . ')" style="' . $tableColor . '">';
                 echo '<p>Stall ' . $i . '</p>'; // Display stall number without leading zeros
                 echo '<a class="add-button" href="javascript:void(0);" onclick="confirmAdd(' . $i . ')">Add</a>';
@@ -104,27 +106,27 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     <!-- Include your JavaScript file here -->
     <script src="interactive_map.js"></script>
     <script>
-    function toggleAddButton(tableNumber) {
-        var table = document.getElementById('table' + tableNumber);
-        var addButton = table.getElementsByClassName('add-button')[0];
+        function toggleAddButton(tableNumber) {
+            var table = document.getElementById('table' + tableNumber);
+            var addButton = table.getElementsByClassName('add-button')[0];
 
-        // Check if the count is greater than 0
-        var count = table.getAttribute('data-count');
-        if (count > 0) {
-            addButton.style.display = 'none';
-        } else {
-            addButton.style.display = (addButton.style.display === 'none' || addButton.style.display === '') ? 'inline-block' : 'none';
+            // Check if the count is greater than 0
+            var count = table.getAttribute('data-count');
+            if (count > 0) {
+                addButton.style.display = 'none';
+            } else {
+                addButton.style.display = (addButton.style.display === 'none' || addButton.style.display === '') ? 'inline-block' : 'none';
+            }
         }
-    }
 
-    function confirmAdd(tableNumber) {
-        var confirmAddition = confirm('Are you sure you want to add a vendor?');
-        if (confirmAddition) {
-            var url = 'admin_create_vendor_account.php?stall_number=' + tableNumber;
-            window.location.href = url;
+        function confirmAdd(tableNumber) {
+            var confirmAddition = confirm('Are you sure you want to add a vendor?');
+            if (confirmAddition) {
+                var url = 'admin_create_vendor_account.php?stall_number=' + tableNumber;
+                window.location.href = url;
+            }
         }
-    }
-</script>
+    </script>
     <center>
         <button><a href="admin_index.php">Home</a></button>
     </center>
