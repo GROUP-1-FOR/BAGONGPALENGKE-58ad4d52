@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo 'alert("Empty Message!");';
         echo 'window.location.href = "vendor_send_report.php";';
         echo '</script>';
-    } elseif (strlen($vendor_report_message) > 255) {
+    } elseif (strlen($vendor_report_message) > 500) {
         echo '<script>';
         echo 'alert("Report Message Too Long!");';
         echo 'window.location.href = "vendor_send_report.php";';

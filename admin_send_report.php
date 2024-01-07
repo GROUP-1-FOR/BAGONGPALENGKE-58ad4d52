@@ -32,23 +32,44 @@ $connect->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Report a Problem</title>
+    <style>
+        .error {
+            color: red;
+        }
+
+        .counter {
+            font-size: 12px;
+            color: gray;
+        }
+    </style>
+
     <script>
         function validateForm() {
-            var reportMessage = document.getElementById("admin_report_message").value;
-            // Validate Report Message (not empty)
-            if (reportMessage.trim() === "") {
-                alert("Please enter a Report Message.");
+            var message = document.getElementById("admin_report_message").value;
+
+            document.getElementById("error_message").innerHTML = "";
+
+            if (message.trim() === "") {
+                document.getElementById("error_message").innerHTML = "Message is required";
+                return false;
+            } else if (message.length > 500) {
+                document.getElementById("error_message").innerHTML = "Message cannot exceed 500 characters";
                 return false;
             }
 
-            if (reportMessage.length > 255) {
-                alert("Report Message should not exceed 255 characters.");
-                return false;
-            }
+            return true;
+        }
 
-            return true; // Form is valid
+        function updateCounter(inputId, counterId, maxLength) {
+            var input = document.getElementById(inputId);
+            var counter = document.getElementById(counterId);
+            var currentChars = input.value.length;
+            var remainingChars = maxLength - currentChars;
+
+            counter.innerHTML = currentChars + '/' + maxLength;
         }
     </script>
+
 </head>
 
 <body>
@@ -60,7 +81,9 @@ $connect->close();
         <input type="text" id="admin_report_ticket" name="admin_report_ticket" value="<?php echo $formattedTicketNumber; ?>" required readonly><br />
 
         <label for="admin_report_message">Report Message</label>
-        <textarea name="admin_report_message" id="admin_report_message" cols="30" rows="5" required></textarea><br>
+        <textarea name="admin_report_message" id="admin_report_message" cols="30" rows="5" required maxlength="500" oninput="updateCounter('admin_report_message', 'message_counter', 500)"></textarea>
+        <span id="message_counter" class="counter">0/500</span>
+        <span id="error_message" class="error"></span><br>
 
         <input type="submit" value="Submit">
     </form>
