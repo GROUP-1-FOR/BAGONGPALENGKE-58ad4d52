@@ -20,14 +20,15 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         <h1>Welcome, <?php echo $admin_userid ?>! </h1>
         <?php
+        $currentDate = date('Y-m-d');
         $sql_sent_announcement = "SELECT DISTINCT announcement_title,announcement_subject,announcement_text, announcement_time FROM announcements ORDER BY announcement_id DESC";
         $result_sent_announcement = $connect->query($sql_sent_announcement);
 
         $connect->close();
 
-
         if ($result_sent_announcement->num_rows > 0) {
             while ($row = $result_sent_announcement->fetch_assoc()) {
+
         ?>
                 <h1 style="color: green;"><?php echo $row['announcement_title']; ?> </h1>
                 <h2 style="color: gray;"><?php echo $row['announcement_subject']; ?></h2>
@@ -51,6 +52,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <input type="text" id="admin_announcement_subject" name="admin_announcement_subject" required><br />
             <label for="admin_announcement">Announcement Message</label>
             <textarea name="admin_announcement" id="admin_announcement" cols="30" rows="5" required></textarea><br>
+            <label for="admin_announcement_time">Announcement Date</label>
+            <input type="date" id="admin_announcement_time" name="admin_announcement_time" min="<?php echo date('Y-m-d'); ?>" required><br>
             <input type="submit" value="Send announcement">
         </form>
 

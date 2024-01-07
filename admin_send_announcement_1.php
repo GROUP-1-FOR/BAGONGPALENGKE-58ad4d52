@@ -10,9 +10,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $announcement_title = htmlspecialchars($_POST['admin_announcement_title']);
         $announcement_subject = htmlspecialchars($_POST['admin_announcement_subject']);
         $announcement_text = htmlspecialchars($_POST["admin_announcement"]);
+        $announcement_time =  htmlspecialchars($_POST['admin_announcement_time']);
 
 
-        if (empty($announcement_title) || empty($announcement_subject) || empty($announcement_text)) {
+        if (empty($announcement_title) || empty($announcement_subject) || empty($announcement_text) || empty($announcement_time)) {
             // Handle the error (e.g., display a message or redirect with an error flag)
             echo '<script>';
             echo 'alert("All fields are required!");';
@@ -22,7 +23,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         }
 
         // Insert a message for each user
-        $sql = "INSERT INTO announcements (admin_id,announcement_title, announcement_subject, announcement_text) VALUES ('$admin_id', '$announcement_title','$announcement_subject','$announcement_text')";
+        $sql = "INSERT INTO announcements (admin_id,announcement_title, announcement_subject, announcement_text, announcement_time) VALUES ('$admin_id', '$announcement_title','$announcement_subject','$announcement_text','$announcement_time')";
         // Insert into vendor_notification table
         $notifTitle = "See New Announcement!";
         $announceValue = 1; // Set the confirm value to 1
