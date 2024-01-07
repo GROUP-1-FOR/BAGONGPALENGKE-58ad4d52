@@ -36,10 +36,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $stmtInsertNotification->execute();
 
         if ($connect->query($sql) !== TRUE) {
-            echo "Error sending announcement to vendors!" . $connect->error;
+            echo "Error Adding Announcement!" . $connect->error;
         }
         echo '<script>';
-        echo 'alert("Announcement Sent to All Market Vendors!");';
+        echo 'alert("Announcement Added!");';
         echo 'window.location.href = "admin_send_announcement.php";';
         echo '</script>';
     }

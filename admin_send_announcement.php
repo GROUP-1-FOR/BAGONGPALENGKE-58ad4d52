@@ -14,6 +14,23 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Send Announcement</title>
+
+
+        <script>
+            function editAnnouncement(announcementId) {
+                // Redirect to the edit page with the announcementId
+                window.location.href = "admin_edit_announcement.php?id=" + announcementId;
+            }
+
+            function removeAnnouncement(announcementId) {
+                // Redirect to the remove page with the announcementId
+                var confirmed = confirm("Are you sure you want to remove this announcement?");
+                if (confirmed) {
+                    window.location.href = "admin_remove_announcement.php?id=" + announcementId;
+                }
+            }
+        </script>
+
     </head>
 
     <body>
@@ -21,25 +38,28 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <h1>Welcome, <?php echo $admin_userid ?>! </h1>
         <?php
         $currentDate = date('Y-m-d');
-        $sql_sent_announcement = "SELECT DISTINCT announcement_title,announcement_subject,announcement_text, announcement_time FROM announcements ORDER BY announcement_id DESC";
+        $sql_sent_announcement = "SELECT DISTINCT announcement_id, announcement_title, announcement_subject, announcement_text, announcement_time FROM announcements ORDER BY announcement_id DESC";
         $result_sent_announcement = $connect->query($sql_sent_announcement);
-
-        $connect->close();
 
         if ($result_sent_announcement->num_rows > 0) {
             while ($row = $result_sent_announcement->fetch_assoc()) {
-
         ?>
-                <h1 style="color: green;"><?php echo $row['announcement_title']; ?> </h1>
-                <h2 style="color: gray;"><?php echo $row['announcement_subject']; ?></h2>
-                <p><?php echo $row['announcement_text']; ?></p>
-                <p><?php echo $row['announcement_time']; ?></p>
-
-        <?php }
+                <div>
+                    <hr />
+                    <h1 style="color: green;"><?php echo $row['announcement_title']; ?> </h1>
+                    <h2 style="color: gray;"><?php echo $row['announcement_subject']; ?></h2>
+                    <p><?php echo $row['announcement_text']; ?></p>
+                    <p><?php echo $row['announcement_time']; ?></p>
+                    <button type="button" onclick="editAnnouncement(<?php echo $row['announcement_id']; ?>)">Edit</button>
+                    <button type="button" onclick="removeAnnouncement(<?php echo $row['announcement_id']; ?>)">Remove</button>
+                </div>
+        <?php
+            }
         } else {
             echo "<p>No sent announcements found.</p>";
         }
 
+        $connect->close();
         ?>
 
         <h1>Send an Announcement:</h1>
