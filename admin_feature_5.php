@@ -1,4 +1,4 @@
-<?php
+admin_create_vendor_account.php<?php
 require("config.php");
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $id = $_SESSION["id"];

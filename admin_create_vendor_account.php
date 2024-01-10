@@ -62,17 +62,23 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         header("Location: admin_vendor_manage_accounts.php");
         exit();
     }
-
-
-
 ?>
 
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGN IN</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" type="text/css" href="text-style.css">
+    <link rel="stylesheet" type="text/css" href="text-positions.css">
+    <link rel="javascript" type="text/script" href="js-style.js">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-    <!DOCTYPE html>
-    <html>
-
-    <head>
-        <title>Create Vendor Account</title>
+    <title>Create Vendor Account</title>
         <script>
             function validateVendorFirstName() {
                 var vendor_name = document.getElementById("vendor_first_name").value;
@@ -194,141 +200,150 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 submitButton.disabled = !formIsValid;
             }
         </script>
-
-    </head>
-
-    <body>
-
-        <h1>Create Vendor Account, <?php echo $admin_userid  ?>! </h1>
-
-        <form action="admin_create_vendor_account_1.php" method="post" onsubmit="return validateForm()">
+</head>
 
 
-            <h2>Vendor Information</h2>
+<body>
+    <header></header>
+    <?php include 'sidebar.php'; ?>
 
-            <label for="Vendor First Name">Vendor First Name</label>
-            <input type="text" name="vendor_first_name" id="vendor_first_name" value="<?php echo isset($_SESSION['vendor_first_name']) ? $_SESSION['vendor_first_name'] : ''; ?>" required oninput="validateVendorFirstName(); updateSubmitButton()">
-            <!-- Display an error message if it exists in the session -->
-            <span style="color: red;" id="vendor_first_name_error_span">
+    <div class="flex-row">
+    <div class="create-vendor-form">
 
-                <?php
-                if (isset($_SESSION['vendor_first_name_error'])) {
-                    echo $_SESSION['vendor_first_name_error'];
-                    // Unset the session variable after displaying the error
-                    unset($_SESSION['vendor_first_name_error']);
-                }
-                ?>
-            </span>
-            <br />
-            <label for="Vendor Last Name">Vendor Last Name</label>
-            <input type="text" name="vendor_last_name" id="vendor_last_name" value="<?php echo isset($_SESSION['vendor_last_name']) ? $_SESSION['vendor_last_name'] : ''; ?>" required oninput="validateVendorLastName(); updateSubmitButton()">
-            <!-- Display an error message if it exists in the session -->
-            <span style="color: red;" id="vendor_last_name_error_span">
-
-                <?php
-                if (isset($_SESSION['vendor_last_name_error'])) {
-                    echo $_SESSION['vendor_last_name_error'];
-                    // Unset the session variable after displaying the error
-                    unset($_SESSION['vendor_last_name_error']);
-                }
-                ?>
-            </span>
-
-            <br />
-            <label for="Stall Number">Stall No:</label>
-            <input type="number" name="vendor_stall_number" value="<?php echo isset($_SESSION['vendor_stall_number']) ? $_SESSION['vendor_stall_number'] : ''; ?>" required readonly><br />
-
-            <label for="Mobile Number">Mobile Number</label>
-            <input type="tel" name="vendor_mobile_number" id="vendor_mobile_number" maxlength="11" placeholder="09XXXXXXXXX" value="<?php echo isset($_SESSION['vendor_mobile_number']) ? $_SESSION['vendor_mobile_number'] : ''; ?>" oninput="validateVendorMobileNumber(); updateSubmitButton()">
-            <!-- Display an error message if it exists in the session -->
-            <span style="color: red;" id="vendor_mobile_number_error_span">
-                <?php
-                if (isset($_SESSION['vendor_mobile_number_error'])) {
-                    echo $_SESSION['vendor_mobile_number_error'];
-                    // Unset the session variable after displaying the error
-                    unset($_SESSION['vendor_mobile_number_error']);
-                }
-                ?>
-            </span>
-
-            <br />
-            <label for="Email">Email:</label>
-            <input type="email" name="vendor_email" id="vendor_email" value="<?php echo isset($_SESSION['vendor_email']) ? $_SESSION['vendor_email'] : ''; ?>" required oninput="validateVendorEmail(); updateSubmitButton()">
-            <!-- Display an error message if it exists in the session -->
-            <span style="color: red;" id="vendor_email_error_span">
-                <?php
-                if (isset($_SESSION['vendor_email_error'])) {
-                    echo $_SESSION['vendor_email_error'];
-                    // Unset the session variable after displaying the error
-                    unset($_SESSION['vendor_email_error']);
-                }
-                ?>
-            </span>
-
-            <br />
-            <label for="Product Type">Products:</label>
-            <select name="vendor_product" required>
-                <option value="" disabled selected>Select Product Type</option>
-                <option value="Wet" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Wet') ? 'selected' : ''; ?>>Wet</option>
-                <option value="Dry" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Dry') ? 'selected' : ''; ?>>Dry</option>
-                <option value="Other" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Other') ? 'selected' : ''; ?>>Other</option>
-            </select><br />
-
-            <!--
-            <label for="Vendor Payment basis">Vendor Payment Basis:</label>
-            <select name="vendor_payment_basis" required>
-                <option value="" disabled selected>Select Payment Basis</option>
-                <option value="Daily" <?php //echo (isset($_SESSION['vendor_payment_basis']) && $_SESSION['vendor_payment_basis'] == 'Daily') ? 'selected' : ''; 
-                                        ?>>Daily</option>
-                <option value="Monthly" <?php //echo (isset($_SESSION['vendor_payment_basis']) && $_SESSION['vendor_payment_basis'] == 'Monthly') ? 'selected' : ''; 
-                                        ?>>Monthly</option>
-            </select><br />
-            -->
+<form action="admin_create_vendor_account_1.php" method="post" onsubmit="return validateForm()">
 
 
+<!-- FIRST BOX -->
+<div class="flex-row-direction">
 
 
-            <label for="vendor_first_payment_date">Select Start of Billing Period:</label>
-            <input type="date" id="vendor_first_payment_date" name="vendor_first_payment_date" value="<?php echo isset($_SESSION['vendor_first_payment_date']) ? $_SESSION['vendor_first_payment_date'] : ''; ?>" required><br />
+<div class="box-position"> 
+    <h2 class="vendor-heading">Vendor Information</h2>
 
+    <label class="title-label tl1" for="Vendor First Name">Vendor First Name:</label>
+    <input class="input-info" type="text" name="vendor_first_name" id="vendor_first_name" value="<?php echo isset($_SESSION['vendor_first_name']) ? $_SESSION['vendor_first_name'] : ''; ?>" required oninput="validateVendorFirstName(); updateSubmitButton()">
+    <!-- Di!splay an error message if it exists in the session -->
+    <span style="color: red;" id="vendor_first_name_error_span">
 
-            <br />
-            <br />
+        <?php
+        if (isset($_SESSION['vendor_first_name_error'])) {
+            echo $_SESSION['vendor_first_name_error'];
+            // Unset the session variable after displaying the error
+            unset($_SESSION['vendor_first_name_error']);
+        }
+        ?>
+    </span>
+    <br />
+    <label class="title-label tl2" for="Vendor Last Name">Vendor Last Name:</label>
+    <input class="input-info" type="text" name="vendor_last_name" id="vendor_last_name" value="<?php echo isset($_SESSION['vendor_last_name']) ? $_SESSION['vendor_last_name'] : ''; ?>" required oninput="validateVendorLastName(); updateSubmitButton()">
+    <!-- Display an error message if it exists in the session -->
+    <span style="color: red;" id="vendor_last_name_error_span">
 
+        <?php
+        if (isset($_SESSION['vendor_last_name_error'])) {
+            echo $_SESSION['vendor_last_name_error'];
+            // Unset the session variable after displaying the error
+            unset($_SESSION['vendor_last_name_error']);
+        }
+        ?>
+    </span>
 
-            <h2>Vendor Account</h2>
-            <label>Vendor User ID</label>
-            <input type="text" name="vendor_userid" value="<?php echo $new_vendor_userid = generateUserID($pdo); ?>" readonly><br />
+    <br />
+    <label class="title-label tl3" for="Stall Number">Stall No:</label>
+    <input class="input-info" type="number" name="vendor_stall_number" value="<?php echo isset($_SESSION['vendor_stall_number']) ? $_SESSION['vendor_stall_number'] : ''; ?>" required readonly><br />
 
-            <label>Password</label>
-            <input type="password" name="vendor_password" placeholder="8 characters and above" oninput="checkPasswordMatch(); updateSubmitButton()"><br />
+    <label class="title-label tl4" for="Mobile Number">Mobile Number:</label>
+    <input class="input-info" type="tel" name="vendor_mobile_number" id="vendor_mobile_number" maxlength="11" placeholder="09XXXXXXXXX" value="<?php echo isset($_SESSION['vendor_mobile_number']) ? $_SESSION['vendor_mobile_number'] : ''; ?>" oninput="validateVendorMobileNumber(); updateSubmitButton()">
+    <!-- Display an error message if it exists in the session -->
+    <span style="color: red;" id="vendor_mobile_number_error_span">
+        <?php
+        if (isset($_SESSION['vendor_mobile_number_error'])) {
+            echo $_SESSION['vendor_mobile_number_error'];
+            // Unset the session variable after displaying the error
+            unset($_SESSION['vendor_mobile_number_error']);
+        }
+        ?>
+    </span>
 
-            <label>Confirm Password</label>
-            <input type="password" name="vendor_confirm_password" required oninput="checkPasswordMatch(); updateSubmitButton()">
-            <span id="passwordMatchMessage"></span><br />
+    <br />
+    <label class="title-label tl5" for="Email">Email:</label>
+    <input class="input-info" type="email" name="vendor_email" id="vendor_email" value="<?php echo isset($_SESSION['vendor_email']) ? $_SESSION['vendor_email'] : ''; ?>" required oninput="validateVendorEmail(); updateSubmitButton()">
+    <!-- Display an error message if it exists in the session -->
+    <span style="color: red;" id="vendor_email_error_span">
+        <?php
+        if (isset($_SESSION['vendor_email_error'])) {
+            echo $_SESSION['vendor_email_error'];
+            // Unset the session variable after displaying the error
+            unset($_SESSION['vendor_email_error']);
+        }
+        ?>
+    </span>
+
+    <br />
+    <label class="title-label tl6" for="Product Type">Products:</label>
+    <select class="input-info1" name="vendor_product" required>
+        <option class="option" disabled selected>Select Product Type</option>
+        <option value="Wet" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Wet') ? 'selected' : ''; ?>>Wet</option>
+        <option value="Dry" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Dry') ? 'selected' : ''; ?>>Dry</option>
+        <option value="Other" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Other') ? 'selected' : ''; ?>>Other</option>
+    </select><br />
+
+    <!--
+    <label for="Vendor Payment basis">Vendor Payment Basis:</label>
+    <select name="vendor_payment_basis" required>
+        <option value="" disabled selected>Select Payment Basis</option>
+        <option value="Daily" <?php //echo (isset($_SESSION['vendor_payment_basis']) && $_SESSION['vendor_payment_basis'] == 'Daily') ? 'selected' : ''; 
+                                ?>>Daily</option>
+        <option value="Monthly" <?php //echo (isset($_SESSION['vendor_payment_basis']) && $_SESSION['vendor_payment_basis'] == 'Monthly') ? 'selected' : ''; 
+                                ?>>Monthly</option>
+    </select><br />
+    -->
 
 
 
-            <button type="submit" disabled>Submit</button>
-        </form>
 
-        <script>
-            function validateForm() {
-                return validateVendorFirstName() && validateVendorLastName() && validateVendorMobileNumber() && validateVendorEmail() && checkPasswordMatch();
-            }
-        </script>
+    <label class="title-label tl7" for="vendor_first_payment_date">Select Start of Billing Period:</label>
+    <input class="input-info" type="date" id="vendor_first_payment_date" name="vendor_first_payment_date" value="<?php echo isset($_SESSION['vendor_first_payment_date']) ? $_SESSION['vendor_first_payment_date'] : ''; ?>" required><br />
 
+    </div>
+    <br />
+    <br />
 
 
-        <a href="interactive_map.php?cancel=1">Back</a>
+    <!-- SECOND-BOX -->
+<div>
 
-        <a href=admin_logout.php>
-            <h1>LOGOUT</h1>
-        </a>
-    </body>
+    <h2 class="vendor-heading">Vendor Account</h2>
+    <label class="title-label tl8" >Vendor User ID:</label>
+    <input class="input-info" type="text" name="vendor_userid" value="<?php echo $new_vendor_userid = generateUserID($pdo); ?>" readonly><br />
+
+    <label class="title-label tl9">Password:</label>
+    <input class="input-info" type="password" name="vendor_password" placeholder="8 characters and above" oninput="checkPasswordMatch(); updateSubmitButton()"><br />
+
+    <label class="title-label tl10" >Confirm Password:</label>
+    <input class="input-info" type="password" name="vendor_confirm_password" required oninput="checkPasswordMatch(); updateSubmitButton()">
+    <span id="passwordMatchMessage"></span><br />
 
 
-    </html>
+
+    <button class="submit-btn"type="submit" disabled>Submit</button>
+</form>
+<script>
+    function validateForm() {
+        return validateVendorFirstName() && validateVendorLastName() && validateVendorMobileNumber() && validateVendorEmail() && checkPasswordMatch();
+    }
+</script>
+
+
+</div>
+</div>
+</div>
+</div>
+
+<footer></footer>
+</body>
+</html>
 <?php } else {
     header("location:admin_logout.php");
 }
+

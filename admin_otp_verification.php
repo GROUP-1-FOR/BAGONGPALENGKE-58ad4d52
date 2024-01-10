@@ -89,6 +89,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>SIGN IN</title>
         <link rel="stylesheet" type="text/css" href="index.css">
+        <link rel="stylesheet" type="text/css" href="text-style.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -111,26 +112,28 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <div class="otp-verification">
 
             <div class="otp-heading">
-                <h2>OTP Verification</h2>
+                <h2 class="otp-header" >OTP Verification</h2>
             </div>
-            <div>
-                <form action="" method="post">
-                    <input class="otp-box" type="text" pattern="[0-9]{6}" maxlength="6" id="otp" name="admin_otp" title="Please enter six numbers" placeholder="Enter OTP" required>
+            <div class="otp-buttons">
+                <br>
+                <form class="form-group-login" action="" method="post">
+                    <input class="input-box" type="text" pattern="[0-9]{6}" maxlength="6" id="otp" name="admin_otp" title="Please enter six numbers" placeholder="Enter OTP" required>
                     <button class="submit-button" type="submit">Verify OTP</button> <br />
                     <span style="color: red">
                         <?php
                         echo $incorrect_otp_message;
                         ?>
                     </span>
-                </form>
-                <div>
+                </form><br><br>
+
                     <form action="" method="post">
                         <button class="resend-button" type="form" id="resendOTPButton" name="admin_resend_otp">Resend OTP</button>
                         <div id="resendOTPMessage"></div>
                     </form>
-                </div>
+
+                <a class="cancel-button" href="?cancel_button=1"> CANCEL </a>
             </div>
-            <a href="?cancel_button=1"> CANCEL </a>
+
         </div>
         <footer> </footer>
     </body>

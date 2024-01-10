@@ -1,10 +1,10 @@
-<svg width="362" height="314" viewBox="0 0 362 314" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="608" height="314" viewBox="0 0 608 314" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_1284_1889)" filter="url(#filter0_d_1284_1889)">
-<path d="M170.12 305.882L178.914 305.807H355.691V0.074707H305.276V51.2552H323.043V15.4332H337.923V161.753H262.329V177.112H337.923V191.356H220.931V206.714H337.923V290.448H187.614L186.418 216.003L168.651 216.233L169.854 290.448H19.8112V161.641H61.1659V146.283H19.8112V15.4332H168.831L170.026 88.4594L187.751 88.2664L186.599 15.4332H222.53V52.5626H240.298V0.074707H2.04346V305.807H170.12V305.882Z" fill="#565B58"/>
-<path d="M117.436 161.641H169.493L170.12 198.882L187.88 198.689L186.418 109.041L168.651 109.228L169.27 146.282H117.436V161.641Z" fill="#565B58"/>
+<path d="M286.949 305.882L301.854 305.807H601.475V0.074707H516.026V51.2552H546.141V15.4332H571.361V161.753H443.236V177.112H571.361V191.356H373.07V206.714H571.361V290.448H316.6L314.574 216.003L284.459 216.233L286.497 290.448H32.1882V161.641H102.281V146.283H32.1882V15.4332H284.764L286.79 88.4594L316.832 88.2664L314.879 15.4332H375.78V52.5626H405.894V0.074707H2.07349V305.807H286.949V305.882Z" fill="#565B58"/>
+<path d="M197.654 161.641H285.887L286.949 198.882L317.051 198.689L314.573 109.041L284.459 109.228L285.508 146.282H197.654V161.641Z" fill="#565B58"/>
 </g>
 <defs>
-<filter id="filter0_d_1284_1889" x="0" y="0" width="362" height="314" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_d_1284_1889" x="0" y="0" width="608" height="314" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
 <feOffset dx="2" dy="4"/>
@@ -15,7 +15,7 @@
 <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1284_1889" result="shape"/>
 </filter>
 <clipPath id="clip0_1284_1889">
-<rect width="354" height="306" fill="white" transform="translate(2)"/>
+<rect width="600" height="306" fill="white" transform="translate(2)"/>
 </clipPath>
 </defs>
 </svg>

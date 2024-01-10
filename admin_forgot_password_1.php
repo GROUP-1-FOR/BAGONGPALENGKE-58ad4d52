@@ -67,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <header><img src="assets\images\sign-in\Santa-Rosa-Logo.svg" class="logo-src"></header>
 
   <div class="website-title-v2">
-    <h1 class="title4"> Re-enter<br>Treasury User ID</h1>
+    <h1 class="title5">Re-enter<br>Treasury User ID</h1>
   </div>
 
   <div>
@@ -76,14 +76,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <img class="back-layer-v2" src="assets\images\sign-in\back.svg" alt="back">
   </div>
 
-  <div class="login-form">
+  <div class="forgot-password-form">
     <form class="form-group" action="" onsubmit="return confirm('Proceed?');" method="post">
-        <label for="Admin User ID">Treasury User ID:</label>
-        <input type="text" name="admin_userid" value="<?php echo $userid = isset($_GET['userid']) ? htmlspecialchars($_GET['userid']) : ''; ?>" required readonly> <br />
-        <button class="login-verif" type="submit"> SUBMIT </button><br />
+        <input style="background-color:#D1D0D1;"class="input-box" type="text" name="admin_userid" placeholder="Treasury User ID" value="<?php echo $userid = isset($_GET['userid']) ? htmlspecialchars($_GET['userid']) : ''; ?>" required readonly> <br />
+        <button class="login-verif" type="submit"> ENTER </button><br />
     </form>
 
-    <a class="" href="admin_login.php"> Back</a>
+    <a class="back-button1" href="admin_login.php">  < Back </a>
   </div>
   <footer> </footer>
 </body>

@@ -84,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <header><img src="assets\images\sign-in\Santa-Rosa-Logo.svg" class="logo-src"></header>
 
   <div class="website-title-v2">
-    <h1 class="title4"> FORGOT<br>PASSWORD?</h1>
+    <h1 class="title5"> FORGOT<br>PASSWORD?</h1>
   </div>
 
   <div>
@@ -94,16 +94,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </div>
 
   <div class="login-form">
-    <h2>Forgot Password?</h2>
     <form class="form-group" action="" method="post">
-        <label for="Admin User ID">Treasury User ID:</label>
-        <input type="text" name="admin_userid" required> <br />
-        <label for="email">Email:</label>
-        <input type="email" name="admin_email" required> <br />
-        <button class="login-verif" type="submit"> SUBMIT </button><br />
+        <input class="input-box" type="text" name="admin_userid" placeholder="Treasury User ID" required> <br />
+        <input class="input-box" type="email" name="admin_email" placeholder="Email" required>
+        <button class="send-verif" type="submit"> Send Verification </button>
+        <a class="back-button1" href="admin_login.php">  < Back </a>
     </form>
 
-    <a class="" href="admin_login.php"> Back</a>
+
   </div>
   <footer> </footer>
 </body>

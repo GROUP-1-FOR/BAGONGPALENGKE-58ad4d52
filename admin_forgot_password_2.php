@@ -48,6 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
 <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>FORGOT PASSWORD</title>
   <link rel="stylesheet" type="text/css" href="index.css">
   <link rel="javascript" type="text/javascript" href="js-style.js">
@@ -107,34 +108,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <header><img src="assets\images\sign-in\Santa-Rosa-Logo.svg" class="logo-src"></header>
 
     <div class="website-title-v2">
-        <h1 class="title4">New<br>Password</h1>
-    </div>
+    <h1 class="title5"> New<br>Password</h1>
+  </div>
 
     <div>
         <img class="white-front" src="assets\images\sign-in\white-front.svg" alt="white-front">
         <img class="front-layer-v2" src="assets\images\sign-in\front.svg" alt="front">
         <img class="back-layer-v2" src="assets\images\sign-in\back.svg" alt="back">
     </div>
-    <div class="login-form">
-            <h1>New Password</h1><br />
-            <form action="" method="post" onsubmit="return confirm('Proceed?');">
-                <label for="Admin User ID">Admin User ID:</label>
-                <input type="text" name="admin_userid" value="<?php echo $userid; ?>" required readonly> <br />
+    <div class="forgot-password-form">
+            <form class="form-group" action="" method="post" onsubmit="return confirm('Proceed?');">
+        
+            <div class="flex-row">
+                <label class="label1" for="Admin User ID">Admin User ID:</label>
+                <input style="background-color:#D1D0D1;" class="input-box" type="text" name="admin_userid" value="<?php echo $userid; ?>" required readonly>
+            </div>
 
-                <label for="admin_username">New Password:</label>
-                <input type="password" name="admin_new_password" id="admin_new_password" placeholder="8 characters and above" oninput="checkPasswordMatch()"> <br />
+            <div class="flex-row">
+                <label class="label2" for="admin_username">New Password:</label>
+                <input  class="input-box" type="password" name="admin_new_password" id="admin_new_password" oninput="checkPasswordMatch()">
+            </div>
 
-                <label for="new_password">Confirm Password:</label>
-                <input type="password" name="admin_confirm_new_password" id="admin_confirm_new_password" required oninput="checkPasswordMatch()">
-                <span id="passwordMatchMessage"></span><br />
-
-                <input class="login-verif" type="submit" value="Update Password" disabled>
+            <div class="flex-row">
+            <label class="label3" for="new_password">Confirm Password:</label>
+                <input class="input-box" type="password" name="admin_confirm_new_password" id="admin_confirm_new_password" required oninput="checkPasswordMatch()">
+            </div>
+            <div class="notification">
+                <span id="passwordMatchMessage"></span>
+            </div>
+            <input class="update-password-button" type="submit" value="Update Password" disabled>
         </form>
+        
+
+
     </div>
-
-    <div><a href="admin_login.php">Back</a></div>
-
-
 </body>
 
 </html>

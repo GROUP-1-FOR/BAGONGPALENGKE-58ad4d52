@@ -61,12 +61,8 @@ input[type="password"] {
     <h2>LOGIN</h2>
 
     <form class="form-group" action="admin_login_1.php" method="post" autocomplete="off">
-      <label for="Admin User ID"> Admin User ID: </label>
-      <input type="text" name="admin_userid" id="admin_userid" required value=""> <br />
-      <label for="Password"> Password: </label>
-      
-      <input type="password" id="password" placeholder="PASSWORD" name="admin_password" id="admin_password" required value="">
-     
+      <input class="input-box" type="text" name="admin_userid" id="admin_userid" placeholder="Admin User ID" required value=""> <br />
+      <input class="input-box" type="password" id="password" placeholder="PASSWORD" name="admin_password" id="admin_password" required value="">
      
       <span style="color: red;">
         <?php
@@ -77,13 +73,11 @@ input[type="password"] {
         }
         ?>
       </span>
+      <a class="forgot-password" href="admin_forgot_password.php"> Forgot Password?</a> <br />
       <button class="login-btn" type="submit" name="admin_login_submit"> LOGIN </button>
+      <a class="back-button2" href="vendor_admin_select.php"> < Back </a>
     </form>
 
-
-
-    <a class="forgot-password" href="admin_forgot_password.php"> Forgot Password?</a> <br />
-    <a class="" href="vendor_admin_select.php"> Back</a>
   </div>
 
   <script>

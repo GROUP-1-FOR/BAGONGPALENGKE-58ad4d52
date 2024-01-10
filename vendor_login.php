@@ -34,10 +34,8 @@ require("config.php");
     <h2>LOGIN</h2>
 
     <form class="form-group" action="vendor_login_1.php" method="post" autocomplete="off">
-            <label for="Vendor User ID"> Vendor User ID: </label>
-            <input type="text" name="vendor_userid" id="vendor_userid" placeholder="VSR-00000" value="VSR-" maxlength="9" required value=""><br />
-            <label for="Password"> Password: </label>
-            <input type="password" name="vendor_password" id="vendor_password" required value=""><br />
+            <input class="input-box" type="text" name="vendor_userid" id="vendor_userid" placeholder="Vendor User ID" maxlength="9" required value=""><br />
+            <input  class="input-box" type="password" name="vendor_password" id="vendor_password"  placeholder="PASSWORD" required value="">
             <span style="color: red;">
                 <?php
                 if (isset($_SESSION['wrong_credentials'])) {
@@ -47,13 +45,12 @@ require("config.php");
                 }
                 ?>
             </span>
+            <a class="forgot-password" href="vendor_forgot_password.php"> Forgot Password?</a> <br />
             <button class="login-btn" type="submit" name="vendor_login_submit">LOGIN</button>
+            <a class="back-button2" href="vendor_admin_select.php"> < Back</a>
         </form>
 
-        <a class="forgot-password" href="vendor_forgot_password.php"> Forgot Password?</a> <br />
-        <a class="" href="vendor_admin_select.php"> Back</a>
         </div>
-
     <footer>
 
     </footer>

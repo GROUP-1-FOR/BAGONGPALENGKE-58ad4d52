@@ -41,30 +41,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 </head>
 
 <body>
-    <header><img src="assets\images\sign-in\Santa-Rosa-Logo.svg" class="logo-src"></header>
-    <div class="main-sidebar">
-        <ul class="sidebar-outside">
-        <div class="profile-container">
-        <img class="profile-pic-holder" src="assets\images\sign-in\profile-pic.svg">
-            <img class="profile-design" src="assets\images\sign-in\profile-design.png">
-        </div>
-        </ul>
-        <div class="sidebar-inside">
-            <ul class="dashboard-sidebar">
-                <li><a class="home-index" href=admin_index.php> Home </a></li>
-                <li><a class="manage-vendor" href=admin_vendor_manage_accounts.php> Manage Vendor Accounts </a></li>
-                <li><a class="report-management" href="#"> Report Management </a></li>
-                <li><a class="help-button" href="#"> Help </a></li>
-            </ul>
-        </div>
-
-        <div>
-            <a href=admin_logout.php>
-                <h1 class="logout-button">LOGOUT</h1>
-            </a>
-        </div>
-    </div>
-
+    <header></header>
+    <?php include 'sidebar.php'; ?>
     <div class="map-background"><div>
     </div class="bagong-palengke">
         <img src="assets\images\sign-in\bagong-palengke-map.svg" class="palengke-map">
@@ -113,7 +91,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         }
     }
 </script>
-    <footer></footer>
+<footer></footer>
 </body>
 </html>
 <?php } else {

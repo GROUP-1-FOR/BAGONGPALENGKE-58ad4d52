@@ -1,0 +1,28 @@
+/* HEADER STYLE */
+
+.otp-heading{
+  margin-left: 40px;
+
+}
+
+.vendor-heading{
+  color:maroon;
+  padding: 20px;
+  margin-left: 180px;
+}
+
+.admin-heading{
+  margin-left: -70px;
+  font-size: larger;
+  color:maroon;
+  font-weight:bold;
+  padding: 20px;
+}
+
+.status-heading{
+  text-wrap: nowrap;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 50px;
+  color: maroon;
+}
