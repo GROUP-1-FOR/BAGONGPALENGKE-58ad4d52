@@ -57,7 +57,7 @@ if (isset($_GET['id'])) {
         <textarea name="announcement_text" id="announcement_text" cols="30" rows="5" required><?php echo $announcement['announcement_text']; ?></textarea><br>
 
         <label for="announcement_time">Announcement Date</label>
-        <input type="date" id="announcement_time" name="announcement_time" value="<?php echo date('Y-m-d', strtotime($announcement['announcement_time'])); ?>" min="<?php echo date('Y-m-d'); ?>" required><br>
+        <input type="date" id="announcement_time" name="announcement_time" value="<?php echo date('Y-m-d', strtotime($announcement['announcement_time'])); ?>" min="<?php echo date('Y-m-d'); ?>" required onkeydown="return false"><br>
 
         <input type="submit" value="Update Announcement">
     </form>

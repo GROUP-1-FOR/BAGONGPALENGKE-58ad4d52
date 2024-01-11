@@ -107,7 +107,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     $currentDate = date('Y-m-d');
     $sql_sent_announcement = "SELECT DISTINCT announcement_id, announcement_title, announcement_subject, announcement_text, announcement_time FROM announcements ORDER BY announcement_time DESC";
     $result_sent_announcement = $connect->query($sql_sent_announcement);
-
     if ($result_sent_announcement->num_rows > 0) {
         while ($row = $result_sent_announcement->fetch_assoc()) {
     ?>
@@ -150,7 +149,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <span id="error_message" class="error"></span><br>
 
         <label for="admin_announcement_time">Announcement Date</label>
-        <input type="date" id="admin_announcement_time" name="admin_announcement_time" min="<?php echo date('Y-m-d'); ?>" required>
+        <input type="date" id="admin_announcement_time" name="admin_announcement_time" min="<?php echo date('Y-m-d'); ?>" required onkeydown="return false">
         <span id="error_date" class="error"></span><br>
 
         <input type="submit" value="Send announcement">
