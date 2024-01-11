@@ -9,7 +9,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
 
 // Retrieve announcements for the logged-in user
-$sql_messages = "SELECT * FROM announcements  ORDER BY announcement_id DESC";
+$sql_messages = "SELECT * FROM announcements  ORDER BY announcement_time DESC";
 $result_messages = $connect->query($sql_messages);
 
 $connect->close();

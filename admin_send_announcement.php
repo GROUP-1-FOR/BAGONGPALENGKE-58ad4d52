@@ -105,7 +105,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     <h1>Welcome, <?php echo $admin_userid ?>! </h1>
     <?php
     $currentDate = date('Y-m-d');
-    $sql_sent_announcement = "SELECT DISTINCT announcement_id, announcement_title, announcement_subject, announcement_text, announcement_time FROM announcements ORDER BY announcement_id DESC";
+    $sql_sent_announcement = "SELECT DISTINCT announcement_id, announcement_title, announcement_subject, announcement_text, announcement_time FROM announcements ORDER BY announcement_time DESC";
     $result_sent_announcement = $connect->query($sql_sent_announcement);
 
     if ($result_sent_announcement->num_rows > 0) {
