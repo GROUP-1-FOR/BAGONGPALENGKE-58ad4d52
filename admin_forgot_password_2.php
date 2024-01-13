@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute();
 
     if ($stmt->affected_rows > 0) {
+        include("admin_forgot_password_3.php");
         echo '<script>';
         echo 'alert("Password Updated!");';
         echo 'window.location.href = "admin_login.php";';
