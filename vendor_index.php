@@ -293,7 +293,7 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
     </a>
 
     <a href=vendor_faq.php>
-        <h1>EDIT PROFILE</h1>
+        <h1>HELP</h1>
     </a>
 
     <a href="vendor_send_report.php">
