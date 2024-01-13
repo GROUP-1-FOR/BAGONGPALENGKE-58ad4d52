@@ -100,15 +100,17 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
             if ($result->num_rows > 0) {
                 // Output data of each row
+                $counter = 1; // Initialize a counter
                 while ($row = $result->fetch_assoc()) {
-                    $question = $row["admin_faq_question"];
-                    $answer = $row["admin_faq_answer"];
+                    $question = htmlspecialchars($row["admin_faq_question"]);
+                    $answer = htmlspecialchars($row["admin_faq_answer"]);
             ?>
                     <li>
-                        <div class="question" onclick="toggleAnswer('<?php echo $question; ?>', this)"><?php echo $question; ?></div>
-                        <div class="answer" id="<?php echo $question; ?>"><?php echo $answer; ?></div>
+                        <div class="question" onclick="toggleAnswer(<?php echo $counter; ?>, this)"><?php echo $question; ?></div>
+                        <div class="answer" id="answer_<?php echo $counter; ?>"><?php echo $answer; ?></div>
                     </li>
             <?php
+                    $counter++; // Increment the counter
                 }
             } else {
                 echo "0 results";
@@ -119,13 +121,13 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         </ul>
 
         <h3><i>Select Topic</i></h3>
-        <a href=admin_index.php>
+        <a href="admin_index.php">
             <h3>Back</h3>
         </a>
 
         <script>
-            function toggleAnswer(question, element) {
-                var answer = document.getElementById(question);
+            function toggleAnswer(counter, element) {
+                var answer = document.getElementById('answer_' + counter);
                 var isOpen = answer.style.display === 'block' || getComputedStyle(answer).display === 'block';
 
                 // Close all answers
