@@ -6,16 +6,16 @@ require("config.php");
 //token expires after 5 mins
 function generateToken($length = 32, $expirationTime = 60)
 {
-    // Generate a random token
-    $token = bin2hex(random_bytes($length));
+  // Generate a random token
+  $token = bin2hex(random_bytes($length));
 
-    // Calculate expiration time (current time + expirationTime)
-    $expirationTimestamp = time() + $expirationTime;
+  // Calculate expiration time (current time + expirationTime)
+  $expirationTimestamp = time() + $expirationTime;
 
-    // Append the expiration time to the token
-    $expiringToken = $token . '|' . $expirationTimestamp;
+  // Append the expiration time to the token
+  $expiringToken = $token . '|' . $expirationTimestamp;
 
-    return $expiringToken;
+  return $expiringToken;
 }
 
 
@@ -23,48 +23,47 @@ function generateToken($length = 32, $expirationTime = 60)
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get the email address from the form
-    $email = htmlspecialchars($_POST["admin_email"]);
-    $userid = htmlspecialchars($_POST["admin_userid"]);
+  // Get the email address from the form
+  $email = htmlspecialchars($_POST["admin_email"]);
+  $userid = htmlspecialchars($_POST["admin_userid"]);
 
-    // If the email is valid, generate a unique token
+  // If the email is valid, generate a unique token
 
-    $result = mysqli_query($connect, "SELECT admin_userid, admin_email FROM admin_sign_in WHERE admin_userid = '$userid' && admin_email= '$email'");
-    $row = mysqli_fetch_assoc($result);
+  $result = mysqli_query($connect, "SELECT admin_userid, admin_email FROM admin_sign_in WHERE admin_userid = '$userid' && admin_email= '$email'");
+  $row = mysqli_fetch_assoc($result);
 
-    if (mysqli_num_rows($result) > 0) {
-        $token = generateToken();
-        $email_query = "UPDATE admin_sign_in SET admin_token = ? WHERE admin_userid = ?";
-        $stmt = mysqli_prepare($connect, $email_query);
+  if (mysqli_num_rows($result) > 0) {
+    $token = generateToken();
+    $email_query = "UPDATE admin_sign_in SET admin_token = ? WHERE admin_userid = ?";
+    $stmt = mysqli_prepare($connect, $email_query);
 
-        // Use "ss" for two string parameters
-        $stmt->bind_param("ss", $token, $userid);
+    // Use "ss" for two string parameters
+    $stmt->bind_param("ss", $token, $userid);
 
-        $stmt->execute();
+    $stmt->execute();
 
-        if ($stmt->affected_rows > 0) {
-            echo '<script>';
-            echo 'alert("View Email!");';
-            echo 'window.location.href = "admin_forgot_password_1.php?userid=' . urlencode($userid) . '";';
-            echo '</script>';
-        } else {
-            echo "Failed to send token.";
-            exit();
-        }
-
-        // Close the statement
-        $stmt->close();
+    if ($stmt->affected_rows > 0) {
+      echo '<script>';
+      echo 'alert("View Email!");';
+      echo 'window.location.href = "admin_forgot_password_1.php?userid=' . urlencode($userid) . '";';
+      echo '</script>';
     } else {
-        echo '<script>';
-        echo 'alert("Admin User Not Found!");';
-        echo 'window.location.href = "admin_forgot_password.php";';
-        echo '</script>';
+      echo "Failed to send token.";
+      exit();
     }
 
-    $connect->close();
+    // Close the statement
+    $stmt->close();
+  } else {
+    echo '<script>';
+    echo 'alert("Admin User Not Found!");';
+    echo 'window.location.href = "admin_forgot_password.php";';
+    echo '</script>';
+  }
+
+  $connect->close();
 }
 ?>
-
 <!-- HTML form for the forgot password section -->
 <!DOCTYPE html>
 <html lang="en">

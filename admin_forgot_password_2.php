@@ -1,9 +1,8 @@
 <?php
 require("config.php");
-$userid = isset($_GET['userid']) ? htmlspecialchars($_GET['userid']) : '';
+$admin_email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
     $admin_new_password = isset($_POST["admin_new_password"]) ? htmlspecialchars($_POST["admin_new_password"]) : '';
     $admin_confirm_new_password = isset($_POST["admin_confirm_new_password"]) ? htmlspecialchars($_POST["admin_confirm_new_password"]) : '';
 
@@ -17,15 +16,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $hashedPassword = password_hash($admin_new_password, PASSWORD_BCRYPT);
 
-    $password_query = "UPDATE admin_sign_in SET admin_password = ? WHERE admin_userid = ?";
+    $password_query = "UPDATE admin_sign_in SET admin_password = ? WHERE admin_email = ?";
     $stmt = mysqli_prepare($connect, $password_query);
 
     // Use "ss" for two string parameters
-    $stmt->bind_param("ss", $hashedPassword, $userid);
+    $stmt->bind_param("ss", $hashedPassword, $admin_email);
 
     $stmt->execute();
 
     if ($stmt->affected_rows > 0) {
+        include("admin_forgot_password_3.php");
         echo '<script>';
         echo 'alert("Password Updated!");';
         echo 'window.location.href = "admin_login.php";';

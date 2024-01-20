@@ -1,6 +1,45 @@
 <?php
 
-function generateAndSaveOTP($admin_id, $connect)
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+
+require 'phpmailer/src/Exception.php';
+require 'phpmailer/src/PHPMailer.php';
+require 'phpmailer/src/SMTP.php';
+
+generateAndSaveOTP($admin_userid, $connect);
+
+
+$mail = new PHPMailer(true);
+$mail->isSMTP();
+$mail->Host = 'smtp.gmail.com';
+$mail->SMTPAuth = true;
+$mail->Username = 'argojosafor@gmail.com';
+$mail->Password = 'tuymblznanvyhppt';
+
+$mail->SMTPSecure = 'ssl';
+$mail->Port = 465;
+
+$admin_email = $_SESSION["admin_email"];
+
+$mail->setFrom('argojosafor@gmail.com');
+$mail->addAddress($admin_email);
+$mail->isHTML(true);
+$mail->Subject = 'OTP Code';
+$otp_code = $_SESSION["admin_otp_message"];
+
+unset($_SESSION["admin_otp_message"]);
+
+
+$mail->Body = '<font color="#008000">' . $otp_code . "</font> is your OTP code. For your protection, do not share this code with anyone.";
+
+$mail->send();
+
+
+
+
+function generateAndSaveOTP($admin_userid, $connect)
 {
     // Generate a random 6-digit OTP
     $random_numbers = [];
@@ -10,13 +49,13 @@ function generateAndSaveOTP($admin_id, $connect)
     $admin_otp = implode('', $random_numbers);
 
     // Update the database with the generated OTP
-    $otp_query = "UPDATE admin_sign_in SET admin_otp = ? WHERE admin_id = ?";
+    $otp_query = "UPDATE admin_sign_in SET admin_otp = ? WHERE admin_userid = ?";
     $stmt = mysqli_prepare($connect, $otp_query);
 
     // Check if the statement was prepared successfully
     if ($stmt) {
         // Bind the parameters
-        mysqli_stmt_bind_param($stmt, "si", $admin_otp, $admin_id);
+        mysqli_stmt_bind_param($stmt, "ss", $admin_otp, $admin_userid);
 
         // Execute the statement
         mysqli_stmt_execute($stmt);
@@ -37,5 +76,3 @@ function generateAndSaveOTP($admin_id, $connect)
         echo "Error: " . mysqli_error($connect);
     }
 }
-
-generateAndSaveOTP($admin_id, $connect);

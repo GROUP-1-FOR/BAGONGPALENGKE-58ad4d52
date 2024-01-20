@@ -78,6 +78,19 @@ input[type="password"] {
       <a class="back-button2" href="vendor_admin_select.php"> < Back </a>
     </form>
 
+
+
+
+
+
+
+    
+
+
+
+
+
+    
   </div>
 
   <script>

@@ -2,55 +2,60 @@
 require_once "config.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $vendorId = $_POST['vendorId'];
-    $vendorName = $_POST['vendorName'];
+    $vendorIds = $_POST['vendorIds'];
 
-    // Perform removal from vendor_sign_in
-    $removeSql = "INSERT INTO vendor_archives SELECT * FROM vendor_sign_in WHERE vendor_userid = ?";
-    $removeStmt = $connect->prepare($removeSql);
-    $removeStmt->bind_param("s", $vendorId);
-    $removeResult = $removeStmt->execute();
-    $removeStmt->close();
+    foreach ($vendorIds as $vendorId) {
+        // Perform removal from vendor_sign_in
+        $removeSql = "INSERT INTO vendor_archives SELECT * FROM vendor_sign_in WHERE vendor_userid = ?";
+        $removeStmt = $connect->prepare($removeSql);
+        $removeStmt->bind_param("s", $vendorId);
+        $removeResult = $removeStmt->execute();
+        $removeStmt->close();
 
-    // If removal is successful, remove from vendor_balance
-    if ($removeResult) {
-        $balanceSql = "DELETE FROM vendor_balance WHERE vendor_userid = ?";
-        $balanceStmt = $connect->prepare($balanceSql);
-        $balanceStmt->bind_param("s", $vendorId);
-        $balanceResult = $balanceStmt->execute();
-        $balanceStmt->close();
+        // If removal is successful, remove from vendor_balance
+        if ($removeResult) {
+            $balanceSql = "DELETE FROM vendor_balance WHERE vendor_userid = ?";
+            $balanceStmt = $connect->prepare($balanceSql);
+            $balanceStmt->bind_param("s", $vendorId);
+            $balanceResult = $balanceStmt->execute();
+            $balanceStmt->close();
 
-        // If removal from vendor_balance is successful, remove from vendor_sign_in
-        if ($balanceResult) {
-            $archiveSql = "DELETE FROM vendor_sign_in WHERE vendor_userid = ?";
-            $archiveStmt = $connect->prepare($archiveSql);
-            $archiveStmt->bind_param("s", $vendorId);
-            $archiveResult = $archiveStmt->execute();
-            $archiveStmt->close();
+            // If removal from vendor_balance is successful, remove from vendor_sign_in
+            if ($balanceResult) {
+                $archiveSql = "DELETE FROM vendor_sign_in WHERE vendor_userid = ?";
+                $archiveStmt = $connect->prepare($archiveSql);
+                $archiveStmt->bind_param("s", $vendorId);
+                $archiveResult = $archiveStmt->execute();
+                $archiveStmt->close();
 
-            // If removal from vendor_sign_in is successful, remove from admin_stall_map
-            if ($archiveResult) {
-                $mapSql = "DELETE FROM admin_stall_map WHERE vendor_userid = ?";
-                $mapStmt = $connect->prepare($mapSql);
-                $mapStmt->bind_param("s", $vendorId);
-                $mapResult = $mapStmt->execute();
-                $mapStmt->close();
+                // If removal from vendor_sign_in is successful, remove from admin_stall_map
+                if ($archiveResult) {
+                    $mapSql = "DELETE FROM admin_stall_map WHERE vendor_userid = ?";
+                    $mapStmt = $connect->prepare($mapSql);
+                    $mapStmt->bind_param("s", $vendorId);
+                    $mapResult = $mapStmt->execute();
+                    $mapStmt->close();
 
-                if ($mapResult) {
-                    echo json_encode(['success' => true]);
+                    if (!$mapResult) {
+                        echo json_encode(['success' => false, 'error' => 'Error removing from admin_stall_map']);
+                        exit;
+                    }
                 } else {
-                    echo json_encode(['success' => false, 'error' => 'Error removing from admin_stall_map']);
+                    echo json_encode(['success' => false, 'error' => 'Error archiving vendor']);
+                    exit;
                 }
             } else {
-                echo json_encode(['success' => false, 'error' => 'Error archiving vendor']);
+                echo json_encode(['success' => false, 'error' => 'Error removing vendor balance']);
+                exit;
             }
         } else {
-            echo json_encode(['success' => false, 'error' => 'Error removing vendor balance']);
+            echo json_encode(['success' => false, 'error' => 'Error removing vendor']);
+            exit;
         }
-    } else {
-        echo json_encode(['success' => false, 'error' => 'Error removing vendor']);
     }
+
+    echo json_encode(['success' => true]);
+    exit;
 }
 
 $connect->close();
-?>

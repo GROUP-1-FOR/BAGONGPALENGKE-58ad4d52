@@ -1,10 +1,15 @@
 <?php
 require("config.php");
 
+//MAY CHANGES DITO PINASTE KO NA LANG WALA KANG GAGALAWIN IPAPASTE MO LANG SA LOCAL MO ITONG CODE NA NTO
+
 // Check if the user is logged in
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $admin_id = $_SESSION["id"];
     $admin_userid = $_SESSION["userid"];
+    } else {
+        header("location:admin_logout.php");
+    }
 
     // Initialize the password confirmation trial count if not set
     if (!isset($_SESSION['admin_password_confirmation_trial'])) {
@@ -91,9 +96,6 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             echo '</script>';
         }
     }
-} else {
-    header("location:admin_logout.php");
-}
 
 // Function to handle incorrect credentials
 function handleIncorrectCredentials()

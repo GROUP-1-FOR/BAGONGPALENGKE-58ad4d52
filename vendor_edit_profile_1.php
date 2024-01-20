@@ -50,6 +50,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error: " . $sql . "<br>" . $connect->error;
     }
 
+    // Insert a notification into the admin_notification table
+    $notifTitle = "Edit Profile Request";
+    $editValue = 1; // Set the confirm value to 1
+    $timestamp = date('Y-m-d H:i:s'); // Get the current timestamp
+
+    $sqlInsertNotification = "INSERT INTO admin_notification (vendor_userid, title, edit, notif_date) VALUES (?, ?, ?, ?)";
+    $stmtInsertNotification = $connect->prepare($sqlInsertNotification);
+    $stmtInsertNotification->bind_param('ssis', $vendor_userid, $notifTitle, $editValue, $timestamp);
+    $stmtInsertNotification->execute();
+
     // Close the database connection
     $connect->close();
 }

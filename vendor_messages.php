@@ -5,41 +5,54 @@ require("config.php");
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $userid = $_SESSION["userid"];
     $vendorName = ''; // Initialize vendor name
+} else {
+    header("location:vendor_logout.php");
+}
 
-    // Fetch vendor data using prepared statement
-    $sqlVendorData = "SELECT vendor_name, vendor_stall_number, vendor_userid FROM vendor_sign_in WHERE vendor_userid = ?";
-    $stmtVendorData = $connect->prepare($sqlVendorData);
-    $stmtVendorData->bind_param('s', $userid);
-    $stmtVendorData->execute();
-    $resultVendorData = $stmtVendorData->get_result();
+// Fetch vendor data using prepared statement
+$sqlVendorData = "SELECT vendor_name, vendor_stall_number, vendor_userid FROM vendor_sign_in WHERE vendor_userid = ?";
+$stmtVendorData = $connect->prepare($sqlVendorData);
+$stmtVendorData->bind_param('s', $userid);
+$stmtVendorData->execute();
+$resultVendorData = $stmtVendorData->get_result();
 
-    if ($resultVendorData->num_rows > 0) {
-        $rowVendorData = $resultVendorData->fetch_assoc();
-        $vendorName = $rowVendorData['vendor_name'];
-        $vendorStallNumber = $rowVendorData['vendor_stall_number'];
-        $vendorUserId = $rowVendorData['vendor_userid']; // New line to fetch vendor_userid
-    } else {
-        // Handle the case where the vendor data is not found or there's an issue with the database query
-        die("Vendor data not found or database query issue.");
-    }
+if ($resultVendorData->num_rows > 0) {
+    $rowVendorData = $resultVendorData->fetch_assoc();
+    $vendorName = $rowVendorData['vendor_name'];
+    $vendorStallNumber = $rowVendorData['vendor_stall_number'];
+    $vendorUserId = $rowVendorData['vendor_userid']; // New line to fetch vendor_userid
+} else {
+    // Handle the case where the vendor data is not found or there's an issue with the database query
+    die("Vendor data not found or database query issue.");
+}
 
-    // Process the form submission if the user sends a message
-    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['send_message'])) {
-        $messageText = $_POST['message_text'];
+// Process the form submission if the user sends a message
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['send_message'])) {
+    $messageText = $_POST['message_text'];
 
-        // Insert the message into the vendor_message table with the current timestamp
-        $sqlInsertMessage = "INSERT INTO vendor_messages (vendor_name, vendor_stall_number, vendor_chat, vendor_timestamp, vendor_userid) VALUES (?, ?, ?, NOW(), ?)";
-        $stmtInsertMessage = $connect->prepare($sqlInsertMessage);
-        $stmtInsertMessage->bind_param('ssss', $vendorName, $vendorStallNumber, $messageText, $vendorUserId);
-        $stmtInsertMessage->execute();
+    // Insert the message into the vendor_message table with the current timestamp
+    $sqlInsertMessage = "INSERT INTO vendor_messages (vendor_name, vendor_stall_number, vendor_chat, vendor_timestamp, vendor_userid) VALUES (?, ?, ?, NOW(), ?)";
+    $stmtInsertMessage = $connect->prepare($sqlInsertMessage);
+    $stmtInsertMessage->bind_param('ssss', $vendorName, $vendorStallNumber, $messageText, $vendorUserId);
+    $stmtInsertMessage->execute();
 
-        // Redirect to the same page after processing the form
-        header("Location: vendor_messages.php");
-        exit();
-    }
+    // Insert a notification into the admin_notification table
+    $notifTitle = "You have a Message!";
+    $messageValue = 1; // Set the confirm value to 1
+    $timestamp = date('Y-m-d H:i:s'); // Get the current timestamp
 
-    // Fetch all messages (both vendor and admin) in ascending order of timestamp
-    $sqlFetchAllMessages = "
+    $sqlInsertNotification = "INSERT INTO admin_notification (vendor_userid, vendor_name, title, message, notif_date) VALUES (?, ?, ?, ?, ?)";
+    $stmtInsertNotification = $connect->prepare($sqlInsertNotification);
+    $stmtInsertNotification->bind_param('sssis', $vendorUserId, $vendorName, $notifTitle, $messageValue, $timestamp);
+    $stmtInsertNotification->execute();
+
+    // Redirect to the same page after processing the form
+    header("Location: vendor_messages.php");
+    exit();
+}
+
+// Fetch all messages (both vendor and admin) in ascending order of timestamp
+$sqlFetchAllMessages = "
         SELECT 'vendor' as message_type, vendor_chat as message, vendor_timestamp as timestamp
         FROM vendor_messages
         WHERE vendor_name = ? AND vendor_stall_number = ?
@@ -52,86 +65,80 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         ORDER BY timestamp ASC";
 
-    $stmtFetchAllMessages = $connect->prepare($sqlFetchAllMessages);
-    $stmtFetchAllMessages->bind_param('ssss', $vendorName, $vendorStallNumber, $vendorName, $vendorStallNumber);
-    $stmtFetchAllMessages->execute();
-    $resultFetchAllMessages = $stmtFetchAllMessages->get_result();
+$stmtFetchAllMessages = $connect->prepare($sqlFetchAllMessages);
+$stmtFetchAllMessages->bind_param('ssss', $vendorName, $vendorStallNumber, $vendorName, $vendorStallNumber);
+$stmtFetchAllMessages->execute();
+$resultFetchAllMessages = $stmtFetchAllMessages->get_result();
 
 ?>
 
-    <!DOCTYPE html>
-    <html>
+<!DOCTYPE html>
+<html>
 
-    <head>
-        <title>Vendor Messages</title>
-        <style>
-            body {
-                color: maroon;
-                font-family: Arial, sans-serif;
-            }
+<head>
+    <title>Vendor Messages</title>
+    <style>
+        body {
+            color: maroon;
+            font-family: Arial, sans-serif;
+        }
 
-            #message-container {
-                max-height: 300px;
-                overflow-y: auto;
-                background-color: white;
-                /* Set your desired background color */
-                border: 1px solid maroon;
-                padding: 10px;
-                width: 60%;
-                /* Set the width to 60% */
-                margin: 0 auto;
-                /* Center the container */
-            }
+        #message-container {
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: white;
+            /* Set your desired background color */
+            border: 1px solid maroon;
+            padding: 10px;
+            width: 60%;
+            /* Set the width to 60% */
+            margin: 0 auto;
+            /* Center the container */
+        }
 
-            #message-container p {
-                margin: 0;
-            }
+        #message-container p {
+            margin: 0;
+        }
 
-            form {
-                margin-top: 10px;
-            }
+        form {
+            margin-top: 10px;
+        }
 
-            button {
-                background-color: maroon;
-                color: white;
-                padding: 5px 10px;
-                border: none;
-                cursor: pointer;
-            }
-        </style>
-    </head>
+        button {
+            background-color: maroon;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
 
-    <body>
-        <center>
-            <h1>Welcome, <?php echo $vendorName; ?>! </h1>
+<body>
+    <center>
+        <h1>Welcome, <?php echo $vendorName; ?>! </h1>
 
-            <!-- Display messages -->
-            <div id="message-container">
-                <?php
-                while ($rowMessage = $resultFetchAllMessages->fetch_assoc()) :
-                ?>
-                    <p><?php echo ucfirst($rowMessage['message_type']); ?>: <?php echo $rowMessage['message']; ?> (<?php echo $rowMessage['timestamp']; ?>)</p>
-                <?php endwhile; ?>
-            </div>
+        <!-- Display messages -->
+        <div id="message-container">
+            <?php
+            while ($rowMessage = $resultFetchAllMessages->fetch_assoc()) :
+            ?>
+                <p><?php echo ucfirst($rowMessage['message_type']); ?>: <?php echo $rowMessage['message']; ?> (<?php echo $rowMessage['timestamp']; ?>)</p>
+            <?php endwhile; ?>
+        </div>
 
-            <!-- Form to send a message -->
-            <form method="post">
-                <textarea name="message_text" rows="4" cols="50" placeholder="Type your message here"></textarea>
-                <br>
-                <button type="submit" name="send_message">Send Message</button>
-            </form>
-
+        <!-- Form to send a message -->
+        <form method="post">
+            <textarea name="message_text" rows="4" cols="50" placeholder="Type your message here"></textarea>
             <br>
-            <a href="vendor_index.php">
-                <h1>BACK</h1>
-            </a>
-        </center>
-    </body>
+            <button type="submit" name="send_message">Send Message</button>
+        </form>
 
-    </html>
+        <br>
+        <a href="vendor_index.php">
+            <h1>BACK</h1>
+        </a>
+    </center>
+</body>
 
-<?php
-} else {
-    header("location:vendor_logout.php");
-}
-?>
+</html>

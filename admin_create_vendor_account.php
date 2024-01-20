@@ -44,12 +44,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         die("Connection failed: " . $e->getMessage());
     }
 
-
-    if (isset($_GET['cancel'])) {
+    if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
         unset($_SESSION['vendor_first_name']);
         unset($_SESSION['vendor_last_name']);
         unset($_SESSION['vendor_full_name']);
-        unset($_SESSION['vendor_stall_number']);
         unset($_SESSION['vendor_mobile_number']);
         unset($_SESSION['vendor_product_type']);
         //unset($_SESSION['vendor_payment_basis']);
@@ -57,11 +55,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         unset($_SESSION['vendor_userid']);
         unset($_SESSION['vendor_hashed_password']);
         unset($_SESSION['vendor_transaction_id']);
-
+    
         // Redirect to another page after cancellation
-        header("Location: admin_vendor_manage_accounts.php");
+        header("Location: interactive_map.php");
         exit();
-    }
+        }
 ?>
 
 <!DOCTYPE html>
@@ -73,7 +71,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     <link rel="stylesheet" type="text/css" href="index.css">
     <link rel="stylesheet" type="text/css" href="text-style.css">
     <link rel="stylesheet" type="text/css" href="text-positions.css">
-    <link rel="javascript" type="text/script" href="js-style.js">
+    <!-- <link rel="javascript" type="text/script" href="js-style.js"> -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
