@@ -33,6 +33,7 @@ if ($result->num_rows > 0) {
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,11 +45,10 @@ if ($result->num_rows > 0) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
-<body>
-    <header></header>
-    <?php include 'sidebar.php'; ?>
+<header></header>
+<?php include 'sidebar.php'; ?>
 
-    <div class ="head">
+<div class="head">
 
     <img class="public-market-pic" src="assets\images\sign-in\public-market-head.svg" alt="back-layer">
 
@@ -59,50 +59,82 @@ if ($result->num_rows > 0) {
         </div>
 
         <div>
-           <p class="admin-datetime-text"> Date and Time</p>
-            <p class="admin-datetime">December 25  |  10:30 PM</p>
-          <img class="head-bottom-2" src="assets\images\sign-in\datetime-holder.svg" alt="back-layer">
+            <p class="admin-datetime-text"> Date and Time</p>
+            <p class="admin-datetime">December 25 | 10:30 PM</p>
+            <img class="head-bottom-2" src="assets\images\sign-in\datetime-holder.svg" alt="back-layer">
         </div>
 
     </div>
 
     <div class="head-bottom">
 
-    <div class="dashboard-announcement">
+        <div class="flex-column2">
+            <div class="dashboard-announcement">
 
-    <div class="flex-row-1">
-        <div>
-        <h1 class="status-heading" > Rent Status </h1>
-        <p class="index-notifs"> Paid:  </p>
-        <button class="index-notifs"> Ongoing:  </button> 
-        <button class="index-notifs"> Vacant: </button> 
+                <div class="flex-row-1">
+                    <div>
+                        <h2 class="interactive-map-header">Interactive Map</h2>
+                        <div class="status-heading">
+                            <div class=interactive-map-position>
+                                <h1 class=""> Rent <br>Status </h1>
+                            </div>
+                            <div>
+                                <p class="index-notifs"> Paid: </p>
+                                <button class="index-notifs"> Ongoing: </button>
+                                <button class="index-notifs"> Vacant: </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href=admin-map.php><img class="map-icon" src="assets\images\sign-in\map-icon.svg" alt="map"> </a>
+
+                </div>
+
+            </div>
+            <div class="dashboard-announcementv2">
+
+                <div class="flex-row-1">
+                    <div>
+                        <h2 class="notification-header">Notifications</h2>
+                        <div class="status-heading">
+                            <div class=interactive-map-position>
+                                <!-- <h1 class=""> Rent <br>Status </h1> -->
+
+                            </div>
+                            <div>
+
+                                <!-- <p class="index-notifs"> Paid: </p>
+                                <button class="index-notifs"> Ongoing: </button>
+                                <button class="index-notifs"> Vacant: </button> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <a href=admin-map.php><img class="map-icon" src="assets\images\sign-in\map-icon.svg" alt="map"> </a> -->
+
+                </div>
+
+            </div>
         </div>
-  
-        <a  href=admin-map.php><img  class="map-icon" src="assets\images\sign-in\map-icon.svg"  alt="map"> </a>
+
+        <div class="dashboard-map">
+
+            <a href=admin_vendor_manage_accounts.php><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\notif.svg" alt="Sticker" class="sticker"> NOTIFICATION </button> </a>
+            <a href=admin_send_announcement.php><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\announce.svg" alt="Sticker" class="sticker">ANNOUNCEMENTS </button> </a>
+            <a href=admin_vendor_manage_accounts.php><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\pay.svg" alt="Sticker" class="sticker"> PAYMENTS </button> </a>
+            <a href=admin_vendor_manage_accounts.php><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\messages.svg" alt="Sticker" class="sticker"> MESSAGES </button> </a>
+
+        </div>
+
+
 
     </div>
-
-    </div>
-
-
-    <div class="dashboard-map">
-    
-    <a  href=admin_vendor_manage_accounts.php><button class="index-buttons"> <img  class="icons" src="assets\images\sign-in\notif.svg"  alt="Sticker" class="sticker"> NOTIFICATION </button> </a>
-    <a  href=admin_send_announcement.php><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\announce.svg" alt="Sticker" class="sticker">ANNOUNCEMENTS </button> </a>
-    <a  href=admin_vendor_manage_accounts.php><button class="index-buttons"> <img  class="icons" src="assets\images\sign-in\pay.svg"  alt="Sticker" class="sticker"> PAYMENTS </button> </a>
-    <a  href=admin_vendor_manage_accounts.php><button class="index-buttons"> <img  class="icons" src="assets\images\sign-in\messages.svg"  alt="Sticker" class="sticker"> MESSAGES </button> </a>
-
-    </div>
-
-    
-
-    </div>
-    </div>
-
- 
+</div>
 
 
 
-    <footer></footer>
-</body>
+
+
+<footer></footer>
+
 </html>

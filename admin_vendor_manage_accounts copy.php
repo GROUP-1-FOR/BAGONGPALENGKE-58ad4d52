@@ -38,88 +38,16 @@ $connect->close();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <style>
-        .error {
-            color: red;
-        }
-
-        .counter {
-            font-size: 12px;
-            color: gray;
-        }
-    </style>
-
-    <script>
-        function validateForm() {
-            var message = document.getElementById("admin_report_message").value;
-
-            document.getElementById("error_message").innerHTML = "";
-
-            if (message.trim() === "") {
-                document.getElementById("error_message").innerHTML = "Message is required";
-                return false;
-            } else if (message.length > 500) {
-                document.getElementById("error_message").innerHTML = "Message cannot exceed 500 characters";
-                return false;
-            }
-
-            return true;
-        }
-
-        function updateCounter(inputId, counterId, maxLength) {
-            var input = document.getElementById(inputId);
-            var counter = document.getElementById(counterId);
-            var currentChars = input.value.length;
-            var remainingChars = maxLength - currentChars;
-
-            counter.innerHTML = currentChars + '/' + maxLength;
-        }
-    </script>
 </head>
 
 <body>
     <header></header>
     <?php include 'sidebar.php'; ?>
 
-    <div class="flex-row">
-        <h2 class="manage-account-header">REPORTS</h2>
 
-        <div class="report-manage">
-            <br>
-            <h1 class="admin-name-report"><?php echo $admin_userid  ?>! </h1>
-            <br>
-            <form action="admin_send_report_1.php" method="post" onsubmit="return validateForm()">
-                <div class="flex-box-row">
-
-                    <label class="text-design1" for="admin_report_ticket">Treasury ID: </label>
-                    <p class="text-design" type="text" id="admin_report_ticket" name="admin_report_ticket" required readonly>TREASURY ID HERE!</p>
-                </div>
-
-                <div class="flex-box-row">
-                    <label class="text-design1" for="admin_report_ticket">Ticket No: </label>
-                    <!-- <input type="text" id="admin_report_ticket" name="admin_report_ticket" value="<//?php echo $formattedTicketNumber; ?>" required readonly> -->
-                    <p class="text-design" type="text" id="admin_report_ticket" name="admin_report_ticket" required readonly><?php echo $formattedTicketNumber; ?></p>
-                    <br />
-                </div>
-
-                <div>
-                    <textarea class="text-box-area" placeholder="Report message..." name="admin_report_message" id="admin_report_message" cols="30" rows="5" required maxlength="500" oninput="updateCounter('admin_report_message', 'message_counter', 500)"></textarea>
-                    <span class="text-counter1" id="message_counter" class="counter">0/500</span>
-                    <span id="error_message" class="error"></span><br>
-                    <center><input class="submit-button1" type="submit" value="Send"></center>
-                </div>
-
-
-            </form>
-        </div>
-
-        <div class="flex-box1">
-        </div>
-
-        <div class="main-container">
-        </div>
-
-
+    <div class="flex-row ">
+        <h1 class="confirm-payment-text"> CONFIRM PAYMENT </h1>
+        
     </div>
 
 

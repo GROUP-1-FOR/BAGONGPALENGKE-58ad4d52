@@ -26,12 +26,18 @@ $connect->close();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Report a Problem</title>
+    <title>SIGN IN</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" type="text/css" href="text-style.css">
+    <link rel="javascript" type="text/script" href="js-style.js">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <style>
         .error {
             color: red;
@@ -69,28 +75,55 @@ $connect->close();
             counter.innerHTML = currentChars + '/' + maxLength;
         }
     </script>
-
 </head>
 
 <body>
+    <header></header>
+    <?php include 'sidebar.php'; ?>
 
-    <h1 align="center">Report a Problem </h1>
+    <div class="flex-row">
+        <h2 class="manage-account-header">REPORTS</h2>
 
-    <form action="admin_send_report_1.php" method="post" onsubmit="return validateForm()">
-        <label for="admin_report_ticket">Ticket No: </label>
-        <input type="text" id="admin_report_ticket" name="admin_report_ticket" value="<?php echo $formattedTicketNumber; ?>" required readonly><br />
+        <div class="report-manage">
+            <br>
+            <h1 class="admin-name-report"><?php echo $admin_userid  ?>! </h1>
+            <br>
+            <form action="admin_send_report_1.php" method="post" onsubmit="return validateForm()">
+                <div class="flex-box-row">
 
-        <label for="admin_report_message">Report Message</label>
-        <textarea name="admin_report_message" id="admin_report_message" cols="30" rows="5" required maxlength="500" oninput="updateCounter('admin_report_message', 'message_counter', 500)"></textarea>
-        <span id="message_counter" class="counter">0/500</span>
-        <span id="error_message" class="error"></span><br>
+                    <label class="text-design1" for="admin_report_ticket">Treasury ID: </label>
+                    <p class="text-design" type="text" id="admin_report_ticket" name="admin_report_ticket" required readonly>TREASURY ID HERE!</p>
+                </div>
 
-        <input type="submit" value="Submit">
-    </form>
+                <div class="flex-box-row">
+                    <label class="text-design1" for="admin_report_ticket">Ticket No: </label>
+                    <!-- <input type="text" id="admin_report_ticket" name="admin_report_ticket" value="<//?php echo $formattedTicketNumber; ?>" required readonly> -->
+                    <p class="text-design" type="text" id="admin_report_ticket" name="admin_report_ticket" required readonly><?php echo $formattedTicketNumber; ?></p>
+                    <br />
+                </div>
 
-    <a href=admin_index.php>
-        <h1>BACK</h1>
-    </a>
+                <div>
+                    <textarea class="text-box-area" placeholder="Report message..." name="admin_report_message" id="admin_report_message" cols="30" rows="5" required maxlength="500" oninput="updateCounter('admin_report_message', 'message_counter', 500)"></textarea>
+                    <span class="text-counter1" id="message_counter" class="counter">0/500</span>
+                    <span id="error_message" class="error"></span><br>
+                    <center><input class="submit-button1" type="submit" value="Send"></center>
+                </div>
+
+
+            </form>
+        </div>
+
+        <div class="flex-box1">
+        </div>
+
+        <div class="main-container">
+        </div>
+
+
+    </div>
+
+
+    <footer></footer>
 </body>
 
 </html>

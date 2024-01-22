@@ -3,65 +3,45 @@
 require("config.php");
 
 
-//token expires after 5 mins
-function generateToken($length = 32, $expirationTime = 60)
-{
-    // Generate a random token
-    $token = bin2hex(random_bytes($length));
-
-    // Calculate expiration time (current time + expirationTime)
-    $expirationTimestamp = time() + $expirationTime;
-
-    // Append the expiration time to the token
-    $expiringToken = $token . '|' . $expirationTimestamp;
-
-    return $expiringToken;
-}
-
-
 // Function to send email with the password reset link
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get the email address from the form
-    $email = htmlspecialchars($_POST["vendor_email"]);
-    $userid = htmlspecialchars($_POST["vendor_userid"]);
+  // Get the email address from the form
+  $email = htmlspecialchars($_POST["vendor_email"]);
 
-    // If the email is valid, generate a unique token
 
-    $result = mysqli_query($connect, "SELECT vendor_userid, vendor_email FROM vendor_sign_in WHERE vendor_userid = '$userid' && vendor_email= '$email'");
-    $row = mysqli_fetch_assoc($result);
+  function endsWith($haystack, $needle)
+  {
+    return substr($haystack, -strlen($needle)) === $needle;
+  }
 
-    if (mysqli_num_rows($result) > 0) {
-        $token = generateToken();
-        $email_query = "UPDATE vendor_sign_in SET vendor_token = ? WHERE vendor_userid = ?";
-        $stmt = mysqli_prepare($connect, $email_query);
+  //server side validation
+  if (!filter_var($email, FILTER_VALIDATE_EMAIL) || !endsWith($email, "@gmail.com")) {
+    echo '<script>';
+    echo 'alert("Invalid Email!");';
+    echo 'window.location.href = "vendor_forgot_password.php";';
+    echo '</script>';
+  }
 
-        // Use "ss" for two string parameters
-        $stmt->bind_param("ss", $token, $userid);
+  // If the email is valid, generate a unique token
+  $result = mysqli_query($connect, "SELECT vendor_email FROM vendor_sign_in WHERE vendor_email= '$email'");
+  $row = mysqli_fetch_assoc($result);
 
-        $stmt->execute();
+  if (mysqli_num_rows($result) > 0) {
+    include('vendor_forgot_password_1.php');
+    echo '<script>';
+    echo 'alert("Token sent to ' . $email . '");';  // Corrected concatenation
+    echo 'window.location.href = "vendor_token_verification_forgot_password.php?email=' . urlencode($email) . '";';
+    echo '</script>';
+  } else {
+    echo '<script>';
+    echo 'alert("Vendor User Not Found!");';
+    echo 'window.location.href = "vendor_forgot_password.php";';
+    echo '</script>';
+  }
 
-        if ($stmt->affected_rows > 0) {
-            echo '<script>';
-            echo 'alert("View Email!");';
-            echo 'window.location.href = "vendor_forgot_password_1.php?userid=' . urlencode($userid) . '";';
-            echo '</script>';
-        } else {
-            echo "Failed to send token.";
-            exit();
-        }
-
-        // Close the statement
-        $stmt->close();
-    } else {
-        echo '<script>';
-        echo 'alert("Vendor User Not Found!");';
-        echo 'window.location.href = "vendor_forgot_password.php";';
-        echo '</script>';
-    }
-
-    $connect->close();
+  $connect->close();
 }
 ?>
 
@@ -79,6 +59,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <script>
+    //client side validation
+    function validateEmail() {
+      // Get the email input value
+      var emailInput = document.forms["email_form"]["vendor_email"].value;
+
+      // Validate the email format using a regular expression
+      var emailRegex = /^[^\s@]+@gmail\.com$/;
+
+      // Get the element to display validation messages
+      var messageElement = document.getElementById("emailValidationMessage");
+
+      // Display validation message
+      if (emailRegex.test(emailInput)) {
+        messageElement.innerHTML = "Valid email address";
+        messageElement.style.color = "green";
+        // Enable the submit button
+        document.getElementById("submitBtn").disabled = false;
+      } else {
+        messageElement.innerHTML = "Only '@gmail.com' is accepted";
+        messageElement.style.color = "red";
+        // Disable the submit button
+        document.getElementById("submitBtn").disabled = true;
+      }
+    }
+  </script>
 </head>
 
 <body class="bagongpgalengke-v2">
@@ -95,14 +101,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </div>
 
   <div class="login-form">
+
     <form class="form-group" action="" method="post">
-                <input class="input-box" type="text" name="vendor_userid" placeholder="VSR-00000" placeholder="Vendor User ID" maxlength="9" required value=""><br />
-                <input class="input-box" type="email" name="vendor_email" placeholder="Email" required>
-                <button class="send-verif" type="submit"> Send Verification </button>
-                <a class="back-button1" href="admin_login.php">  < Back </a>
-      </form>
+      <input class="input-box" type="email" name="vendor_email" maxlength="254" oninput="validateEmail()" placeholder="Email" required>
+      <input class="send-verif" type="submit" id="submitBtn" value="Send Verification">
 
-
+      <a class="back-button1" href="admin_login.php">
+        < Back </a>
+    </form>
   </div>
   <footer> </footer>
 </body>
