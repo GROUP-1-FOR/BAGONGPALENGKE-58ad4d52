@@ -29,12 +29,6 @@ if (!$result) {
             width: 100%;
         }
 
-        th,
-        td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
 
         th {
             background-color: #f2f2f2;

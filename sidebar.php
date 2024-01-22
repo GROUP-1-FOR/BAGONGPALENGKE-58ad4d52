@@ -15,31 +15,31 @@
 
     <div class="main-sidebar">
         <ul class="sidebar-outside">
-        <div class="profile-container">
-        <img class="logo-holder" src="assets\images\sign-in\Santa-Rosa-Logo.svg">
-            <img class="profile-design" src="assets\images\sign-in\profile-design.png">
-        </div>
+            <div class="profile-container">
+                <img class="logo-holder" src="assets\images\sign-in\Santa-Rosa-Logo.svg">
+                <img class="profile-design" src="assets\images\sign-in\profile-design.png">
+            </div>
         </ul>
         <div class="sidebar-inside">
             <ul class="dashboard-sidebar">
-                
-            <li><a  href=admin_index.php > 
-                <button class="home-index" > Home </button> 
-            </a></li>
-            <li><a  href=admin_vendor_manage_accounts.php> 
-                <button class="manage-vendor"> Vendor Accounts </button> 
-             </a></li>
-            <li><a  href="admin_send_report.php">
-                 <button class="report-management"> Management  </button>
-                </a></li>
-            <li><a href="admin_faq.php"> 
-                <button class="help-button" > Help </button>
-             </a></li>
+
+                <li><a href=admin_index.php>
+                        <button class="home-index"> Home </button>
+                    </a></li>
+                <li><a href=admin_vendor_manage_accounts.php>
+                        <button class="manage-vendor"> Manage Accounts </button>
+                    </a></li>
+                <li><a href="admin_send_report.php">
+                        <button class="report-management"> Report </button>
+                    </a></li>
+                <li><a href="admin_faq.php">
+                        <button class="help-button"> Help </button>
+                    </a></li>
             </ul>
         </div>
 
         <a class="signout-button" href=admin_logout.php>
-            <img class="signout-icon"  src="assets\images\sign-in\signout-icon.svg">
+            <img class="signout-icon" src="assets\images\sign-in\signout-icon.svg">
             <h1 class="signout-text">Sign out</h1>
         </a>
     </div>

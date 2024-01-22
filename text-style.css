@@ -1,28 +1,37 @@
 /* HEADER STYLE */
 
-.otp-heading{
+.s1 {
+  width: 100px !important;
+}
+.otp-heading {
   margin-left: 40px;
-
 }
 
-.vendor-heading{
-  color:maroon;
+.vendor-heading {
+  color: maroon;
   padding: 20px;
   margin-left: 180px;
 }
 
-.admin-heading{
+.admin-heading {
   margin-left: -70px;
   font-size: larger;
-  color:maroon;
-  font-weight:bold;
+  color: maroon;
+  font-weight: bold;
   padding: 20px;
 }
 
-.status-heading{
+.status-heading {
   text-wrap: nowrap;
   margin-top: 20px;
   margin-bottom: 20px;
   margin-left: 50px;
   color: maroon;
+}
+
+.admin-name-report {
+  margin-left: 30px;
+  color: maroon;
+  font-weight: bolder;
+  font-size: 1200;
 }

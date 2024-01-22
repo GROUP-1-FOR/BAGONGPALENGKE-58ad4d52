@@ -6,14 +6,14 @@ $resultFetchAdminUserId = mysqli_query($connect, $select_query_FetchAdminUserId)
 $rowFetchAdminUserId = mysqli_fetch_assoc($resultFetchAdminUserId);
 
 if ($rowFetchAdminUserId) {
-    // Admin user found, you can access $rowFetchAdminUserId['admin_userid'] for further processing
-    $admin_userid = $rowFetchAdminUserId['admin_userid'];
+  // Admin user found, you can access $rowFetchAdminUserId['admin_userid'] for further processing
+  $admin_userid = $rowFetchAdminUserId['admin_userid'];
 } else {
-    // Admin user not found, display alert and redirect
-    echo '<script>';
-    echo 'alert("Admin User Not Found!");';
-    echo 'window.location.href = "admin_forgot_password.php";';
-    echo '</script>';
+  // Admin user not found, display alert and redirect
+  echo '<script>';
+  echo 'alert("Admin User Not Found!");';
+  echo 'window.location.href = "admin_forgot_password.php";';
+  echo '</script>';
 }
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -53,41 +53,41 @@ $mail->send();
 
 function generateAndSaveToken($admin_userid, $connect)
 {
-    // Generate a random 6-character alphanumeric token
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $token_length = 6;
-    $admin_token = '';
+  // Generate a random 6-character alphanumeric token
+  $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  $token_length = 6;
+  $admin_token = '';
 
-    for ($i = 0; $i < $token_length; $i++) {
-        $admin_token .= $characters[rand(0, strlen($characters) - 1)];
+  for ($i = 0; $i < $token_length; $i++) {
+    $admin_token .= $characters[rand(0, strlen($characters) - 1)];
+  }
+
+  // Update the database with the generated token
+  $token_query = "UPDATE admin_sign_in SET admin_token = ? WHERE admin_userid = ?";
+  $stmt = mysqli_prepare($connect, $token_query);
+
+  // Check if the statement was prepared successfully
+  if ($stmt) {
+    // Bind the parameters
+    mysqli_stmt_bind_param($stmt, "ss", $admin_token, $admin_userid);
+
+    // Execute the statement
+    mysqli_stmt_execute($stmt);
+
+    $admin_token_message = $admin_token;
+    $_SESSION['reset_password_token'] = $admin_token_message;
+
+    // Check for success or failure
+    if (mysqli_stmt_affected_rows($stmt) == 0) {
+      echo "Failed to Generate Token!";
+      exit();
     }
 
-    // Update the database with the generated token
-    $token_query = "UPDATE admin_sign_in SET admin_token = ? WHERE admin_userid = ?";
-    $stmt = mysqli_prepare($connect, $token_query);
-
-    // Check if the statement was prepared successfully
-    if ($stmt) {
-        // Bind the parameters
-        mysqli_stmt_bind_param($stmt, "ss", $admin_token, $admin_userid);
-
-        // Execute the statement
-        mysqli_stmt_execute($stmt);
-
-        $admin_token_message = $admin_token;
-        $_SESSION['reset_password_token'] = $admin_token_message;
-
-        // Check for success or failure
-        if (mysqli_stmt_affected_rows($stmt) == 0) {
-            echo "Failed to Generate Token!";
-            exit();
-        }
-
-        // Close the statement
-        mysqli_stmt_close($stmt);
-    } else {
-        echo "Error: " . mysqli_error($connect);
-    }
+    // Close the statement
+    mysqli_stmt_close($stmt);
+  } else {
+    echo "Error: " . mysqli_error($connect);
+  }
 }
 
 ?>
@@ -120,12 +120,14 @@ function generateAndSaveToken($admin_userid, $connect)
 
   <div class="forgot-password-form">
     <form class="form-group" action="" onsubmit="return confirm('Proceed?');" method="post">
-        <input style="background-color:#D1D0D1;"class="input-box" type="text" name="admin_userid" placeholder="Treasury User ID" value="<?php echo $userid = isset($_GET['userid']) ? htmlspecialchars($_GET['userid']) : ''; ?>" required readonly> <br />
-        <button class="login-verif" type="submit"> ENTER </button><br />
+      <input style="background-color:#D1D0D1;" class="input-box" type="text" name="admin_userid" placeholder="Treasury User ID" value="<?php echo $userid = isset($_GET['userid']) ? htmlspecialchars($_GET['userid']) : ''; ?>" required readonly> <br />
+      <button class="login-verif" type="submit"> ENTER </button><br />
     </form>
 
-    <a class="back-button1" href="admin_login.php">  < Back </a>
+    <a class="back-button1" href="admin_login.php">
+      < Back </a>
   </div>
   <footer> </footer>
 </body>
+
 </html>
