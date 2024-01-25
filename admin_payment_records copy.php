@@ -16,6 +16,7 @@ if (!$result) {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html>
 
@@ -95,6 +96,10 @@ if (!$result) {
 
     </div>
     <button class="archive-button" onclick="requestAccess()">Request Access for Archive</button>
+
+    <a href=admin_confirmpay.php>
+        <h1>BACK</h1>
+    </a>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         function requestAccess() {

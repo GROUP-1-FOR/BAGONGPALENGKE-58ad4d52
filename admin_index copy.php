@@ -1,219 +1,147 @@
 <?php
-require_once "config.php";
-
+require("config.php");
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $admin_id = $_SESSION["id"];
     $admin_userid = $_SESSION["userid"];
+} else {
+    header("location:admin_logout.php");
+}
 
-    // Fetch data from the database
-    $sql = "SELECT vendor_userid, vendor_name FROM vendor_sign_in";
-    $result = $connect->query($sql);
+// Fetch admin_name from the database
+$admin_info_query = "SELECT admin_name FROM admin_sign_in WHERE admin_id = '$admin_id' LIMIT 1";
+$admin_info_result = $connect->query($admin_info_query);
 
-    // Function to handle the search
-    if (isset($_GET['search'])) {
-        $searchTerm = $_GET['search'];
-        // Use a prepared statement to prevent SQL injection
-        $sql = "SELECT vendor_userid, vendor_name FROM vendor_sign_in WHERE vendor_name LIKE ? OR vendor_userid LIKE ?";
-        $stmt = $connect->prepare($sql);
-        // Bind parameters
-        $searchParam = "%" . $searchTerm . "%";
-        $stmt->bind_param("ss", $searchParam, $searchParam);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $stmt->close();
+if ($admin_info_result->num_rows > 0) {
+    $admin_info = $admin_info_result->fetch_assoc();
+    $admin_name = $admin_info['admin_name'];
+
+    // Store admin_name in the session
+    $_SESSION["admin_name"] = $admin_name;
+}
+
+// Check if the vendor_name and vendor_stall_number are set in the URL
+if (isset($_GET['vendor_name']) && isset($_GET['vendor_stall_number'])) {
+    $recipient = $_GET['vendor_name'];
+    $stall_number = $_GET['vendor_stall_number'];
+
+    // Fetch the vendor_userid based on vendor_name and vendor_stall_number
+    $vendor_userid_query = "SELECT vendor_userid FROM vendor_sign_in WHERE vendor_name = '$recipient' AND vendor_stall_number = '$stall_number' LIMIT 1";
+    $vendor_userid_result = $connect->query($vendor_userid_query);
+
+    if ($vendor_userid_result->num_rows > 0) {
+        $vendor_userid_row = $vendor_userid_result->fetch_assoc();
+        $vendor_userid = $vendor_userid_row['vendor_userid'];
+    } else {
+        // Handle the case where vendor_userid is not found
+        die("Error: Vendor userid not found.");
     }
 
-    // Function to fetch search suggestions
-    function getSearchSuggestions($searchTerm)
-    {
-        global $connect;
-        $sql = "SELECT vendor_userid, vendor_name FROM vendor_sign_in WHERE vendor_name LIKE ? OR vendor_userid LIKE ?";
-        $stmt = $connect->prepare($sql);
-        // Bind parameters
-        $searchParam = "%" . $searchTerm . "%";
-        $stmt->bind_param("ss", $searchParam, $searchParam);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $suggestions = array();
-        while ($row = $result->fetch_assoc()) {
-            $suggestions[] = $row;
-        }
-        return $suggestions;
+    // Fetch messages for the selected vendor, both vendor and admin messages
+    $messages_query = "
+        SELECT 'vendor' as message_type, vendor_chat as message, vendor_timestamp as timestamp
+        FROM vendor_messages
+        WHERE vendor_userid = '$vendor_userid' AND vendor_name = '$recipient' AND vendor_stall_number = '$stall_number'
+        
+        UNION ALL
+        
+        SELECT 'admin' as message_type, admin_reply as message, admin_timestamp as timestamp
+        FROM admin_messages
+        WHERE vendor_userid = '$vendor_userid' AND vendor_name = '$recipient' AND vendor_stall_number = '$stall_number'
+        
+        ORDER BY timestamp ASC";
+
+    // Execute the query and handle errors
+    $messages_result = $connect->query($messages_query);
+    if (!$messages_result) {
+        die("Error executing the query: " . $connect->error);
     }
+
 ?>
 
     <!DOCTYPE html>
     <html>
 
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>SIGN IN</title>
-        <link rel="stylesheet" type="text/css" href="index.css">
-        <link rel="stylesheet" type="text/css" href="text-style.css">
-        <link rel="stylesheet" type="text/css" href="box-style.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        <title>Messages for <?php echo $recipient; ?></title>
+        <style>
+            body {
+                background-color: white;
+                color: maroon;
+                font-family: Arial, sans-serif;
+                margin: 20px;
+            }
+
+            h1 {
+                color: maroon;
+            }
+
+            #message-container {
+                max-height: 300px;
+                /* Adjust the max-height as needed */
+                overflow-y: auto;
+                background-color: white;
+                border: 1px solid maroon;
+                padding: 10px;
+            }
+
+            #message-container p {
+                margin: 0;
+            }
+
+            form {
+                margin-top: 10px;
+            }
+
+            button {
+                background-color: maroon;
+                color: white;
+                padding: 5px 10px;
+                border: none;
+                cursor: pointer;
+            }
+        </style>
     </head>
 
     <body>
-        <header></header>
-        <?php include 'sidebar.php'; ?>
+        <center>
+            <h1>Messages for <?php echo $recipient; ?></h1>
 
-        <h2>Manage Vendor Accounts</h2>
-        <div class="flex-box">
-            <main class="main-container">
-                <!-- Search form -->
-                <form id="searchForm" method="get">
-                    <label for="search">Search:</label>
-                    <input type="text" id="search" name="search" placeholder="Enter vendor name" oninput="showSuggestions()">
-                    <input type="submit" value="Search">
-                    <div id="autocomplete"></div>
-                </form>
+            <!-- Display messages -->
+            <div id="message-container">
+                <?php
+                // Display messages
+                while ($message_row = $messages_result->fetch_assoc()) {
+                    $message_type = ucfirst($message_row['message_type']);
+                    $message_text = $message_row['message'];
+                    $message_timestamp = $message_row['timestamp'];
 
-                <table>
-                    <tr>
-                        <th>Vendor Information</th>
-                        <th>Action</th>
-                    </tr>
+                    echo "<p>$message_type: $message_text</p>";
+                    echo "<p>Timestamp: $message_timestamp</p>";
+                    echo "-----------------------";
+                }
+                ?>
+            </div>
 
-                    <?php
-                    // Function to check if vendor is editable
-                    function isVendorEditable($vendorId)
-                    {
-                        global $connect;
-
-                        // Check if vendor_userid exists in vendor_edit_profile table and vendor_edit column is equal to 0
-                        $sql = "SELECT vendor_userid FROM vendor_edit_profile WHERE vendor_userid = ? AND vendor_edit = 0";
-                        $stmt = $connect->prepare($sql);
-                        $stmt->bind_param("s", $vendorId);
-                        $stmt->execute();
-                        $stmt->store_result();
-                        $rowCount = $stmt->num_rows;
-                        $stmt->close();
-
-                        return $rowCount > 0;
-                    }
-
-                    // Display data in a table
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . $row["vendor_name"] . "<br>Vendor ID: " . $row["vendor_userid"] . "</td>";
-                            echo "<td>";
-
-                            // Check if vendor_userid exists in vendor_edit_profile table and vendor_edit column is equal to 0
-                            $editButtonVisible = isVendorEditable($row["vendor_userid"]);
-
-                            if ($editButtonVisible) {
-                                echo "<button onclick='editVendor(\"" . $row["vendor_userid"] . "\")'>Edit</button>";
-                            }
-
-                            echo "<button onclick='removeVendor(\"" . $row["vendor_userid"] . "\")'>Remove</button>";
-                            echo "</td>";
-                            echo "</tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='2'>No vendors found</td></tr>";
-                    }
-
-
-                    ?>
-
-                </table>
-
-
-                <!--Button to add vendors -->
-                <button id="addButton" onclick="redirectToAddVendors()">Add Vendor (+)</button>
-                <a href=admin_index.php><button id="Button">Back</button></a>
-
-                <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-                <script>
-                    function editVendor(vendorId) {
-                        window.location.href = 'admin_edit_vendor.php?vendor_userid=' + encodeURIComponent(vendorId);
-                    }
-
-                    function removeVendor(vendorId) {
-                        // Ask for user confirmation
-                        var confirmation = confirm("Are you sure you want to remove this vendor?");
-                        if (confirmation) {
-                            // User confirmed, make AJAX request to remove vendor
-                            $.ajax({
-                                url: 'remove_vendor.php', // Replace with the actual PHP file to handle removal
-                                type: 'POST',
-                                data: {
-                                    vendorId: vendorId
-                                },
-                                success: function(data) {
-                                    // If removal from the database is successful, remove the corresponding row from the table
-                                    if (data.success) {
-                                        var rowToRemove = $("button[data-vendor-id='" + vendorId + "']").closest('tr');
-                                        rowToRemove.remove();
-                                    } else {
-                                        console.error('Error removing vendor:', data.error);
-                                    }
-                                },
-                                error: function(error) {
-                                    console.error('Error removing vendor:', error);
-                                }
-                            });
-                        }
-                    }
-
-                    function redirectToAddVendors() {
-                        window.location.href = 'interactive_map.php';
-                    }
-
-
-                    function showSuggestions() {
-                        const searchInput = document.getElementById('search');
-                        const autocompleteContainer = document.getElementById('autocomplete');
-
-                        if (searchInput.value.length === 0) {
-                            autocompleteContainer.innerHTML = '';
-                            return;
-                        }
-
-                        // Simulate an AJAX request to get search suggestions
-                        const searchTerm = searchInput.value;
-                        $.ajax({
-                            url: 'search_get_suggestions.php', // Replace with the actual PHP file to handle suggestions
-                            type: 'GET',
-                            data: {
-                                search: searchTerm
-                            },
-                            success: function(data) {
-                                autocompleteContainer.innerHTML = '';
-                                data.forEach(suggestion => {
-                                    const suggestionDiv = document.createElement('div');
-                                    suggestionDiv.innerHTML = suggestion.vendor_name + ' (ID: ' + suggestion.vendor_userid + ')';
-                                    suggestionDiv.onclick = function() {
-                                        searchInput.value = suggestion.vendor_name;
-                                        autocompleteContainer.innerHTML = '';
-                                    };
-                                    autocompleteContainer.appendChild(suggestionDiv);
-                                });
-                            },
-                            error: function(error) {
-                                console.error('Error fetching suggestions:', error);
-                            }
-                        });
-                    }
-                </script>
+            <!-- Reply Form -->
+            <form action="process_admin_reply.php" method="post">
+                <input type="hidden" name="admin_name" value="<?php echo $_SESSION["admin_name"]; ?>">
+                <input type="hidden" name="recipient" value="<?php echo $recipient; ?>">
+                <input type="hidden" name="stall_number" value="<?php echo $stall_number; ?>">
+                <label for="admin_reply">Admin Reply:</label>
+                <textarea name="admin_reply" id="admin_reply" required></textarea>
+                <br>
+                <button type="submit">Reply</button>
+            </form>
+            <br>
+            <!-- Back button -->
+            <a href='admin_messages_preview.php'><button>Back</button></a>
     </body>
-    </main>
-    </div>
-
-
-    <footer></footer>
-    </body>
+    </center>
 
     </html>
+
 <?php
-    // Close the database connection
-    $connect->close();
 } else {
-    header("location:admin_logout.php");
+    // Redirect to messages preview if vendor_name or vendor_stall_number is not set
+    header("location:admin_messages_preview.php");
 }
-?>

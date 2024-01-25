@@ -119,10 +119,10 @@ if ($result->num_rows > 0) {
 
         <div class="dashboard-map">
 
-            <a href=admin_vendor_manage_accounts.php><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\notif.svg" alt="Sticker" class="sticker"> NOTIFICATION </button> </a>
+            <a href=admin_vendor_manage_accounts.php><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\payment-record.svg" alt="Sticker" class="sticker"> PAYMENT RECORDS </button> </a>
             <a href=admin_send_announcement.php><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\announce.svg" alt="Sticker" class="sticker">ANNOUNCEMENTS </button> </a>
-            <a href=admin_vendor_manage_accounts.php><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\pay.svg" alt="Sticker" class="sticker"> PAYMENTS </button> </a>
-            <a href=admin_vendor_manage_accounts.php><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\messages.svg" alt="Sticker" class="sticker"> MESSAGES </button> </a>
+            <a href=admin_confirmpay.php><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\pay.svg" alt="Sticker" class="sticker"> PAYMENTS </button> </a>
+            <a href=admin_messages.php><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\messages.svg" alt="Sticker" class="sticker"> INBOX </button> </a>
 
         </div>
 
