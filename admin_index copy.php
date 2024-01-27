@@ -1,5 +1,7 @@
 <?php
 require("config.php");
+
+//Check if user is logged in
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $admin_id = $_SESSION["id"];
     $admin_userid = $_SESSION["userid"];
@@ -7,141 +9,131 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     header("location:admin_logout.php");
 }
 
-// Fetch admin_name from the database
-$admin_info_query = "SELECT admin_name FROM admin_sign_in WHERE admin_id = '$admin_id' LIMIT 1";
-$admin_info_result = $connect->query($admin_info_query);
+include('admin_login_time.php');
 
-if ($admin_info_result->num_rows > 0) {
-    $admin_info = $admin_info_result->fetch_assoc();
-    $admin_name = $admin_info['admin_name'];
+$sql = "SELECT admin_name FROM admin_sign_in WHERE admin_userid = '$admin_userid'";
 
-    // Store admin_name in the session
-    $_SESSION["admin_name"] = $admin_name;
+// Execute the query
+$result = $connect->query($sql);
+$admin_name = "";
+$admin_name_error = "";
+
+// Check if any rows were returned
+if ($result->num_rows > 0) {
+    // Output data for each row
+    while ($row = $result->fetch_assoc()) {
+        $admin_name = $row['admin_name'];
+    }
+} else {
+    $admin_name_error = "No results found for user ID $admin_userId";
 }
 
-// Check if the vendor_name and vendor_stall_number are set in the URL
-if (isset($_GET['vendor_name']) && isset($_GET['vendor_stall_number'])) {
-    $recipient = $_GET['vendor_name'];
-    $stall_number = $_GET['vendor_stall_number'];
-
-    // Fetch the vendor_userid based on vendor_name and vendor_stall_number
-    $vendor_userid_query = "SELECT vendor_userid FROM vendor_sign_in WHERE vendor_name = '$recipient' AND vendor_stall_number = '$stall_number' LIMIT 1";
-    $vendor_userid_result = $connect->query($vendor_userid_query);
-
-    if ($vendor_userid_result->num_rows > 0) {
-        $vendor_userid_row = $vendor_userid_result->fetch_assoc();
-        $vendor_userid = $vendor_userid_row['vendor_userid'];
-    } else {
-        // Handle the case where vendor_userid is not found
-        die("Error: Vendor userid not found.");
-    }
-
-    // Fetch messages for the selected vendor, both vendor and admin messages
-    $messages_query = "
-        SELECT 'vendor' as message_type, vendor_chat as message, vendor_timestamp as timestamp
-        FROM vendor_messages
-        WHERE vendor_userid = '$vendor_userid' AND vendor_name = '$recipient' AND vendor_stall_number = '$stall_number'
-        
-        UNION ALL
-        
-        SELECT 'admin' as message_type, admin_reply as message, admin_timestamp as timestamp
-        FROM admin_messages
-        WHERE vendor_userid = '$vendor_userid' AND vendor_name = '$recipient' AND vendor_stall_number = '$stall_number'
-        
-        ORDER BY timestamp ASC";
-
-    // Execute the query and handle errors
-    $messages_result = $connect->query($messages_query);
-    if (!$messages_result) {
-        die("Error executing the query: " . $connect->error);
-    }
 
 ?>
 
-    <!DOCTYPE html>
-    <html>
+<!DOCTYPE html>
+<html>
 
-    <head>
-        <title>Messages for <?php echo $recipient; ?></title>
-        <style>
-            body {
-                background-color: white;
-                color: maroon;
-                font-family: Arial, sans-serif;
-                margin: 20px;
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGN IN</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" type="text/css" href="text-style.css">
+    <link rel="stylesheet" type="text/css" href="box-style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
 
-            h1 {
-                color: maroon;
-            }
+<body>
+    <header></header>
+    <?php include 'sidebar.php'; ?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <div class="head">
 
-            #message-container {
-                max-height: 300px;
-                /* Adjust the max-height as needed */
-                overflow-y: auto;
-                background-color: white;
-                border: 1px solid maroon;
-                padding: 10px;
-            }
+        <img class="public-market-pic" src="assets\images\sign-in\public-market-head.svg" alt="back-layer">
 
-            #message-container p {
-                margin: 0;
-            }
-
-            form {
-                margin-top: 10px;
-            }
-
-            button {
-                background-color: maroon;
-                color: white;
-                padding: 5px 10px;
-                border: none;
-                cursor: pointer;
-            }
-        </style>
-    </head>
-
-    <body>
-        <center>
-            <h1>Messages for <?php echo $recipient; ?></h1>
-
-            <!-- Display messages -->
-            <div id="message-container">
-                <?php
-                // Display messages
-                while ($message_row = $messages_result->fetch_assoc()) {
-                    $message_type = ucfirst($message_row['message_type']);
-                    $message_text = $message_row['message'];
-                    $message_timestamp = $message_row['timestamp'];
-
-                    echo "<p>$message_type: $message_text</p>";
-                    echo "<p>Timestamp: $message_timestamp</p>";
-                    echo "-----------------------";
-                }
-                ?>
+        <div class="head-bottom">
+            <div>
+                <p class="user-name">Welcome, <?php echo $admin_name  ?>! </p> <br />
+                <img class="head-bottom-1" src="assets\images\sign-in\name-holder.svg" alt="back-layer">
             </div>
 
-            <!-- Reply Form -->
-            <form action="process_admin_reply.php" method="post">
-                <input type="hidden" name="admin_name" value="<?php echo $_SESSION["admin_name"]; ?>">
-                <input type="hidden" name="recipient" value="<?php echo $recipient; ?>">
-                <input type="hidden" name="stall_number" value="<?php echo $stall_number; ?>">
-                <label for="admin_reply">Admin Reply:</label>
-                <textarea name="admin_reply" id="admin_reply" required></textarea>
-                <br>
-                <button type="submit">Reply</button>
-            </form>
-            <br>
-            <!-- Back button -->
-            <a href='admin_messages_preview.php'><button>Back</button></a>
-    </body>
-    </center>
+            <div>
+                <p class="admin-datetime-text"> Date and Time</p>
+                <p class="admin-datetime">December 25 | 10:30 PM</p>
+                <img class="head-bottom-2" src="assets\images\sign-in\datetime-holder.svg" alt="back-layer">
+            </div>
 
-    </html>
+        </div>
 
-<?php
-} else {
-    // Redirect to messages preview if vendor_name or vendor_stall_number is not set
-    header("location:admin_messages_preview.php");
-}
+        <div class="head-bottom">
+
+            <div class="flex-column2">
+                <div class="dashboard-announcement">
+
+                    <div class="flex-row-1">
+                        <div>
+                            <h2 class="interactive-map-header">Interactive Map</h2>
+                            <div class="status-heading">
+                                <div class=interactive-map-position>
+                                    <h1 class=""> Rent <br>Status </h1>
+                                </div>
+                                <div>
+                                    <p class="index-notifs"> Paid: </p>
+                                    <button class="index-notifs"> Ongoing: </button>
+                                    <button class="index-notifs"> Vacant: </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href=admin-map.php><img class="map-icon" src="assets\images\sign-in\map-icon.svg" alt="map"> </a>
+
+                    </div>
+
+                </div>
+                <div class="dashboard-announcementv2">
+
+                    <div class="flex-row-1">
+                        <div>
+                            <h2 class="notification-header">Notifications</h2>
+                            <div class="status-heading">
+                                <div class=interactive-map-position>
+                                    <!-- <h1 class=""> Rent <br>Status </h1> -->
+
+                                </div>
+                                <div>
+
+                                    <!-- <p class="index-notifs"> Paid: </p>
+                                <button class="index-notifs"> Ongoing: </button>
+                                <button class="index-notifs"> Vacant: </button> -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <a href=admin-map.php><img class="map-icon" src="assets\images\sign-in\map-icon.svg" alt="map"> </a> -->
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="dashboard-map">
+
+                <a href=admin_vendor_manage_accounts.php><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\payment-record.svg" alt="Sticker" class="sticker"> PAYMENT RECORDS </button> </a>
+                <a href=admin_send_announcement.php><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\announce.svg" alt="Sticker" class="sticker">ANNOUNCEMENTS </button> </a>
+                <a href=admin_confirmpay.php><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\pay.svg" alt="Sticker" class="sticker"> PAYMENTS </button> </a>
+                <a href=admin_messages.php><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\messages.svg" alt="Sticker" class="sticker"> INBOX </button> </a>
+
+            </div>
+
+
+
+        </div>
+    </div>
+    
+    <footer></footer>
+</body>
+</html>

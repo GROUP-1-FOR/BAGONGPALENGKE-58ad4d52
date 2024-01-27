@@ -1,11 +1,16 @@
 /* MAIN BODY COMPOSITION */
 
 * {
+  zoom: 100%; /* You can set this to a different value to control the zoom level */
   margin: 0%;
   padding: 0%;
   box-sizing: border-box;
   list-style: none;
   text-decoration: none;
+  font-family: "Montserrat", sans-serif, Arial, Helvetica, sans-serif !important;
+}
+
+div {
   font-family: "Montserrat", sans-serif, Arial, Helvetica, sans-serif !important;
 }
 
@@ -442,18 +447,30 @@ h2,
   /* Optional: maintain aspect ratio and cover the container */
 }
 
+.public-market-pic-v2 {
+  margin-top: 60px;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 40px;
+  width: 1260px;
+  /* Set the desired width */
+  /* Set the desired height */
+  /* object-fit: cover; */
+  /* Optional: maintain aspect ratio and cover the container */
+}
 .head-bottom-1 {
   position: relative;
-  margin-top: -20px;
+  margin-top: -30px;
+  margin-left: 3px;
   z-index: 2;
-  width: 105% !important; /* or any other percentage or pixel value you desire */
+  /* or any other percentage or pixel value you desire */
   height: auto; /* This ensures that the aspect ratio is maintained */
 }
 
 .head-bottom-2 {
+  margin-top: -7px;
+  margin-left: -25px;
   position: relative;
-  margin-right: -60px;
-  width: 410px;
 }
 
 .home-index,
@@ -478,10 +495,10 @@ h2,
 
 .index-buttons {
   background-color: #f4f1ec;
-  width: 100%;
+  width: 95%;
   margin-bottom: 12px;
-  margin-top: 10px;
-  height: 45px;
+  margin-top: 15px;
+  height: 55px;
   color: maroon;
   border-style: solid;
   border-color: black;
@@ -702,8 +719,29 @@ h2,
   z-index: 3;
 }
 
+.admin-message-notif {
+  font-size: medium;
+  font-weight: 700;
+  color: maroon;
+}
+
 .notifications {
   margin-left: 60px;
+}
+
+.message-notif {
+  align-items: center;
+  justify-content: center;
+  margin-top: 35px;
+  margin-left: 50px;
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 1px;
+  background-color: #f4f1ec;
+  border-color: maroon;
+  min-width: 700px;
+  height: 70px;
+  padding: 10px;
 }
 
 .announcement-datetime {
@@ -714,13 +752,14 @@ h2,
 }
 
 .dashboard-announcement {
+  margin-top: -10px;
   z-index: 3;
   overflow-y: hidden;
   overflow-x: hidden;
   border: gray;
   border-width: 2px; /* Correct the typo: '2PX' to '2px' */
   border-style: hidden;
-  min-height: 200px;
+  max-height: 500px;
   width: 820px;
   margin-left: 10px;
   border-top: 35px solid maroon;
@@ -738,7 +777,7 @@ h2,
   border: gray;
   border-width: 2px; /* Correct the typo: '2PX' to '2px' */
   border-style: hidden;
-  min-height: 110px;
+  max-height: 165px;
   width: 820px;
   margin-left: 10px;
   background-color: #d9d9d9;
@@ -761,7 +800,7 @@ h2,
   border-width: 2px; /* Correct the typo: '2PX' to '2px' */
   border-style: hidden;
   max-height: 500px;
-  width: 1195px !important;
+  width: 1245px !important;
   margin-left: 20px;
   margin-top: 60px;
   border-top: 40px solid maroon;
@@ -769,6 +808,28 @@ h2,
   background-color: #d9d9d9;
   color: white;
   flex: 1;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.dashboard-announcement-box {
+  z-index: 4;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  border: gray;
+  border-width: 2px; /* Correct the typo: '2PX' to '2px' */
+  border-style: solid;
+  max-height: 215px;
+  width: 1245px;
+  margin-left: 20px;
+  margin-top: -80px;
+  border-bottom: 80px solid #d9d9d9;
+  border-style: hidden;
+  background-color: #d9d9d9;
+  color: black;
+  flex: 1;
+  border-top-right-radius: 0% !important;
+  border-top-left-radius: 0% !important;
   border-radius: 10px;
   padding: 10px;
 }
@@ -901,28 +962,6 @@ h2,
   padding: 10px;
 }
 
-.dashboard-announcement-box {
-  z-index: 4;
-  overflow-y: hidden;
-  overflow-x: hidden;
-  border: gray;
-  border-width: 2px; /* Correct the typo: '2PX' to '2px' */
-  border-style: solid;
-  max-height: 215px;
-  width: 1195px;
-  margin-left: 20px;
-  margin-top: -80px;
-  border-bottom: 80px solid #d9d9d9;
-  border-style: hidden;
-  background-color: #d9d9d9;
-  color: black;
-  flex: 1;
-  border-top-right-radius: 0% !important;
-  border-top-left-radius: 0% !important;
-  border-radius: 10px;
-  padding: 10px;
-}
-
 .announcement-header {
   position: absolute;
   color: white;
@@ -965,11 +1004,12 @@ h2,
   border: transparent;
   border-width: 2px;
   border-style: solid;
-  height: 330px;
+  height: 390px;
   max-width: 400px;
   margin-left: 30px;
   margin-right: 10px;
-  border-top: 40px solid maroon;
+  margin-top: -10px;
+  border-top: 35px solid maroon;
   background-color: #d9d9d9;
   color: white;
   flex: 1;
@@ -1128,10 +1168,10 @@ h2,
 .admin-datetime {
   z-index: 4;
   position: absolute;
-  margin-top: 30px;
+  margin-top: 10px;
   margin-left: 40px;
   color: maroon;
-  font-size: 40px;
+  font-size: 50px;
   font-weight: 900;
 }
 
@@ -1144,6 +1184,26 @@ h2,
   color: maroon;
   margin-top: 10px;
   font-weight: 500;
+}
+
+.admin-datetime-text-v2 {
+  z-index: 4;
+  position: absolute;
+  /* margin-top: 45px; */
+  margin-left: 590px;
+  font-size: medium;
+  color: gray;
+  font-size: xx-small;
+  font-weight: 700;
+}
+
+.admin-vendor-notif {
+  z-index: 4;
+  margin-top: 5px;
+  font-size: large;
+  color: gray;
+  font-size: xx-small;
+  font-weight: 700;
 }
 
 .admin-datetime {
@@ -1560,6 +1620,11 @@ h2,
   margin-left: -50px !important;
 }
 
+.submit-button3 {
+  margin-top: 10px;
+}
+
+.submit-button3,
 .submit-button1,
 .login-btn,
 .submit-btn,
@@ -1934,6 +1999,8 @@ ul {
   justify-content: space-between;
 }
 /* .remove-button:hover, */
+
+.submit-button3:hover,
 .submit-button1:hover,
 .submit-btn:hover,
 .token-button:hover,

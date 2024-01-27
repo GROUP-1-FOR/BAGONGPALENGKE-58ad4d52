@@ -1,4 +1,4 @@
-<?php
+admin_index.php<?php
 require("config.php");
 $_SESSION = [];
 session_unset();
