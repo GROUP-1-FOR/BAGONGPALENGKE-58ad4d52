@@ -12,6 +12,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -110,72 +111,72 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
 
     <div class="flex-row">
-    <h2 class="announcement-header">Announcement</h2>
-    <div class="dashboard-announcement1">
+        <h2 class="announcement-header">Announcement</h2>
+        <div class="dashboard-announcement2">
 
-    <?php
-    $currentDate = date('Y-m-d');
-    $sql_sent_announcement = "SELECT DISTINCT announcement_id, announcement_title, announcement_subject, announcement_text, announcement_time FROM announcements ORDER BY announcement_id DESC";
-    $result_sent_announcement = $connect->query($sql_sent_announcement);
+            <?php
+            $currentDate = date('Y-m-d');
+            $sql_sent_announcement = "SELECT DISTINCT announcement_id, announcement_title, announcement_subject, announcement_text, announcement_time FROM announcements ORDER BY announcement_id DESC";
+            $result_sent_announcement = $connect->query($sql_sent_announcement);
 
-    if ($result_sent_announcement->num_rows > 0) {
-        while ($row = $result_sent_announcement->fetch_assoc()) {
-    ?>
-            <div class="notification-box">
+            if ($result_sent_announcement->num_rows > 0) {
+                while ($row = $result_sent_announcement->fetch_assoc()) {
+            ?>
+                    <div class="notification-box">
 
-            <div class="inside-notification">
-                <p class="announcement-datetime"><?php echo $row['announcement_time']; ?></p>
-                <p class="announcement-title"><?php echo $row['announcement_title']; ?> </p>
-                <p class="announcement-subject"><?php echo $row['announcement_subject']; ?></p>
-                <p class="announcement-content"><?php echo $row['announcement_text']; ?></p>
+                        <div class="inside-notification">
+                            <p class="announcement-datetime"><?php echo $row['announcement_time']; ?></p>
+                            <p class="announcement-title"><?php echo $row['announcement_title']; ?> </p>
+                            <p class="announcement-subject"><?php echo $row['announcement_subject']; ?></p>
+                            <p class="announcement-content"><?php echo $row['announcement_text']; ?></p>
 
-                <div class="modify-buttons">
-                <button class="button-1" type="button" onclick="editAnnouncement(<?php echo $row['announcement_id']; ?>)">Edit</button>
-                <button class="button-2" type="button" onclick="removeAnnouncement(<?php echo $row['announcement_id']; ?>)">Remove</button>
-                </div>
-            </div>
-            </div>
-    <?php
-        }
-    } else {
-        echo "<p>No sent announcements found.</p>";
-    }
+                            <div class="modify-buttons">
+                                <button class="button-1" type="button" onclick="editAnnouncement(<?php echo $row['announcement_id']; ?>)">Edit</button>
+                                <button class="button-2" type="button" onclick="removeAnnouncement(<?php echo $row['announcement_id']; ?>)">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+            <?php
+                }
+            } else {
+                echo "<p>No sent announcements found.</p>";
+            }
 
-    $connect->close();
-    ?>
-    </div>
+            $connect->close();
+            ?>
+        </div>
 
 
-    <div class="dashboard-announcement-box">
-    <form  class="form-style"action="admin_send_announcement_1.php" method="post" onsubmit="return validateForm()">
-    
-        <label class="label-title" for="admin_announcement_title">Title:</label>
-        <input class="title-box" type="text" id="admin_announcement_title" name="admin_announcement_title" required maxlength="50" oninput="updateCounter('admin_announcement_title', 'title_counter', 50)">
-        <!-- <span id="title_counter" class="counter">0/50</span> -->
-        <span id="error_title" class="error"></span><br />
+        <div class="dashboard-announcement-box">
+            <form class="form-style" action="admin_send_announcement_1.php" method="post" onsubmit="return validateForm()">
 
-        <label class="label-subject" for="admin_announcement_subject">Subject:</label>
-        <input class="subject-box" type="text" id="admin_announcement_subject" name="admin_announcement_subject" required maxlength="100" oninput="updateCounter('admin_announcement_subject', 'subject_counter', 100)">
-        <!-- <span id="subject_counter" class="counter">0/100</span> --><br>
-        <label for="admin_announcement_time">Announcement Date:</label>
-        <input class="calendar" type="date" id="admin_announcement_time" name="admin_announcement_time" min="<?php echo date('Y-m-d'); ?>" required>
-        <span id="error_subject" class="error"></span><br />
+                <label class="label-title" for="admin_announcement_title">Title:</label>
+                <input class="title-box" type="text" id="admin_announcement_title" name="admin_announcement_title" required maxlength="50" oninput="updateCounter('admin_announcement_title', 'title_counter', 50)">
+                <!-- <span id="title_counter" class="counter">0/50</span> -->
+                <span id="error_title" class="error"></span><br />
 
-        <textarea class="admin-announcement" placeholder=" Write Something..." name="admin_announcement" id="admin_announcement" cols="30" rows="5" required maxlength="500" oninput="updateCounter('admin_announcement', 'message_counter', 500)"></textarea>
-        <!-- <span id="message_counter" class="counter">0/500</span> -->
-        <span id="error_message" class="error"></span><br>
+                <label class="label-subject" for="admin_announcement_subject">Subject:</label>
+                <input class="subject-box" type="text" id="admin_announcement_subject" name="admin_announcement_subject" required maxlength="100" oninput="updateCounter('admin_announcement_subject', 'subject_counter', 100)">
+                <!-- <span id="subject_counter" class="counter">0/100</span> --><br>
+                <label for="admin_announcement_time">Announcement Date:</label>
+                <input class="calendar" type="date" id="admin_announcement_time" name="admin_announcement_time" min="<?php echo date('Y-m-d'); ?>" required>
+                <span id="error_subject" class="error"></span><br />
 
- 
-        
-        <span id="error_date" class="error"></span>
+                <textarea class="admin-announcement" placeholder=" Write Something..." name="admin_announcement" id="admin_announcement" cols="30" rows="5" required maxlength="500" oninput="updateCounter('admin_announcement', 'message_counter', 500)"></textarea>
+                <!-- <span id="message_counter" class="counter">0/500</span> -->
+                <span id="error_message" class="error"></span><br>
 
-        <input class="button-3" type="submit" value="Post" >
-    </form>
 
-    </div>
+
+                <span id="error_date" class="error"></span>
+
+                <input class="button-3" type="submit" value="Post">
+            </form>
+
+        </div>
     </div>
 
     <footer></footer>
 </body>
-</html>
 
+</html>

@@ -50,37 +50,72 @@ while ($row = $result->fetch_assoc()) {
 <html>
 
 <head>
-    <title>Create New Message</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGN IN</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" type="text/css" href="text-style.css">
+    <link rel="javascript" type="text/script" href="js-style.js">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <script>
+        // Function to enable or disable the "Send Message" button based on the message content and vendor list
+        function toggleSendMessageButton() {
+            var messageText = document.getElementById('message_text').value;
+            var sendMessageButton = document.getElementById('send_message_button');
+            var vendorList = <?php echo json_encode($vendors); ?>;
+
+            // Enable the button if the message is not empty and there are vendors in the list, otherwise disable it
+            sendMessageButton.disabled = (messageText.trim() === '' || vendorList.length === 0);
+        }
+    </script>
 </head>
 
 <body>
-    <h1>Create New Message</h1>
+    <header></header>
+    <?php include 'sidebar.php'; ?>
 
-    <!-- Form to send a new message -->
-    <form method="post" action="process_admin_createnew_message.php">
-        <label for="recipient">Select Recipient:</label>
-        <select name="recipient" id="recipient">
-            <?php
-            // Display the list of vendors in the dropdown
-            foreach ($vendors as $vendor) {
-                echo "<option value='" . $vendor['vendor_name'] . "-" . $vendor['vendor_stall_number'] . "'>" . $vendor['vendor_name'] . " - Stall " . $vendor['vendor_stall_number'] . "</option>";
-            }
-            ?>
-        </select>
-        <br>
+    <div class="flex-row">
+        <h2 class="message-container-header">MESSAGES</h2>
+        <tr>
+            <div class="message-container">
 
-        <label for="message_text">Message:</label>
-        <textarea name="message_text" rows="4" cols="50" placeholder="Type your message here"></textarea>
-        <br>
+                <div class="flex-box1">
+                    <div class="main-container">
+                        <h1>Create New Message</h1>
 
-        <!-- Hidden input to send adminName along with the form -->
-        <input type="hidden" name="admin_name" value="<?php echo $adminName; ?>">
+                        <!-- Form to send a new message -->
+                        <form method="post" action="process_admin_createnew_message.php">
+                            <label for="recipient">Select Recipient:</label>
+                            <select name="recipient" id="recipient">
+                                <?php
+                                // Display the list of vendors in the dropdown
+                                foreach ($vendors as $vendor) {
+                                    echo "<option value='" . $vendor['vendor_name'] . "-" . $vendor['vendor_stall_number'] . "'>" . $vendor['vendor_name'] . " - Stall " . $vendor['vendor_stall_number'] . "</option>";
+                                }
+                                ?>
+                            </select>
+                            <br>
 
-        <button type="submit" name="send_message">Send Message</button>
-    </form>
+                            <label for="message_text">Message:</label>
+                            <textarea name="message_text" id="message_text" rows="4" cols="50" placeholder="Type your message here" oninput="toggleSendMessageButton()"></textarea>
+                            <br>
 
-    <!-- Back button -->
-    <a href='admin_messages_preview.php'><button>Back</button></a>
+                            <!-- Hidden input to send adminName along with the form -->
+                            <input type="hidden" name="admin_name" value="<?php echo $adminName; ?>">
+
+                            <!-- "Send Message" button with the id 'send_message_button' -->
+                            <button type="submit" name="send_message" id="send_message_button" disabled>Send Message</button>
+                        </form>
+                    </div>
+
+                </div>
+
+
+                <footer></footer>
 </body>
 
 </html>
+<?php

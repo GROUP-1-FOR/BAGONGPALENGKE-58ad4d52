@@ -36,7 +36,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $mapResult = $mapStmt->execute();
                     $mapStmt->close();
 
-                    if (!$mapResult) {
+                    // If removal from admin_stall_map is successful, remove from admin_messages
+                    if ($mapResult) {
+                        $adminMessagesSql = "DELETE FROM admin_messages WHERE vendor_userid = ?";
+                        $adminMessagesStmt = $connect->prepare($adminMessagesSql);
+                        $adminMessagesStmt->bind_param("s", $vendorId);
+                        $adminMessagesResult = $adminMessagesStmt->execute();
+                        $adminMessagesStmt->close();
+
+                        if (!$adminMessagesResult) {
+                            echo json_encode(['success' => false, 'error' => 'Error removing from admin_messages']);
+                            exit;
+                        }
+                    } else {
                         echo json_encode(['success' => false, 'error' => 'Error removing from admin_stall_map']);
                         exit;
                     }
