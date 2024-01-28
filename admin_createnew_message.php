@@ -51,6 +51,17 @@ while ($row = $result->fetch_assoc()) {
 
 <head>
     <title>Create New Message</title>
+    <script>
+    // Function to enable or disable the "Send Message" button based on the message content and vendor list
+    function toggleSendMessageButton() {
+        var messageText = document.getElementById('message_text').value;
+        var sendMessageButton = document.getElementById('send_message_button');
+        var vendorList = <?php echo json_encode($vendors); ?>;
+
+        // Enable the button if the message is not empty and there are vendors in the list, otherwise disable it
+        sendMessageButton.disabled = (messageText.trim() === '' || vendorList.length === 0);
+    }
+</script>
 </head>
 
 <body>
@@ -70,13 +81,14 @@ while ($row = $result->fetch_assoc()) {
         <br>
 
         <label for="message_text">Message:</label>
-        <textarea name="message_text" rows="4" cols="50" placeholder="Type your message here"></textarea>
+        <textarea name="message_text" id="message_text" rows="4" cols="50" placeholder="Type your message here" oninput="toggleSendMessageButton()"></textarea>
         <br>
 
         <!-- Hidden input to send adminName along with the form -->
         <input type="hidden" name="admin_name" value="<?php echo $adminName; ?>">
 
-        <button type="submit" name="send_message">Send Message</button>
+        <!-- "Send Message" button with the id 'send_message_button' -->
+        <button type="submit" name="send_message" id="send_message_button" disabled>Send Message</button>
     </form>
 
     <!-- Back button -->
