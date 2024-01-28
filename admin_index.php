@@ -62,7 +62,7 @@ if ($result->num_rows > 0) {
         <div>
             <p class="admin-datetime-text"> Date and Time</p>
             <p class="admin-datetime">December 25 | 10:30 PM</p>
-            <img class="head-bottom-2" src="assets\images\sign-in\datetime-holder2.svg" alt="back-layer">
+            <img class="head-bottom-2" src="assets\images\sign-in\datetime-holder3.svg" alt="back-layer">
         </div>
 
     </div>
@@ -109,7 +109,7 @@ if ($result->num_rows > 0) {
 
                 </div>
 
-                <center><input class="submit-button3" type="submit" value="Send"></center>
+                <center><input class="submit-button3" type="submit" value="View"></center>
             </div>
         </div>
 

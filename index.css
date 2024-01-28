@@ -223,6 +223,7 @@ h2,
 }
 
 .icons {
+  vertical-align: middle;
   height: 30px;
   margin-bottom: -5px;
   margin-left: 10px;
@@ -230,6 +231,7 @@ h2,
 
 .map-icon {
   height: 150px;
+  margin-top: 10px;
   margin-bottom: -5px;
   margin-left: 30px;
 }
@@ -468,7 +470,7 @@ h2,
 }
 
 .head-bottom-2 {
-  margin-top: -7px;
+  margin-top: -10px;
   margin-left: -25px;
   position: relative;
 }
@@ -482,7 +484,7 @@ h2,
   height: 40px;
   color: maroon;
   border-style: solid;
-  border-color: black;
+  border-color: maroon;
   border-right: none;
   border-width: 1px;
   font-weight: bolder;
@@ -494,6 +496,7 @@ h2,
 }
 
 .index-buttons {
+  vertical-align: middle;
   background-color: #f4f1ec;
   width: 95%;
   margin-bottom: 12px;
@@ -501,7 +504,7 @@ h2,
   height: 55px;
   color: maroon;
   border-style: solid;
-  border-color: black;
+  border-color: maroon;
   border-width: 1px;
   border-radius: 10px;
   font-weight: bolder;
@@ -581,10 +584,10 @@ h2,
   margin-bottom: 15px;
   margin-top: 5px;
   margin-left: 50px;
-  height: 25px;
+  height: 35px;
   color: maroon;
   border-style: solid;
-  border-color: black;
+  border-color: maroon;
   border-width: 1px;
   border-radius: 5px;
   font-weight: bolder;
@@ -601,7 +604,7 @@ h2,
 .report-management:hover,
 .help-button:hover {
   border-style: solid;
-  border-color: black;
+  border-color: rgb(207, 2, 2);
   border-right: none;
   background-color: white;
   color: rgb(210, 7, 7);
@@ -756,14 +759,13 @@ h2,
   z-index: 3;
   overflow-y: hidden;
   overflow-x: hidden;
-  border: gray;
-  border-width: 2px; /* Correct the typo: '2PX' to '2px' */
-  border-style: hidden;
+  border: maroon;
+  border-width: 2px;
+  border-style: solid;
   max-height: 500px;
   width: 820px;
   margin-left: 10px;
   border-top: 35px solid maroon;
-  border-bottom: 10px solid #d9d9d9;
   background-color: #d9d9d9;
   color: white;
   flex: 1;
@@ -774,9 +776,9 @@ h2,
   z-index: 3;
   overflow-y: hidden;
   overflow-x: hidden;
-  border: gray;
-  border-width: 2px; /* Correct the typo: '2PX' to '2px' */
-  border-style: hidden;
+  border: maroon;
+  border-width: 2px;
+  border-style: solid;
   max-height: 165px;
   width: 820px;
   margin-left: 10px;
@@ -847,6 +849,22 @@ h2,
   border-bottom: 80px solid #d9d9d9;
   background-color: #d9d9d9;
   color: white;
+  flex: 1;
+  z-index: 3;
+  border-radius: 10px;
+  padding: 10px;
+  padding-top: 0px !important;
+}
+
+.message-container {
+  position: relative;
+  overflow-x: hidden;
+  max-height: 580px;
+  width: 1240px !important;
+  margin-left: 20px;
+  margin-top: 120px;
+  background-color: white;
+  color: maroon;
   flex: 1;
   z-index: 3;
   border-radius: 10px;
@@ -1001,7 +1019,7 @@ h2,
 }
 
 .dashboard-map {
-  border: transparent;
+  border: maroon;
   border-width: 2px;
   border-style: solid;
   height: 390px;
