@@ -829,6 +829,9 @@ h2,
 
 .dashboard-announcement {
   display: flex;
+  flex-direction: column; /* Added flex-direction to stack elements vertically */
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
   margin-top: -10px;
   z-index: 3;
   overflow-y: hidden;
@@ -847,6 +850,12 @@ h2,
   border-radius: 10px;
   padding: 10px;
 }
+
+.flex-row-1 {
+  /* If there is any specific styling for .flex-row-1, you can add it here */
+}
+
+/* Other styles remain unchanged */
 
 .dashboard-announcement-v3 {
   margin-top: 70px;
@@ -1418,7 +1427,7 @@ h2,
   margin-top: 10px;
   margin-left: 40px;
   color: maroon;
-  font-size: 50px;
+  font-size: 40px;
   font-weight: 900;
 }
 

@@ -146,17 +146,16 @@ $resultFetchAllMessages = $stmtFetchAllMessages->get_result();
         }
 
         .admin-message {
+
+            color: white;
             margin-top: 20px;
             width: 500px;
-            align-self: flex-end;
-            background-color: #9C3D42;
-            color: white;
+            align-self: flex-start;
+            background-color: #7A7D7C;
             margin-bottom: 10px;
             width: 700px;
             padding: 10px;
             border-radius: 5px;
-
-            /* Light blue for admin */
         }
 
         .timestamp {
@@ -172,16 +171,17 @@ $resultFetchAllMessages = $stmtFetchAllMessages->get_result();
         }
 
         .vendor-message {
-            color: white;
             margin-top: 20px;
             width: 500px;
-            align-self: flex-start;
-            background-color: #7A7D7C;
+            align-self: flex-end;
+            background-color: #9C3D42;
+            color: white;
             margin-bottom: 10px;
             width: 700px;
             padding: 10px;
             border-radius: 5px;
-            /* Pink for vendor */
+
+
         }
     </style>
 
