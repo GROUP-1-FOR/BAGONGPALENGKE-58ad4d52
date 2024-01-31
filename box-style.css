@@ -484,8 +484,6 @@
   margin-left: 100px;
 }
 
-
-
 .flex-row {
   display: flex;
   flex-direction: column;
@@ -503,7 +501,6 @@
 .flex-row-direction {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
 }
 
 .row-direction {

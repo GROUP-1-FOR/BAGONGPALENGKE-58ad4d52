@@ -10,18 +10,23 @@
 .vendor-heading {
   color: maroon;
   padding: 20px;
-  margin-left: 180px;
+  margin-left: 130px;
+}
+
+.title-heading {
+  color: maroon;
 }
 
 .admin-heading {
   margin-left: -70px;
   font-size: larger;
-  color: maroon;
+  color: white;
   font-weight: bold;
   padding: 20px;
 }
 
 .status-heading {
+  margin-left: 150px;
   text-wrap: nowrap;
   display: flex;
   flex-direction: row;
@@ -50,14 +55,44 @@
   color: white;
   margin-top: 75px;
   margin-left: 30px;
-  z-index: 4;
+  z-index: 5;
 }
 
-.message-container-header {
+.message-back-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* Align items (image and text) in the center horizontally */
+
+  width: 1245px;
+  margin-top: 70px;
+}
+
+.message-header {
   font-size: 45px;
-  position: absolute;
-  color: blue;
-  margin-top: 65px;
+  color: maroon;
+  margin-top: 75px;
+  margin-left: 30px;
+  z-index: 5;
+}
+
+.payment-header {
+  font-size: 45px;
+  color: maroon;
+  margin-top: 75px;
+  margin-left: 30px;
+  z-index: 1;
+}
+
+.message-header-v2 {
+  font-size: 45px;
+  color: maroon;
+  margin-left: 200px;
+  z-index: 5;
+}
+
+.confirm-payment-header {
+  font-size: 45px;
+  color: maroon;
   margin-left: 30px;
   z-index: 5;
 }
@@ -136,6 +171,93 @@
   background-color: #f4f1ec;
 }
 
+.subtitle-text {
+  color: maroon;
+  display: flex;
+  flex-direction: column;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.subtitle-text2 {
+  color: maroon;
+
+  font-size: 10px;
+  font-weight: 600;
+  float: right;
+}
+
+.paid-mark {
+  color: maroon;
+  font-weight: bold;
+  margin-left: 30px;
+}
+.name-vendor {
+  color: maroon;
+}
+
+.price {
+  color: maroon;
+  padding-bottom: 0px !important;
+}
+
+.sub-text {
+  margin-left: 5px;
+  font-size: x-small;
+  color: gray;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 2px;
+}
+
+.sub-text2 {
+  float: right;
+  font-size: x-small;
+  color: gray;
+  font-weight: 700;
+  padding: 10px;
+
+  padding-top: -10px !important;
+  height: 30px;
+  width: 120px;
+}
+
+.sub-text-message {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 30px;
+}
+
+.text-messages {
+  height: 330px;
+}
+
+.text-area {
+  border-radius: 20px;
+  border-width: 1px;
+  border-color: black;
+  height: 150px;
+  max-height: 150px;
+  width: 1152px;
+  max-width: 1152px;
+  padding: 10px;
+  z-index: 4;
+}
+
+.text-area2 {
+  margin-top: 20px;
+  margin-left: 20px;
+  border-radius: 20px;
+  border-width: 1px;
+  border-color: black;
+  height: 150px;
+  max-height: 150px;
+  width: 1152px;
+  max-width: 1152px;
+  padding: 10px;
+  z-index: 4;
+}
 .paid-record {
   color: maroon;
   margin-left: 20px;

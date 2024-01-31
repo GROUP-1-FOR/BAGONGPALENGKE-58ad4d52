@@ -109,7 +109,8 @@ if ($result->num_rows > 0) {
 
                 </div>
 
-                <center><input class="submit-button3" type="submit" value="View"></center>
+
+                <center><a href=admin_notification.php><input class="submit-button3" type="submit" value="View"></a></center>
             </div>
         </div>
 

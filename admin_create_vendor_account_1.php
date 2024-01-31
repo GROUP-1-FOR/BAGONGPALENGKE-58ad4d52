@@ -163,7 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['vendor_hashed_password'] = $hashedVendorPassword;
     $_SESSION['vendor_transaction_id'] = $vendor_transaction_id;
 
-
+    /*
     // First insertion into vendor_sign_in table
     $sql1 = "INSERT INTO vendor_sign_in (vendor_first_name, vendor_last_name, vendor_name, vendor_stall_number, vendor_mobile_number, vendor_product, vendor_email, vendor_userid, vendor_password) 
     VALUES ('$vendor_first_name', '$vendor_last_name', '$vendor_full_name', '$vendor_stall_number', '$vendor_mobile_number', '$vendor_product_type', '$vendor_email', '$vendor_userid', '$hashedPassword')";
@@ -189,12 +189,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Close the database connection
     $connect->close();
-    
+    */
 }
 
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -205,7 +206,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
- 
+
 </head>
 
 
@@ -218,23 +219,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="flex-row-direction">
 
 
-        <div> 
-        <h2 class="title6" >Admin Password Before Vendor Account Creation</h2>
-        <div>
-        <form class="flex-row mid" action="admin_create_vendor_account_2.php" method="post">
-            
-            <label class="admin-heading" for="Admin Password Confirmation">Admin Password Confirmation</label>
-            <input class="input-info" type="password" name="admin_password" id="admin_password" required>
-            <input class="submit-btn1 sbt1" type="submit" value="Submit">
-        </form>
+                <div>
+                    <h2 class="title6">Admin Password Before Vendor Account Creation</h2>
+                    <div>
+                        <form class="flex-row mid" action="admin_create_vendor_account_2.php" method="post">
 
-    <a class="back-button1 vendor-back" href=admin_create_vendor_account.php> < Back </a>
-    </div>
-        </div>
+                            <label class="admin-heading" for="Admin Password Confirmation">Admin Password Confirmation</label>
+                            <input class="input-info" type="password" name="admin_password" id="admin_password" required>
+                            <input class="submit-btn1 sbt1" type="submit" value="Submit">
+                        </form>
+
+                        <a class="back-button1 vendor-back" href=admin_create_vendor_account.php>
+                            < Back </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-<footer></footer>
+    <footer></footer>
 </body>
+
 </html>

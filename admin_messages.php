@@ -68,59 +68,162 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <link rel="preconnect" href="https://fonts.googleapis.com">
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
             <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+            <style>
+                body {
+                    margin: 0;
+                    color: white;
+                }
+
+                .messaging-container {
+                    display: flex;
+                    height: 100vh;
+                    width: 1250px;
+                }
+
+                p {
+                    font-family: Arial, Helvetica, sans-serif;
+                }
+
+                .admin-panel,
+                .vendor-panel {
+                    flex: 1;
+                    max-width: 300px;
+                    padding: 20px;
+                    background-color: #f0f0f0;
+                }
+
+                .vendor-panel {
+                    border-left: 1px solid #ccc;
+                }
+
+                .conversation-panel {
+                    flex: 3;
+                    display: flex;
+                    flex-direction: column;
+                    padding: 20px;
+                }
+
+                .message-input {
+                    width: 100%;
+                    padding: 10px;
+                    margin-bottom: 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                }
+
+                .admin-panel .message-input {
+                    border-color: #ccc;
+                }
+
+                .vendor-panel .message-input {
+                    border-color: #ddd;
+                }
+
+                .message {
+                    margin-bottom: 10px;
+                    width: 1000px;
+                    padding: 10px;
+                    border-radius: 5px;
+                }
+
+                .admin-message {
+                    margin-top: 20px;
+                    width: 500px;
+                    align-self: flex-end;
+                    background-color: #9C3D42;
+                    color: white;
+
+                    /* Light blue for admin */
+                }
+
+                .vendor-message {
+                    color: white;
+                    margin-top: 20px;
+                    width: 500px;
+                    align-self: flex-start;
+                    background-color: #7A7D7C;
+                    /* Pink for vendor */
+                }
+            </style>
+
+
         </head>
 
         <body>
             <header></header>
             <?php include 'sidebar.php'; ?>
 
-            <div class="flex-row">
-                <h2 class="message-container-header">MESSAGES</h2>
-                <tr>
-                    <div class="message-container">
+            <div class="flex-row-body">
+                <div class="message-back-header">
+                    <a class="back-button7" href='admin_messages_preview.php'>
+                        <img class="back-icon" src="assets\images\sign-in\back-icon.svg"></a>
+                    <h2 class="message-header-v2">Messages</h2>
+                </div>
+                <div class="recepient-panel">
 
-                        <div class="flex-box1">
-                            <div class="main-container">
-                                <center>
-                                    <h1>Messages for <?php echo $recipient; ?></h1>
-
-                                    <!-- Display messages -->
-                                    <div id="message-container">
-                                        <?php
-                                        // Display messages
-                                        while ($message_row = $messages_result->fetch_assoc()) {
-                                            $message_type = ucfirst($message_row['message_type']);
-                                            $message_text = $message_row['message'];
-                                            $message_timestamp = $message_row['timestamp'];
-
-                                            echo "<p>$message_type: $message_text</p>";
-                                            echo "<p>Timestamp: $message_timestamp</p>";
-                                            echo "-----------------------";
-                                        }
-                                        ?>
-                                    </div>
-
-                                    <!-- Reply Form -->
-                                    <form action="process_admin_reply.php" method="post">
-                                        <input type="hidden" name="admin_name" value="<?php echo $_SESSION["admin_name"]; ?>">
-                                        <input type="hidden" name="recipient" value="<?php echo $recipient; ?>">
-                                        <input type="hidden" name="stall_number" value="<?php echo $stall_number; ?>">
-                                        <label for="admin_reply">Admin Reply:</label>
-                                        <textarea name="admin_reply" id="admin_reply" required></textarea>
-                                        <br>
-                                        <button type="submit">Reply</button>
-                                    </form>
-                                    <br>
-                                    <!-- Back button -->
-                                    <a href='admin_messages_preview.php'><button>Back</button></a>
-
-                                </center>
-                            </div>
-
-                        </div>
+                </div>
+                <div class="hr"></div>
 
 
-                        <footer></footer>
+                <div class="recipient-box">
+                    <label class="recipient" for="recipient">From: <?php echo $recipient; ?></label>
+                    <p class="message-datetime">December 25 | 10:30 PM</p>
+                </div>
+
+                <!-- <div class="convo-container"> -->
+                <div class="text-messages">
+
+                    <div class="message-container2">
+                        <?php
+                        while ($message_row = $messages_result->fetch_assoc()) {
+                            $message_type = ucfirst($message_row['message_type']);
+                            $message_text = $message_row['message'];
+                            $message_timestamp = $message_row['timestamp'];
+                            $messageClass = ($message_type == 'Admin') ? 'admin-message' : 'vendor-message';
+
+                            echo "<div class='message $messageClass'>";
+                            echo "<p>$message_text</p>";
+                            echo "<p class='time-stamp'>Timestamp: $message_timestamp</p>";
+                            echo "</div>";
+                        }
+                        ?>
+                    </div>
+                </div>
+                <!-- </div> -->
+                <div class="background">
+                    <form class="flex-box-row-send" action="process_admin_reply.php" method="post">
+                        <textarea class="text-area2" name="admin_reply" id="admin_reply" placeholder="Type your text message here..." required></textarea>
+                        <input type="hidden" name="admin_name" value="<?php echo $_SESSION["admin_name"]; ?>">
+                        <input type="hidden" name="recipient" value="<?php echo $recipient; ?>">
+                        <input type="hidden" name="stall_number" value="<?php echo $stall_number; ?>">
+                        <button class="send-button2" type="submit">Reply</button>
+                    </form>
+                </div>
+                <script>
+                    function sendMessage(inputId, sender) {
+                        var messageInput = document.getElementById(inputId);
+                        var messageText = messageInput.value.trim();
+
+                        if (messageText !== "") {
+                            var conversationPanel = document.getElementById("conversation-panel");
+                            var messageDiv = document.createElement("div");
+                            var messageClass = sender === "admin" ? "admin-message" : "vendor-message";
+
+                            messageDiv.className = "message " + messageClass;
+                            messageDiv.innerHTML = "<p>" + messageText + "</p>";
+                            conversationPanel.appendChild(messageDiv);
+
+                            // Clear the input after sending the message
+                            messageInput.value = "";
+                        }
+                    }
+                </script>
+                <footer></footer>
+
+            </div>
+
+
         </body>
 
         </html>

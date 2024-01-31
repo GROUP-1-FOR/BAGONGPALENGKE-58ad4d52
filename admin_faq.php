@@ -52,20 +52,23 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                                     <strong>
                                         <div class="question" onclick="toggleAnswer(<?php echo $counter; ?>, this)"><?php echo $question; ?>
                                     </strong>
+
+
                 </div>
                 <i>
                     <div class="answer" id="answer_<?php echo $counter; ?>"><?php echo $answer; ?>
                 </i>
             </div>
+
             </li>
     <?php
-                                $counter++; // Increment the counter
-                            }
-                        } else {
-                            echo "0 results";
-                        }
+            $counter++; // Increment the counter
+             }
+            } else {
+            echo "0 results";
+            }
 
-                        $connect->close();
+             $connect->close();
     ?>
     </ul>
     <br>

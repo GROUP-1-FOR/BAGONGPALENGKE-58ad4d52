@@ -109,9 +109,9 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                                     // Check if vendor_userid exists in vendor_edit_profile table and vendor_edit column is equal to 0
                                     $editButtonVisible = isVendorEditable($row["vendor_userid"]);
 
-                                    if ($editButtonVisible) {
-                                        echo "<button onclick='removeVendor(\"" . $row["vendor_userid"] . "\")'>Remove Vendor</button>";
-                                    }
+                                    // if ($editButtonVisible) {
+                                    //     echo "<button onclick='removeVendor(\"" . $row["vendor_userid"] . "\")'>Remove Vendor</button>";
+                                    // }
 
                                     echo "</td>";
                                     echo "<td class='check-boxes'><input type='checkbox' class='vendorCheckbox' name='selectedVendors[]' value='" . $row["vendor_userid"] . "' onchange='handleCheckboxSelection()'></td>"; // Add onchange attribute here

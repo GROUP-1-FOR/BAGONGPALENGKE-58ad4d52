@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo "Error updating ven_payments table: " . mysqli_error($connect);
             } else {
                 // Update the balance in the vendor_user table
-                $newBalance = 0 - $balance; // Subtract $balance from the existing balance
+                $newBalance = 0 - (float)$balance; // Subtract $balance from the existing balance
 
                 // Generate a new transaction ID
                 $newTransactionId = generateUniqueTransactionId($connect, $vendorUserId);

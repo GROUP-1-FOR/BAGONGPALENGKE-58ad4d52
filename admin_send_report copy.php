@@ -79,7 +79,7 @@ $connect->close();
 
 <body>
     <header></header>
-    <?php include 'sidebar2.php'; ?>
+    <?php include 'sidebar.php'; ?>
 
     <div class="flex-row">
         <h2 class="manage-account-header">REPORTS</h2>

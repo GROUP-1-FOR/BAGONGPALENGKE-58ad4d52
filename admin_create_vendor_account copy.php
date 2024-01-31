@@ -158,7 +158,7 @@ if ($result) {
 
 <body>
     <header></header>
-    <?php include 'sidebar2.php'; ?>
+    <?php include 'sidebar.php'; ?>
     <br>
     <br>
     <div class="flex-row">

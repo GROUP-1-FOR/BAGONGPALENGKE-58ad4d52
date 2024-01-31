@@ -76,69 +76,168 @@ $resultFetchAllMessages = $stmtFetchAllMessages->get_result();
 <html>
 
 <head>
-    <title>Vendor Messages</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGN IN</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" type="text/css" href="text-style.css">
+    <link rel="javascript" type="text/script" href="js-style.js">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
     <style>
         body {
-            color: maroon;
-            font-family: Arial, sans-serif;
-        }
-
-        #message-container {
-            max-height: 300px;
-            overflow-y: auto;
-            background-color: white;
-            /* Set your desired background color */
-            border: 1px solid maroon;
-            padding: 10px;
-            width: 60%;
-            /* Set the width to 60% */
-            margin: 0 auto;
-            /* Center the container */
-        }
-
-        #message-container p {
             margin: 0;
-        }
-
-        form {
-            margin-top: 10px;
-        }
-
-        button {
-            background-color: maroon;
             color: white;
-            padding: 5px 10px;
-            border: none;
-            cursor: pointer;
+        }
+
+
+        .messaging-container {
+            display: flex;
+            height: 100vh;
+            width: 1250px;
+        }
+
+        p {
+            font-family: Helvetica, sans-serif !important;
+        }
+
+        .admin-panel,
+        .vendor-panel {
+            flex: 1;
+            max-width: 300px;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        .vendor-panel {
+            border-left: 1px solid #ccc;
+        }
+
+        .conversation-panel {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .message-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .admin-panel .message-input {
+            border-color: #ccc;
+        }
+
+        .vendor-panel .message-input {
+            border-color: #ddd;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            width: 1000px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .admin-message {
+            margin-top: 20px;
+            width: 500px;
+            align-self: flex-end;
+            background-color: #9C3D42;
+            color: white;
+            margin-bottom: 10px;
+            width: 700px;
+            padding: 10px;
+            border-radius: 5px;
+
+            /* Light blue for admin */
+        }
+
+        .timestamp {
+            margin-left: 320px;
+            z-index: 4;
+            margin-top: 5px;
+            font-size: large;
+            color: white;
+            font-style: italic;
+            font-size: xx-small;
+            font-weight: 700;
+
+        }
+
+        .vendor-message {
+            color: white;
+            margin-top: 20px;
+            width: 500px;
+            align-self: flex-start;
+            background-color: #7A7D7C;
+            margin-bottom: 10px;
+            width: 700px;
+            padding: 10px;
+            border-radius: 5px;
+            /* Pink for vendor */
         }
     </style>
+
+
 </head>
 
 <body>
-    <center>
-        <h1>Welcome, <?php echo $vendorName; ?>! </h1>
+    <header></header>
+    <?php include 'sidebar2.php'; ?>
 
-        <!-- Display messages -->
-        <div id="message-container">
-            <?php
-            while ($rowMessage = $resultFetchAllMessages->fetch_assoc()) :
-            ?>
-                <p><?php echo ucfirst($rowMessage['message_type']); ?>: <?php echo $rowMessage['message']; ?> (<?php echo $rowMessage['timestamp']; ?>)</p>
-            <?php endwhile; ?>
+    <div class="flex-row-body">
+        <div class="message-back-header">
+            <a class="back-button7" href='vendor_index.php'>
+                <img class="back-icon" src="assets\images\sign-in\back-icon.svg"></a>
+            <h2 class="message-header-v2">Messages</h2>
+        </div>
+        <div class="recepient-panel">
+
+        </div>
+        <div class="hr"></div>
+
+
+        <div class="recipient-box">
+            <label class="recipient">Welcome, <?php echo $vendorName; ?>! </label>
+            <p class="message-datetime">December 25 | 10:30 PM</p>
         </div>
 
-        <!-- Form to send a message -->
-        <form method="post">
-            <textarea name="message_text" rows="4" cols="50" placeholder="Type your message here"></textarea>
-            <br>
-            <button type="submit" name="send_message">Send Message</button>
-        </form>
+        <!-- <div class="convo-container"> -->
+        <div class="text-messages">
+            <div class="message-container2">
+                <?php
+                while ($rowMessage = $resultFetchAllMessages->fetch_assoc()) :
+                    $messageType = ucfirst($rowMessage['message_type']);
+                    $messageText = $rowMessage['message'];
+                    $timestamp = $rowMessage['timestamp'];
+                ?>
 
-        <br>
-        <a href="vendor_index.php">
-            <h1>BACK</h1>
-        </a>
-    </center>
+                    <p class="<?php echo strtolower($messageType); ?>-message">
+                        <?php echo "{$messageType}: {$messageText} <span class='timestamp'>{$timestamp}</span>"; ?>
+
+                    <?php endwhile; ?>
+            </div>
+        </div>
+        <!-- </div> -->
+        <div class="background">
+            <form class="flex-box-row-send" method="post">
+                <textarea class="text-area2" name="message_text" rows="4" cols="50" placeholder="Type your message here"></textarea>
+                <button class="send-button2" type="submit" name="send_message">Send</button>
+            </form>
+        </div>
+
+        <footer></footer>
+
+    </div>
+
+
 </body>
 
 </html>

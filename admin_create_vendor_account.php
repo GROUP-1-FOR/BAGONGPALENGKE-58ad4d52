@@ -345,7 +345,6 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
 
                         <label class="title-label tl1" for="Vendor First Name">Vendor First Name:</label>
                         <input class="input-info" type="text" name="vendor_first_name" id="vendor_first_name" maxlength="35" value="<?php echo isset($_SESSION['vendor_first_name']) ? $_SESSION['vendor_first_name'] : ''; ?>" required oninput="capitalizeFirstName(); validateVendorFirstName(); updateSubmitButton()">
-
                         <!-- Di!splay an error message if it exists in the session -->
                         <span style="color: red;" id="vendor_first_name_error_span">
 
@@ -416,6 +415,7 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
                             <option value="Dry" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Dry') ? 'selected' : ''; ?>>Dry</option>
                             <option value="Other" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Other') ? 'selected' : ''; ?>>Other</option>
                         </select><span style="color: red;" id="vendor_product_type_error_span">
+
                             <?php
                             if (isset($_SESSION['vendor_product_type_error'])) {
                                 echo $_SESSION['vendor_product_type_error'];

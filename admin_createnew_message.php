@@ -77,45 +77,52 @@ while ($row = $result->fetch_assoc()) {
     <header></header>
     <?php include 'sidebar.php'; ?>
 
-    <div class="flex-row">
-        <h2 class="message-container-header">MESSAGES</h2>
-        <tr>
-            <div class="message-container">
+    <div class="flex-row-body">
+        <div class="message-back-header">
+            <a class="back-button7" href='admin_index.php'>
+                <img class="back-icon" src="assets\images\sign-in\back-icon.svg"></a>
+            <h2 class="message-header-v2">Create New Message</h2>
+        </div>
+        <div class="recepient-panel">
 
-                <div class="flex-box1">
-                    <div class="main-container">
-                        <h1>Create New Message</h1>
+        </div>
+        <div class="hr"></div>
 
-                        <!-- Form to send a new message -->
-                        <form method="post" action="process_admin_createnew_message.php">
-                            <label for="recipient">Select Recipient:</label>
-                            <select name="recipient" id="recipient">
-                                <?php
-                                // Display the list of vendors in the dropdown
-                                foreach ($vendors as $vendor) {
-                                    echo "<option value='" . $vendor['vendor_name'] . "-" . $vendor['vendor_stall_number'] . "'>" . $vendor['vendor_name'] . " - Stall " . $vendor['vendor_stall_number'] . "</option>";
-                                }
-                                ?>
-                            </select>
-                            <br>
-
-                            <label for="message_text">Message:</label>
-                            <textarea name="message_text" id="message_text" rows="4" cols="50" placeholder="Type your message here" oninput="toggleSendMessageButton()"></textarea>
-                            <br>
-
-                            <!-- Hidden input to send adminName along with the form -->
-                            <input type="hidden" name="admin_name" value="<?php echo $adminName; ?>">
-
-                            <!-- "Send Message" button with the id 'send_message_button' -->
-                            <button type="submit" name="send_message" id="send_message_button" disabled>Send Message</button>
-                        </form>
-                    </div>
-
+        <form method="post" action="process_admin_createnew_message.php">
+            <div class="recipient-box">
+                <label class="recipient" for="recipient">Select Recipient:</label>
+                <select class="recipient-dropdown" name="recipient" id="recipient">
+                    <?php
+                    // Display the list of vendors in the dropdown
+                    foreach ($vendors as $vendor) {
+                        echo "<option value='" . $vendor['vendor_name'] . "-" . $vendor['vendor_stall_number'] . "'>" . $vendor['vendor_name'] . " - Stall " . $vendor['vendor_stall_number'] . "</option>";
+                    }
+                    ?>
+                </select>
+                <p class="message-datetime">December 25 | 10:30 PM</p>
+            </div>
+            <div class="convo-container">
+                <div class="text-messages">
                 </div>
 
+                <div class="background">
+                    <div class="flex-box-row-send">
+                        <br>
+                        <textarea class="text-area" name="message_text" id="message_text" rows="4" cols="50" placeholder="Type your message here" oninput="toggleSendMessageButton()"></textarea>
+                        <!-- Hidden input to send adminName along with the form -->
+                        <input type="hidden" name="admin_name" value="<?php echo $adminName; ?>">
+                        <!-- "Send Message" button with the id 'send_message_button' -->
+                        <button class="send-button2" type="submit" name="send_message" id="send_message_button" disabled> Send </button>
+                    </div>
+                </div>
+        </form>
+    </div>
 
-                <footer></footer>
+    <footer></footer>
+
+    </div>
+
+
 </body>
 
 </html>
-<?php

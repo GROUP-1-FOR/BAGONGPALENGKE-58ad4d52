@@ -92,7 +92,7 @@ $connect->close();
                 <div class="flex-box-row">
 
                     <label class="text-design1" for="admin_report_ticket">Treasury ID: </label>
-                    <p class="text-design" type="text" id="admin_report_ticket" name="admin_report_ticket" required readonly>TREASURY ID HERE!</p>
+                    <p class="text-design" type="text" id="admin_report_ticket" name="admin_report_ticket" required readonly></p>
                 </div>
 
                 <div class="flex-box-row">
@@ -108,7 +108,6 @@ $connect->close();
                     <span id="error_message" class="error"></span><br>
                     <center><input class="submit-button1" type="submit" value="Send"></center>
                 </div>
-
 
             </form>
         </div>

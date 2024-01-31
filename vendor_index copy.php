@@ -135,48 +135,31 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>SIGN IN</title>
-    <link rel="stylesheet" type="text/css" href="index.css">
-    <link rel="stylesheet" type="text/css" href="text-style.css">
-    <link rel="stylesheet" type="text/css" href="box-style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
+    <title>Main Page</title>
     <style>
         body {
             text-align: center;
             margin: 50px;
             background-color: #f2f2f2;
-            font-size: small;
-            height: 200px;
         }
 
         #money-table {
-            width: 300px;
+            width: 70%;
             margin: auto;
             border-collapse: collapse;
             cursor: pointer;
-            height: 100px;
-            font-size: small;
         }
 
         #money-cell {
-            height: 100px;
-            margin-left: 100px;
             border: 3px solid #ccc;
             padding: 50px;
-            background-color: maroon;
+            background-color: #850F16;
             color: white;
-
+            font-size: 2em;
             /* Adjust the font size as needed */
         }
 
@@ -199,7 +182,6 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
             border: 1px solid #888;
             width: 70%;
             text-align: center;
-            z-index: 5;
         }
 
         .close {
@@ -218,7 +200,7 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
 
         /* Add this style for the "Pay" button inside the modal */
         #payButton {
-            margin-top: 5px;
+            margin-top: 10px;
             padding: 15px;
             background-color: gray;
             color: white;
@@ -243,126 +225,84 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
         }
     </script>
 </head>
-<header></header>
-<?php include 'sidebar2.php'; ?>
 
-<div class="head">
+<body>
+    <h1><?php echo "Hi, " . $vendorName; ?>!</h1>
+    <!-- Display vendor information -->
+    <p>Stall No: <?php echo $stallNumber; ?></p>
+    <p>Vendor ID: <?php echo $userid; ?></p>
 
-    <img class="public-market-pic-v2" src="assets\images\sign-in\public-market-head-v2.svg" alt="back-layer">
+    <!-- Vendor Pay Table -->
+    <table id="money-table">
+        <tr>
+            <td id="money-cell">
+                <center>
+                    <?php if ($balance > 0) : ?>
+                        $<?php echo number_format($balance, 2); ?>
+                        <?php if ($paymentStatus === "To be paid") : ?>
+                            <!-- The "Pay" button triggers the modal directly -->
+                            <br>
+                            <button type="button" name="pay" onclick="openModal()">Pay</button>
+                            <!-- The form to be submitted -->
+                            <form id="paymentForm" method="post" action="vendor_invoice_summary.php">
+                                <input type="hidden" name="vendorName" value="<?php echo $vendorName; ?>">
+                                <input type="hidden" name="vendorUserId" value="<?php echo $userid; ?>">
+                                <input type="hidden" name="vendorStallNumber" value="<?php echo $stallNumber; ?>">
+                                <input type="hidden" name="balance" value="<?php echo $balance; ?>">
+                                <input type="hidden" name="transactionId" value="<?php echo $transactionId; ?>"> <!-- Add this line -->
+                            </form>
+                        <?php endif; ?>
+                    <?php else : ?>
+                        $<?php echo number_format($balance, 2); ?>
+                    <?php endif; ?>
+                    <?php if ($paymentStatus === "Payment has already been sent") : ?>
+                        <p>Payment has already been sent. Wait for confirmation.</p>
+                    <?php endif; ?>
+                </center>
+            </td>
+        </tr>
+    </table>
 
-    <div class="head-bottom">
-        <div>
-            <p class="user-name">Welcome, <?php echo $vendorName; ?>! </p> <br />
-            <img class="head-bottom-1" src="assets\images\sign-in\name-holder2.svg" alt="back-layer">
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p>Are you sure you want to make the payment?</p>
+            <!-- The "Pay" button inside the modal -->
+            <button id="payButton" type="button" onclick="pay()">Pay</button>
         </div>
-
-        <div>
-            <p class="admin-datetime-text"> Date and Time</p>
-            <p class="admin-datetime">December 25 | 10:30 PM</p>
-            <img class="head-bottom-2" src="assets\images\sign-in\datetime-holder3.svg" alt="back-layer">
-        </div>
-
     </div>
+    <br>
+    <a href=vendor_edit_profile.php>
+        <h1>EDIT PROFILE</h1>
+    </a>
 
-    <div class="head-bottom">
+    <a href=vendor_transaction_history.php>
+        <h1>TRANSACTIONS</h1>
+    </a>
 
-        <div class="flex-column2">
-            <div class="dashboard-announcement">
+    <a href=vendor_view_announcement.php>
+        <h1>SEE ANNOUNCEMENTS</h1>
+    </a>
+    <a href="vendor_messages.php">
+        <h1>MESSAGES</h1>
+    </a>
 
-                <div class="flex-row-1">
-                    <div>
+    <a href="vendor_notification.php">
+        <h1>NOTIFICATIONS</h1>
+    </a>
 
-                        <h2 class="interactive-map-header">Amount to Pay</h2>
+    <a href=vendor_faq.php>
+        <h1>HELP</h1>
+    </a>
 
-                        <div class="status-heading">
+    <a href="vendor_send_report.php">
+        <h1>REPORT</h1>
+    </a>
 
-                            <div class=interactive-map-position>
-                                <table id="money-table">
-                                    <tr>
-                                        <td id="money-cell">
-
-                                            <?php if ($balance > 0) : ?>
-                                                $<?php echo number_format($balance, 2); ?>
-                                                <?php if ($paymentStatus === "To be paid") : ?>
-                                                    <!-- The "Pay" button triggers the modal directly -->
-                                                    <br>
-                                                    <button type="button" name="pay" onclick="openModal()">Pay</button>
-                                                    <!-- The form to be submitted -->
-                                                    <form id="paymentForm" method="post" action="vendor_invoice_summary.php">
-                                                        <input type="hidden" name="vendorName" value="<?php echo $vendorName; ?>">
-                                                        <input type="hidden" name="vendorUserId" value="<?php echo $userid; ?>">
-                                                        <input type="hidden" name="vendorStallNumber" value="<?php echo $stallNumber; ?>">
-                                                        <input type="hidden" name="balance" value="<?php echo $balance; ?>">
-                                                        <input type="hidden" name="transactionId" value="<?php echo $transactionId; ?>"> <!-- Add this line -->
-                                                    </form>
-                                                <?php endif; ?>
-                                            <?php else : ?>
-                                                $<?php echo number_format($balance, 2); ?>
-                                            <?php endif; ?>
-                                            <?php if ($paymentStatus === "Payment has already been sent") : ?>
-                                                <p>Payment has already been sent. Wait for confirmation.</p>
-                                            <?php endif; ?>
-
-                                        </td>
-                                    </tr>
-                                </table>
-                                <div id="myModal" class="modal">
-                                    <div class="modal-content">
-                                        <span class="close" onclick="closeModal()">&times;</span>
-                                        <p>Are you sure you want to make the payment?</p>
-                                        <!-- The "Pay" button inside the modal -->
-                                        <button id="payButton" type="button" onclick="pay()">Pay</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- <a href=admin-map.php><img class="map-icon" src="assets\images\sign-in\map-icon.svg" alt="map"> Amount to Pay </a> -->
-
-                </div>
-
-            </div>
-            <div class="dashboard-announcementv2">
-
-                <div class="flex-row-1">
-
-                    <h2 class="notification-header">Notifications</h2>
-                    <div class="message-notif">
-                        <p class="admin-datetime-text-v2"> December 25, 2024</p>
-                        <h1 class="admin-message-notif">You have a message!</h1>
-
-
-                        <p class="admin-vendor-notif">From: teasury1 </p>
-
-                    </div>
-
-
-                </div>
-
-
-                <center><a href=vendor_notification.php><input class="submit-button3" type="submit" value="View"></a></center>
-            </div>
-        </div>
-
-        <div class="dashboard-map">
-            <center>
-                <a href="vendor_view_announcement.php"><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\announce.svg" alt="Sticker" class="sticker"> ANNOUNCEMENTS </button> </a>
-                <a href="vendor_transaction_history.php"><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\transactions.svg" alt="Sticker" class="sticker">TRANSACTIONS </button> </a>
-                <a href="vendor_edit_profile.php"><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\edit-profile.svg" alt="Sticker" class="sticker"> EDIT PROFILE </button> </a>
-                <a href="vendor_messages.php"><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\messages.svg" alt="Sticker" class="sticker"> MESSAGES </button> </a>
-            </center>
-        </div>
-
-
-
-    </div>
-</div>
-
-
-
-
-
-<footer></footer>
+    <a href=vendor_logout.php>
+        <h1>LOGOUT</h1>
+    </a>
+</body>
 
 </html>

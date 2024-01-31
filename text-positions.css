@@ -1,45 +1,53 @@
-
-
-.tl1{
-    margin-left: 10px;
+.tl1 {
+  margin-left: 10px;
 }
 
-.tl2{
-    margin-left: 14px;
+.tl2 {
+  margin-left: 14px;
 }
 
-.tl3{
-    margin-left: 103px;
+.tl3 {
+  margin-left: 103px;
 }
 
-.tl4{
-    margin-left: 37px;
+.tl4 {
+  margin-left: 37px;
 }
 
-.tl5{
-    margin-left: 120px;
+.tl5 {
+  margin-left: 120px;
 }
 
-.tl6{
-    margin-left: 92px;
+.tl6 {
+  margin-left: 92px;
 }
 
-.tl7{
-    margin-left: -70px;
+.tl7 {
+  margin-left: -70px;
 }
 
-.tl8{
-    margin-left: 50px;
+.tl8 {
+  margin-left: 70px;
 }
 
-.tl9{
-    margin-left: 95px;
+.tl9 {
+  margin-left: 95px;
 }
 
-.tl10{
-    margin-left: 25px;
+.tl10 {
+  margin-left: 25px;
 }
 
-.box-position{
-    margin-left: 100px;
+.tl11 {
+  margin-left: -10px;
+}
+.box-position {
+  margin-left: 130px;
+}
+.box-position2 {
+  margin-left: 50px;
+}
+
+.box-position3 {
+  margin-left: 30px;
 }
