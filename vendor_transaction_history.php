@@ -74,7 +74,7 @@ if (!$result) {
                             // Check if the payment is confirmed and archived
 
                             echo "<div class='button-container3'>";
-                            echo "<button class='action-button' onclick=\"viewDetails('{$row['transaction_id']}')\">View Details</button>";
+                            echo "<button class='confirm-button' onclick=\"viewDetails('{$row['transaction_id']}')\">View Details</button>";
                             echo "</div>";
 
 

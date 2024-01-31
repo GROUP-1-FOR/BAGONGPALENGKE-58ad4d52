@@ -70,7 +70,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
 <body>
     <header></header>
-    <?php include 'sidebar2.php'; ?>
+    <?php include 'sidebar.php'; ?>
 
     <div class="flex-row">
 

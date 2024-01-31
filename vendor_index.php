@@ -272,8 +272,7 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
                 <div class="flex-row-1">
                     <div>
 
-                        <h2 class="interactive-map-header">Amount to Pay</h2>
-
+                        <h2 class="interactive-map-header3">Amount to Pay</h2>
                         <div class="status-heading">
 
                             <div class=interactive-map-position>
