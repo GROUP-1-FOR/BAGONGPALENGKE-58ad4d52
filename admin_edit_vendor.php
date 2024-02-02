@@ -20,6 +20,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         $stmt->close();
 
         // Check if the vendor data is found
+        
         if ($vendor_data) {
             // Display the vendor information in a form
 ?>

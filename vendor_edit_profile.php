@@ -237,12 +237,11 @@ if ($result) {
                                 }
                                 ?>
                             </span>
-                            <center><button class="submit-btn1" type="submit" disabled>Submit</button></center>
+
                             <br />
                             <br />
-
-
             </form>
+            <center><button class="submit-btn1" type="submit" disabled>Submit</button></center>
         </div>
     </div>
     <script>

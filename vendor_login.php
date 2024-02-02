@@ -34,29 +34,30 @@ require("config.php");
     <h2>LOGIN</h2>
 
     <form class="form-group" action="vendor_login_1.php" method="post" autocomplete="off">
-            <input class="input-box" type="text" name="vendor_userid" id="vendor_userid" placeholder="Vendor User ID" maxlength="9" required value=""><br />
-            <input  class="input-box" type="password" name="vendor_password" id="vendor_password"  placeholder="PASSWORD" required value="">
-            <span style="color: red;">
-                <?php
-                if (isset($_SESSION['wrong_credentials'])) {
-                    echo $_SESSION['wrong_credentials'];
-                    // Unset the session variable after displaying the error
-                    unset($_SESSION['wrong_credentials']);
-                }
-                ?>
-            </span>
-            <a class="forgot-password" href="vendor_forgot_password.php"> Forgot Password?</a> <br />
-            <button class="login-btn" type="submit" name="vendor_login_submit">LOGIN</button>
-            <a class="back-button2" href="vendor_admin_select.php"> < Back</a>
-        </form>
+      <input class="input-box" type="text" name="vendor_userid" id="vendor_userid" placeholder="Vendor User ID" value="VSR-" maxlength="9" required value=""><br />
+      <input class="input-box" type="password" name="vendor_password" id="vendor_password" placeholder="PASSWORD" required value="">
+      <span style="color: red;">
+        <?php
+        if (isset($_SESSION['wrong_credentials'])) {
+          echo $_SESSION['wrong_credentials'];
+          // Unset the session variable after displaying the error
+          unset($_SESSION['wrong_credentials']);
+        }
+        ?>
+      </span>
+      <a class="forgot-password" href="vendor_forgot_password.php"> Forgot Password?</a> <br />
+      <button class="login-btn" type="submit" name="vendor_login_submit">LOGIN</button>
+      <a class="back-button2" href="vendor_admin_select.php">
+        < Back</a>
+    </form>
 
-        </div>
-    <footer>
+  </div>
+  <footer>
 
-    </footer>
-    <main>
+  </footer>
+  <main>
 
-    </main>
+  </main>
 </body>
 
 </html>

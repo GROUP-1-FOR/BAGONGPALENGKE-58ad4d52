@@ -121,7 +121,7 @@
   color: white;
   margin-top: -43px;
   margin-left: 110px;
-  z-index: 4;
+  z-index: 1;
 }
 .notification-header {
   font-weight: 900;

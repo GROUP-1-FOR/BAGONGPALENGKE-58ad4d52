@@ -109,6 +109,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                                     // Check if vendor_userid exists in vendor_edit_profile table and vendor_edit column is equal to 0
                                     $editButtonVisible = isVendorEditable($row["vendor_userid"]);
 
+                                    if ($editButtonVisible) {
+                                        echo "<button onclick='editVendor(\"" . $row["vendor_userid"] . "\")'>Edit</button>";
+                                    }
+
                                     // if ($editButtonVisible) {
                                     //     echo "<button onclick='removeVendor(\"" . $row["vendor_userid"] . "\")'>Remove Vendor</button>";
                                     // }
