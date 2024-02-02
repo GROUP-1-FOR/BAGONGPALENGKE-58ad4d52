@@ -3,17 +3,15 @@ require("config.php");
 
 // Check if the user is logged in
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    // Include your existing code for session validation
 
-    // Fetch admin name from admin_sign_in table
-    $adminUserId = $_SESSION["userid"];
+    $admin_userid = $_SESSION["userid"];
 } else {
     header("location:admin_logout.php");
 }
 
 $sqlFetchAdminName = "SELECT admin_name FROM admin_sign_in WHERE admin_userid = ?";
 $stmtFetchAdminName = $connect->prepare($sqlFetchAdminName);
-$stmtFetchAdminName->bind_param('s', $adminUserId);
+$stmtFetchAdminName->bind_param('s', $admin_userid);
 $stmtFetchAdminName->execute();
 $resultFetchAdminName = $stmtFetchAdminName->get_result();
 
@@ -52,16 +50,16 @@ while ($row = $result->fetch_assoc()) {
 <head>
     <title>Create New Message</title>
     <script>
-    // Function to enable or disable the "Send Message" button based on the message content and vendor list
-    function toggleSendMessageButton() {
-        var messageText = document.getElementById('message_text').value;
-        var sendMessageButton = document.getElementById('send_message_button');
-        var vendorList = <?php echo json_encode($vendors); ?>;
+        // Function to enable or disable the "Send Message" button based on the message content and vendor list
+        function toggleSendMessageButton() {
+            var messageText = document.getElementById('message_text').value;
+            var sendMessageButton = document.getElementById('send_message_button');
+            var vendorList = <?php echo json_encode($vendors); ?>;
 
-        // Enable the button if the message is not empty and there are vendors in the list, otherwise disable it
-        sendMessageButton.disabled = (messageText.trim() === '' || vendorList.length === 0);
-    }
-</script>
+            // Enable the button if the message is not empty and there are vendors in the list, otherwise disable it
+            sendMessageButton.disabled = (messageText.trim() === '' || vendorList.length === 0);
+        }
+    </script>
 </head>
 
 <body>
