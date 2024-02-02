@@ -31,7 +31,13 @@ $otp_code = $_SESSION["vendor_otp_message"];
 
 unset($_SESSION["vendor_otp_message"]);
 
-$mail->Body = '<font color="#008000">' . $otp_code . "</font> is your OTP code. For your protection, do not share this code with anyone.";
+$mail->addEmbeddedImage('santarosapublicmarket.png', 'logo');
+$mail->Body = '<div style="text-align: center;">
+                  <img src="cid:logo" alt="Santa Rosa Public Market"><br />
+                  <font style="color: #008000; font-size: 20px;">' . $otp_code . '</font>
+                  is your OTP code. For your protection, do not share this code with anyone.
+               </div>';
+
 
 $mail->send();
 

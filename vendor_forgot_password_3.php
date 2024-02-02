@@ -35,7 +35,16 @@ $dateFormat = 'Y-m-d H:i:s';
 // Get the current date and time in the Philippines time zone
 $currentDateTime = date($dateFormat);
 
+
+$mail->addEmbeddedImage('santarosapublicmarket.png', 'logo');
+$mail->Body = '<div style="text-align: center;">
+                  <img src="cid:logo" alt="Santa Rosa Public Market"><br />
+                  <p style="color: #008000; font-size: 20px;">Password Updated</p>
+                  Your Bagong Palengke Account Password has been updated on ' . $currentDateTime . '.
+               </div>';
+
+
+
 // Construct the email body
-$mail->Body = '<font color="#008000">' . "Password Updated!" . "</font> Your Bagong Palengke Account's Password has been updated on " . $currentDateTime . ".";
 
 $mail->send();
