@@ -8,6 +8,16 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     header("location:admin_logout.php");
 }
 
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
+if (isset($_SESSION["otp_verified"]) && $_SESSION["otp_verified"] === "vendor") {
+    header("Location: vendor_index.php");
+} elseif (isset($_SESSION["otp_verified"]) && $_SESSION["otp_verified"] === "admin") {
+    header("Location: admin_index.php");
+}
+
 
 
 if (isset($_POST["admin_otp"])) {
@@ -25,6 +35,7 @@ if (isset($_POST["admin_otp"])) {
 
         // Check if entered OTP matches the stored OTP
         if ($entered_otp == $stored_otp) {
+            $_SESSION["otp_verified"] = "admin";
             // OTP verification successful
             $reset_trials_query = "UPDATE admin_sign_in SET admin_otp_trials = 0 WHERE admin_userid = '$admin_userid'";
             mysqli_query($connect, $reset_trials_query);

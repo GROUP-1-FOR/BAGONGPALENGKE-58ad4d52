@@ -2,6 +2,16 @@
 
 require("config.php");
 
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
+if (isset($_SESSION["otp_verified"]) && $_SESSION["otp_verified"] === "vendor") {
+  header("Location: vendor_index.php");
+} elseif (isset($_SESSION["otp_verified"]) && $_SESSION["otp_verified"] === "admin") {
+  header("Location: admin_index.php");
+}
+
 ?>
 
 <!DOCTYPE html>

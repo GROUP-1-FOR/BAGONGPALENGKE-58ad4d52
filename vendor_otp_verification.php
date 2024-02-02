@@ -10,6 +10,16 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 }
 
 
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
+if (isset($_SESSION["otp_verified"]) && $_SESSION["otp_verified"] === "vendor") {
+    header("Location: vendor_index.php");
+} elseif (isset($_SESSION["otp_verified"]) && $_SESSION["otp_verified"] === "admin") {
+    header("Location: admin_index.php");
+}
+
 
 if (isset($_POST["vendor_otp"])) {
     $entered_otp = htmlspecialchars($_POST["vendor_otp"]);
@@ -26,6 +36,7 @@ if (isset($_POST["vendor_otp"])) {
 
         // Check if entered OTP matches the stored OTP
         if ($entered_otp == $stored_otp) {
+            $_SESSION["otp_verified"] = "vendor";
             // OTP verification successful
             $reset_trials_query = "UPDATE vendor_sign_in SET vendor_otp_trials = 0 WHERE vendor_userid = '$vendor_userid'";
             mysqli_query($connect, $reset_trials_query);

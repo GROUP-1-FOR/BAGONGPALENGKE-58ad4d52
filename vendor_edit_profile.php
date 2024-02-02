@@ -125,6 +125,7 @@ if ($result) {
             var mobileNumber = document.getElementById("vendor_mobile_number").value;
             var email = document.getElementById("vendor_email").value;
 
+            //kulang ng codndition kelangan kelangan tama format ng batawat field bago mag visible submit button
             // Check if any of the fields are empty
             submitButton.disabled = !hasFormChanged() || firstName === "" || lastName === "" || mobileNumber === "" || email === "";
 
