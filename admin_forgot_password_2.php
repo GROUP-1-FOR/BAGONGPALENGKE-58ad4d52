@@ -67,29 +67,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             var digitPattern = /\d/;
             var specialCharPattern = /[!@#$%^&*()_+]/;
 
-            // Check each pattern and provide feedback
-            var isValid = true;
-            if (!lengthPattern.test(password)) {
-                isValid = false;
-                passwordValidationMessage.textContent = "Password must be 8-16 characters.";
-            } else if (!uppercasePattern.test(password)) {
-                isValid = false;
-                passwordValidationMessage.textContent = "Include at least one uppercase letter.";
-            } else if (!lowercasePattern.test(password)) {
-                isValid = false;
-                passwordValidationMessage.textContent = "Include at least one lowercase letter.";
-            } else if (!digitPattern.test(password)) {
-                isValid = false;
-                passwordValidationMessage.textContent = "Include at least one number.";
-            } else if (!specialCharPattern.test(password)) {
-                isValid = false;
-                passwordValidationMessage.textContent = "Include at least one special character from the list ! @ # $ % ^ & * ( ) _ +";
+            // Check each pattern and collect feedback
+            var validationMessages = [];
+
+            if (passwordInput.value != "") {
+                if (!lengthPattern.test(password)) {
+                    validationMessages.push("Password must be 8-16 characters.");
+                }
+
+                if (!uppercasePattern.test(password)) {
+                    validationMessages.push("Include at least one uppercase letter.");
+                }
+
+                if (!lowercasePattern.test(password)) {
+                    validationMessages.push("Include at least one lowercase letter.");
+                }
+
+                if (!digitPattern.test(password)) {
+                    validationMessages.push("Include at least one number.");
+                }
+
+                if (!specialCharPattern.test(password)) {
+                    validationMessages.push("Include at least one special character from the list: ! @ # $ % ^ & * ( ) _ +");
+                }
+
             } else {
-                passwordValidationMessage.textContent = "";
+                return false;
             }
 
-            return isValid;
+
+            // Display collected messages
+            passwordValidationMessage.innerHTML = validationMessages.map(message => `<p>${message}</p>`).join('');
+
+            // Return validity based on messages
+            return validationMessages.length === 0;
         }
+
 
         function checkPasswordMatch() {
             var password = document.getElementsByName("admin_new_password")[0].value;
@@ -151,13 +164,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label for="admin_new_password">New Password:</label>
             <input type="password" name="admin_new_password" id="admin_new_password" maxlength="16" placeholder="8-16 characters" oninput="validatePassword(); checkPasswordMatch(); updateSubmitButton()">
             <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()">
-            <label for="showPassword">Show Password</label>
-            <span style="color: red;" id="passwordValidationMessage"></span><br />
+            <label for="showPassword">Show Password</label> <br />
+
 
             <label for="admin_confirm_new_password">Confirm Password:</label>
             <input type="password" name="admin_confirm_new_password" id="admin_confirm_new_password" maxlength="16" required oninput="checkPasswordMatch(); updateSubmitButton()">
             <span id="passwordMatchMessage"></span><br />
-
+            <hr />
+            <br />
+            <span style="color: red;" id="passwordValidationMessage"></span><br />
+            <hr />
             <button type="submit" disabled>Update Password</button>
         </form>
     </div>
