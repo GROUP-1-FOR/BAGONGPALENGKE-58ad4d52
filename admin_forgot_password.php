@@ -4,8 +4,6 @@ require("config.php");
 
 
 // Function to send email with the password reset link
-
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get the email address from the form
     $email = htmlspecialchars($_POST["admin_email"]);
