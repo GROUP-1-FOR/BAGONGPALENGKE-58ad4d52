@@ -1,12 +1,6 @@
 <?php
 require("config.php");
-if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $id = $_SESSION["id"];
-    $userid = $_SESSION["userid"];
-} else {
-    header("location:vendor_logout.php");
-}
-
+require("vendor_check_login.php");
 
 // Retrieve announcements for the logged-in user
 $sql_messages = "SELECT * FROM announcements  ORDER BY announcement_time DESC";

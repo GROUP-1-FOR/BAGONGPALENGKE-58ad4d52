@@ -1,12 +1,13 @@
 <?php
 require("config.php");
+
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $admin_id = $_SESSION["id"];
     $admin_userid = $_SESSION["userid"];
-    $incorrect_otp_message = "";
 } else {
     header("location:admin_logout.php");
 }
+
 
 header("Cache-Control: no-cache, no-store, must-revalidate");
 header("Pragma: no-cache");
@@ -18,8 +19,7 @@ if (isset($_SESSION["otp_verified"]) && $_SESSION["otp_verified"] === "vendor") 
     header("Location: admin_index.php");
 }
 
-
-
+$incorrect_otp_message = "";
 if (isset($_POST["admin_otp"])) {
     $entered_otp = htmlspecialchars($_POST["admin_otp"]);
     $max_trials = 3;

@@ -1,11 +1,6 @@
 <?php
 require("config.php");
-if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $admin_id = $_SESSION["id"];
-    $admin_userid = $_SESSION["userid"];
-} else {
-    header("location:admin_logout.php");
-}
+require("admin_check_login.php");
 
 // Query to get admin_name based on admin_userid
 $adminNameQuery = "SELECT admin_name FROM admin_sign_in WHERE admin_userid = '$admin_userid'";

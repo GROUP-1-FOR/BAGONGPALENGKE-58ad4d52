@@ -4,7 +4,6 @@ require("config.php");
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $vendor_id = $_SESSION["id"];
     $vendor_userid = $_SESSION["userid"];
-    $incorrect_otp_message = "";
 } else {
     header("location:vendor_logout.php");
 }
@@ -20,6 +19,8 @@ if (isset($_SESSION["otp_verified"]) && $_SESSION["otp_verified"] === "vendor") 
     header("Location: admin_index.php");
 }
 
+
+$incorrect_otp_message = "";
 
 if (isset($_POST["vendor_otp"])) {
     $entered_otp = htmlspecialchars($_POST["vendor_otp"]);

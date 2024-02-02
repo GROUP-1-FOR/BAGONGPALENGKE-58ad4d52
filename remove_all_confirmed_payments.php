@@ -1,12 +1,7 @@
 <?php
 require("config.php");
 
-// Check if the user is logged in as an admin
-if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $admin_id = $_SESSION["id"];
-} else {
-    header("location:admin_logout.php");
-}
+require("admin_check_login.php");
 
 // Check if the admin has the authority to remove confirmed payments
 // Add your condition here if necessary

@@ -2,12 +2,8 @@
 <?php
 require("config.php");
 
-if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $id = $_SESSION["id"];
-    $userid = $_SESSION["userid"];
-} else {
-    header("location:vendor_logout.php");
-}
+require("vendor_check_login.php");
+
 
 
 if (isset($_GET['transaction_id'])) {

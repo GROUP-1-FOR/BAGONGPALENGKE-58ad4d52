@@ -3,12 +3,7 @@
 
 // Include the configuration file
 require("config.php");
-if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $id = $_SESSION["id"];
-    $userid = $_SESSION["userid"];
-} else {
-    header("location:vendor_logout.php");
-}
+require("vendor_check_login.php");
 
 if (isset($_POST['gcash_mobile'])) {
     $inputedNumber = $_POST['gcash_mobile'];
@@ -20,7 +15,7 @@ if (isset($_POST['gcash_mobile'])) {
             // Check if the mobile number matches the one in the vendor_sign_in table
             $sqlCheckMobile = "SELECT vendor_mobile_number FROM vendor_sign_in WHERE vendor_userid = ?";
             $stmtCheckMobile = $connect->prepare($sqlCheckMobile);
-            $stmtCheckMobile->bind_param('s', $userid); // Change $vendorUserId to $userid
+            $stmtCheckMobile->bind_param('s', $vendor_userid); // Change $vendorUserId to $vendor_userid
             $stmtCheckMobile->execute();
             $stmtCheckMobile->bind_result($vendorMobileNumber);
             $stmtCheckMobile->fetch();

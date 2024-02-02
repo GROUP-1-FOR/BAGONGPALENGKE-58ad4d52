@@ -1,12 +1,6 @@
 <?php
 require("config.php");
-
-if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $admin_id = $_SESSION["id"];
-    $admin_userid = $_SESSION["userid"];
-} else {
-    header("location:admin_logout.php");
-}
+require("admin_check_login.php");
 
 //Error message for the first part of the form
 $vendor_first_name_error  = $vendor_last_name_error  = $vendor_mobile_number_error = $vendor_email_error = $vendor_product_type_error = $vendor_first_payment_date_error = "";

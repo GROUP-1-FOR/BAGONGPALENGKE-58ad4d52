@@ -3,12 +3,7 @@
 
 // Include the configuration file
 require("config.php");
-if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $id = $_SESSION["id"];
-    $userid = $_SESSION["userid"];
-} else {
-    header("location:vendor_logout.php");
-}
+require("vendor_check_login.php");
 
 // Check if the necessary POST data is set, including the transaction_id
 if (

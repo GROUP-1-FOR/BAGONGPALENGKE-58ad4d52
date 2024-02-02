@@ -44,16 +44,16 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     }
 ?>
 
-<!DOCTYPE html>
-<html>
+    <!DOCTYPE html>
+    <html>
 
-<head>
-    <title>GCash Payment Confirmation</title>
-    <!-- Add your styles here -->
-</head>
+    <head>
+        <title>GCash Payment Confirmation</title>
+        <!-- Add your styles here -->
+    </head>
 
-<body>
-    <div id="payment-confirmation">
+    <body>
+        <div id="payment-confirmation">
             <h2>YOU ARE ABOUT TO PAY</h2>
             <p>Amount</p>
             <p>PHP <?php echo number_format($balance, 2); ?></p>
@@ -69,7 +69,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             function confirmPayment() {
                 // Display a confirmation dialog
                 var confirmation = confirm("Are you sure you want to proceed with the payment?");
-                
+
                 // If user clicks OK, set the hidden input value to 1
                 if (confirmation) {
                     document.getElementsByName("payment_confirmed")[0].value = "1";
@@ -79,9 +79,9 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 return confirmation;
             }
         </script>
-</body>
+    </body>
 
-</html>
+    </html>
 
 <?php
 } else {

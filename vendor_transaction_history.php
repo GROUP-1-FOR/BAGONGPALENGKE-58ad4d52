@@ -1,17 +1,12 @@
 <?php
 require("config.php");
 
-if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $id = $_SESSION["id"];
-    $userid = $_SESSION["userid"];
-} else {
-    header("location:vendor_logout.php");
-}
+require("vendor_check_login.php");
 
 
 $queryTransaction = "SELECT transaction_id, vendor_userid, vendor_name, balance, payment_date, mop 
     FROM paid_records 
-    WHERE vendor_userid = '$userid' 
+    WHERE vendor_userid = '$vendor_userid' 
     ORDER BY payment_date DESC";
 
 $result = mysqli_query($connect, $queryTransaction);

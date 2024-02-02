@@ -1,12 +1,8 @@
 <?php
 require("config.php");
 
-if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $admin_id = $_SESSION["id"];
-    $admin_userid = $_SESSION["userid"];
-} else {
-    header("location:admin_logout.php");
-}
+require("admin_check_login.php");
+
 
 ?>
 

@@ -1,15 +1,10 @@
 <?php
 require("config.php");
 
-if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $id = $_SESSION["id"];
-    $userid = $_SESSION["userid"];
-} else {
-    header("location:vendor_logout.php");
-}
+require("vendor_check_login.php");
 
 // Fetch user details from the database based on the session user ID
-$query = "SELECT vendor_first_name, vendor_last_name, vendor_mobile_number, vendor_email FROM vendor_sign_in WHERE vendor_userid = '$userid'";
+$query = "SELECT vendor_first_name, vendor_last_name, vendor_mobile_number, vendor_email FROM vendor_sign_in WHERE vendor_userid = '$vendor_userid'";
 $result = mysqli_query($connect, $query);
 
 if ($result) {
@@ -131,7 +126,7 @@ if ($result) {
 
             // Check if vendor_userid exists
             <?php
-            $queryCheckVendor = "SELECT COUNT(*) FROM vendor_edit_profile WHERE vendor_userid = '$userid'";
+            $queryCheckVendor = "SELECT COUNT(*) FROM vendor_edit_profile WHERE vendor_userid = '$vendor_userid'";
             $resultCheckVendor = mysqli_query($connect, $queryCheckVendor);
             $countVendor = mysqli_fetch_row($resultCheckVendor)[0];
             ?>
@@ -147,7 +142,7 @@ if ($result) {
 
 <body>
 
-    <h1>Update Vendor Account, <?php echo $userid  ?>! </h1>
+    <h1>Update Vendor Account, <?php echo $vendor_userid  ?>! </h1>
 
     <form action="vendor_edit_profile_1.php" method="post" onsubmit="return validateForm()">
 

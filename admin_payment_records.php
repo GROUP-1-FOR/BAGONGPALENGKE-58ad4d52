@@ -1,11 +1,6 @@
 <?php
 require("config.php");
-if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $admin_id = $_SESSION["id"];
-    $admin_userid = $_SESSION["userid"];
-} else {
-    header("location:admin_logout.php");
-}
+require("admin_check_login.php");
 
 // Fetch paid records from the database
 $query = "SELECT id, vendor_name, balance, payment_date, mop, transaction_id FROM paid_records";

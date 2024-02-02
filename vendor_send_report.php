@@ -1,12 +1,8 @@
 <?php
 
 require("config.php");
-if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $vendor_id = $_SESSION["id"];
-    $vendor_userid = $_SESSION["userid"];
-} else {
-    header("location:vendor_logout.php");
-}
+require("vendor_check_login.php");
+
 
 
 $sql_ticket_number = "SELECT MAX(ticket_number) AS max_ticket FROM report_bug";

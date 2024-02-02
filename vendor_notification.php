@@ -2,11 +2,8 @@
 
 require("config.php");
 
-if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $userid = $_SESSION["userid"];
-} else {
-    header("location:vendor_logout.php");
-}
+require("vendor_check_login.php");
+
 ?>
 
 <!DOCTYPE html>
@@ -66,7 +63,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     // Fetch notifications using prepared statement
     $sqlNotifications = "SELECT * FROM vendor_notification WHERE vendor_userid = ? OR vendor_userid = 'ALL' ORDER BY notif_date DESC";
     $stmtNotifications = $connect->prepare($sqlNotifications);
-    $stmtNotifications->bind_param('s', $userid); // Use 's' for VARCHAR
+    $stmtNotifications->bind_param('s', $vendor_userid); // Use 's' for VARCHAR
     $stmtNotifications->execute();
     $resultNotifications = $stmtNotifications->get_result();
 

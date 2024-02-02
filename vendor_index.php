@@ -1,11 +1,6 @@
 <?php
 require("config.php");
-if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $id = $_SESSION["id"];
-    $userid = $_SESSION["userid"];
-} else {
-    header("location:vendor_logout.php");
-}
+require("vendor_check_login.php");
 //to know last log in time of vendor
 include('vendor_login_time.php');
 
@@ -13,7 +8,7 @@ include('vendor_login_time.php');
 // Fetch user data using prepared statement
 $sqlUserData = "SELECT * FROM vendor_balance WHERE vendor_userid = ?";
 $stmtUserData = $connect->prepare($sqlUserData);
-$stmtUserData->bind_param('s', $userid); // Use 's' for VARCHAR
+$stmtUserData->bind_param('s', $vendor_userid); // Use 's' for VARCHAR
 $stmtUserData->execute();
 $resultUserData = $stmtUserData->get_result();
 
@@ -71,18 +66,18 @@ if ($currentDate >= $startingDate) {
 
             $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
             $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-            $stmtUpdateBalance->bind_param('di', $currentBalance, $userid); // Assuming vendor_userid is of type integer
+            $stmtUpdateBalance->bind_param('di', $currentBalance, $vendor_userid); // Assuming vendor_userid is of type integer
             $stmtUpdateBalance->execute();
 
             $sqlUpdateBalance = "UPDATE admin_stall_map SET balance = ? WHERE vendor_userid = ?";
             $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-            $stmtUpdateBalance->bind_param('di', $currentBalance, $userid); // Assuming vendor_userid is of type integer
+            $stmtUpdateBalance->bind_param('di', $currentBalance, $vendor_userid); // Assuming vendor_userid is of type integer
             $stmtUpdateBalance->execute();
 
             // Update day, month, and year
             $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
             $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
-            $stmtUpdateDate->bind_param('iiii', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
+            $stmtUpdateDate->bind_param('iiii', $currentDay, $currentMonth, $currentYear, $vendor_userid); // Assuming vendor_userid is of type integer
             $stmtUpdateDate->execute();
         }
     }
@@ -109,7 +104,7 @@ $paymentStatus = "To be paid";
 // Check if the payment has been sent but not confirmed
 $sqlCheckPayment = "SELECT * FROM ven_payments WHERE vendor_userid = ? AND vendor_name = ? AND transaction_id = ? AND confirmed = 0 AND archived = 0";
 $stmtCheckPayment = $connect->prepare($sqlCheckPayment);
-$stmtCheckPayment->bind_param('iss', $userid, $vendorName, $transactionId);
+$stmtCheckPayment->bind_param('iss', $vendor_userid, $vendorName, $transactionId);
 $stmtCheckPayment->execute();
 $resultCheckPayment = $stmtCheckPayment->get_result();
 
@@ -127,7 +122,7 @@ if (isset($_SESSION['payment_status'])) {
 if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
     // Check if there is an unconfirmed payment before redirecting
     if ($resultCheckPayment->num_rows === 0) {
-        header("Location: vendor_invoice_summary.php?vendorName=$vendorName&vendorUserId=$userid&vendorStallNumber=$stallNumber&balance=$balance");
+        header("Location: vendor_invoice_summary.php?vendorName=$vendorName&vendorUserId=$vendor_userid&vendorStallNumber=$stallNumber&balance=$balance");
         exit();
     } else {
         echo "Cannot redirect to invoice summary because payment has already been sent but not confirmed.";
@@ -230,7 +225,7 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
     <h1><?php echo "Hi, " . $vendorName; ?>!</h1>
     <!-- Display vendor information -->
     <p>Stall No: <?php echo $stallNumber; ?></p>
-    <p>Vendor ID: <?php echo $userid; ?></p>
+    <p>Vendor ID: <?php echo $vendor_userid; ?></p>
 
     <!-- Vendor Pay Table -->
     <table id="money-table">
@@ -246,7 +241,7 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
                             <!-- The form to be submitted -->
                             <form id="paymentForm" method="post" action="vendor_invoice_summary.php">
                                 <input type="hidden" name="vendorName" value="<?php echo $vendorName; ?>">
-                                <input type="hidden" name="vendorUserId" value="<?php echo $userid; ?>">
+                                <input type="hidden" name="vendorUserId" value="<?php echo $vendor_userid; ?>">
                                 <input type="hidden" name="vendorStallNumber" value="<?php echo $stallNumber; ?>">
                                 <input type="hidden" name="balance" value="<?php echo $balance; ?>">
                                 <input type="hidden" name="transactionId" value="<?php echo $transactionId; ?>"> <!-- Add this line -->

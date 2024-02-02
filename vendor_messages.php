@@ -1,18 +1,14 @@
 <?php
 require("config.php");
 
-// Check if the user is logged in
-if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $userid = $_SESSION["userid"];
-    $vendorName = ''; // Initialize vendor name
-} else {
-    header("location:vendor_logout.php");
-}
+require("vendor_check_login.php");
+
+$vendorName = ''; // Initialize vendor name
 
 // Fetch vendor data using prepared statement
 $sqlVendorData = "SELECT vendor_name, vendor_stall_number, vendor_userid FROM vendor_sign_in WHERE vendor_userid = ?";
 $stmtVendorData = $connect->prepare($sqlVendorData);
-$stmtVendorData->bind_param('s', $userid);
+$stmtVendorData->bind_param('s', $vendor_userid);
 $stmtVendorData->execute();
 $resultVendorData = $stmtVendorData->get_result();
 
