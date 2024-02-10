@@ -52,7 +52,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 // Loop to generate boxes
                 for ($i = 1; $i <= 74; $i++) {
                     // Fetch data from the database for the current box
-                    $query = "SELECT COUNT(*) as count, balance, vacant FROM admin_stall_map WHERE vendor_stall_number = ?";
+                    $query = "SELECT COUNT(*) as count, balance, vacant, vendor_name FROM admin_stall_map WHERE vendor_stall_number = ?";
                     $stmt = $connect->prepare($query);
                     $stmt->bind_param("i", $i);
                     $stmt->execute();
@@ -61,6 +61,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     $count = $row['count'];
                     $balance = $row['balance'];
                     $vacant = $row['vacant'];
+                    $vendorName = $row['vendor_name'];
 
                     // Set the box color based on the fetched data
                     $boxColor = '';
@@ -74,21 +75,39 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                         $boxColor = 'background-color: gray;';
                     }
 
-                    // Output the box with the determined color and clickable status
+                    // Output the box with the determined color and hoverable status (not clickable)
                     if ($vacant == 0) {
-                        echo '<div class="box box-' . $i . '" style="' . $boxColor . '" onclick="handleBoxClick(' . $i . ')">' . $i . '</div>';
+                        echo '<div class="box box-' . $i . '" style="' . $boxColor . ' cursor: pointer;" onclick="handleBoxClick(' . $i . ')">' . $i . '</div>';
                     } else {
-                        echo '<div class="box box-' . $i . '" style="' . $boxColor . ' pointer-events: none;">' . $i . '</div>';
+                        echo '<div class="box box-' . $i . '" style="' . $boxColor . '" onmouseover="handleBoxHover(event, \'' . $vendorName . '\', ' . $balance . ')" onmouseout="handleBoxMouseOut()">' . $i . '</div>';
                     }
                 }
                 ?>
-
                 <script>
                     function handleBoxClick(tableNumber) {
                         var confirmAddition = confirm('Add vendor to Stall ' + tableNumber + '?');
                         if (confirmAddition) {
                             var url = 'admin_create_vendor_account.php?stall_number=' + tableNumber;
                             window.location.href = url;
+                        }
+                    }
+
+                    function handleBoxHover(event, vendorName, balance) {
+                        // Display information as a tooltip near the mouse pointer
+                        var tooltip = document.createElement('div');
+                        tooltip.innerHTML = 'Vendor Name: ' + vendorName + '<br>' + 'Balance: ' + balance;
+                        tooltip.className = 'tooltip';
+                        tooltip.style.position = 'absolute';
+                        tooltip.style.top = (event.pageY - 20) + 'px';
+                        tooltip.style.left = (event.pageX + 10) + 'px';
+                        document.body.appendChild(tooltip);
+                    }
+
+                    function handleBoxMouseOut() {
+                        // Remove the tooltip when moving away from the box
+                        var tooltip = document.querySelector('.tooltip');
+                        if (tooltip) {
+                            tooltip.parentNode.removeChild(tooltip);
                         }
                     }
                 </script>
