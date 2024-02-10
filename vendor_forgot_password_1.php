@@ -1,5 +1,9 @@
 <?php
-require("config.php");
+$connect = mysqli_connect("localhost", "root", "", "bagong_palengke_db");
+
+if ($connect === false) {
+    die("ERROR: Could not connect. " . mysqli_connect_error());
+}
 
 $select_query_FetchVendorUserId = "SELECT vendor_userid FROM vendor_sign_in WHERE vendor_email = '$email'";
 $resultFetchVendorUserId = mysqli_query($connect, $select_query_FetchVendorUserId);

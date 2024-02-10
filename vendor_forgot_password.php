@@ -1,7 +1,10 @@
 <?php
 // Include your database connection file
-require("config.php");
+$connect = mysqli_connect("localhost", "root", "", "bagong_palengke_db");
 
+if ($connect === false) {
+  die("ERROR: Could not connect. " . mysqli_connect_error());
+}
 
 // Function to send email with the password reset link
 
