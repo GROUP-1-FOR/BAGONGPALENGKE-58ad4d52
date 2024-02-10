@@ -84,6 +84,7 @@ if (isset($_GET['cancel_button'])) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <style>
         .otp-text {
             display: flex;
@@ -185,56 +186,57 @@ if (isset($_GET['cancel_button'])) {
         </form>
     </div>
     <script>
-        // Hide overlay and alert message
-        function hideAlert() {
-            var overlay = document.getElementById('overlay');
-            overlay.style.display = 'none';
-        }
+    // Hide overlay and alert message
+    function hideAlert() {
+        var overlay = document.getElementById('overlay');
+        overlay.style.display = 'none';
+    }
 
-        $(document).ready(function() {
-            var cooldownTime = 45; // 45 seconds
-            var isCooldown = true;
+    $(document).ready(function() {
+        var cooldownTime = 45; // 45 seconds
+        var isCooldown = true;
 
-            // Display cooldown message on page load
-            $("#resendOTPMessage").text(cooldownTime + " seconds");
+        // Display cooldown message on page load
+        $("#resendTokenMessage").text(cooldownTime + " seconds");
 
-            // Start the cooldown timer
-            var timer = setInterval(function() {
-                cooldownTime--;
-                $("#resendOTPMessage").text(cooldownTime + " seconds");
+        // Start the cooldown timer
+        var timer = setInterval(function() {
+            cooldownTime--;
+            $("#resendOTPButton").prop("disabled", true);
+            $("#resendTokenMessage").text(cooldownTime + " seconds");
 
-                if (cooldownTime <= 0) {
-                    // Enable the button after cooldown
-                    $("#resendOTPButton").prop("disabled", false);
-                    $("#resendOTPMessage").text(" ");
-                    isCooldown = false;
-                    clearInterval(timer);
-                }
-            }, 1000);
-        });
-
-        // Function to start the countdown timer
-        function startTimer(duration, display) {
-            var timer = duration;
-            setInterval(function() {
-                display.textContent = timer;
-                if (--timer < 0) {
-                    timer = 0;
-                }
-            }, 1000);
-        }
-
-        // Check if resend OTP timer session is set
-        <?php if (isset($_SESSION['resend_otp_timer'])) : ?>
-            var endTime = <?php echo $_SESSION['resend_otp_timer']; ?>;
-            var now = <?php echo time(); ?>;
-            var cooldownTime = endTime - now;
-            if (cooldownTime > 0) {
-                var resendTokenMessage = document.getElementById('resendTokenMessage');
-                startTimer(cooldownTime, resendTokenMessage);
+            if (cooldownTime <= 0) {
+                // Enable the button after cooldown
+                $("#resendOTPButton").prop("disabled", false);
+                $("#resendTokenMessage").text(" ");
+                isCooldown = false;
+                clearInterval(timer);
             }
-        <?php endif; ?>
-    </script>
+        }, 1000);
+    });
+
+    // Function to start the countdown timer
+    function startTimer(duration, display) {
+        var timer = duration;
+        setInterval(function() {
+            display.textContent = timer;
+            if (--timer < 0) {
+                timer = 0;
+            }
+        }, 1000);
+    }
+
+    // Check if resend OTP timer session is set
+    <?php if (isset($_SESSION['resend_otp_timer'])) : ?>
+        var endTime = <?php echo $_SESSION['resend_otp_timer']; ?>;
+        var now = <?php echo time(); ?>;
+        var cooldownTime = Math.max(0, endTime - now); // Ensure non-negative value
+        if (cooldownTime > 0) {
+            var resendTokenMessage = document.getElementById('resendTokenMessage');
+            startTimer(cooldownTime, resendTokenMessage);
+        }
+    <?php endif; ?>
+</script>
 </body>
 
 </html>
