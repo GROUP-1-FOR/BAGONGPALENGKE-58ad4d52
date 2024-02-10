@@ -113,16 +113,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["vendor_resend_token"])
             <span id="error-message" style="color: red">
                 <?php echo $vendor_token_error; ?>
             </span>
-            <div class="buttons-container">
-                <form class="" action="" method="post" id="resendTokenForm">
-                    <button class="login-btn" type="submit" id="resendTokenButton" name="_resend_token" disabled>Resend</button>
-                    <div id="resendTokenMessage" class="timer-message"></div>
-                    <br>
-                    <a class="back-button1" href="vendor_login.php">Back</a>
-                </form>
-            </div>
-
         </form>
+
+        <div class="buttons-container">
+            <form class="" action="" method="post" id="resendTokenForm">
+                <button class="login-btn" type="submit" id="resendTokenButton" name="vendor_resend_token" disabled>Resend</button>
+                <div id="resendTokenMessage" class="timer-message"></div>
+                <br>
+                <a class="back-button1" href="vendor_login.php">Back</a>
+            </form>
+        </div>
+
+
 
     </div>
     <script>

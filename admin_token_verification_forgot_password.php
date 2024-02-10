@@ -113,17 +113,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["admin_resend_token"]))
             <span id="error-message" style="color: red">
                 <?php echo $admin_token_error; ?>
             </span>
-
-            <div class="buttons-container">
-                <form class="" action="" method="post" id="resendTokenForm">
-                    <!-- <div id="resendTokenMessage"></div> -->
-                    <button class="login-btn" type="submit" id="resendTokenButton" name="admin_resend_token" disabled>Resend</button>
-                    <div id="resendTokenMessage" class="timer-message"></div>
-                    <br>
-                    <a class="back-button1" href="admin_login.php">Back</a>
-                </form>
-            </div>
         </form>
+
+        <div class="buttons-container">
+            <form class="" action="" method="post" id="resendTokenForm">
+                <!-- <div id="resendTokenMessage"></div> -->
+                <button class="login-btn" type="submit" id="resendTokenButton" name="admin_resend_token" disabled>Resend</button>
+                <div id="resendTokenMessage" class="timer-message"></div>
+                <br>
+                <a class="back-button1" href="admin_login.php">Back</a>
+            </form>
+        </div>
+
     </div>
     <script>
         $(document).ready(function() {

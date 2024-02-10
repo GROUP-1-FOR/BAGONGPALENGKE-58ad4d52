@@ -158,7 +158,7 @@ if (isset($_GET['cancel_button'])) {
             </form>
             <div class="buttons-container">
                 <form action="" method="post" id="resendOTPForm">
-                    <button class="resend-button" type="submit" id="resendOTPButton" name="admin_resend_otp" disabled>Resend OTP</button>
+                    <button class="resend-button" type="submit" id="resendOTPButton" name="vendor_resend_otp" disabled>Resend OTP</button>
                     <div id="resendTokenMessage" class="timer-message"></div>
                     <br>
                     <a class="back-button1" href="vendor_login.php">Back</a>
