@@ -14,7 +14,7 @@ $result = $connect->query($sql_ticket_number);
 
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    $currentTicketNumber = $row['max_ticket'] + 1;
+    $currentTicketNumber = intval($row['max_ticket']) + 1;
 } else {
     // If no existing ticket, start from 1
     $currentTicketNumber = 1;
@@ -92,15 +92,15 @@ $connect->close();
             <form action="vendor_send_report_1.php" method="post" onsubmit="return validateForm()">
                 <div class="flex-box-row">
 
-                    <label class="text-design1" for="admin_report_ticket">Vendor ID:<?php echo $vendor_userid  ?>! </label>
-                    <p class="text-design" type="text" id="admin_report_ticket" name="admin_report_ticket" required readonly></p>
+                    <label class="text-design1" for="admin_report_ticket"></label>
+                    <p class="text-design" type="text" id="vendor_report_ticket" name="vendor_report_ticket" required readonly></p>
 
                 </div>
 
                 <div class="flex-box-row">
                     <!-- <input type="text" id="admin_report_ticket" name="admin_report_ticket" value="<//?php echo $formattedTicketNumber; ?>" required readonly> -->
-                    <label class="text-design1" for="vendor_report_ticket">Ticket No: </label>
-                    <p class="text-design" type="text" id="vendor_report_ticket" name="vendor_report_ticket" value=""><?php echo $formattedTicketNumber; ?> </p>
+                    <label class="text-design1" for="vendor_report_ticket">Ticket No: <?php echo $formattedTicketNumber; ?></label>
+                    <input class="text-design" type="hidden" id="vendor_report_ticket" name="vendor_report_ticket" value="<?php echo $formattedTicketNumber; ?>">
                     <br />
                 </div>
 
