@@ -58,9 +58,9 @@ if ($resultAllVendors->num_rows > 0) {
 
         // Get the current date
         $currentDate = new DateTime();
-        $currentDay = intval($currentDate->format('d'));
-        $currentMonth = intval($currentDate->format('m'));
-        $currentYear = intval($currentDate->format('Y'));
+        $currentDay = 10;//intval($currentDate->format('d'));
+        $currentMonth = 3;//intval($currentDate->format('m'));
+        $currentYear = 2024;//intval($currentDate->format('Y'));
 
         $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
 
