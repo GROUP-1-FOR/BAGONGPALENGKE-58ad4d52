@@ -28,7 +28,8 @@ if ($result->num_rows > 0) {
     $admin_name_error = "No results found for user ID $admin_userId";
 }
 
-
+// Get current date and time
+$currentDateTime = date('F d, Y | h:i A');
 ?>
 
 <!DOCTYPE html>
@@ -60,7 +61,7 @@ if ($result->num_rows > 0) {
         </div>
         <div>
             <p class="admin-datetime-text"> Date and Time:</p>
-            <p class="admin-datetime">December 25 | 10:30 PM</p>
+            <p class="admin-datetime"><?php echo $currentDateTime; ?></p>
             <img class="head-bottom-2" src="assets\images\sign-in\datetime-holder3.svg" alt="back-layer">
         </div>
     </div>
