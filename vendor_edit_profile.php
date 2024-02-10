@@ -42,14 +42,20 @@ if ($result) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
+
     <title>Create Vendor Account</title>
     <script>
         function validateVendorFirstName() {
-            var vendor_name = document.getElementById("vendor_first_name").value;
+            var vendor_name = document.getElementById("vendor_first_name");
             var vendor_name_error_span = document.getElementById("vendor_first_name_error_span");
 
+
+            // Apply the replace function
+            vendor_name.value = vendor_name.value.replace(/[^A-Za-z\s]/g, '');
+
+
             // Check if the input contains any numbers or symbols
-            if (vendor_name.length > 0 && /[0-9!@#$%^&*(),.?":{}|<>]/.test(vendor_name)) {
+            if (vendor_name.value.length > 0 && /[0-9!@#$%^&*(),.?":{}|<>]/.test(vendor_name.value)) {
                 vendor_name_error_span.textContent = "Please enter the vendor name without numbers or symbols.";
                 return false; // Prevent form submission
             } else {
@@ -60,12 +66,16 @@ if ($result) {
             return true;
         }
 
+
         function validateVendorLastName() {
-            var vendor_name = document.getElementById("vendor_last_name").value;
+            var vendor_name = document.getElementById("vendor_last_name");
             var vendor_name_error_span = document.getElementById("vendor_last_name_error_span");
 
+            vendor_name.value = vendor_name.value.replace(/[^A-Za-z\s]/g, '');
+
+
             // Check if the input contains any numbers or symbols
-            if (vendor_name.length > 0 && /[0-9!@#$%^&*(),.?":{}|<>]/.test(vendor_name)) {
+            if (vendor_name.value.length > 0 && /[0-9!@#$%^&*(),.?":{}|<>]/.test(vendor_name.value)) {
                 vendor_name_error_span.textContent = "Please enter the vendor name without numbers or symbols.";
                 return false; // Prevent form submission
             } else {
@@ -78,11 +88,13 @@ if ($result) {
 
 
         function validateVendorMobileNumber() {
-            var vendor_mobile_number = document.getElementById("vendor_mobile_number").value;
+            var vendor_mobile_number = document.getElementById("vendor_mobile_number");
             var vendor_mobile_number_error_span = document.getElementById("vendor_mobile_number_error_span");
 
+            vendor_mobile_number.value = vendor_mobile_number.value.replace(/[^0-9]/g, '');
+
             // Check if the input contains any non-numeric characters
-            if (vendor_mobile_number.length > 0 && !/^09\d{9}$/.test(vendor_mobile_number)) {
+            if (vendor_mobile_number.value.length > 0 && !/^09\d{9}$/.test(vendor_mobile_number.value)) {
                 // Show error message
                 vendor_mobile_number_error_span.textContent = "Please enter a valid mobile number.";
                 return false; // Prevent form submission
@@ -106,6 +118,15 @@ if ($result) {
                 return false; // Prevent form submission
             } else {
                 // Clear error message
+                vendor_email_error_span.textContent = "";
+            }
+
+            if (vendor_email.length > 0 && !vendor_email.endsWith("@gmail.com")) {
+                // Show error message for Gmail.com validation
+                vendor_email_error_span.textContent = "only @gmail.com is accepted";
+                return false; // Prevent form submission
+            } else {
+                // Clear Gmail.com email error message
                 vendor_email_error_span.textContent = "";
             }
 
@@ -137,8 +158,15 @@ if ($result) {
             var mobileNumber = document.getElementById("vendor_mobile_number").value;
             var email = document.getElementById("vendor_email").value;
 
-            // Check if any of the fields are empty
-            submitButton.disabled = !hasFormChanged() || firstName === "" || lastName === "" || mobileNumber === "" || email === "";
+            // Validate each field
+            var isFirstNameValid = validateVendorFirstName();
+            var isLastNameValid = validateVendorLastName();
+            var isMobileNumberValid = validateVendorMobileNumber();
+            var isEmailValid = validateVendorEmail();
+
+            // Check if any of the fields are empty or if any validation failed
+            submitButton.disabled = !hasFormChanged() || firstName === "" || lastName === "" || mobileNumber === "" || email === "" ||
+                !isFirstNameValid || !isLastNameValid || !isMobileNumberValid || !isEmailValid;
 
             // Check if vendor_userid exists
             <?php
