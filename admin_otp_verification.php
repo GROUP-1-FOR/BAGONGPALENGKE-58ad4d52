@@ -30,9 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["admin_otp"])) {
             $reset_trials_query = "UPDATE admin_sign_in SET admin_otp_trials = 0 WHERE admin_id = $admin_id";
             mysqli_query($connect, $reset_trials_query);
             $incorrect_otp_message = "OTP Verified!";
-            // Redirect to admin_index.php after successful verification
-            header("Location: admin_index.php");
-            exit; // Exit to prevent further execution of the script
         } else {
             // Increment OTP trials
             $otp_trials++;
@@ -144,11 +141,18 @@ if (isset($_GET['cancel_button'])) {
 
 <body class="bagongpgalengke-v2 ">
     <header><img src="assets\images\sign-in\Santa-Rosa-Logo.svg" class="logo-src"></header>
-    <div class="overlay" id="overlay" style="display: <?php echo (!empty($incorrect_otp_message) && $incorrect_otp_message === "OTP Verified!") ? 'flex' : 'none'; ?>">
+    <!-- Add the overlay section -->
+    <div class="overlay">
         <div class="notification">
             <h2 class="otp-text"><?php echo $incorrect_otp_message; ?></h2>
             <div class="button-container4">
-                <button class="button" onclick="hideAlert()">OK</button>
+                <?php if ($incorrect_otp_message === "OTP Verified!") : ?>
+                    <!-- Redirect to admin_index.php if OTP is verified -->
+                    <button class="button" onclick="window.location.href = 'admin_index.php';">OK</button>
+                <?php else : ?>
+                    <!-- Redirect back to admin_login.php to enter correct OTP -->
+                    <button class="button" onclick="window.location.href = 'admin_otp_verification.php';">OK</button>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -162,7 +166,7 @@ if (isset($_GET['cancel_button'])) {
         <img class="back-layer-v2" src="assets\images\sign-in\back.svg" alt="back">
     </div>
     <div class="login-form">
-        <form class="form-group" action="" method="post">
+        <form class="form-group3" action="" method="post">
             <div class="flexbox-row">
                 <div>
                     <input class="input-box" type="text" pattern="[0-9]{6}" maxlength="6" id="otp" name="admin_otp" title="Please enter six numbers" placeholder="Enter OTP" required>
@@ -175,7 +179,7 @@ if (isset($_GET['cancel_button'])) {
                 <?php echo $incorrect_otp_message; ?>
             </span>
         </form>
-        <div class="buttons-container">
+        <div class="buttons-container8">
             <form action="" method="post" id="resendOTPForm">
                 <input type="hidden" id="wrongOTP" value="<?php echo ($incorrect_otp_message === "Wrong OTP!") ? 'true' : 'false'; ?>">
                 <button class="resend-button" type="submit" id="resendOTPButton" name="admin_resend_otp" <?php echo ($incorrect_otp_message === "Wrong OTP!") ? '' : 'disabled'; ?>>Resend OTP</button>

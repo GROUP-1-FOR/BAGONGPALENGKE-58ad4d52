@@ -74,7 +74,7 @@ header {
   width: 100%;
   height: 8vh;
   background-color: #46070b;
-  z-index: 999!important; /* Ensure it's above other content */
+  z-index: 999 !important; /* Ensure it's above other content */
 }
 
 .header2 {
@@ -84,7 +84,7 @@ header {
   width: 100%;
   height: 4vh;
   background-color: #46070b;
-  z-index: 999!important; /* Ensure it's above other content */
+  z-index: 999 !important; /* Ensure it's above other content */
 }
 
 footer {
@@ -111,15 +111,27 @@ footer {
 
 .buttons-container {
   /* min-width: 30%; */
+
   display: flex;
   flex-direction: column; /* Stack the buttons vertically */
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin-top: 10px; /* Adjust the top margin as needed */
+  /* margin-top: 10px;  */
 }
 
-.button{
+.buttons-container8 {
+  /* min-width: 30%; */
+  margin-left: 90%;
+  display: flex;
+  flex-direction: column; /* Stack the buttons vertically */
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  /* margin-top: 10px;  */
+}
+
+.button {
   font-size: small;
   font-family: "Montserrat", sans-serif, Arial, Helvetica, sans-serif !important;
   font-weight: bold;
@@ -132,11 +144,9 @@ footer {
   color: white;
 }
 
-
-.button:hover{
+.button:hover {
   background-color: rgb(189, 0, 0);
   cursor: pointer;
-
 }
 body {
   font-family: "Montserrat", sans-serif, Arial, Helvetica, sans-serif !important;
@@ -216,7 +226,7 @@ label {
 .input-info,
 .input-info1 {
   min-width: 300px !important;
-  max-width: 300px; 
+  max-width: 300px;
   height: 40px;
   border-radius: 5px;
   padding: 10px;
@@ -619,7 +629,7 @@ h2,
 }
 
 .vendor-img {
- width: 55%;
+  width: 55%;
   margin-top: -20px;
   margin-left: 0px;
   position: absolute;
@@ -2023,6 +2033,7 @@ h2,
   left: 50%;
 }
 
+.form-group3 input,
 .form-group input,
 .form-group2 input,
 .form-group-login input {
@@ -2040,8 +2051,9 @@ h2,
   overflow-x: hidden;
 }
 
+.form-group3 input:focus,
 .form-group input:focus,
-.form-group2:focus {
+.form-group2 input:focus {
   outline: none;
   border-color: #3498db;
   box-shadow: 0 0 5px rgba(52, 152, 219, 0.7);
@@ -2059,6 +2071,13 @@ h2,
   flex-direction: column;
   min-width: 190%;
   height: 30%;
+}
+
+.form-group3 {
+  display: flex;
+  flex-direction: column;
+  min-width: 170%;
+  height: 20%;
 }
 
 .form-group-login {
@@ -2139,7 +2158,7 @@ h2,
 .forgot-password {
   text-decoration: underline;
   font-size: x-small;
-  font-weight:900;
+  font-weight: 900;
   background-color: none;
   color: maroon;
   font-style: italic;
@@ -2722,7 +2741,7 @@ ul {
   transition: 0.3s;
 }
 
-.submit{
+.submit {
   margin-left: 10px;
 }
 .submit:disabled,
@@ -2794,9 +2813,8 @@ ul {
   color: red;
 }
 
-.createElement{
-
-  background-color:  pink;
+.createElement {
+  background-color: pink;
   height: 40px;
 }
 .counter {
