@@ -291,18 +291,17 @@ if (isset($_POST['gcash_mobile'])) {
         <p><strong>Vendor ID:</strong><?php echo $vendorUserId; ?></p>
         <p><strong>Stall Number:</strong><?php echo $vendorStallNumber; ?></p>
         <p><strong>Balance:</strong>$<?php echo number_format($balance, 2); ?></p>
-        < !-- Add the Transaction ID -->
+  
             <p><strong>Transaction ID:</strong><?php echo $transactionId; ?></p>
             <p><strong>Payment Status:</strong>To be paid</p>
-            < !-- ... -->
+
                 <div id="payment-buttons">
-                    < !-- Cash Payment Button -->
+                
                         <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>"><input type="hidden" name="vendorName" value="<?php echo $vendorName; ?>"><input type="hidden" name="vendorUserId" value="<?php echo $vendorUserId; ?>"><input type="hidden" name="vendorStallNumber" value="<?php echo $vendorStallNumber; ?>"><input type="hidden" name="balance" value="<?php echo $balance; ?>"><input type="hidden" name="transactionId" value="<?php echo $transactionId; ?>"><button type="submit" name="pay_cash" onclick="return confirm('Are you sure you want to pay with cash?')">Pay with Cash</button></form>
-                        < !-- GCash Payment Button -->
+                    
                             <button type="submit" name="pay_gcash" onclick="showOverlay()">Pay with GCash</button>
                 </div>
-                < !-- Add any additional information or details about the invoice -->
-                    < !-- ... -->
+
                         <p><a href="vendor_index.php">Back</a></p>
     </div>
 
