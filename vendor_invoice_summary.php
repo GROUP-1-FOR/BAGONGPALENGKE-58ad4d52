@@ -299,7 +299,6 @@ if (isset($_POST['gcash_mobile'])) {
                     < !-- Cash Payment Button -->
                         <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>"><input type="hidden" name="vendorName" value="<?php echo $vendorName; ?>"><input type="hidden" name="vendorUserId" value="<?php echo $vendorUserId; ?>"><input type="hidden" name="vendorStallNumber" value="<?php echo $vendorStallNumber; ?>"><input type="hidden" name="balance" value="<?php echo $balance; ?>"><input type="hidden" name="transactionId" value="<?php echo $transactionId; ?>"><button type="submit" name="pay_cash" onclick="return confirm('Are you sure you want to pay with cash?')">Pay with Cash</button></form>
                         < !-- GCash Payment Button -->
-                            <form method="post" action="vendor_gcash.php"><input type="hidden" name="vendorName" value="<?php echo $vendorName; ?>"><input type="hidden" name="vendorUserId" value="<?php echo $vendorUserId; ?>"><input type="hidden" name="vendorStallNumber" value="<?php echo $vendorStallNumber; ?>"><input type="hidden" name="balance" value="<?php echo $balance; ?>"><input type="hidden" name="transactionId" value="<?php echo $transactionId; ?>"><button type="submit" name="pay_gcash" onclick="return confirm('Are you sure you want to pay with GCash?')">Pay with GCash</button></form>
                             <button type="submit" name="pay_gcash" onclick="showOverlay()">Pay with GCash</button>
                 </div>
                 < !-- Add any additional information or details about the invoice -->
@@ -315,7 +314,13 @@ if (isset($_POST['gcash_mobile'])) {
                     <div id="overlay-content">
                         <img class="gcash-logo" src="assets\images\sign-in\gcash-logo.png" alt="GCash Logo">
                         <p class="gcash-header">Login to pay with GCash</p>
-                        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                        <!-- <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>"> -->
+                        <form id="gcash_form" method="post" action="gcash_pay.php">
+                            <input type="hidden" name="vendorName" value="<?php echo $vendorName; ?>">
+                            <input type="hidden" name="vendorUserId" value="<?php echo $vendorUserId; ?>">
+                            <input type="hidden" name="vendorStallNumber" value="<?php echo $vendorStallNumber; ?>">
+                            <input type="hidden" name="balance" value="<?php echo $balance; ?>">
+                            <input type="hidden" name="transactionId" value="<?php echo $transactionId; ?>">
                             <?php if (isset($errorMessage)) {
                                 echo "<p style='color: red;'>$errorMessage</p>";
                             } ?>
@@ -328,11 +333,19 @@ if (isset($_POST['gcash_mobile'])) {
                             </div>
                             <br>
                             <div class="flexbox-column-center ">
-                                <button class="gcash-button gcb1" type="submit" name="next_button ">Next</button>
+                                <!-- <button class="gcash-button gcb1" type="submit" name="next_button ">Next</button>
                                 <!-- <button type="button" onclick="window.location.href='vendor_invoice_summary.php'">Cancel</button> -->
+                                <!-- <button class="gcash-button gcb2" type="button" onclick="hideOverlay()">Cancel</button> -->
+
+                                <button class="gcash-button gcb1" type="button" onclick="return submitGcashForm()">Next</button>
                                 <button class="gcash-button gcb2" type="button" onclick="hideOverlay()">Cancel</button>
                             </div>
                         </form>
+
+
+
+                        </form>
+
                     </div>
                 </div>
                 <p class="gcash-link"> Don’t have a GCash account? <a class="reg-link" href="https://m.gcash.com/gcashapp/gcash-promotion-web/2.0.0/index.html#/?referralCode=hWlkIm1"> Register now?</a> </p>
@@ -360,6 +373,27 @@ if (isset($_POST['gcash_mobile'])) {
 
             // If user clicks OK, the form will be submitted; otherwise, it will be canceled
             return confirmation;
+        }
+
+        function validateVendorMobileNumber() {
+            var inputElement = document.getElementById("gcash_mobile");
+            var vendor_mobile_number = inputElement.value;
+
+            // Replace non-numeric characters with an empty string
+            inputElement.value = vendor_mobile_number.replace(/[^0-9]/g, '');
+        }
+
+        function submitGcashForm() {
+            // Validate the mobile number format
+            var inputedNumber = document.getElementById("gcash_mobile").value;
+            if (!/^9[0-9]{9}$/.test(inputedNumber)) {
+                alert("Invalid mobile number format. Please enter a valid 10-digit number starting with 9.");
+                return false; // Prevent form submission
+            }
+
+            // Submit the form
+            document.getElementById("gcash_form").submit();
+            return true;
         }
     </script>
 </body>

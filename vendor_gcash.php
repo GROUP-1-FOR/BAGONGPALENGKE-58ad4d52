@@ -50,15 +50,6 @@ if (isset($_POST['gcash_mobile'])) {
 
 <head>
     <title>GCash Payment</title>
-    <script>
-        function validateVendorMobileNumber() {
-            var inputElement = document.getElementById("gcash_mobile");
-            var vendor_mobile_number = inputElement.value;
-
-            // Replace non-numeric characters with an empty string
-            inputElement.value = vendor_mobile_number.replace(/[^0-9]/g, '');
-        }
-    </script>
     <!-- Add your styles here -->
 </head>
 
@@ -73,7 +64,7 @@ if (isset($_POST['gcash_mobile'])) {
         <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
             <label>Mobile Number</label>
             <input type="text" name="gcash_mobile" value="+63" readonly style="width: 40px;">
-            <input type="text" name="gcash_mobile" id="gcash_mobile" placeholder="XXXXXXXXXX" maxlength="10" oninput="validateVendorMobileNumber();" required>
+            <input type="text" name="gcash_mobile" placeholder="XXXXXXXXXX" maxlength="10" required>
             <br>
             <button type="submit" name="next_button">Next</button>
             <button type="button" onclick="window.location.href='vendor_invoice_summary.php'">Cancel</button>
