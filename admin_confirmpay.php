@@ -50,7 +50,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>SIGN IN</title>
+        <title>Confirm Payment</title>
         <link rel="stylesheet" type="text/css" href="index.css">
         <link rel="stylesheet" type="text/css" href="text-style.css">
         <link rel="javascript" type="text/script" href="js-style.js">
