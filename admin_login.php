@@ -41,6 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["admin_login_submit"]))
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -108,6 +109,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["admin_login_submit"]))
     <div class="notification">
       <?php if ($wrong_credentials) : ?>
         <h2><?php echo $wrong_credentials; ?></h2>
+        <div class="button-container4">
+          <button class="button" onclick="dismissNotification();">OK</button>
+        </div>
       <?php elseif ($otp_generated) : ?>
         <div class="otp-text">
           <h2>OTP Generated!</h2>
@@ -118,6 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["admin_login_submit"]))
       <?php endif; ?>
     </div>
   </div>
+
 
 
   <div>
@@ -155,6 +160,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["admin_login_submit"]))
   </div>
 
   <script>
+    function dismissNotification() {
+      document.querySelector('.overlay').style.display = 'none';
+    }
+
     document.querySelector('.toggle-password').addEventListener('click', function() {
       const passwordInput = document.querySelector('#password');
       const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';

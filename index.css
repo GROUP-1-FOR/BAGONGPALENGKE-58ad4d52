@@ -2139,7 +2139,7 @@ h2,
 .forgot-password {
   text-decoration: underline;
   font-size: x-small;
-  font-weight: bolder;
+  font-weight:900;
   background-color: none;
   color: maroon;
   font-style: italic;
