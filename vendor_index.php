@@ -133,6 +133,8 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
         echo "Cannot redirect to invoice summary because payment has already been sent but not confirmed.";
     }
 }
+
+$currentDateTime = date('F d, Y | h:i A');
 ?>
 
 
@@ -169,7 +171,7 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
             cursor: pointer;
             height: 100px;
             font-size: small;
-            z-index: ;
+            
         }
 
         #money-cell {
@@ -277,7 +279,7 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
 
         <div>
             <p class="admin-datetime-text"> Date and Time</p>
-            <p class="admin-datetime">December 25 | 10:30 PM</p>
+            <p class="admin-datetime"><?php echo $currentDateTime; ?></p>
             <img class="head-bottom-2" src="assets\images\sign-in\datetime-holder3.svg" alt="back-layer">
         </div>
 
