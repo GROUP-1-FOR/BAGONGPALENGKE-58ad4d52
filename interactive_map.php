@@ -40,7 +40,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     </head>
 
     <body>
-        <header><img src="assets\images\sign-in\Santa-Rosa-Logo.svg" class="logo-src"></header>
+        <header class="header2"></header>
         <!-- MY SIDEBAR -->
         <?php include 'sidebar.php'; ?>
         <div class="map-background">

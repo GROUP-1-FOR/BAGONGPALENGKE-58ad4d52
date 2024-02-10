@@ -1,9 +1,8 @@
 /* MAIN BODY COMPOSITION */
 
 * {
-  zoom: 100%; /* You can set this to a different value to control the zoom level */
-  margin: 0%;
-  padding: 0%;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
   list-style: none;
   text-decoration: none;
@@ -13,8 +12,21 @@
 form {
   z-index: 5;
 }
+
 div {
   font-family: "Montserrat", sans-serif, Arial, Helvetica, sans-serif !important;
+}
+
+span {
+  /* position: absolute; */
+  font-size: xx-small;
+  color: red;
+  font-style: italic;
+  display: block;
+  height: 20px; /* Adjust the height as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #search {
@@ -31,52 +43,118 @@ tr {
 }
 
 hr {
+  z-index: 999;
+  color: black;
   height: 1px;
-  width: 1100px;
+  width: 100%;
 }
-.hr {
-  border-style: groove;
-  border-top: black;
-  border-width: 2px;
-  height: 2px;
-  width: 3000px;
+
+.items-text-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-header {
+.header-footer {
   position: fixed;
   background-color: #850f16;
   width: 100%;
   padding: 10px;
   text-align: center;
   color: black;
-  height: 7vh;
-  top: 0;
   z-index: 3 !important;
 }
-footer {
+
+header {
+  display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
   position: fixed;
-  background-color: #850f16;
-  width: 500%;
-  padding: 10px;
-  text-align: center;
-  color: black;
-  height: 5vh;
-  bottom: 0;
-  z-index: 5;
-  margin-left: -600px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8vh;
+  background-color: #46070b;
+  z-index: 999!important; /* Ensure it's above other content */
 }
 
+.header2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4vh;
+  background-color: #46070b;
+  z-index: 999!important; /* Ensure it's above other content */
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5vh;
+  background-color: #46070b;
+  z-index: 999; /* Ensure it's above other content */
+}
+
+.resizable-image {
+  max-width: 100%;
+  height: auto;
+}
+
+.center-content {
+  display: flex;
+  flex-direction: column; /* Stack the buttons vertically */
+  align-items: center; /* Center the buttons horizontally */
+  margin-top: 10px; /* Adjust the top margin as needed */
+}
+
+.buttons-container {
+  /* min-width: 30%; */
+  display: flex;
+  flex-direction: column; /* Stack the buttons vertically */
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 10px; /* Adjust the top margin as needed */
+}
+
+.button{
+  font-size: small;
+  font-family: "Montserrat", sans-serif, Arial, Helvetica, sans-serif !important;
+  font-weight: bold;
+  border-style: solid;
+  border-color: transparent;
+  border-radius: 5px;
+  padding: 6px;
+  width: 80px;
+  background-color: maroon;
+  color: white;
+}
+
+
+.button:hover{
+  background-color: rgb(189, 0, 0);
+  cursor: pointer;
+
+}
 body {
   font-family: "Montserrat", sans-serif, Arial, Helvetica, sans-serif !important;
   padding: 0;
   margin: 0;
   display: flex;
-  overflow: hidden;
-  height: 100%;
-  width: 100%;
+  flex-direction: row;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.body1 {
+  display: flex;
+  flex-direction: column;
 }
 
 section {
-  height: 200vh;
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -86,67 +164,104 @@ section {
 label {
   font-size: small;
   padding-right: 10px;
-  text-wrap: nowrap;
 }
 
+.error-message {
+  display: block;
+  min-height: 15px; /* Adjust the height as needed */
+  color: maroon;
+}
+
+.error-message2 {
+  width: 400px;
+  display: block;
+  min-height: 15px; /* Adjust the height as needed */
+  color: maroon;
+}
 .label-title {
   margin-left: 22px;
 }
 
+.label-date {
+  margin-left: 18px;
+}
+
+.valid-email-message {
+  font-size: xx-small;
+  color: green;
+  font-style: italic;
+  display: block;
+  height: 20px; /* Adjust the height as needed */
+}
+
+.invalid-email-message {
+  font-size: xx-small;
+  color: maroon;
+  font-style: italic;
+  display: block;
+  height: 20px; /* Adjust the height as needed */
+}
+
 .title-label {
+  display: flex;
   font-size: medium;
   font-weight: bold;
   color: maroon;
 }
 
-.input-info {
-  width: 200px;
-  height: 40px;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 10px;
+.input-info-margin {
+  margin-top: 10px !important;
 }
 
+.input-info,
 .input-info1 {
-  font-size: small;
-  width: 200px;
+  min-width: 300px !important;
+  max-width: 300px; 
   height: 40px;
   border-radius: 5px;
   padding: 10px;
   margin: 10px;
 }
 
+/* input-info-v2{
+  width: 150%;
+  max-width: 200px;
+  height: 40px;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+} */
 .form-search {
-  margin-left: 100px;
-  position: absolute;
-  top: 80px; /* Adjust this value as needed */
-  right: 50px;
-  z-index: 4;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
+
 .label-subject {
   padding-bottom: 10px;
+  flex-direction: column;
 }
 
 .subject-box,
 .title-box {
+  width: 100%;
+  margin-bottom: 8px;
+  max-width: 220px;
   height: 25px;
-  width: 220px;
   border-radius: 3px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: maroon;
-  border-width: 1px;
+  border: 1px solid maroon;
   color: maroon;
 }
 
 .vendor-row {
   color: maroon;
   background-color: transparent;
-  width: 1170px;
+  width: 100%;
+  max-width: 1170px;
   padding: 20px;
-  border-style: solid;
-  border-width: 0 0 1.5px 0; /* Specify the bottom border only */
+  border: 0 0 1.5px 0;
   border-color: black;
+  margin: auto;
 }
 
 .vendor-flex {
@@ -160,11 +275,10 @@ label {
   padding: 15px;
   padding-top: 5px !important;
   padding-bottom: 5px !important;
-  /* border-width: 0 0 1px 0;  Specify the bottom border only 
-  border-style: solid;
-  border-color: black; */
   height: 90px;
-  width: 1100px;
+  width: 100%;
+  max-width: 1100px;
+  margin: auto;
 }
 
 .vendor-account {
@@ -172,7 +286,9 @@ label {
 }
 
 .account-boxes {
-  width: 1500px;
+  width: 100%;
+  max-width: 1500px;
+  margin: auto;
 }
 
 .check-boxes {
@@ -182,12 +298,15 @@ label {
   padding-right: 30px;
 }
 
+#vendorCheckbox {
+  height: 3%;
+}
 .vendorCheckbox {
   padding: 20px;
-  height: 50px;
+  height: 40px;
   width: 50px;
   background-color: #46070b;
-  margin-right: 10px; /* Add margin between checkboxes */
+  margin-right: 10px;
 }
 
 .about-page {
@@ -212,10 +331,19 @@ h2,
 
 .bagongpalengke-bg {
   background-image: url("assets\\images\\sign-in\\publicmarketbg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100vh;
 }
 
 .bagongpgalengke-v2 {
   background-image: url("assets\\images\\sign-in\\publicmarket-bg-v2.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-left: -0px;
+  width: 100%;
+  height: 100vh;
 }
 
 .profile-design {
@@ -233,7 +361,6 @@ h2,
     )
     1;
   z-index: 1;
-  /* Lower z-index */
 }
 
 .profile-icon {
@@ -253,19 +380,26 @@ h2,
 .back-icon {
   height: 50px;
 }
+
 .map-icon {
   height: 130px;
   width: auto;
-  margin-top: 10px;
-  margin-bottom: -5px;
-  margin-left: 30px;
-  transition: 0.3s; /* Only apply transition to height property */
+  transition: 0.3s;
 }
 
 .map-icon:hover {
   height: 135px;
   width: auto;
-  transition: 0.3s; /* Only apply transition to height property */
+  transition: 0.3s;
+}
+
+.map-placement {
+  display: flex;
+  justify-content: center; /* Horizontally center */
+  align-items: center; /* Vertically center */
+  /* border: 3px solid red; */
+  height: 150px;
+  width: 300px;
 }
 .interactive-map-position {
   margin-top: 20px;
@@ -286,9 +420,7 @@ h2,
   margin-top: 20%;
   position: absolute;
   height: 170px;
-  /* Set the container height to 100% of the viewport height */
   z-index: 2;
-  /* Higher z-index */
 }
 
 .admin-name,
@@ -297,9 +429,7 @@ h2,
   margin-left: 15%;
   position: absolute;
   height: 125px;
-  /* Set the container height to 100% of the viewport height */
   z-index: 2;
-  /* Higher z-index */
 }
 
 #vendor_name {
@@ -312,14 +442,11 @@ h2,
   height: 80%;
   position: relative;
   margin: auto;
-  /* Center horizontally */
   background-color: white;
   border: 2px solid black;
   display: flex;
   justify-content: center;
-  /* Center horizontally within .map-background */
   align-items: center;
-  /* Center vertically within .map-background */
 }
 
 .palengke-map {
@@ -327,46 +454,41 @@ h2,
   height: auto;
   max-width: 100%;
   max-height: 100%;
-  /* margin: 20px;
-  padding-right: 10%; */
 }
 
 .bagong-palengke {
+  background-repeat: no-repeat;
   position: relative;
   max-width: 800px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
 
 .logo-src {
-  margin-top: -35px;
+  z-index: 3;
   height: 150px;
   width: 150px;
+  height: auto; /* Maintain the aspect ratio */
+  margin-top: 3%; /* Push the image to the bottom of the header */
+  margin-left: auto; /* Center the logo horizontally */
+  margin-right: auto;
 }
 
-/* side bar */
+/* SIDE BAR */
 
 .super-container {
   padding-top: 30px;
   display: flex;
   background-color: #d9d9d9;
   border: 1px solid black;
-  /* Border style and color */
   border-top: 50px solid maroon;
-  /* Top border size and color */
   border-radius: 10px;
   flex-direction: column;
-  width: 50%;
-  height: 600px;
-  max-width: 800px;
-  /* Adjust the maximum width as needed */
-  margin-left: 10px;
-  margin-right: auto;
+  width: 100%;
+  height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
-  /* Hide the vertical scrollbar */
 }
 
 .button-send {
@@ -385,21 +507,22 @@ h2,
   background-color: #d9d9d9;
   position: relative;
   padding: 10px;
-  height: 80px;
+  height: 75px;
   margin: 10px;
-  width: 1140px;
+  width: 100%;
+  max-width: 1190px;
   border-radius: 10px;
 }
 
 .calendar {
   height: 25px;
   width: 132px;
-  margin-top: 5px;
   border-radius: 3px;
   border-style: solid;
   border-width: 1px;
   border-color: maroon;
 }
+
 .announcement-container {
   background-color: #f4f1ec;
   border-radius: 5px;
@@ -414,19 +537,19 @@ h2,
   padding-left: 5px;
   margin: 20px;
   margin-top: 2px !important;
-  max-width: 650px;
+  max-width: 100%;
   flex-direction: column;
-  width: 110%;
-  /* Make sure the container takes the full width */
+  width: 100%;
 }
 
 /* SIDE BAR */
+
 .main-sidebar {
   align-items: center !important;
   width: 250px !important;
   background-color: maroon !important;
   color: #fff !important;
-  padding-top: 3% !important;
+  /* padding-top: 1% !important; */
   margin-bottom: 50px !important;
   height: 100vh !important;
   display: flex !important;
@@ -446,51 +569,72 @@ h2,
   margin-top: 20%;
 }
 
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .main-sidebar {
+    padding-top: 10%;
+    margin-bottom: 0;
+  }
+
+  .sidebar-inside {
+    height: auto;
+  }
+
+  .dashboard-sidebar {
+    text-align: center;
+    margin-top: 10%;
+  }
+}
+
 .head {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Do not maintain the original aspect ratio */
   display: flex;
   width: auto;
   flex-direction: column;
   justify-content: flex-start;
-  /* margin-left: -400px; */
 }
 
 .head-bottom {
-  height: 1000;
+  /* border: 3px solid red; */
+  width: auto;
+  width: auto;
+  height: 100px;
   margin-top: 5px;
-  /* margin-left: -100px; */
   display: flex;
   flex-direction: row;
   object-fit: none;
 }
 
-.public-market-pic {
-  margin-top: 60px;
-  margin-left: 5px;
-  margin-right: 5px;
-  border-radius: 40px;
-  width: 1260px;
-  /* Set the desired width */
-  height: 180px;
-  /* Set the desired height */
-  object-fit: cover;
-  /* Optional: maintain aspect ratio and cover the container */
+.head-bottom3 {
+  /* border: 3px solid red; */
+  width: auto;
+  width: auto;
+  height: 200%;
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  object-fit: none;
 }
 
+.vendor-img {
+ width: 55%;
+  margin-top: -20px;
+  margin-left: 0px;
+  position: absolute;
+  z-index: 1;
+}
+.public-market-pic,
 .public-market-pic-v2 {
-  margin-top: 60px;
+  margin-top: 3%;
   margin-left: 5px;
   margin-right: 5px;
   border-radius: 40px;
-  width: 1260px;
-  /* Set the desired width */
-  /* Set the desired height */
-  /* object-fit: cover; */
-  /* Optional: maintain aspect ratio and cover the container */
+  width: 100%;
+  max-width: 1260px;
 }
+
 .head-bottom-1 {
   position: relative;
   margin-top: -30px;
@@ -501,6 +645,9 @@ h2,
 }
 
 .head-bottom-2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-top: -10px;
   margin-left: -25px;
   position: relative;
@@ -544,6 +691,7 @@ h2,
   white-space: nowrap;
   border-style: solid;
   transition: 0.3s;
+  cursor: pointer;
 }
 
 .button-placement {
@@ -644,15 +792,24 @@ h2,
 .manage-vendor:hover,
 .report-management:hover,
 .help-button:hover {
-  border-style: solid;
+  /* border-style: solid; */
   border-color: rgb(207, 2, 2);
-  border-right: none;
   background-color: white;
   color: rgb(210, 7, 7);
   font-weight: bolder;
   white-space: nowrap;
-  transition: 0.3s;
-  transition: 0.3s;
+  transition: 0.4s;
+}
+
+.home-index,
+.manage-vendor,
+.report-management,
+.help-button,
+.home-index:hover,
+.manage-vendor:hover,
+.report-management:hover,
+.help-button:hover {
+  border-right: none;
 }
 
 .signout-button {
@@ -662,7 +819,7 @@ h2,
   align-items: center;
   margin-top: auto;
   /* Push the logout button to the bottom */
-  padding-bottom: 40px;
+  padding-bottom: 15%;
   /* Add some padding for better aesthetics */
   padding-top: 8px;
   background-color: maroon;
@@ -839,9 +996,8 @@ h2,
   border: maroon;
   border-width: 2px;
   border-style: solid;
-  height: 500px;
-  max-height: 500px;
-  max-width: 820px;
+  max-height: 100%;
+  max-width: auto;
   margin-left: 10px;
   border-top: 35px solid maroon;
   background-color: #d9d9d9;
@@ -851,10 +1007,49 @@ h2,
   padding: 10px;
 }
 
-.flex-row-1 {
-  /* If there is any specific styling for .flex-row-1, you can add it here */
+.dashboard-announcement6 {
+  display: flex;
+  flex-direction: column; /* Added flex-direction to stack elements vertically */
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
+  margin-top: -10px;
+  z-index: 3;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  border: maroon;
+  border-width: 2px;
+  border-style: solid;
+  min-height: 58%;
+  max-width: auto;
+  margin-left: 10px;
+  border-top: 35px solid maroon;
+  background-color: #d9d9d9;
+  color: white;
+  flex: 1;
+  border-radius: 10px;
+  padding: 10px;
 }
 
+.dashboard-announcement-2 {
+  display: flex;
+  flex-direction: column; /* Added flex-direction to stack elements vertically */
+  margin-top: -10px;
+  z-index: 3;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  border: maroon;
+  border-width: 2px;
+  border-style: solid;
+  max-height: 100%;
+  max-width: auto;
+  margin-left: 10px;
+  border-top: 35px solid maroon;
+  background-color: #d9d9d9;
+  color: white;
+  flex: 1;
+  border-radius: 10px;
+  padding: 10px;
+}
 /* Other styles remain unchanged */
 
 .dashboard-announcement-v3 {
@@ -917,8 +1112,8 @@ h2,
 
 .flex-column2 {
   width: 830px;
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
 }
 .dashboard-announcement1 {
   position: relative;
@@ -945,10 +1140,10 @@ h2,
   border: gray;
   border-width: 2px; /* Correct the typo: '2PX' to '2px' */
   border-style: hidden;
-  max-height: 500px;
+  max-height: 480px;
   width: 1245px !important;
   margin-left: 20px;
-  margin-top: 70px;
+  margin-top: 41px;
   border-top: 40px solid maroon;
   border-bottom: 80px solid #d9d9d9;
   background-color: #d9d9d9;
@@ -965,7 +1160,7 @@ h2,
   border: gray;
   border-width: 2px; /* Correct the typo: '2PX' to '2px' */
   border-style: solid;
-  max-height: 215px;
+  max-height: 255px;
   width: 1245px;
   margin-left: 20px;
   margin-top: -80px;
@@ -983,21 +1178,21 @@ h2,
 .manage-account {
   position: relative;
   overflow-x: hidden;
-  border: 2px solid gray; /* Correct the typo: '2PX' to '2px' */
+  border: 2px solid gray;
   border-style: hidden;
-  max-height: 630px;
+  max-height: 82%;
   width: 1240px !important;
+  margin-top: 50%;
   margin-left: 20px;
-  margin-top: 60px;
   border-top: 60px solid maroon;
   border-bottom: 80px solid #d9d9d9;
   background-color: #d9d9d9;
   color: white;
   flex: 1;
-  z-index: 3;
+  z-index: 1; /* Lower z-index to keep it behind */
   border-radius: 10px;
   padding: 10px;
-  padding-top: 0px !important;
+  /* padding-top: 10px !important; */
 }
 
 .message-panel {
@@ -1017,7 +1212,7 @@ h2,
   overflow-y: scroll;
   overflow-x: hidden;
   position: relative;
-  height: 440px;
+  height: 450px;
   width: 1240px !important;
   margin-left: 20px;
   background-color: white;
@@ -1044,10 +1239,11 @@ h2,
   border-radius: 10px;
 }
 .payment-container {
+  padding: 10px;
   margin-top: 20px;
   position: relative;
   overflow-x: hidden;
-  height: 400px;
+  height: 430px;
   width: 1200px !important;
   margin-left: 20px;
   background-color: white;
@@ -1153,7 +1349,7 @@ h2,
   max-height: 630px;
   width: 1240px !important;
   margin-left: 20px;
-  margin-top: 20px;
+  margin-top: 41px;
   border-top: 60px solid maroon;
   background-color: #d9d9d9;
   color: white;
@@ -1182,13 +1378,35 @@ h2,
   padding: 10px;
   padding-top: 0px !important;
 }
+
 .report-manage {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  border: 2px solid gray;
+  border-style: hidden;
+  max-height: 82%;
+  width: 1240px !important;
+  margin-top: 50%;
+  margin-left: 20px;
+  border-top: 60px solid maroon;
+  background-color: #d9d9d9;
+  color: white;
+  flex: 1;
+  z-index: 1; /* Lower z-index to keep it behind */
+  border-radius: 10px;
+  padding: 10px;
+  /* padding-top: 10px !important; */
+}
+.create-vendor-form {
+  justify-content: center;
+  align-items: center;
   position: relative;
   overflow: hidden;
   border: 2px solid gray; /* Correct the typo: '2PX' to '2px' */
   border-style: hidden;
   max-height: 630px;
-  width: 1240px !important;
+  min-width: 1240px !important;
   margin-left: 20px;
   margin-top: 60px;
   border-top: 60px solid maroon;
@@ -1200,28 +1418,11 @@ h2,
   padding: 10px;
   padding-top: 0px !important;
 }
-.create-vendor-form {
-  position: relative;
-  border: gray;
-  border-width: 2px; /* Correct the typo: '2PX' to '2px' */
-  border-style: hidden;
-  max-height: 630px;
-  width: 1195px;
-  margin-left: 20px;
-  margin-top: 60px;
-  border-top: 40px solid maroon;
-  border-bottom: 80px solid #d9d9d9;
-  background-color: #d9d9d9;
-  color: white;
-  flex: 1;
-  border-radius: 10px;
-  padding: 10px;
-}
 
 .announcement-header {
   position: absolute;
   color: white;
-  margin-top: 75px;
+  margin-top: 70px;
   margin-left: 30px;
   z-index: 4;
 }
@@ -1380,6 +1581,7 @@ h2,
 .button-1,
 .button-2,
 .button-3 {
+  font-weight: 600;
   font-size: small;
   background-color: maroon;
   color: white;
@@ -1401,7 +1603,7 @@ h2,
   margin-left: 1050px;
   height: 30px;
   width: 80px;
-  margin-top: -70px;
+  margin-top: -55px;
 }
 .title {
   margin-left: 21px !important;
@@ -1420,8 +1622,7 @@ h2,
   margin: 1px;
 }
 
-.user-name,
-.admin-datetime {
+.user-name {
   z-index: 3;
   position: absolute;
   margin-top: 10px;
@@ -1434,12 +1635,12 @@ h2,
 .admin-datetime-text {
   z-index: 4;
   position: absolute;
-  margin-top: 45px;
-  margin-left: 240px;
-  font-size: medium;
-  color: maroon;
   margin-top: 10px;
-  font-weight: 500;
+  margin-left: 40px;
+  font-size: small;
+  color: maroon;
+  margin-bottom: 10px;
+  font-weight: 600;
 }
 
 .admin-datetime-text-v2 {
@@ -1474,8 +1675,12 @@ h2,
 }
 
 .admin-datetime {
-  margin-left: 30px;
-  margin-top: 55px;
+  z-index: 3;
+  position: absolute;
+  margin-left: 40px;
+  color: maroon;
+  font-weight: 900;
+  margin-top: 3%;
   font-size: x-large;
 }
 .sending-message {
@@ -1588,6 +1793,22 @@ h2,
   flex-direction: row;
 }
 
+.flexbox-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flexbox-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.flexbox-row2 {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: center; */
+  align-items: center;
+}
 .flex-box-column {
   padding-left: 0px !important;
   padding-top: 0px !important;
@@ -1620,6 +1841,10 @@ h2,
 /* FLOATING IMAGES */
 .tech-line-tr {
   position: absolute;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 30%;
+  height: 100vh;
   top: 0%;
   right: 0%;
   z-index: 1;
@@ -1629,6 +1854,11 @@ h2,
 
 .tech-line-bl {
   position: absolute;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 30%;
+  height: 100vh;
+  position: absolute;
   bottom: -5%;
   left: -5%;
   z-index: 1;
@@ -1636,45 +1866,50 @@ h2,
 }
 
 .front-layer {
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  max-width: 100%;
+  height: 100vh;
   position: absolute;
-  background-attachment: scroll;
-  top: 0%;
-  right: 0%;
+  top: 0;
+  right: 0;
   z-index: 2;
-  overflow: hidden;
 }
 
 .back-layer {
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  width: 100%;
+  max-width: 100%;
   position: absolute;
-  background-attachment: scroll;
-  top: 0%;
-  right: 0%;
+  top: 0;
+  right: 0;
   z-index: 2;
-  overflow: hidden;
 }
 
 .front-layer-v2 {
-  width: auto;
-  height: -50%;
-  position: relative;
-  overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  width: 100%;
   position: absolute;
   top: 0%;
   right: -10%;
-  z-index: 1;
+  /* z-index: 1; */
   transform: scaleX(-1) rotate(-14.5deg);
 }
 
 .back-layer-v2 {
-  width: auto;
-  height: -50%;
-  position: relative;
-  overflow: hidden;
-  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  width: 100%;
   position: absolute;
   top: 0%;
   right: -6%;
-  z-index: 1;
+  /* z-index: 1; */
   transform: scaleX(-1) rotate(-14.5deg);
 }
 
@@ -1705,12 +1940,15 @@ h2,
 }
 
 .website-title-v2 {
-  margin-top: 4%;
-  margin-left: 3%;
+  margin-top: 7%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center the text horizontally */
+  align-items: center; /* Center the text vertically */
   z-index: 3;
-  height: 70%;
-  /* Added to make sure it takes full height */
-  width: 95%;
+  height: 30%;
+  width: 39%;
   /* Added to make sure it takes full width */
 }
 
@@ -1730,9 +1968,7 @@ h2,
 
 .title3 {
   /* WELCOME TO */
-  margin-top: 55px;
   line-height: 1;
-  flex: 1;
   font-size: 50px;
   font-weight: 300;
   color: maroon;
@@ -1741,7 +1977,6 @@ h2,
 
 .title4 {
   /* SANTA ROSA PUBLIC MARKET */
-
   line-height: 1;
   flex: 1;
   font-size: 40px;
@@ -1752,11 +1987,11 @@ h2,
 
 .title5 {
   /* FORGOT PASSWORD */
-  margin-top: 30px;
+
   line-height: 1;
   flex: 1;
   font-size: 60px;
-  font-weight: 1000;
+  font-weight: 800;
   color: rgb(76, 74, 74);
   letter-spacing: 1px;
 }
@@ -1789,6 +2024,7 @@ h2,
 }
 
 .form-group input,
+.form-group2 input,
 .form-group-login input {
   padding: 10px;
   box-sizing: border-box;
@@ -1804,7 +2040,8 @@ h2,
   overflow-x: hidden;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group2:focus {
   outline: none;
   border-color: #3498db;
   box-shadow: 0 0 5px rgba(52, 152, 219, 0.7);
@@ -1813,8 +2050,15 @@ h2,
 .form-group {
   display: flex;
   flex-direction: column;
-  width: 230px;
-  height: 150px;
+  min-width: 170%;
+  height: 50%;
+}
+
+.form-group2 {
+  display: flex;
+  flex-direction: column;
+  min-width: 190%;
+  height: 30%;
 }
 
 .form-group-login {
@@ -1836,13 +2080,11 @@ h2,
 .login-form,
 .otp-verification {
   position: fixed;
-  width: 200px;
-  height: 100px;
+  width: 10%;
+  height: 50%;
   margin: 0;
-  padding: 20px;
-  bottom: 300px;
-  margin-left: 130px;
-  left: 0;
+  bottom: 0;
+  left: 10%;
   background-color: none;
   outline: none;
   z-index: 3;
@@ -1868,6 +2110,18 @@ h2,
   height: 195px;
   border-radius: 15px;
 }
+
+.timer-message {
+  font-size: xx-small;
+  color: red;
+  /* font-style: italic; */
+  display: block;
+  height: 20px; /* Adjust the height as needed */
+  z-index: 999;
+  text-align: center; /* Center the text */
+  margin-top: 10px; /* Add some space between the button and the timer */
+}
+
 /* .forgot-password-form {
   position: fixed;
   width: 290px;
@@ -1943,7 +2197,7 @@ h2,
 
 .send-button1,
 .token-button,
-.login-btn,
+/* .login-btn, */
 .send-verif,
 .login-verif,
 .resend-button,
@@ -1953,9 +2207,6 @@ h2,
   color: white !important;
   border-radius: 4px;
   height: 35px;
-  padding: 20px;
-  padding-top: 7px !important;
-  padding-left: 15px !important;
   border-style: solid;
   border-color: transparent;
   white-space: nowrap;
@@ -1975,27 +2226,16 @@ h2,
   white-space: nowrap;
 }
 
-.token-button {
-  display: flex;
-  position: relative;
-  margin-top: -50px;
-  margin-bottom: 5px;
-  margin-bottom: 20px;
-  margin-left: 75px;
-}
-
 .verify-button {
-  display: flex;
-  position: relative;
-  margin-top: -46px !important;
-  margin-left: 300px;
+  padding-left: 10%;
+  padding-right: 10%;
+  margin-left: 30%;
+  text-wrap: nowrap;
   background-color: #850f16;
   font-weight: bolder;
   color: white;
   border-radius: 4px;
   height: 35px;
-  padding: 10px;
-  padding-top: 7px;
   border-style: solid;
   border-color: transparent;
   white-space: nowrap;
@@ -2010,7 +2250,7 @@ h2,
 .resend-button,
 .cancel-button {
   width: 200px !important;
-  margin-left: 50px;
+  /* margin-left: 2%; */
 }
 
 .submit-button1 {
@@ -2021,12 +2261,13 @@ h2,
 .submit-button3 {
   margin-top: 10px;
 }
-
+.edit-button,
 .payment-history,
 .create-message,
 .submit-button3,
 .submit-button1,
 .login-btn,
+.submit,
 .submit-btn,
 .submit-btn1 {
   background-color: #850f16;
@@ -2048,9 +2289,6 @@ h2,
   width: 270px !important;
 }
 
-.login-btn {
-  margin-left: 60px;
-}
 .submit-btn {
   margin-left: 260px;
   margin-top: 30px;
@@ -2089,12 +2327,6 @@ h2,
   margin-left: 70px;
   margin-top: 15px;
   margin-bottom: 20px;
-}
-
-.send-verif {
-  margin-top: 15px;
-  margin-bottom: 5px;
-  margin-left: 60px;
 }
 
 .send-button {
@@ -2180,18 +2412,64 @@ h2,
 }
 
 /* VERTICAL ALLIGNED */
-.password-container,
-.search-container {
+.password-container {
   display: inline-block;
   vertical-align: middle;
 }
 
+.search-container {
+  position: absolute; /* Change position to absolute */
+  margin-top: 4%;
+  right: 3%;
+  z-index: 9999; /* Increase z-index */
+  display: flex; /* Ensure flex alignment */
+  align-items: center; /* Center vertically */
+}
+
+.div {
+  height: 100px;
+  background-color: magenta;
+}
+#autocomplete {
+  /* padding: 10px; */
+  height: 200px;
+  color: maroon;
+  border-radius: 10px;
+  font-size: small;
+  position: absolute;
+  background-color: white;
+  margin-top: 80%;
+  border: 2px solid maroon;
+  z-index: 0;
+}
+
+#autocomplete:hover {
+  cursor: pointer;
+  color: red;
+}
+
+.search-form {
+  background-color: black;
+}
+.suggestion-item {
+  min-height: 50px;
+  padding: 20px;
+  margin-left: 3%;
+  text-align: left;
+  z-index: 5;
+}
+.suggestion-item:hover {
+  color: red;
+}
+
+.input-info-v2,
 .search-box,
 .search-icon,
 .input-info,
 .check-box,
 .show-password {
   vertical-align: middle;
+  z-index: 9999; /* Increase z-index for child elements */
 }
 
 /* HANGGANG DITO */
@@ -2229,25 +2507,6 @@ h2,
   bottom: 25%;
   left: 44.5%;
   padding-top: 20px;
-  z-index: 3;
-}
-
-.back-button1 {
-  text-wrap: nowrap;
-  padding-top: 20px;
-  margin-left: 120px;
-  height: 35px;
-  width: 140px;
-  bottom: 25%;
-  z-index: 3;
-}
-
-.back-button2 {
-  padding-top: 20px;
-  margin-left: 85px;
-  height: 35px;
-  width: 140px;
-  bottom: 25%;
   z-index: 3;
 }
 
@@ -2434,6 +2693,9 @@ ul {
 }
 /* .remove-button:hover, */
 
+.submit,
+.edit-button:hover,
+.submit-button1:hover,
 .payment-history:hover,
 .send-button2:hover,
 .create-message:hover,
@@ -2460,8 +2722,16 @@ ul {
   transition: 0.3s;
 }
 
+.submit{
+  margin-left: 10px;
+}
+.submit:disabled,
+#vendor_userid:disabled,
+.submit-btn:disabled,
+.input-info:disabled,
+.submit-btn1:disabled,
 .submit-btn:disabled {
-  background-color: #46070b;
+  background-color: gray;
   font-weight: bolder;
   color: white;
   cursor: default;
@@ -2524,6 +2794,11 @@ ul {
   color: red;
 }
 
+.createElement{
+
+  background-color:  pink;
+  height: 40px;
+}
 .counter {
   font-size: 12px;
   color: gray;

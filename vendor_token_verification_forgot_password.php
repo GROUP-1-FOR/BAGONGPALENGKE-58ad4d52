@@ -101,26 +101,53 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["vendor_resend_token"])
     </form> -->
 
         <form class="form-group" action="" method="post">
-            <input class="input-box" type="text" maxlength="6" id="token" name="vendor_token" title="Please enter six characters" placeholder="Enter Token" required oninput="validateInput()">
-            <div>
-                <button class="verify-button" id="submit-button" type="submit" disabled>Verify Token</button> <br />
+            <div class="flexbox-row">
+                <div>
+                    <input class="input-box" type="text" maxlength="6" id="token" name="vendor_token" title="Please enter six characters" placeholder="Enter Token" required oninput="validateInput()">
+                </div>
+                <div>
+                    <button class="verify-button" id="submit-button" type="submit" disabled>Verify</button> <br />
+                </div>
             </div>
 
             <span id="error-message" style="color: red">
                 <?php echo $vendor_token_error; ?>
             </span>
+            <div class="buttons-container">
+                <form class="" action="" method="post" id="resendTokenForm">
+                    <button class="login-btn" type="submit" id="resendTokenButton" name="_resend_token" disabled>Resend</button>
+                    <div id="resendTokenMessage" class="timer-message"></div>
+                    <br>
+                    <a class="back-button1" href="vendor_login.php">Back</a>
+                </form>
+            </div>
+
         </form>
 
-        <div>
-            <form action="" method="post" id="resendTokenForm">
-                <button class="token-button" type="submit" id="resendTokenButton" name="vendor_resend_token" disabled>Resend Token</button>
-                <div id="resendTokenMessage"></div>
-                <a class="back-button1" href="vendor_login.php">
-                    < Back </a>
-            </form>
-        </div>
-
     </div>
+    <script>
+        $(document).ready(function() {
+            var cooldownTime = 45; // 45 seconds
+            var isCooldown = true;
+
+            // Display cooldown message on page load
+            $("#resendTokenMessage").text(cooldownTime + " seconds");
+
+            // Start the cooldown timer
+            var timer = setInterval(function() {
+                cooldownTime--;
+                $("#resendTokenMessage").text(cooldownTime + " seconds");
+
+                if (cooldownTime <= 0) {
+                    // Enable the button after cooldown
+                    $("#resendTokenButton").prop("disabled", false);
+                    $("#resendTokenMessage").text(" ");
+                    isCooldown = false;
+                    clearInterval(timer);
+                }
+            }, 1000);
+        });
+    </script>
     <footer> </footer>
 </body>
 

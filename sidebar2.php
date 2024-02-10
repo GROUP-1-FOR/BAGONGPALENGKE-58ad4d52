@@ -36,7 +36,7 @@
             </ul>
         </div>
 
-        <a class="signout-button" href=admin_logout.php>
+        <a class="signout-button" href=vendor_logout.php>
             <img class="signout-icon" src="assets\images\sign-in\signout-icon.svg">
             <h1 class="signout-text">Sign out</h1>
         </a>

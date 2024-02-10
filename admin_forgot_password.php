@@ -57,33 +57,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
-  <script>
-    //client side validation
-    function validateEmail() {
-      // Get the email input value
-      var emailInput = document.forms["email_form"]["admin_email"].value;
-
-      // Validate the email format using a regular expression
-      var emailRegex = /^[^\s@]+@gmail\.com$/;
-
-      // Get the element to display validation messages
-      var messageElement = document.getElementById("emailValidationMessage");
-
-      // Display validation message
-      if (emailRegex.test(emailInput)) {
-        messageElement.innerHTML = "Valid email address";
-        messageElement.style.color = "green";
-        // Enable the submit button
-        document.getElementById("submitBtn").disabled = false;
-      } else {
-        messageElement.innerHTML = "Only '@gmail.com' is accepted";
-        messageElement.style.color = "red";
-        // Disable the submit button
-        document.getElementById("submitBtn").disabled = true;
-      }
-    }
-  </script>
 </head>
 
 <body class="bagongpgalengke-v2">
@@ -99,9 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <img class="back-layer-v2" src="assets\images\sign-in\back.svg" alt="back">
   </div>
 
-  <div class="login-form">
-
-    <!-- <form class="form-group" action="" method="post">
+  <!-- <form class="form-group" action="" method="post">
       <input class="input-box" type="text" name="admin_userid" placeholder="Treasury User ID" required> <br />
       <input class="input-box" type="email" name="admin_email" placeholder="Email" required>
       <button class="send-verif" type="submit"> Send Verification </button>
@@ -110,17 +81,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           </form>
         -->
 
-
+  <div class="login-form">
     <form class="form-group" name="email_form" action="" method="post">
-      <input class="input-box" type="email" name="admin_email" placeholder="Email" maxlength="254" oninput="validateEmail()" required>
-      <div id="emailValidationMessage"></div>
-      <button class="send-verif" type="submit" id="submitBtn"> Send Verification </button>
-      <a class="back-button1" href="admin_login.php">< Back </a>
+      <div>
+        <input class="input-box" type="email" name="admin_email" placeholder="Email" maxlength="254" oninput="validateEmail()" required>
+      </div>
+
+      <div class="error-message" id="emailValidationMessage"></div>
+      <div class="buttons-container">
+        <input class="send-verif" type="submit" id="submitBtn" value="Send Verification"><br>
+        <a class="back-button1" href="admin_login.php">Back</a>
+
+      </div>
     </form>
-
-
-
   </div>
+
+
+  <div id="emailValidationMessage" class="validation-message"></div>
+  <script>
+    // JavaScript
+    function validateEmail() {
+      // Get the email input value
+      var emailInput = document.forms["email_form"]["admin_email"].value;
+
+      // Validate the email format using a regular expression
+      var emailRegex = /^[^\s@]+@gmail\.com$/;
+
+      // Get the element to display validation messages
+      var messageElement = document.getElementById("emailValidationMessage");
+
+      // Display validation message
+      if (emailRegex.test(emailInput)) {
+        messageElement.innerHTML = "Valid email address";
+        messageElement.classList.remove("invalid-email-message");
+        messageElement.classList.add("valid-email-message");
+        // Enable the submit button
+        document.getElementById("submitBtn").disabled = false;
+      } else {
+        messageElement.innerHTML = "Only '@gmail.com' is accepted";
+        messageElement.classList.remove("valid-email-message");
+        messageElement.classList.add("invalid-email-message");
+        // Disable the submit button
+        document.getElementById("submitBtn").disabled = true;
+      }
+    }
+  </script>
   <footer> </footer>
 </body>
 

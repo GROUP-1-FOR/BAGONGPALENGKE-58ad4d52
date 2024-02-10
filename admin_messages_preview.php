@@ -68,7 +68,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         <div class="flex-row-body">
             <h2 class="message-header">MESSAGES</h2>
-            <div class="hr"></div>
+            <div class="hr" ></div>
 
             <div class="message-container">
 

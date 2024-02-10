@@ -106,12 +106,12 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
 
 <body>
-    <header></header>
+    <header class="header2"></header>
     <?php include 'sidebar.php'; ?>
 
 
     <div class="flex-row">
-        <h2 class="announcement-header">Announcement</h2>
+        <h2 class="announcement-header">ANNOUNCEMENT</h2>
         <div class="dashboard-announcement2">
 
             <?php
@@ -149,19 +149,24 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         <div class="dashboard-announcement-box">
             <form class="form-style" action="admin_send_announcement_1.php" method="post" onsubmit="return validateForm()">
+                <div class="flexbox-row2">
+                    <label class="label-title" for="admin_announcement_title">Title:</label>
+                    <input class="title-box" type="text" id="admin_announcement_title" name="admin_announcement_title" required maxlength="50" oninput="updateCounter('admin_announcement_title', 'title_counter', 50)">
+                    <!-- <span id="title_counter" class="counter">0/50</span> -->
+                    <span id="error_title" class="error"></span>
+                </div>
 
-                <label class="label-title" for="admin_announcement_title">Title:</label>
-                <input class="title-box" type="text" id="admin_announcement_title" name="admin_announcement_title" required maxlength="50" oninput="updateCounter('admin_announcement_title', 'title_counter', 50)">
-                <!-- <span id="title_counter" class="counter">0/50</span> -->
-                <span id="error_title" class="error"></span><br />
+                <div class="flexbox-row2">
+                    <label class="label-subject" for="admin_announcement_subject">Subject:</label>
+                    <input class="subject-box" type="text" id="admin_announcement_subject" name="admin_announcement_subject" required maxlength="100" oninput="updateCounter('admin_announcement_subject', 'subject_counter', 100)">
+                    <!-- <span id="subject_counter" class="counter">0/100</span> --><br>
+                </div>
 
-                <label class="label-subject" for="admin_announcement_subject">Subject:</label>
-                <input class="subject-box" type="text" id="admin_announcement_subject" name="admin_announcement_subject" required maxlength="100" oninput="updateCounter('admin_announcement_subject', 'subject_counter', 100)">
-                <!-- <span id="subject_counter" class="counter">0/100</span> --><br>
-                <label for="admin_announcement_time">Announcement Date:</label>
-                <input class="calendar" type="date" id="admin_announcement_time" name="admin_announcement_time" min="<?php echo date('Y-m-d'); ?>" required>
-                <span id="error_subject" class="error"></span><br />
-
+                <div class="flexbox-row2">
+                    <label class="label-date" for="admin_announcement_time">Date:</label>
+                    <input class="calendar" type="date" id="admin_announcement_time" name="admin_announcement_time" min="<?php echo date('Y-m-d'); ?>" required>
+                    <span id="error_subject" class="error"></span>
+                </div>
                 <textarea class="admin-announcement" placeholder=" Write Something..." name="admin_announcement" id="admin_announcement" cols="30" rows="5" required maxlength="500" oninput="updateCounter('admin_announcement', 'message_counter', 500)"></textarea>
                 <!-- <span id="message_counter" class="counter">0/500</span> -->
                 <span id="error_message" class="error"></span><br>

@@ -57,6 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["admin_resend_token"]))
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         function validateInput() {
             var tokenInput = document.getElementById("token");
@@ -99,27 +100,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["admin_resend_token"]))
       <div id="emailValidationMessage"></div>
       <button class="send-verif" type="submit" id="submitBtn"> Send Verification </button>
     </form> -->
-
         <form class="form-group" action="" method="post">
-            <input class="input-box" type="text" maxlength="6" id="token" name="admin_token" title="Please enter six characters" placeholder="Enter Token" required oninput="validateInput()">
-            <div>
-                <button class="verify-button" id="submit-button" type="submit" disabled>Verify Token</button> <br />
+            <div class="flexbox-row">
+                <div>
+                    <input class="input-box" type="text" maxlength="6" id="token" name="admin_token" title="Please enter six characters" placeholder="Enter Token" required oninput="validateInput()">
+                </div>
+                <div>
+                    <button class="verify-button" id="submit-button" type="submit" disabled>Verify</button> <br />
+                </div>
             </div>
 
             <span id="error-message" style="color: red">
                 <?php echo $admin_token_error; ?>
             </span>
+
+            <div class="buttons-container">
+                <form class="" action="" method="post" id="resendTokenForm">
+                    <!-- <div id="resendTokenMessage"></div> -->
+                    <button class="login-btn" type="submit" id="resendTokenButton" name="admin_resend_token" disabled>Resend</button>
+                    <div id="resendTokenMessage" class="timer-message"></div>
+                    <br>
+                    <a class="back-button1" href="admin_login.php">Back</a>
+                </form>
+            </div>
         </form>
-
-
-        <form action="" method="post" id="resendTokenForm">
-            <button class="token-button" type="submit" id="resendTokenButton" name="admin_resend_token" disabled>Resend Token</button>
-            <div id="resendTokenMessage"></div>
-            <a class="back-button1" href="admin_login.php">
-                < Back </a>
-        </form>
-
     </div>
+    <script>
+        $(document).ready(function() {
+            var cooldownTime = 45; // 45 seconds
+            var isCooldown = true;
+
+            // Display cooldown message on page load
+            $("#resendTokenMessage").text(cooldownTime + " seconds");
+
+            // Start the cooldown timer
+            var timer = setInterval(function() {
+                cooldownTime--;
+                $("#resendTokenMessage").text(cooldownTime + " seconds");
+
+                if (cooldownTime <= 0) {
+                    // Enable the button after cooldown
+                    $("#resendTokenButton").prop("disabled", false);
+                    $("#resendTokenMessage").text(" ");
+                    isCooldown = false;
+                    clearInterval(timer);
+                }
+            }, 1000);
+        });
+    </script>
     <footer> </footer>
 </body>
 

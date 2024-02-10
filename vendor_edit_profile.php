@@ -157,14 +157,13 @@ if ($result) {
 </head>
 
 <body>
-    <header></header>
+    <header class="header2"></header>
     <?php include 'sidebar2.php'; ?>
     <br>
     <br>
     <div class="flex-row">
+        <h2 class="manage-account-header">Update Vendor Account, <?php echo $userid  ?>!</h2>
         <div class="create-vendor-form">
-
-            <h1 class="title-heading">Update Vendor Account, <?php echo $userid  ?>! </h1>
 
             <form action="vendor_edit_profile_1.php" method="post" onsubmit="return validateForm()">
 
@@ -174,24 +173,25 @@ if ($result) {
 
 
                         <div class="box-position2">
-                            <h2 class="vendor-heading">Vendor Information</h2>
-                            <label class="title-label tl1" for="Vendor First Name">Vendor First Name:</label>
-                            <input class="input-info" type="text" name="vendor_first_name" id="vendor_first_name" required oninput="validateVendorFirstName(); updateSubmitButton()" value="<?php echo $vendorFirstName; ?>">
-                            <!-- Display an error message if it exists in the session -->
-                            <span style="color: red;" id="vendor_first_name_error_span">
+                            <div class="flexbox-column">
+                                <label class="title-label tl1" for="Vendor First Name">Vendor First Name:</label>
+                                <input class="input-info input-info-margin" type="text" name="vendor_first_name" id="vendor_first_name" required oninput="validateVendorFirstName(); updateSubmitButton()" value="<?php echo $vendorFirstName; ?>">
+                                <!-- Display an error message if it exists in the session -->
+                                <span class="error-message" style="color: red;" id="vendor_first_name_error_span">
 
-                                <?php
-                                if (isset($_SESSION['vendor_first_name_error'])) {
-                                    echo $_SESSION['vendor_first_name_error'];
-                                    // Unset the session variable after displaying the error
-                                    unset($_SESSION['vendor_first_name_error']);
-                                }
-                                ?>
-                            </span>
+                                    <?php
+                                    if (isset($_SESSION['vendor_first_name_error'])) {
+                                        echo $_SESSION['vendor_first_name_error'];
+                                        // Unset the session variable after displaying the error
+                                        unset($_SESSION['vendor_first_name_error']);
+                                    }
+                                    ?>
+                                </span>
+                            </div>
                             <br />
 
 
-                            <label class="title-label tl2" for="Vendor Last Name">Vendor Last Name:</label>
+                            <label class="title-label tl1" for="Vendor Last Name">Vendor Last Name:</label>
                             <input class="input-info" type="text" name="vendor_last_name" id="vendor_last_name" required oninput="validateVendorLastName(); updateSubmitButton()" value="<?php echo $vendorLastName; ?>">
                             <!-- Display an error message if it exists in the session -->
                             <span style="color: red;" id="vendor_last_name_error_span">
@@ -210,22 +210,24 @@ if ($result) {
 
 
                         <div class="box-position3">
-                            <h2 class="vendor-heading">Vendor Account</h2>
-                            <label class="title-label tl11" for="Mobile Number">Mobile Number:</label>
-                            <input class="input-info" type="tel" name="vendor_mobile_number" id="vendor_mobile_number" maxlength="11" placeholder="09XXXXXXXXX" oninput="validateVendorMobileNumber(); updateSubmitButton()" value="<?php echo $vendorMobileNumber; ?>">
-                            <!-- Display an error message if it exists in the session -->
-                            <span style="color: red;" id="vendor_mobile_number_error_span">
-                                <?php
-                                if (isset($_SESSION['vendor_mobile_number_error'])) {
-                                    echo $_SESSION['vendor_mobile_number_error'];
-                                    // Unset the session variable after displaying the error
-                                    unset($_SESSION['vendor_mobile_number_error']);
-                                }
-                                ?>
-                            </span>
+                            <label class="title-label tl1" for="Mobile Number">Mobile Number:</label>
+
+                            <div>
+                                <input class="input-info" type="tel" name="vendor_mobile_number" id="vendor_mobile_number" maxlength="11" placeholder="09XXXXXXXXX" oninput="validateVendorMobileNumber(); updateSubmitButton()" value="<?php echo $vendorMobileNumber; ?>">
+                                <!-- Display an error message if it exists in the session -->
+                                <span style="color: red;" id="vendor_mobile_number_error_span">
+                                    <?php
+                                    if (isset($_SESSION['vendor_mobile_number_error'])) {
+                                        echo $_SESSION['vendor_mobile_number_error'];
+                                        // Unset the session variable after displaying the error
+                                        unset($_SESSION['vendor_mobile_number_error']);
+                                    }
+                                    ?>
+                                </span>
+                            </div>
 
                             <br />
-                            <label class="title-label tl8" for="Email">Email:</label>
+                            <label class="title-label tl1" for="Email">Email:</label>
                             <input class="input-info" type="email" name="vendor_email" id="vendor_email" required oninput="validateVendorEmail(); updateSubmitButton()" value="<?php echo $vendorEmail; ?>">
                             <!-- Display an error message if it exists in the session -->
                             <span style="color: red;" id="vendor_email_error_span">

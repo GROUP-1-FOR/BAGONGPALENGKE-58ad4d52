@@ -11,8 +11,6 @@
 </head>
 
 <body>
-
-
     <div class="main-sidebar">
         <ul class="sidebar-outside">
             <div class="profile-container">
@@ -30,7 +28,7 @@
                         <button class="manage-vendor"> Manage Accounts </button>
                     </a></li>
                 <li><a href="admin_send_report.php">
-                        <button class="report-management"> Report </button>
+                        <button class="report-management"> Reports </button>
                     </a></li>
                 <li><a href="admin_faq.php">
                         <button class="help-button"> Help </button>

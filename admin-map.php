@@ -41,7 +41,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     </head>
 
     <body>
-        <header></header>
+        <header class="header2"></header>
         <?php include 'sidebar.php'; ?>
         <div class="map-background">
             <div>

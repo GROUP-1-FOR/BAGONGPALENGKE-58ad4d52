@@ -57,21 +57,23 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     </head>
 
     <body>
-        <header></header>
+        <header class="header2"></header>
         <?php include 'sidebar.php'; ?>
 
         <div class="flex-row">
-            <form class="form-search" id="searchForm" method="get">
-                <div class="search-container">
-                    <input class="search-box" type="text" id="search" name="search" placeholder="Enter vendor name" oninput="showSuggestions()" maxlength="15">
-                    <!-- <input type="submit" value="Search"> -->
-                    <input class="search-icon" type="image" src="assets\images\sign-in\search-button.svg" alt="Search" onclick="submitSearchForm()">
-                    <!-- <a><img class="search-button" src="assets\images\sign-in\search-button.svg"></a> -->
-                    <div id="autocomplete"></div>
-                </div>
-            </form>
-            <h2 class="manage-account-header">MANAGE ACCOUNTS</h2>
 
+            <h1 class="manage-account-header">MANAGE ACCOUNTS</h1>
+            <div>
+                <form class="form-search" id="searchForm" method="get">
+                    <div class="search-container">
+                        <input class="search-box" type="text" id="search" name="search" placeholder="Enter vendor name" oninput="showSuggestions()" maxlength="15">
+                        <!-- <input type="submit" value="Search"> -->
+                        <input class="search-icon" type="image" src="assets\images\sign-in\search-button.svg" alt="Search" onclick="submitSearchForm()">
+                        <!-- <a><img class="search-button" src="assets\images\sign-in\search-button.svg"></a> -->
+                        <div id="autocomplete"></div>
+                    </div>
+                </form>
+            </div>
             <div class="manage-account">
 
                 <div class="flex-box1">
@@ -110,7 +112,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                                     $editButtonVisible = isVendorEditable($row["vendor_userid"]);
 
                                     if ($editButtonVisible) {
-                                        echo "<button onclick='editVendor(\"" . $row["vendor_userid"] . "\")'>Edit</button>";
+                                        echo "<button class='edit-button' onclick='editVendor(\"" . $row["vendor_userid"] . "\")'>Edit</button>";
                                     }
 
                                     // if ($editButtonVisible) {
@@ -158,6 +160,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
         </div>
         </div>
+
     </body>
 
     <footer></footer>
@@ -270,9 +273,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     autocompleteContainer.innerHTML = '';
                     data.forEach(suggestion => {
                         const suggestionDiv = document.createElement('div');
-                        suggestionDiv.innerHTML = suggestion.vendor_name + ' (ID: ' + suggestion.vendor_userid + ')';
+                        suggestionDiv.innerHTML = suggestion.vendor_name + ' (' + suggestion.vendor_userid + ') '; // Add space after each item
                         suggestionDiv.onclick = function() {
                             searchInput.value = suggestion.vendor_name;
+                            document.getElementById('searchForm').submit(); // Submit the search form
                             autocompleteContainer.innerHTML = '';
                         };
                         autocompleteContainer.appendChild(suggestionDiv);

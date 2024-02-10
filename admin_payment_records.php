@@ -50,7 +50,7 @@ if (!$result) {
 </head>
 
 <body>
-    <header></header>
+    <header class="header2"></header>
     <?php include 'sidebar.php'; ?>
 
     <div class="flex-row">
@@ -94,7 +94,7 @@ if (!$result) {
         </div>
 
     </div>
-    <button class="archive-button" onclick="requestAccess()">Request Access for Archive</button>
+    <!-- <button class="archive-button" onclick="requestAccess()">Request Access for Archive</button> -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         function requestAccess() {

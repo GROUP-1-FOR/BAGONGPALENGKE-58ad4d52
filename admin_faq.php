@@ -25,11 +25,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 </head>
 
 <body>
-    <header></header>
+    <header class="header2"></header>
     <?php include 'sidebar.php'; ?>
 
     <div class="flex-row">
-        <h2 class="manage-account-header">Frequently Asked Questions</h2>
+        <!-- <h2 class="manage-account-header">Frequently Asked Questions</h2> -->
         <div class="faq-table">
 
             <div class="flex-box1">
@@ -62,13 +62,13 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
             </li>
     <?php
-            $counter++; // Increment the counter
-             }
-            } else {
-            echo "0 results";
-            }
+                                $counter++; // Increment the counter
+                            }
+                        } else {
+                            echo "0 results";
+                        }
 
-             $connect->close();
+                        $connect->close();
     ?>
     </ul>
     <br>
@@ -78,17 +78,17 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             var answer = document.getElementById('answer_' + counter);
             var isOpen = answer.style.display === 'block' || getComputedStyle(answer).display === 'block';
 
-            // Close all answers
-            var questions = document.querySelectorAll('.question');
-            questions.forEach(function(q) {
-                q.classList.remove('clicked');
-                q.nextElementSibling.style.display = 'none';
+            // Close all answers if they are open
+            var allAnswers = document.querySelectorAll('.answer');
+            allAnswers.forEach(function(ans) {
+                ans.style.display = 'none';
             });
 
-            // Open the clicked answer if it was closed
+            // Toggle the display of the clicked answer
             if (!isOpen) {
-                element.classList.add('clicked');
                 answer.style.display = 'block';
+            } else {
+                answer.style.display = 'none';
             }
         }
     </script>

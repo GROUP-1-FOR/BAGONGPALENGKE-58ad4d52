@@ -1,4 +1,4 @@
-<?php
+<?php /*
 require("config.php");
 $wrong_credentials = "";
 

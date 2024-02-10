@@ -78,11 +78,11 @@ $connect->close();
 </head>
 
 <body>
-    <header></header>
+    <header class="header2"></header>
     <?php include 'sidebar.php'; ?>
 
     <div class="flex-row">
-        <h2 class="manage-account-header">REPORTS</h2>
+        <h1 class="manage-account-header">REPORTS</h1>
 
         <div class="report-manage">
             <br>

@@ -42,7 +42,7 @@ $connect->close();
 
 
 <body>
-    <header></header>
+    <header class="header2"></header>
     <?php include 'sidebar2.php'; ?>
 
 

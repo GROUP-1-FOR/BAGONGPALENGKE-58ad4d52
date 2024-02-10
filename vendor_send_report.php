@@ -78,12 +78,11 @@ $connect->close();
 </head>
 
 <body>
-    <header></header>
+    <header class="header2"></header>
     <?php include 'sidebar2.php'; ?>
 
     <div class="flex-row">
         <h2 class="manage-account-header">REPORTS</h2>
-
         <div class="report-manage">
             <br>
             <h1 class="admin-name-report"><?php echo $vendor_userid  ?>! </h1>

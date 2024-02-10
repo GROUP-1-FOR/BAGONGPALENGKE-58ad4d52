@@ -161,23 +161,31 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
         }
 
         #money-table {
+            position: relative;
+            z-index: 5;
             width: 300px;
             margin: auto;
             border-collapse: collapse;
             cursor: pointer;
             height: 100px;
             font-size: small;
+            z-index: ;
         }
 
         #money-cell {
-            height: 100px;
-            margin-left: 100px;
-            border: 3px solid #ccc;
-            padding: 50px;
-            background-color: maroon;
+            margin-left: 50px;
+            background-color: transparent;
             color: white;
+            font-size: 40px;
+            z-index: 10;
 
-            /* Adjust the font size as needed */
+        }
+
+        .error-message2 {
+            font-size: x-small;
+            color: green !important;
+            margin-left: -20px;
+
         }
 
         .modal {
@@ -190,6 +198,7 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
             height: 100%;
             overflow: auto;
             background-color: rgba(0, 0, 0, 0.4);
+            z-index: 10;
         }
 
         .modal-content {
@@ -199,7 +208,7 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
             border: 1px solid #888;
             width: 70%;
             text-align: center;
-            z-index: 5;
+            z-index: 999;
         }
 
         .close {
@@ -225,6 +234,17 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
             border: none;
             border-radius: 20px;
             cursor: pointer;
+            z-index: 10;
+
+
+            background-color: #850f16;
+            font-weight: bolder;
+            color: white !important;
+            border-radius: 4px;
+            height: 35px;
+            border-style: solid;
+            border-color: transparent;
+            white-space: nowrap;
         }
     </style>
     <script>
@@ -243,11 +263,10 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
         }
     </script>
 </head>
-<header></header>
+<header class="header2"></header>
 <?php include 'sidebar2.php'; ?>
 
 <div class="head">
-
     <img class="public-market-pic-v2" src="assets\images\sign-in\public-market-head-v2.svg" alt="back-layer">
 
     <div class="head-bottom">
@@ -264,22 +283,17 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
 
     </div>
 
-    <div class="head-bottom">
-
+    <div class="head-bottom3">
         <div class="flex-column2">
-            <div class="dashboard-announcement">
-
+            <div class="dashboard-announcement6">
                 <div class="flex-row-1">
                     <div>
-
-                        <h2 class="interactive-map-header3">Amount to Pay</h2>
+                        <h2 class="interactive-map-header3">AMOUNT TO PAY</h2>
                         <div class="status-heading">
-
                             <div class=interactive-map-position>
                                 <table id="money-table">
                                     <tr>
                                         <td id="money-cell">
-
                                             <?php if ($balance > 0) : ?>
                                                 $<?php echo number_format($balance, 2); ?>
                                                 <?php if ($paymentStatus === "To be paid") : ?>
@@ -299,7 +313,7 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
                                                 $<?php echo number_format($balance, 2); ?>
                                             <?php endif; ?>
                                             <?php if ($paymentStatus === "Payment has already been sent") : ?>
-                                                <p>Payment has already been sent. Wait for confirmation.</p>
+                                                <p class="error-message2">Payment has already been sent. Wait for confirmation.</p>
                                             <?php endif; ?>
 
                                         </td>
@@ -307,10 +321,10 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
                                 </table>
                                 <div id="myModal" class="modal">
                                     <div class="modal-content">
-                                        <span class="close" onclick="closeModal()">&times;</span>
+                                        <span class="close error-message" onclick="closeModal()">&times;</span>
                                         <p>Are you sure you want to make the payment?</p>
                                         <!-- The "Pay" button inside the modal -->
-                                        <button id="payButton" type="button" onclick="pay()">Pay</button>
+                                        <button class="submit-button" id="payButton" type="button" onclick="pay()">Pay</button>
                                     </div>
                                 </div>
                             </div>
@@ -320,26 +334,18 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
                     <!-- <a href=admin-map.php><img class="map-icon" src="assets\images\sign-in\map-icon.svg" alt="map"> Amount to Pay </a> -->
 
                 </div>
-
+                <img class="vendor-img" src="assets\images\sign-in\vendor-dashboard-img.svg" alt="back-layer">
             </div>
             <div class="dashboard-announcementv2">
 
                 <div class="flex-row-1">
-
                     <h2 class="notification-header">Notifications</h2>
                     <div class="message-notif">
                         <p class="admin-datetime-text-v2"> December 25, 2024</p>
                         <h1 class="admin-message-notif">You have a message!</h1>
-
-
                         <p class="admin-vendor-notif">From: teasury1 </p>
-
                     </div>
-
-
                 </div>
-
-
                 <center><a href=vendor_notification.php><input class="submit-button3" type="submit" value="View"></a></center>
             </div>
         </div>

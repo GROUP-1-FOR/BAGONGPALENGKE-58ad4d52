@@ -45,7 +45,7 @@ if (!$result) {
 </head>
 
 <body>
-    <header></header>
+    <header class="header2"></header>
     <?php include 'sidebar2.php'; ?>
     <div class="flex-row-body">
         <h2 class="payment-header">TRANSACTION HISTORY</h2>

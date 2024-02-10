@@ -223,7 +223,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <h2 class="title6">Admin Password Before Vendor Account Creation</h2>
                     <div>
                         <form class="flex-row mid" action="admin_create_vendor_account_2.php" method="post">
-
                             <label class="admin-heading" for="Admin Password Confirmation">Admin Password Confirmation</label>
                             <input class="input-info" type="password" name="admin_password" id="admin_password" required>
                             <input class="submit-btn1 sbt1" type="submit" value="Submit">
@@ -232,6 +231,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <a class="back-button1 vendor-back" href=admin_create_vendor_account.php>
                             < Back </a>
                     </div>
+                    
                 </div>
             </div>
         </div>

@@ -1,127 +1,89 @@
-<?php
-require("config.php");
-
-if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
-    $admin_id = $_SESSION["id"];
-    $admin_userid = $_SESSION["userid"];
-
-
-    include('admin_login_time.php');
-
-    $sql = "SELECT admin_name FROM admin_sign_in WHERE admin_userid = '$admin_userid'";
-
-    // Execute the query
-    $result = $connect->query($sql);
-    $admin_name = "";
-    $admin_name_error = "";
-
-    // Check if any rows were returned
-    if ($result->num_rows > 0) {
-        // Output data for each row
-        while ($row = $result->fetch_assoc()) {
-            $admin_name = $row['admin_name'];
-        }
-    } else {
-        $admin_name_error = "No results found for user ID $admin_userId";
-    }
-
-
-
-
-?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> SIGN IN </title>
-    <link rel="stylesheet" type="text/css" href="index.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+    <style>
+        [class*="col"] {
+            padding: 1rem;
+            background-color: #33b5e5;
+            border: 2px solid #fff;
+            color: #fff;
+        }
+
+        .child {
+            background-color: #2041d3;
+        }
+    </style>
 </head>
+
 <body>
-<?php include 'sidebar.php'; ?>
-
-    <h3 class="announcement-text"> Announcement</h3>
-    <h3 class="message-text"> Messages</h3>
-    <h3 class="map"> Interactive Map </h3>
-    <h3 class="confirm-payment"> Confirm Payment </h3>
-    <h3 class="notifications"> Notification </h3>
-    <div class="flex-box">
-    <main class="main-container">
-        <div class="dashboard-announcement">
-  
-
-        <?php
-        $sql_sent_announcement = "SELECT DISTINCT announcement_title,announcement_subject,announcement_text, announcement_time FROM announcements ORDER BY announcement_id DESC";
-        $result_sent_announcement = $connect->query($sql_sent_announcement);
-        $connect->close();
-        if ($result_sent_announcement->num_rows > 0) {
-            while ($row = $result_sent_announcement->fetch_assoc()) {
-        ?>
-        <div class="announcement-container">
-        <p class="announcement-datetime"> <?php echo $row['announcement_time']; ?></p>
-                <h1 class='title-holder'style="color: green;"><?php echo $row['announcement_title']; ?> </h1>
-                <h2 class='subtitle-holder' style="color: gray;"><?php echo $row['announcement_subject']; ?></h2>
-                <p class='announcement'><?php echo $row['announcement_text']; ?></p>
-            
+    <div class="container border">
+        <div class="row">
+            <div class="col-lg-8 col-md-6">Col 1</div>
+            <div class="col-lg-4 col-md-6">Col 2</div>
         </div>
-        <?php }
-        } else {
-            echo "<p>No sent announcements found.</p>";
-}
-
-        ?>
-            </div>
-            
-            <div class="sending-message">
-            <form action="admin_send_announcement_1.php" method="post">
-            <label class= "title-subject" for="admin_announcement_title">TITLE: </label>
-            <input class="title" type="text" id="admin_announcement_title" name="admin_announcement_title" required><br />
-            <label class= "title-subject" for="admin_announcement_subject">SUBJECT:</label>
-            <input class="subject" type="text" id="admin_announcement_subject" name="admin_announcement_subject" required><br />
-            <textarea class="text-box" name="admin_announcement" id="admin_announcement" cols="30" rows="5" required></textarea><br>
-            <input class="sending-button" type="submit" value="Send">
-            </form>
-            
-
-            </div>
-            <div class="dashboard-message">
-            <!-- <iframe class="admin-messages-box" src="admin_messages_preview.php" width="600" height="400" frameborder="0"></iframe> -->
-      
-            <a href='admin_messages.php'><button>View</button></a>
-            </div>
-            </div>
-            <!-- <a href=admin_index.php> THIS IS THE BACK BUTTON
-                <h1>BACK</h1>
-            </a> -->
-    </main>
     </div>
+    <div class="container my-5"">
+        <div class=" row">
+        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
+        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
+        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
+        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
+        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
+        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
+        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
+        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
+        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
+        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
+        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
+        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
+    </div>
+    </div>
+    <div class="container border">
+        <div class="row align-items-end " style="height: 500px;">
+            <div class="col">
+                One of three columns
+            </div>
+            <div class="col">
+                One of three columns
+            </div>
+            <div class="col">
+                One of three columns
+            </div>
         </div>
 
-    <div class="flex-box">
-    <div class="dashboard-map">
-    <a href='interactive_map.php'><button>View</button></a>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-2">1</div>
+                <div class="col-2">2</div>
+            </div>
+        </div>
+        <h2 class="text-center my-5">Gutter</h2>
 
-    </div>
+        <div class="container my-5 ">
+            <div class="row gx-1 gy-5">
+                <div class="col-6">
+                    <div class="child">1</div>
+                </div>
+                <div class="col-6">
+                    <div class="child">2</div>
+                </div>
+                <div class="col-6">
+                    <div class="child">3</div>
+                </div>
+                <div class="col-6">
+                    <div class="child">4</div>
+                </div>
+            </div>
+        </div>
 
-    <div class="dashboard-payment-notif"  href=admin_confirmpay.php>
-    <iframe class="admin-messages-box" src="admin_confirmpay.php" width="600" height="400" frameborder="0"></iframe>
-    <div style="padding-top: 10px" class="view-button"><a href=admin_confirmpay.php><button>VIEW</button></a>
-    </div>
-    </div>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+</body>
 
-    <div class="dashboard-notif">
-        
-
-    </div>
-
-    </div>
-    <footer></footer>
-    </body>
-
-    </html>
-<?php } else {
-    header("location:admin_logout.php");
-}
+</html>
