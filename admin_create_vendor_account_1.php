@@ -199,7 +199,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIGN IN</title>
+    <title>Admin Password Confirmation</title>
     <link rel="stylesheet" type="text/css" href="index.css">
     <link rel="stylesheet" type="text/css" href="text-style.css">
     <link rel="stylesheet" type="text/css" href="text-positions.css">
@@ -231,7 +231,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <a class="back-button1 vendor-back" href=admin_create_vendor_account.php>
                             < Back </a>
                     </div>
-                    
+
                 </div>
             </div>
         </div>

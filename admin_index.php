@@ -70,7 +70,7 @@ if ($resultStallMap->num_rows > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>SIGN IN</title>
+    <title>Homepage</title>
     <link rel="stylesheet" type="text/css" href="index.css">
     <link rel="stylesheet" type="text/css" href="text-style.css">
     <link rel="stylesheet" type="text/css" href="box-style.css">
@@ -109,9 +109,9 @@ if ($resultStallMap->num_rows > 0) {
                                 <h1 class="rent-status-header"> Rent <br>Status </h1>
                             </div>
                             <div>
-                            <p class="index-notifs"> Paid: <?php echo $totalPaid; ?> </p>
-                            <button class="index-notifs"> Ongoing: <?php echo $totalOngoing; ?> </button>
-                            <button class="index-notifs"> Vacant: <?php echo max(0, $totalVacant); ?> </button>
+                                <p class="index-notifs"> Paid: <?php echo $totalPaid; ?> </p>
+                                <button class="index-notifs"> Ongoing: <?php echo $totalOngoing; ?> </button>
+                                <button class="index-notifs"> Vacant: <?php echo max(0, $totalVacant); ?> </button>
                             </div>
                         </div>
                     </div>
@@ -122,19 +122,19 @@ if ($resultStallMap->num_rows > 0) {
 
             </div>
 
-            
-                <div class="dashboard-announcementv2">
-                    <div class="flex-row-1">
-                        <h2 class="notification-header">Notifications</h2>
-                        <div class="message-notif">
-                            <p class="admin-datetime-text-v2"><?php echo $latestNotificationDate; ?></p>
-                            <h1 class="admin-message-notif"><?php echo $latestNotificationTitle; ?></h1>
-                            <p class="admin-vendor-notif">From: <?php echo $latestNotificationVendorName; ?></p>
-                        </div>
+
+            <div class="dashboard-announcementv2">
+                <div class="flex-row-1">
+                    <h2 class="notification-header">Notifications</h2>
+                    <div class="message-notif">
+                        <p class="admin-datetime-text-v2"><?php echo $latestNotificationDate; ?></p>
+                        <h1 class="admin-message-notif"><?php echo $latestNotificationTitle; ?></h1>
+                        <p class="admin-vendor-notif">From: <?php echo $latestNotificationVendorName; ?></p>
                     </div>
-                    <center><a href=admin_notification.php><input class="submit-button3" type="submit" value="View"></a></center>
                 </div>
+                <center><a href=admin_notification.php><input class="submit-button3" type="submit" value="View"></a></center>
             </div>
+        </div>
 
         <div class="dashboard-map">
             <center>
