@@ -78,7 +78,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     if ($vacant == 0) {
                         echo '<div class="box box-' . $i . '" style="' . $boxColor . '" onclick="handleBoxClick(' . $i . ')">' . $i . '</div>';
                     } else {
-                        echo '<div class="box box-' . $i . '" style="' . $boxColor . ' pointer-events: none; opacity: 0.5;">' . $i . '</div>';
+                        echo '<div class="box box-' . $i . '" style="' . $boxColor . ' pointer-events: none;">' . $i . '</div>';
                     }
                 }
                 ?>
