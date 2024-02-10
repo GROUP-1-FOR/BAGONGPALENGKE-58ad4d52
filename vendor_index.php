@@ -135,6 +135,20 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
 }
 
 $currentDateTime = date('F d, Y | h:i A');
+// Fetch data from the latest row of vendor_notification table
+$sqlNotification = "SELECT notif_date, title, admin_name FROM vendor_notification ORDER BY notif_date DESC LIMIT 1";
+$resultNotification = $connect->query($sqlNotification);
+$latestNotificationDate = "";
+$latestNotificationTitle = "";
+$latestNotificationVendorName = "";
+
+if ($resultNotification->num_rows > 0) {
+    while ($rowNotification = $resultNotification->fetch_assoc()) {
+        $latestNotificationDate = $rowNotification['notif_date'];
+        $latestNotificationTitle = $rowNotification['title'];
+        $latestNotificationVendorName = $rowNotification['admin_name'];
+    }
+}
 ?>
 
 
@@ -343,9 +357,9 @@ $currentDateTime = date('F d, Y | h:i A');
                 <div class="flex-row-1">
                     <h2 class="notification-header">Notifications</h2>
                     <div class="message-notif">
-                        <p class="admin-datetime-text-v2"> December 25, 2024</p>
-                        <h1 class="admin-message-notif">You have a message!</h1>
-                        <p class="admin-vendor-notif">From: teasury1 </p>
+                    <p class="admin-datetime-text-v2"><?php echo $latestNotificationDate; ?></p>
+                    <h1 class="admin-message-notif"><?php echo $latestNotificationTitle; ?></h1>
+                    <p class="admin-vendor-notif">From: <?php echo $latestNotificationVendorName; ?></p>
                     </div>
                 </div>
                 <center><a href=vendor_notification.php><input class="submit-button3" type="submit" value="View"></a></center>
