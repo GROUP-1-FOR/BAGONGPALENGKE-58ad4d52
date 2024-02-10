@@ -50,7 +50,13 @@ $otp_token = $_SESSION["reset_password_token"];
 
 unset($_SESSION["reset_password_token"]);
 
-$mail->Body = '<font color="#008000">' . $otp_token . '</font> is your Reset Password Token. For your protection, do not share this code with anyone.';
+$mail->addEmbeddedImage('santarosapublicmarket.png', 'logo');
+$mail->Body = '<div style="text-align: center;">
+                  <img src="cid:logo" alt="Santa Rosa Public Market"><br />
+                  <p style="color: #008000; font-size: 20px;">' . $otp_token . '</p>
+                  is your Reset Password Token. For your protection, do not share this code with anyone.
+               </div>';
+
 
 $mail->send();
 
