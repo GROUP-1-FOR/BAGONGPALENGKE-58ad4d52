@@ -166,7 +166,7 @@ if (isset($_GET['cancel_button'])) {
         <img class="back-layer-v2" src="assets\images\sign-in\back.svg" alt="back">
     </div>
     <div class="login-form">
-        <form class="form-group" action="" method="post">
+        <form class="form-group3" action="" method="post">
             <div class="flexbox-row">
                 <div>
                     <input class="input-box" type="text" pattern="[0-9]{6}" maxlength="6" id="otp" name="admin_otp" title="Please enter six numbers" placeholder="Enter OTP" required>
@@ -179,7 +179,7 @@ if (isset($_GET['cancel_button'])) {
                 <?php echo $incorrect_otp_message; ?>
             </span>
         </form>
-        <div class="buttons-container">
+        <div class="buttons-container8">
             <form action="" method="post" id="resendOTPForm">
                 <input type="hidden" id="wrongOTP" value="<?php echo ($incorrect_otp_message === "Wrong OTP!") ? 'true' : 'false'; ?>">
                 <button class="resend-button" type="submit" id="resendOTPButton" name="admin_resend_otp" <?php echo ($incorrect_otp_message === "Wrong OTP!") ? '' : 'disabled'; ?>>Resend OTP</button>
