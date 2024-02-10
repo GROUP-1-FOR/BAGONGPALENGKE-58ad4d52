@@ -21,13 +21,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["admin_login_submit"]))
     if (mysqli_num_rows($result) > 0) {
       // Verify password
       if (password_verify($admin_password, $row["admin_password"])) {
-        // Set session variables
+
         $_SESSION["login"] = true;
         $_SESSION["id"] = $row["admin_id"];
         $_SESSION["userid"] = $row["admin_userid"];
         $_SESSION["admin_email"] = $row["admin_email"];
 
+
         $admin_userid = $_SESSION["userid"];
+        include("admin_otp_generation.php");
 
         // Set OTP generated flag
         $otp_generated = true;
