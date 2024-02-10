@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 // Update the admin_stall_map table
-                $updateStallMapQuery = "UPDATE `admin_stall_map` SET `balance` = `balance` + ? WHERE `vendor_userid` = ?";
+                $updateStallMapQuery = "UPDATE `admin_stall_map` SET `balance` = `balance` + ?, `paid` = 1, `due` = 0 WHERE `vendor_userid` = ?";
                 $updateStallMapStatement = mysqli_prepare($connect, $updateStallMapQuery);
 
                 if ($updateStallMapStatement) {
@@ -115,10 +115,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $successUpdateStallMap = mysqli_stmt_execute($updateStallMapStatement);
 
                     if (!$successUpdateStallMap) {
-                        echo "Error updating balance in admin_stall_map table: " . mysqli_error($connect);
+                        echo "Error updating balance, setting paid to 1, and setting due to 0 in admin_stall_map table: " . mysqli_error($connect);
                     }
                 } else {
-                    echo "Error preparing statement for updating balance in admin_stall_map: " . mysqli_error($connect);
+                    echo "Error preparing statement for updating balance, setting paid to 1, and setting due to 0 in admin_stall_map: " . mysqli_error($connect);
                 }
 
                 // Check for success in all updates

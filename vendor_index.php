@@ -71,18 +71,18 @@ if ($currentDate >= $startingDate) {
 
             $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
             $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-            $stmtUpdateBalance->bind_param('di', $currentBalance, $userid); // Assuming vendor_userid is of type integer
+            $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
             $stmtUpdateBalance->execute();
 
-            $sqlUpdateBalance = "UPDATE admin_stall_map SET balance = ? WHERE vendor_userid = ?";
+            $sqlUpdateBalance = "UPDATE admin_stall_map SET balance = ?, due = 1, paid = 0 WHERE vendor_userid = ?";
             $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-            $stmtUpdateBalance->bind_param('di', $currentBalance, $userid); // Assuming vendor_userid is of type integer
+            $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
             $stmtUpdateBalance->execute();
 
             // Update day, month, and year
             $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
             $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
-            $stmtUpdateDate->bind_param('iiii', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
+            $stmtUpdateDate->bind_param('iiis', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
             $stmtUpdateDate->execute();
         }
     }

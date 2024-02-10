@@ -91,9 +91,9 @@ if ($resultNotification->num_rows > 0) {
                                 <h1 class="rent-status-header"> Rent <br>Status </h1>
                             </div>
                             <div>
-                                <p class="index-notifs"> Paid: </p>
-                                <button class="index-notifs"> Ongoing: </button>
-                                <button class="index-notifs"> Vacant: </button>
+                                <p class="index-notifs"> Paid: 0 </p>
+                                <button class="index-notifs"> Ongoing: 0 </button>
+                                <button class="index-notifs"> Vacant: 0 </button>
                             </div>
                         </div>
                     </div>
