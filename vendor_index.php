@@ -159,8 +159,7 @@ if ($resultNotification->num_rows > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="icon" href="assets\images\sign-in\src-logo.png" type="image/x-icon">
-    <title>Vendor Dashboard</title>
+    <title>SIGN IN</title>
     <link rel="stylesheet" type="text/css" href="index.css">
     <link rel="stylesheet" type="text/css" href="text-style.css">
     <link rel="stylesheet" type="text/css" href="box-style.css">

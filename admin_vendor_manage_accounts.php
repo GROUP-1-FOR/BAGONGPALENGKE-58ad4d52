@@ -47,7 +47,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>SIGN IN</title>
+        <title>Manage Vendor Accounts</title>
         <link rel="stylesheet" type="text/css" href="index.css">
         <link rel="stylesheet" type="text/css" href="text-style.css">
         <link rel="javascript" type="text/script" href="js-style.js">
@@ -249,7 +249,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         }
 
         function redirectToAddVendors() {
-            window.location.href = 'interactive_map.php';
+            window.location.href = 'admin-map.php';
         }
 
         function showSuggestions() {
