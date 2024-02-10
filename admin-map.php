@@ -38,6 +38,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        <!-- Add these lines for Bootstrap CSS and JS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.9/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </head>
 
     <body>
@@ -52,7 +57,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 // Loop to generate boxes
                 for ($i = 1; $i <= 74; $i++) {
                     // Fetch data from the database for the current box
-                    $query = "SELECT COUNT(*) as count, balance, vacant FROM admin_stall_map WHERE vendor_stall_number = ?";
+                    $query = "SELECT COUNT(*) as count, balance, vacant, vendor_name FROM admin_stall_map WHERE vendor_stall_number = ?";
                     $stmt = $connect->prepare($query);
                     $stmt->bind_param("i", $i);
                     $stmt->execute();
@@ -61,6 +66,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     $count = $row['count'];
                     $balance = $row['balance'];
                     $vacant = $row['vacant'];
+                    $vendorName = $row['vendor_name'];
 
                     // Set the box color based on the fetched data
                     $boxColor = '';
@@ -78,9 +84,15 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     if ($vacant == 0) {
                         echo '<div class="box box-' . $i . '" style="' . $boxColor . '" onclick="handleBoxClick(' . $i . ')">' . $i . '</div>';
                     } else {
-                        echo '<div class="box box-' . $i . '" style="' . $boxColor . ' pointer-events: none;">' . $i . '</div>';
+                        // Add a Bootstrap tooltip to show vendor_name on hover
+                        echo '<div class="box box-' . $i . '" style="' . $boxColor . '" data-toggle="tooltip" data-placement="top" title="' . $vendorName . '" onclick="handleBoxClick(' . $i . ')">' . $i . '</div>';
                     }
                 }
+
+                // Add this script to initialize Bootstrap tooltips
+                echo '<script>$(document).ready(function(){
+                        $(\'[data-toggle="tooltip"]\').tooltip();
+                    });</script>';
                 ?>
 
                 <script>
