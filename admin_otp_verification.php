@@ -30,9 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["admin_otp"])) {
             $reset_trials_query = "UPDATE admin_sign_in SET admin_otp_trials = 0 WHERE admin_id = $admin_id";
             mysqli_query($connect, $reset_trials_query);
             $incorrect_otp_message = "OTP Verified!";
-            // Redirect to admin_index.php after successful verification
-            header("Location: admin_index.php");
-            exit; // Exit to prevent further execution of the script
         } else {
             // Increment OTP trials
             $otp_trials++;
@@ -144,11 +141,18 @@ if (isset($_GET['cancel_button'])) {
 
 <body class="bagongpgalengke-v2 ">
     <header><img src="assets\images\sign-in\Santa-Rosa-Logo.svg" class="logo-src"></header>
-    <div class="overlay" id="overlay" style="display: <?php echo (!empty($incorrect_otp_message) && $incorrect_otp_message === "OTP Verified!") ? 'flex' : 'none'; ?>">
+    <!-- Add the overlay section -->
+    <div class="overlay">
         <div class="notification">
             <h2 class="otp-text"><?php echo $incorrect_otp_message; ?></h2>
             <div class="button-container4">
-                <button class="button" onclick="hideAlert()">OK</button>
+                <?php if ($incorrect_otp_message === "OTP Verified!") : ?>
+                    <!-- Redirect to admin_index.php if OTP is verified -->
+                    <button class="button" onclick="window.location.href = 'admin_index.php';">OK</button>
+                <?php else : ?>
+                    <!-- Redirect back to admin_login.php to enter correct OTP -->
+                    <button class="button" onclick="window.location.href = 'admin_otp_verification.php';">OK</button>
+                <?php endif; ?>
             </div>
         </div>
     </div>
