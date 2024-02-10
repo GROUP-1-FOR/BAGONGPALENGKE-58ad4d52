@@ -54,6 +54,7 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
     unset($_SESSION['vendor_full_name']);
     unset($_SESSION['vendor_mobile_number']);
     unset($_SESSION['vendor_product_type']);
+    unset($_SESSION['vendor_first_payment_date']);
     //unset($_SESSION['vendor_payment_basis']);
     unset($_SESSION['vendor_email']);
     unset($_SESSION['vendor_userid']);
@@ -97,33 +98,26 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
         }
 
         function validateVendorFirstName() {
-            var vendor_name = document.getElementById("vendor_first_name").value;
-            var vendor_name_error_span = document.getElementById("vendor_first_name_error_span");
+            var vendor_name = document.getElementById("vendor_first_name");
 
-            // Check if the input contains any numbers or symbols
-            if (vendor_name.length > 0 && /[^a-zA-Z\s]/.test(vendor_name)) {
-                vendor_name_error_span.textContent = "Please enter the vendor name without numbers or symbols.";
-                return false; // Prevent form submission
-            } else {
-                vendor_name_error_span.textContent = "";
+            vendor_name.value = vendor_name.value.replace(/[^A-Za-z\s]/g, '');
+
+            if (vendor_name.value === "") {
+                return false;
             }
-            // If the input is valid, you can proceed with form submission
+
             return true;
         }
 
         function validateVendorLastName() {
-            var vendor_name = document.getElementById("vendor_last_name").value;
-            var vendor_name_error_span = document.getElementById("vendor_last_name_error_span");
+            var vendor_name = document.getElementById("vendor_last_name");
 
-            // Check if the input contains any numbers or symbols
-            if (vendor_name.length > 0 && /[^a-zA-Z\s]/.test(vendor_name)) {
-                vendor_name_error_span.textContent = "Please enter the vendor name without numbers or symbols.";
-                return false; // Prevent form submission
-            } else {
-                vendor_name_error_span.textContent = "";
+            vendor_name.value = vendor_name.value.replace(/[^A-Za-z\s]/g, '');
+
+            if (vendor_name.value === "") {
+                return false;
             }
 
-            // If the input is valid, you can proceed with form submission
             return true;
         }
 
@@ -155,11 +149,15 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
 
 
         function validateVendorMobileNumber() {
-            var vendor_mobile_number = document.getElementById("vendor_mobile_number").value;
+            var inputElement = document.getElementById("vendor_mobile_number");
+            var vendor_mobile_number = inputElement.value;
             var vendor_mobile_number_error_span = document.getElementById("vendor_mobile_number_error_span");
 
+            // Replace non-numeric characters with an empty string
+            inputElement.value = vendor_mobile_number.replace(/[^0-9]/g, '');
+
             // Check if the input contains any non-numeric characters
-            if (vendor_mobile_number.length > 0 && !/^09\d{9}$/.test(vendor_mobile_number)) {
+            if (inputElement.value.length > 0 && !/^09\d{9}$/.test(inputElement.value)) {
                 // Show error message
                 vendor_mobile_number_error_span.textContent = "Please enter a valid mobile number.";
                 return false; // Prevent form submission
@@ -168,14 +166,20 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
                 vendor_mobile_number_error_span.textContent = "";
             }
 
+            if (inputElement.value === "") {
+                return false;
+            }
+
             // If the input is valid, you can proceed with form submission
             return true;
         }
+
 
         function validateVendorEmail() {
             var vendor_email_input = document.getElementById("vendor_email");
             var vendor_email = vendor_email_input.value.trim().toLowerCase();
             var vendor_email_error_span = document.getElementById("vendor_email_error_span");
+            var isEmailTaken = false; // Flag to check if email is taken
 
             // Check if the input is not empty and contains a valid email address
             if (vendor_email.length > 0 && !vendor_email_input.checkValidity()) {
@@ -197,9 +201,34 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
                 vendor_email_error_span.textContent = "";
             }
 
-            // If the input is valid, you can proceed with form submission
-            return true;
+            if (vendor_email_input.value === "") {
+                return false;
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+
+                        if (response.emailTaken) {
+                            vendor_email_error_span.textContent = "Email is already taken.";
+                            isEmailTaken = true; // Set the flag to true if email is taken
+                        } else {
+                            vendor_email_error_span.textContent = "";
+                        }
+                    }
+                }
+            };
+            xhr.open("POST", "create_vendor_email_check.php", false); // Use synchronous request for simplicity
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.send("email=" + encodeURIComponent(vendor_email));
+
+            // If the input is valid and email is not taken, you can proceed with form submission
+            return !isEmailTaken;
         }
+
+
 
         function validateVendorProductType() {
             var productType = document.getElementById("vendor_product").value;
@@ -267,8 +296,6 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
         }
 
 
-
-
         function checkPasswordMatch() {
             var password = document.getElementsByName("vendor_password")[0].value;
             var confirmPassword = document.getElementsByName("vendor_confirm_password")[0].value;
@@ -310,9 +337,6 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
             // Toggle the password visibility
             passwordInput.type = showPasswordCheckbox.checked ? "text" : "password";
         }
-
-
-
 
         function updateSubmitButton() {
             var submitButton = document.querySelector('button[type="submit"]');
