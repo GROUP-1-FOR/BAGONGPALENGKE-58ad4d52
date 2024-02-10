@@ -164,7 +164,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
                 <div class="flexbox-row2">
                     <label class="label-date" for="admin_announcement_time">Date:</label>
-                    <input class="calendar" type="date" id="admin_announcement_time" name="admin_announcement_time" min="<?php echo date('Y-m-d'); ?>" required>
+                    <input class="calendar" type="date" id="admin_announcement_time" name="admin_announcement_time" min="<?php echo date('Y-m-d'); ?>" required onkeydown="return false" required>
                     <span id="error_subject" class="error"></span>
                 </div>
                 <textarea class="admin-announcement" placeholder=" Write Something..." name="admin_announcement" id="admin_announcement" cols="30" rows="5" required maxlength="500" oninput="updateCounter('admin_announcement', 'message_counter', 500)"></textarea>
