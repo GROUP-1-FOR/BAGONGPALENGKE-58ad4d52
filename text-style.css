@@ -25,14 +25,14 @@
   padding: 20px;
 }
 
-.status-heading {
+/* .status-heading {
   margin-left: 150px;
   text-wrap: nowrap;
   display: flex;
   flex-direction: row;
   margin-left: 30px;
   color: maroon;
-}
+} */
 
 .admin-name-report {
   margin-left: 30px;
