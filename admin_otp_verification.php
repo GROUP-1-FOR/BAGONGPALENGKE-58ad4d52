@@ -191,6 +191,20 @@ if (isset($_GET['cancel_button'])) {
 
     </div>
     <script>
+        var otpInput = document.getElementById('otp');
+
+        // Attach an event listener to the input element
+        otpInput.addEventListener('input', function(event) {
+            // Get the current value of the input
+            var inputValue = event.target.value;
+
+            // Remove any non-numeric characters
+            var numericValue = inputValue.replace(/\D/g, '');
+
+            // Update the value of the input with the numeric-only value
+            event.target.value = numericValue;
+        });
+
         // Hide overlay and alert message
         function hideAlert() {
             var overlay = document.getElementById('overlay');

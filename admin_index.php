@@ -1,7 +1,7 @@
 <?php
 require("config.php");
 
-//Check if user is logged in
+// Check if user is logged in
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $admin_id = $_SESSION["id"];
     $admin_userid = $_SESSION["userid"];
@@ -11,25 +11,38 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
 include('admin_login_time.php');
 
-$sql = "SELECT admin_name FROM admin_sign_in WHERE admin_userid = '$admin_userid'";
-
-// Execute the query
-$result = $connect->query($sql);
+$sqlName = "SELECT admin_name FROM admin_sign_in WHERE admin_userid = '$admin_userid'";
+$resultName = $connect->query($sqlName);
 $admin_name = "";
 $admin_name_error = "";
 
 // Check if any rows were returned
-if ($result->num_rows > 0) {
+if ($resultName->num_rows > 0) {
     // Output data for each row
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $resultName->fetch_assoc()) {
         $admin_name = $row['admin_name'];
     }
 } else {
-    $admin_name_error = "No results found for user ID $admin_userId";
+    $admin_name_error = "No results found for user ID $admin_userid";
 }
 
 // Get current date and time
 $currentDateTime = date('F d, Y | h:i A');
+
+// Fetch data from the latest row of admin_notification table
+$sqlNotification = "SELECT notif_date, title, vendor_name FROM admin_notification ORDER BY notif_date DESC LIMIT 1";
+$resultNotification = $connect->query($sqlNotification);
+$latestNotificationDate = "";
+$latestNotificationTitle = "";
+$latestNotificationVendorName = "";
+
+if ($resultNotification->num_rows > 0) {
+    while ($rowNotification = $resultNotification->fetch_assoc()) {
+        $latestNotificationDate = $rowNotification['notif_date'];
+        $latestNotificationTitle = $rowNotification['title'];
+        $latestNotificationVendorName = $rowNotification['vendor_name'];
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -91,18 +104,19 @@ $currentDateTime = date('F d, Y | h:i A');
 
             </div>
 
-            <div class="dashboard-announcementv2">
-                <div class="flex-row-1">
-                    <h2 class="notification-header">Notifications</h2>
-                    <div class="message-notif">
-                        <p class="admin-datetime-text-v2"> December 25, 2024</p>
-                        <h1 class="admin-message-notif">You have a message!</h1>
-                        <p class="admin-vendor-notif">From: Vendor1</p>
+            
+                <div class="dashboard-announcementv2">
+                    <div class="flex-row-1">
+                        <h2 class="notification-header">Notifications</h2>
+                        <div class="message-notif">
+                            <p class="admin-datetime-text-v2"><?php echo $latestNotificationDate; ?></p>
+                            <h1 class="admin-message-notif"><?php echo $latestNotificationTitle; ?></h1>
+                            <p class="admin-vendor-notif">From: <?php echo $latestNotificationVendorName; ?></p>
+                        </div>
                     </div>
+                    <center><a href=admin_notification.php><input class="submit-button3" type="submit" value="View"></a></center>
                 </div>
-                <center><a href=admin_notification.php><input class="submit-button3" type="submit" value="View"></a></center>
             </div>
-        </div>
 
         <div class="dashboard-map">
             <center>
