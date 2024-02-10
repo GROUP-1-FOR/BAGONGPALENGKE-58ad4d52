@@ -91,7 +91,7 @@ $connect->close();
             <form action="admin_send_report_1.php" method="post" onsubmit="return validateForm()">
                 <div class="flex-box-row">
 
-                    <label class="text-design1" for="admin_report_ticket">Treasury ID: </label>
+                    <label class="text-design1" for="admin_report_ticket"></label>
                     <p class="text-design" type="text" id="admin_report_ticket" name="admin_report_ticket" required readonly></p>
                 </div>
 
