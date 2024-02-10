@@ -1,5 +1,9 @@
 <?php
-require("config.php");
+$connect = mysqli_connect("localhost", "root", "", "bagong_palengke_db");
+
+if ($connect === false) {
+    die("ERROR: Could not connect. " . mysqli_connect_error());
+}
 $admin_email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

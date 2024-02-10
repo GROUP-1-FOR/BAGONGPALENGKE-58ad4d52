@@ -1,5 +1,10 @@
 <?php
-require("config.php");
+
+$connect = mysqli_connect("localhost", "root", "", "bagong_palengke_db");
+
+if ($connect === false) {
+  die("ERROR: Could not connect. " . mysqli_connect_error());
+}
 
 $select_query_FetchAdminUserId = "SELECT admin_userid FROM admin_sign_in WHERE admin_email = '$email'";
 $resultFetchAdminUserId = mysqli_query($connect, $select_query_FetchAdminUserId);
