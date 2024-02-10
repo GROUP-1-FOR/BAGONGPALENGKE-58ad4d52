@@ -43,6 +43,24 @@ if ($resultNotification->num_rows > 0) {
         $latestNotificationVendorName = $rowNotification['vendor_name'];
     }
 }
+
+// Fetch data from admin_stall_map table
+$sqlStallMap = "SELECT paid, due, vacant FROM admin_stall_map";
+$resultStallMap = $connect->query($sqlStallMap);
+
+// Initialize variables for totals
+$totalPaid = 0;
+$totalOngoing = 0;
+$totalVacant = 74; // Initial value
+
+// Check if any rows were returned
+if ($resultStallMap->num_rows > 0) {
+    while ($rowStallMap = $resultStallMap->fetch_assoc()) {
+        $totalPaid += $rowStallMap['paid'];
+        $totalOngoing += $rowStallMap['due'];
+        $totalVacant -= $rowStallMap['vacant'];
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -91,9 +109,9 @@ if ($resultNotification->num_rows > 0) {
                                 <h1 class="rent-status-header"> Rent <br>Status </h1>
                             </div>
                             <div>
-                                <p class="index-notifs"> Paid: 0 </p>
-                                <button class="index-notifs"> Ongoing: 0 </button>
-                                <button class="index-notifs"> Vacant: 0 </button>
+                            <p class="index-notifs"> Paid: <?php echo $totalPaid; ?> </p>
+                            <button class="index-notifs"> Ongoing: <?php echo $totalOngoing; ?> </button>
+                            <button class="index-notifs"> Vacant: <?php echo max(0, $totalVacant); ?> </button>
                             </div>
                         </div>
                     </div>
