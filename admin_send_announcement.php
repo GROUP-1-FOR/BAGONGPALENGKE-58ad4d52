@@ -131,7 +131,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                             <p class="announcement-content"><?php echo $row['announcement_text']; ?></p>
 
                             <div class="modify-buttons">
-                                <button class="button-1" type="button" onclick="editAnnouncement(<?php echo $row['announcement_id']; ?>)">Edit</button>
+                                <!--     <button class="button-1" type="button" onclick="editAnnouncement(<?php //echo $row['announcement_id']; 
+                                                                                                            ?>)">Edit</button> -->
                                 <button class="button-2" type="button" onclick="removeAnnouncement(<?php echo $row['announcement_id']; ?>)">Remove</button>
                             </div>
                         </div>
