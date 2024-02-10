@@ -44,6 +44,82 @@ if ($resultNotification->num_rows > 0) {
     }
 }
 
+$sqlAllVendors = "SELECT * FROM vendor_balance";
+$resultAllVendors = $connect->query($sqlAllVendors);
+
+if ($resultAllVendors->num_rows > 0) {
+    while ($rowUserData = $resultAllVendors->fetch_assoc()) {
+        // Fetch vendor details for the current vendor
+        $userid = $rowUserData['vendor_userid'];
+        $vendorName = $rowUserData['vendor_name'];
+        $stallNumber = $rowUserData['vendor_stall_number'];
+        $balance = $rowUserData['balance'];
+        $transactionId = $rowUserData['transaction_id'];
+
+        // Get the current date
+        $currentDate = new DateTime();
+        $currentDay = intval($currentDate->format('d'));
+        $currentMonth = intval($currentDate->format('m'));
+        $currentYear = intval($currentDate->format('Y'));
+
+        $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
+
+        $startingDate = new DateTime($rowUserData['starting_date']);
+        if ($currentDate >= $startingDate) {
+            if ($currentMonth > $rowUserData['month'] || $currentYear > $rowUserData['year']) {
+                // Perform actions when the current date is greater than or equal to the starting date
+
+                // Fetch vendor_product and vendor_payment_basis
+                $vendorProduct = $rowUserData['vendor_product'];
+                $vendorPaymentBasis = $rowUserData['vendor_payment_basis'];
+
+                // Fetch stall_rate from rent_basis table based on vendor_product
+                $sqlStallRate = "SELECT stall_rate FROM rent_basis WHERE vendor_product = ?";
+                $stmtStallRate = $connect->prepare($sqlStallRate);
+                $stmtStallRate->bind_param('s', $vendorProduct);
+                $stmtStallRate->execute();
+                $resultStallRate = $stmtStallRate->get_result();
+
+                if ($resultStallRate->num_rows > 0) {
+                    $rowStallRate = $resultStallRate->fetch_assoc();
+                    $stallRate = $rowStallRate['stall_rate'];
+                }
+                if ($vendorPaymentBasis == 'Monthly') {
+                    // Calculate balance based on Monthly payment basis
+
+                    if ($currentYear == $rowUserData['year'] && $currentMonth > $rowUserData['month']) {
+                        $balance = ($currentMonth - $rowUserData['month']) * $stallRate;
+                    } elseif ($currentYear > $rowUserData['year']) {
+                        $newcurrentMonth = ($currentYear - $rowUserData['year']) * 12 + $currentMonth;
+                        $balance = ($newcurrentMonth - $rowUserData['month']) * $stallRate;
+                    }
+                    // Update current balance and remaining balance
+                    $currentBalance = $balance + $rowUserData['balance'];
+
+                    $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
+                    $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+                    $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
+                    $stmtUpdateBalance->execute();
+
+                    $sqlUpdateBalance = "UPDATE admin_stall_map SET balance = ?, due = 1, paid = 0 WHERE vendor_userid = ?";
+                    $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+                    $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
+                    $stmtUpdateBalance->execute();
+
+                    // Update day, month, and year
+                    $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
+                    $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
+                    $stmtUpdateDate->bind_param('iiis', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
+                    $stmtUpdateDate->execute();
+                }
+            }
+        }
+    }
+} else {
+    // Handle the case where there are no vendors in the vendor_balance table
+    echo "No vendors found in the database.";
+}
+
 // Fetch data from admin_stall_map table
 $sqlStallMap = "SELECT paid, due, vacant FROM admin_stall_map";
 $resultStallMap = $connect->query($sqlStallMap);

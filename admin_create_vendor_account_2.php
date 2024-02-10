@@ -43,7 +43,7 @@ $balanceValues = [
     'Other' => 5800.50,
 ];
 
-$remaining_balance = $balanceValues[$vendor_product_type];
+$remaining_balance = 0;
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

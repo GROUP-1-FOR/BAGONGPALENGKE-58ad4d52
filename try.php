@@ -1,89 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+// Assuming $currentMonth and $currentYear are already defined
+//$currentDate = new DateTime();
+$currentDay = 29;//intval($currentDate->format('d'));
+$currentMonth = 3;//intval($currentDate->format('m'));
+$currentYear = 2023;//intval($currentDate->format('Y'));
+// Get the timestamp for the first day of the current month
+$firstDayOfCurrentMonth = mktime(0, 0, 0, $currentMonth, 1, $currentYear);
 
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
-    <style>
-        [class*="col"] {
-            padding: 1rem;
-            background-color: #33b5e5;
-            border: 2px solid #fff;
-            color: #fff;
-        }
+// Calculate the timestamp for the last day of the previous month
+$lastDayOfPreviousMonth = strtotime('-1 day', $firstDayOfCurrentMonth);
 
-        .child {
-            background-color: #2041d3;
-        }
-    </style>
-</head>
+// Get the number of days in the previous month
+$daysInPreviousMonth = date('t', $lastDayOfPreviousMonth);
 
-<body>
-    <div class="container border">
-        <div class="row">
-            <div class="col-lg-8 col-md-6">Col 1</div>
-            <div class="col-lg-4 col-md-6">Col 2</div>
-        </div>
-    </div>
-    <div class="container my-5"">
-        <div class=" row">
-        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
-        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
-        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
-        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
-        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
-        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
-        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
-        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
-        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
-        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
-        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
-        <div class="col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">col-xxl-1 col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12</div>
-    </div>
-    </div>
-    <div class="container border">
-        <div class="row align-items-end " style="height: 500px;">
-            <div class="col">
-                One of three columns
-            </div>
-            <div class="col">
-                One of three columns
-            </div>
-            <div class="col">
-                One of three columns
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-2">1</div>
-                <div class="col-2">2</div>
-            </div>
-        </div>
-        <h2 class="text-center my-5">Gutter</h2>
-
-        <div class="container my-5 ">
-            <div class="row gx-1 gy-5">
-                <div class="col-6">
-                    <div class="child">1</div>
-                </div>
-                <div class="col-6">
-                    <div class="child">2</div>
-                </div>
-                <div class="col-6">
-                    <div class="child">3</div>
-                </div>
-                <div class="col-6">
-                    <div class="child">4</div>
-                </div>
-            </div>
-        </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
-</body>
-
-</html>
+echo "Days in the previous month: $daysInPreviousMonth";
+?>
