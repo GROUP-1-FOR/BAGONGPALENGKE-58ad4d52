@@ -174,69 +174,70 @@ if (isset($_GET['cancel_button'])) {
             <span id="error-message" style="color: red">
                 <?php echo $incorrect_otp_message; ?>
             </span>
-            <div class="buttons-container">
-                <form action="" method="post" id="resendOTPForm">
-                    <input type="hidden" id="wrongOTP" value="<?php echo ($incorrect_otp_message === "Wrong OTP!") ? 'true' : 'false'; ?>">
-                    <button class="resend-button" type="submit" id="resendOTPButton" name="admin_resend_otp" <?php echo ($incorrect_otp_message === "Wrong OTP!") ? '' : 'disabled'; ?>>Resend OTP</button>
-                    <div id="resendTokenMessage" class="timer-message"></div>
-                    <br>
-                    <a class="back-button1" href="admin_login.php">Back</a>
-                </form>
-            </div>
         </form>
+        <div class="buttons-container">
+            <form action="" method="post" id="resendOTPForm">
+                <input type="hidden" id="wrongOTP" value="<?php echo ($incorrect_otp_message === "Wrong OTP!") ? 'true' : 'false'; ?>">
+                <button class="resend-button" type="submit" id="resendOTPButton" name="admin_resend_otp" <?php echo ($incorrect_otp_message === "Wrong OTP!") ? '' : 'disabled'; ?>>Resend OTP</button>
+                <div id="resendTokenMessage" class="timer-message"></div>
+                <br>
+                <a class="back-button1" href="admin_login.php">Back</a>
+            </form>
+        </div>
+
     </div>
     <script>
-    // Hide overlay and alert message
-    function hideAlert() {
-        var overlay = document.getElementById('overlay');
-        overlay.style.display = 'none';
-    }
+        // Hide overlay and alert message
+        function hideAlert() {
+            var overlay = document.getElementById('overlay');
+            overlay.style.display = 'none';
+        }
 
-    $(document).ready(function() {
-        var cooldownTime = 45; // 45 seconds
-        var isCooldown = true;
+        $(document).ready(function() {
+            var cooldownTime = 45; // 45 seconds
+            var isCooldown = true;
 
-        // Display cooldown message on page load
-        $("#resendTokenMessage").text(cooldownTime + " seconds");
-
-        // Start the cooldown timer
-        var timer = setInterval(function() {
-            cooldownTime--;
-            $("#resendOTPButton").prop("disabled", true);
+            // Display cooldown message on page load
             $("#resendTokenMessage").text(cooldownTime + " seconds");
 
-            if (cooldownTime <= 0) {
-                // Enable the button after cooldown
-                $("#resendOTPButton").prop("disabled", false);
-                $("#resendTokenMessage").text(" ");
-                isCooldown = false;
-                clearInterval(timer);
-            }
-        }, 1000);
-    });
+            // Start the cooldown timer
+            var timer = setInterval(function() {
+                cooldownTime--;
+                $("#resendOTPButton").prop("disabled", true);
+                $("#resendTokenMessage").text(cooldownTime + " seconds");
 
-    // Function to start the countdown timer
-    function startTimer(duration, display) {
-        var timer = duration;
-        setInterval(function() {
-            display.textContent = timer;
-            if (--timer < 0) {
-                timer = 0;
-            }
-        }, 1000);
-    }
+                if (cooldownTime <= 0) {
+                    // Enable the button after cooldown
+                    $("#resendOTPButton").prop("disabled", false);
+                    $("#resendTokenMessage").text(" ");
+                    isCooldown = false;
+                    clearInterval(timer);
+                }
+            }, 1000);
+        });
 
-    // Check if resend OTP timer session is set
-    <?php if (isset($_SESSION['resend_otp_timer'])) : ?>
-        var endTime = <?php echo $_SESSION['resend_otp_timer']; ?>;
-        var now = <?php echo time(); ?>;
-        var cooldownTime = Math.max(0, endTime - now); // Ensure non-negative value
-        if (cooldownTime > 0) {
-            var resendTokenMessage = document.getElementById('resendTokenMessage');
-            startTimer(cooldownTime, resendTokenMessage);
+        // Function to start the countdown timer
+        function startTimer(duration, display) {
+            var timer = duration;
+            setInterval(function() {
+                display.textContent = timer;
+                if (--timer < 0) {
+                    timer = 0;
+                }
+            }, 1000);
         }
-    <?php endif; ?>
-</script>
+
+        // Check if resend OTP timer session is set
+        <?php if (isset($_SESSION['resend_otp_timer'])) : ?>
+            var endTime = <?php echo $_SESSION['resend_otp_timer']; ?>;
+            var now = <?php echo time(); ?>;
+            var cooldownTime = Math.max(0, endTime - now); // Ensure non-negative value
+            if (cooldownTime > 0) {
+                var resendTokenMessage = document.getElementById('resendTokenMessage');
+                startTimer(cooldownTime, resendTokenMessage);
+            }
+        <?php endif; ?>
+    </script>
 </body>
 
 </html>
