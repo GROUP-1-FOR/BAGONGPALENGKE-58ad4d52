@@ -159,7 +159,8 @@ if ($resultNotification->num_rows > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>SIGN IN</title>
+    <link rel="icon" href="assets\images\sign-in\src-logo.png" type="image/x-icon">
+    <title>Vendor Dashboard</title>
     <link rel="stylesheet" type="text/css" href="index.css">
     <link rel="stylesheet" type="text/css" href="text-style.css">
     <link rel="stylesheet" type="text/css" href="box-style.css">
@@ -177,7 +178,8 @@ if ($resultNotification->num_rows > 0) {
         }
 
         #money-table {
-            position: relative;
+
+            position: absolute;
             z-index: 5;
             width: 300px;
             margin: auto;
@@ -185,10 +187,15 @@ if ($resultNotification->num_rows > 0) {
             cursor: pointer;
             height: 100px;
             font-size: small;
-            
+
         }
 
         #money-cell {
+            margin-top: -150px;
+            position: absolute;
+            align-items: center;
+            align-content: center;
+            text-align: center;
             margin-left: 50px;
             background-color: transparent;
             color: white;
@@ -219,10 +226,12 @@ if ($resultNotification->num_rows > 0) {
 
         .modal-content {
             background-color: #fefefe;
+            color: maroon;
             margin: 15% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 70%;
+            height: 20%;
             text-align: center;
             z-index: 999;
         }
@@ -251,8 +260,6 @@ if ($resultNotification->num_rows > 0) {
             border-radius: 20px;
             cursor: pointer;
             z-index: 10;
-
-
             background-color: #850f16;
             font-weight: bolder;
             color: white !important;
@@ -302,46 +309,46 @@ if ($resultNotification->num_rows > 0) {
     <div class="head-bottom3">
         <div class="flex-column2">
             <div class="dashboard-announcement6">
-                <div class="flex-row-1">
+                <div class="flex-row-4">
                     <div>
-                        <h2 class="interactive-map-header3">AMOUNT TO PAY</h2>
+                        <!-- <h2 class="interactive-map-header3">AMOUNT TO PAY</h2> -->
                         <div class="status-heading">
-                            <div class=interactive-map-position>
-                                <table id="money-table">
-                                    <tr>
-                                        <td id="money-cell">
-                                            <?php if ($balance > 0) : ?>
-                                                $<?php echo number_format($balance, 2); ?>
-                                                <?php if ($paymentStatus === "To be paid") : ?>
-                                                    <!-- The "Pay" button triggers the modal directly -->
-                                                    <br>
-                                                    <button type="button" name="pay" onclick="openModal()">Pay</button>
-                                                    <!-- The form to be submitted -->
-                                                    <form id="paymentForm" method="post" action="vendor_invoice_summary.php">
-                                                        <input type="hidden" name="vendorName" value="<?php echo $vendorName; ?>">
-                                                        <input type="hidden" name="vendorUserId" value="<?php echo $userid; ?>">
-                                                        <input type="hidden" name="vendorStallNumber" value="<?php echo $stallNumber; ?>">
-                                                        <input type="hidden" name="balance" value="<?php echo $balance; ?>">
-                                                        <input type="hidden" name="transactionId" value="<?php echo $transactionId; ?>"> <!-- Add this line -->
-                                                    </form>
-                                                <?php endif; ?>
-                                            <?php else : ?>
-                                                $<?php echo number_format($balance, 2); ?>
-                                            <?php endif; ?>
-                                            <?php if ($paymentStatus === "Payment has already been sent") : ?>
-                                                <p class="error-message2">Payment has already been sent. Wait for confirmation.</p>
-                                            <?php endif; ?>
+                            <img class="vendor-img" src="assets\images\sign-in\vendor-dashboard-img.svg" alt="back-layer">
+                            <table id="money-table">
+                                <!-- <tr> -->
+                                <td id="money-cell">
+                                    <?php if ($balance > 0) : ?>
+                                        $<?php echo number_format($balance, 2); ?>
+                                        <?php if ($paymentStatus === "To be paid") : ?>
+                                            <!-- The "Pay" button triggers the modal directly -->
+                                            <br>
+                                            <button type="button" name="pay" onclick="openModal()">Pay</button>
+                                            <!-- The form to be submitted -->
+                                            <form id="paymentForm" method="post" action="vendor_invoice_summary.php">
+                                                <input type="hidden" name="vendorName" value="<?php echo $vendorName; ?>">
+                                                <input type="hidden" name="vendorUserId" value="<?php echo $userid; ?>">
+                                                <input type="hidden" name="vendorStallNumber" value="<?php echo $stallNumber; ?>">
+                                                <input type="hidden" name="balance" value="<?php echo $balance; ?>">
+                                                <input type="hidden" name="transactionId" value="<?php echo $transactionId; ?>"> <!-- Add this line -->
+                                            </form>
+                                        <?php endif; ?>
+                                    <?php else : ?>
+                                        $<?php echo number_format($balance, 2); ?>
+                                    <?php endif; ?>
+                                    <?php if ($paymentStatus === "Payment has already been sent") : ?>
+                                        <p class="error-message2">Payment has already been sent. Wait for confirmation.</p>
+                                    <?php endif; ?>
 
-                                        </td>
-                                    </tr>
-                                </table>
-                                <div id="myModal" class="modal">
-                                    <div class="modal-content">
-                                        <span class="close error-message" onclick="closeModal()">&times;</span>
-                                        <p>Are you sure you want to make the payment?</p>
-                                        <!-- The "Pay" button inside the modal -->
-                                        <button class="submit-button" id="payButton" type="button" onclick="pay()">Pay</button>
-                                    </div>
+                                </td>
+                                <!-- </tr> -->
+                            </table>
+
+                            <div id="myModal" class="modal">
+                                <div class="modal-content">
+                                    <span class="close error-message" onclick="closeModal()">&times;</span>
+                                    <p>Are you sure you want to make the payment?</p>
+                                    <!-- The "Pay" button inside the modal -->
+                                    <button class="submit-button" id="payButton" type="button" onclick="pay()">Pay</button>
                                 </div>
                             </div>
                         </div>
@@ -350,16 +357,16 @@ if ($resultNotification->num_rows > 0) {
                     <!-- <a href=admin-map.php><img class="map-icon" src="assets\images\sign-in\map-icon.svg" alt="map"> Amount to Pay </a> -->
 
                 </div>
-                <img class="vendor-img" src="assets\images\sign-in\vendor-dashboard-img.svg" alt="back-layer">
+
             </div>
             <div class="dashboard-announcementv2">
 
                 <div class="flex-row-1">
                     <h2 class="notification-header">Notifications</h2>
                     <div class="message-notif">
-                    <p class="admin-datetime-text-v2"><?php echo $latestNotificationDate; ?></p>
-                    <h1 class="admin-message-notif"><?php echo $latestNotificationTitle; ?></h1>
-                    <p class="admin-vendor-notif">From: <?php echo $latestNotificationVendorName; ?></p>
+                        <p class="admin-datetime-text-v2"><?php echo $latestNotificationDate; ?></p>
+                        <h1 class="admin-message-notif"><?php echo $latestNotificationTitle; ?></h1>
+                        <p class="admin-vendor-notif">From: <?php echo $latestNotificationVendorName; ?></p>
                     </div>
                 </div>
                 <center><a href=vendor_notification.php><input class="submit-button3" type="submit" value="View"></a></center>
