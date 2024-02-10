@@ -62,10 +62,10 @@
   <header>
     <img src="assets\images\sign-in\Santa-Rosa-Logo.svg" class="logo-src resizable-image">
   </header>
-  <div class="overlay" id="overlay"></div>
+  <!-- <div class="overlay" id="overlay"></div>
   <div id="desktopModeNotification" class="notification">
     <p>Please switch to desktop mode to proceed.</p>
-  </div>
+  </div> -->
 
   <div class="website-title">
     <h1 class="title1"> WELCOME TO </h1>
