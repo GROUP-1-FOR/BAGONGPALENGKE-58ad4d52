@@ -13,7 +13,7 @@ $result = $connect->query($sql_ticket_number);
 
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    $currentTicketNumber = $row['max_ticket'] + 1;
+    $currentTicketNumber = intval($row['max_ticket']) + 1;
 } else {
     // If no existing ticket, start from 1
     $currentTicketNumber = 1;
@@ -96,11 +96,11 @@ $connect->close();
                 </div>
 
                 <div class="flex-box-row">
-                    <label class="text-design1" for="admin_report_ticket">Ticket No: </label>
-                    <!-- <input type="text" id="admin_report_ticket" name="admin_report_ticket" value="<//?php echo $formattedTicketNumber; ?>" required readonly> -->
-                    <p class="text-design" type="text" id="admin_report_ticket" name="admin_report_ticket" required readonly><?php echo $formattedTicketNumber; ?></p>
+                    <label class="text-design1" for="admin_report_ticket">Ticket No: <?php echo $formattedTicketNumber; ?> </label>
+                    <input class="text-design" type="hidden" id="admin_report_ticket" name="admin_report_ticket" value="<?php echo $formattedTicketNumber; ?>" required readonly>
                     <br />
                 </div>
+
 
                 <div>
                     <textarea class="text-box-area" placeholder="Report message..." name="admin_report_message" id="admin_report_message" cols="30" rows="5" required maxlength="500" oninput="updateCounter('admin_report_message', 'message_counter', 500)"></textarea>
