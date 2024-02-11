@@ -155,6 +155,7 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
         }
 
         #money-cell {
+            position: absolute;
             border: 3px solid #ccc;
             padding: 50px;
             background-color: #850F16;

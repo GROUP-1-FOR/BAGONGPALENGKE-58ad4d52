@@ -51,6 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["admin_login_submit"]))
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Sign in</title>
+    <title>Bagong Palengke, Bagong Mukha </title>
+  <link rel="icon" href="assets\images\sign-in\src-logo.png" type="image/x-icon">
   <link rel="stylesheet" type="text/css" href="index.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
