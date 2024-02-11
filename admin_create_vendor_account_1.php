@@ -204,11 +204,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <input class="submit-btn1 sbt1" type="submit" value="Submit">
                         </form>
 
-                        <a class="back-button1 vendor-back" href=admin_create_vendor_account.php>
-                            < Back </a>
+                        
                     </div>
 
                 </div>
+                <center><a class="back-button1 vendor-back" href=admin_create_vendor_account.php>
+                            Back </a></center>
             </div>
         </div>
     </div>
