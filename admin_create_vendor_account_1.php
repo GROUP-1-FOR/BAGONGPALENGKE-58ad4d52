@@ -182,7 +182,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style>
+        .flex-row-direction {
+            display: flex;
+            flex-direction: column;
+        }
 
+        .back-button1 {
+            margin-top: 10px; /* Adjust the margin as needed */
+        }
+    </style>
 </head>
 
 
@@ -193,8 +202,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="flex-row">
         <div class="create-vendor-form">
             <div class="flex-row-direction">
-
-
                 <div>
                     <h2 class="title6">Admin Password Before Vendor Account Creation</h2>
                     <div>
@@ -203,14 +210,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <input class="input-info" type="password" name="admin_password" id="admin_password" required>
                             <input class="submit-btn1 sbt1" type="submit" value="Submit">
                         </form>
-
-                        
                     </div>
-
                 </div>
-                <center><a class="back-button1 vendor-back" href=admin_create_vendor_account.php>
-                            Back </a></center>
             </div>
+        </div>
+        <div>
+            <a class="back-button1 vendor-back" href=admin_create_vendor_account.php>Back </a>
         </div>
     </div>
 
