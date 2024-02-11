@@ -106,23 +106,70 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     echo "Error preparing statement for updating transaction_id and balance in vendor_balance: " . mysqli_error($connect);
                 }
 
-                // Update the admin_stall_map table
-                $updateStallMapQuery = "UPDATE `admin_stall_map` SET `balance` = `balance` + ?, `paid` = 1, `due` = 0 WHERE `vendor_userid` = ?";
-                $updateStallMapStatement = mysqli_prepare($connect, $updateStallMapQuery);
+               // Update the admin_stall_map table - Update balance only
+                $updateBalanceQuery = "UPDATE `admin_stall_map` SET `balance` = `balance` + ? WHERE `vendor_userid` = ?";
+                $updateBalanceStatement = mysqli_prepare($connect, $updateBalanceQuery);
 
-                if ($updateStallMapStatement) {
-                    mysqli_stmt_bind_param($updateStallMapStatement, "ds", $newBalance, $vendorUserId);
-                    $successUpdateStallMap = mysqli_stmt_execute($updateStallMapStatement);
+                if ($updateBalanceStatement) {
+                    mysqli_stmt_bind_param($updateBalanceStatement, "ds", $newBalance, $vendorUserId);
+                    $successUpdateBalance = mysqli_stmt_execute($updateBalanceStatement);
 
-                    if (!$successUpdateStallMap) {
-                        echo "Error updating balance, setting paid to 1, and setting due to 0 in admin_stall_map table: " . mysqli_error($connect);
+                    if (!$successUpdateBalance) {
+                        echo "Error updating balance in admin_stall_map table: " . mysqli_error($connect);
+                    } else {
+                        // Retrieve the updated balance from admin_stall_map
+                        $checkBalanceQuery = "SELECT `balance` FROM `admin_stall_map` WHERE `vendor_userid` = ?";
+                        $checkBalanceStatement = mysqli_prepare($connect, $checkBalanceQuery);
+
+                        if ($checkBalanceStatement) {
+                            mysqli_stmt_bind_param($checkBalanceStatement, "s", $vendorUserId);
+                            mysqli_stmt_execute($checkBalanceStatement);
+                            mysqli_stmt_bind_result($checkBalanceStatement, $updatedBalance);
+                            mysqli_stmt_fetch($checkBalanceStatement);
+                            mysqli_stmt_close($checkBalanceStatement);
+
+                            // Check the updated balance and update paid and due accordingly
+                            if ($updatedBalance == 0) {
+                                // If balance is 0, set paid to 1 and due to 0
+                                $updatePaidDueQuery = "UPDATE `admin_stall_map` SET `paid` = 1, `due` = 0 WHERE `vendor_userid` = ?";
+                                $updatePaidDueStatement = mysqli_prepare($connect, $updatePaidDueQuery);
+
+                                if ($updatePaidDueStatement) {
+                                    mysqli_stmt_bind_param($updatePaidDueStatement, "s", $vendorUserId);
+                                    $successUpdatePaidDue = mysqli_stmt_execute($updatePaidDueStatement);
+
+                                    if (!$successUpdatePaidDue) {
+                                        echo "Error updating paid and due in admin_stall_map table: " . mysqli_error($connect);
+                                    }
+                                } else {
+                                    echo "Error preparing statement for updating paid and due in admin_stall_map: " . mysqli_error($connect);
+                                }
+                            } else {
+                                // If balance is greater than 0, set paid to 0 and due to 1
+                                $updatePaidDueQuery = "UPDATE `admin_stall_map` SET `paid` = 0, `due` = 1 WHERE `vendor_userid` = ?";
+                                $updatePaidDueStatement = mysqli_prepare($connect, $updatePaidDueQuery);
+
+                                if ($updatePaidDueStatement) {
+                                    mysqli_stmt_bind_param($updatePaidDueStatement, "s", $vendorUserId);
+                                    $successUpdatePaidDue = mysqli_stmt_execute($updatePaidDueStatement);
+
+                                    if (!$successUpdatePaidDue) {
+                                        echo "Error updating paid and due in admin_stall_map table: " . mysqli_error($connect);
+                                    }
+                                } else {
+                                    echo "Error preparing statement for updating paid and due in admin_stall_map: " . mysqli_error($connect);
+                                }
+                            }
+                        } else {
+                            echo "Error preparing statement for checking updated balance in admin_stall_map: " . mysqli_error($connect);
+                        }
                     }
                 } else {
-                    echo "Error preparing statement for updating balance, setting paid to 1, and setting due to 0 in admin_stall_map: " . mysqli_error($connect);
+                    echo "Error preparing statement for updating balance in admin_stall_map: " . mysqli_error($connect);
                 }
 
                 // Check for success in all updates
-                if ($successPaid && $successArchive && $successUpdate && $successUpdateVendorBalance && $successUpdateStallMap) {
+                if ($successPaid && $successArchive && $successUpdate && $successUpdateVendorBalance && $successUpdateBalance && $successUpdatePaidDue) {
                     echo "Payment confirmed and archived for Vendor: $vendorName";
                 } else {
                     echo "Error in one or more update operations.";
