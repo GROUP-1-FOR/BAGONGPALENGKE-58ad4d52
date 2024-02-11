@@ -126,38 +126,46 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                     var userEnteredBalance = prompt("Please enter the paid balance for vendor " + vendorName + ":", $(row).data('balance'));
 
                     // Check if the user entered a valid balance
-                    if (userEnteredBalance !== null && !isNaN(userEnteredBalance)) {
-                        // Display a confirmation dialog with the vendor's name
-                        var isConfirmed = confirm("Are you sure you want to confirm and archive for vendor: " + vendorName + "?");
+                    if (userEnteredBalance !== null) {
+                        // Remove non-digit characters and limit to 10 digits
+                        var cleanedBalance = userEnteredBalance.replace(/\D/g, '').slice(0, 10);
 
-                        // Check the user's response
-                        if (isConfirmed) {
-                            $.ajax({
-                                type: "POST",
-                                url: "confirm_and_archive_db.php",
-                                data: {
-                                    vendorUserId: vendorUserId,
-                                    vendorName: vendorName,
-                                    paymentDate: paymentDate,
-                                    modeOfPayment: modeOfPayment,
-                                    transactionId: transactionId,
-                                    balance: userEnteredBalance,
-                                    adminName: "<?php echo $admin_name; ?>"
-                                },
-                                success: function(response) {
-                                    alert(response);
-                                    // Reload the page after successful confirmation
-                                    window.location.href = window.location.href;
-                                },
-                                error: function() {
-                                    alert("Error confirming payment and archiving");
-                                }
-                            });
+                        // Check if the cleaned balance is a valid number
+                        if (!isNaN(cleanedBalance) && cleanedBalance !== "") {
+                            // Display a confirmation dialog with the vendor's name
+                            var isConfirmed = confirm("Are you sure you want to confirm and archive for vendor: " + vendorName + "?");
+
+                            // Check the user's response
+                            if (isConfirmed) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "confirm_and_archive_db.php",
+                                    data: {
+                                        vendorUserId: vendorUserId,
+                                        vendorName: vendorName,
+                                        paymentDate: paymentDate,
+                                        modeOfPayment: modeOfPayment,
+                                        transactionId: transactionId,
+                                        balance: cleanedBalance,
+                                        adminName: "<?php echo $admin_name; ?>"
+                                    },
+                                    success: function (response) {
+                                        alert(response);
+                                        // Reload the page after successful confirmation
+                                        window.location.href = window.location.href;
+                                    },
+                                    error: function () {
+                                        alert("Error confirming payment and archiving");
+                                    }
+                                });
+                            } else {
+                                console.log("Action canceled by the user");
+                            }
                         } else {
-                            console.log("Action canceled by the user");
+                            alert("Invalid balance entered. Please enter a valid number with a maximum of 10 digits.");
                         }
                     } else {
-                        alert("Invalid balance entered. Please enter a valid number.");
+                        console.log("Action canceled by the user");
                     }
                 }
 

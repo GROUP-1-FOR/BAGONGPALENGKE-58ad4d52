@@ -30,17 +30,19 @@ if ($resultName->num_rows > 0) {
 $currentDateTime = date('F d, Y | h:i A');
 
 // Fetch data from the latest row of admin_notification table
-$sqlNotification = "SELECT notif_date, title, vendor_name FROM admin_notification ORDER BY notif_date DESC LIMIT 1";
+$sqlNotification = "SELECT notif_date, title, vendor_name, vendor_userid FROM admin_notification ORDER BY notif_date DESC LIMIT 1";
 $resultNotification = $connect->query($sqlNotification);
 $latestNotificationDate = "";
 $latestNotificationTitle = "";
 $latestNotificationVendorName = "";
+$latestNotificationVendorUserID = ""; // New variable to store vendor_userid
 
 if ($resultNotification->num_rows > 0) {
     while ($rowNotification = $resultNotification->fetch_assoc()) {
         $latestNotificationDate = $rowNotification['notif_date'];
         $latestNotificationTitle = $rowNotification['title'];
         $latestNotificationVendorName = $rowNotification['vendor_name'];
+        $latestNotificationVendorUserID = $rowNotification['vendor_userid']; // Assigning the value to the new variable
     }
 }
 
@@ -61,7 +63,7 @@ if ($resultAllVendors->num_rows > 0) {
         $currentDay = intval($currentDate->format('d'));
         $currentMonth = intval($currentDate->format('m'));
         $currentYear = intval($currentDate->format('Y'));
-        
+
         $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
 
         $startingDate = new DateTime($rowUserData['starting_date']);
@@ -95,30 +97,27 @@ if ($resultAllVendors->num_rows > 0) {
                     }
                     // Update current balance and remaining balance
                     $currentBalance = $balance + $rowUserData['balance'];
-                    if($currentDay >= 15){
-                    $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
-                    $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-                    $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
-                    $stmtUpdateBalance->execute();
+                    if ($currentDay >= 15) {
+                        $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
+                        $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+                        $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
+                        $stmtUpdateBalance->execute();
 
-                    $sqlUpdateBalance = "UPDATE admin_stall_map SET balance = ?, due = 1, paid = 0 WHERE vendor_userid = ?";
-                    $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-                    $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
-                    $stmtUpdateBalance->execute();
+                        $sqlUpdateBalance = "UPDATE admin_stall_map SET balance = ?, due = 1, paid = 0 WHERE vendor_userid = ?";
+                        $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+                        $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
+                        $stmtUpdateBalance->execute();
 
-                    // Update day, month, and year
-                    $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
-                    $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
-                    $stmtUpdateDate->bind_param('iiis', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
-                    $stmtUpdateDate->execute();
+                        // Update day, month, and year
+                        $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
+                        $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
+                        $stmtUpdateDate->bind_param('iiis', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
+                        $stmtUpdateDate->execute();
                     }
                 }
             }
         }
     }
-} else {
-    // Handle the case where there are no vendors in the vendor_balance table
-    echo "No vendors found in the database.";
 }
 
 // Fetch data from admin_stall_map table
@@ -206,7 +205,13 @@ if ($resultStallMap->num_rows > 0) {
                     <div class="message-notif">
                         <p class="admin-datetime-text-v2"><?php echo $latestNotificationDate; ?></p>
                         <h1 class="admin-message-notif"><?php echo $latestNotificationTitle; ?></h1>
-                        <p class="admin-vendor-notif">From: <?php echo $latestNotificationVendorName; ?></p>
+
+                        <?php if (!empty($latestNotificationVendorName)) : ?>
+                            <p class="admin-vendor-notif">From: <?php echo $latestNotificationVendorName; ?></p>
+                        <?php else : ?>
+                            <p class="admin-vendor-notif">From user ID: <?php echo $latestNotificationVendorUserID; ?></p>
+                        <?php endif; ?>
+
                     </div>
                 </div>
                 <center><a href=admin_notification.php><input class="submit-button3" type="submit" value="View"></a></center>

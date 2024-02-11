@@ -105,31 +105,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $vendor_password = isset($_POST["vendor_password"]) ? htmlspecialchars($_POST["vendor_password"]) : '';
     $vendor_confirm_password = isset($_POST["vendor_confirm_password"]) ? htmlspecialchars($_POST["vendor_confirm_password"]) : '';
 
-    $lengthPattern = '/^.{8,16}$/';
-    $uppercasePattern = '/[A-Z]/';
-    $lowercasePattern = '/[a-z]/';
-    $digitPattern = '/\d/';
-    $specialCharPattern = '/[!@#$%^&*()_+]/';
-
-    if (
-        !preg_match($lengthPattern, $vendor_password) || !preg_match($uppercasePattern, $vendor_password) || !preg_match($lowercasePattern, $vendor_password)
-        || !preg_match($digitPattern, $vendor_password) ||  !preg_match($specialCharPattern, $vendor_password)
-    ) {
-        echo '<script>';
-        echo 'alert("Password did not meet requirements!");';
-        echo 'window.location.href = "admin_create_vendor_account.php";';
-        echo '</script>';
-        exit();
-    }
-
-    if ($vendor_password !== $vendor_confirm_password) {
-        echo '<script>';
-        echo 'alert("Passwords do not match!");';
-        echo 'window.location.href = "admin_create_vendor_account.php";';
-        echo '</script>';
-        exit();
-    }
-
     // Hash the password
     $hashedVendorPassword = password_hash($vendor_password, PASSWORD_BCRYPT);
     $vendor_full_name = $vendor_first_name . " " . $vendor_last_name;
@@ -161,6 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['vendor_email'] = $vendor_email;
     $_SESSION['vendor_userid'] = $vendor_userid;
     $_SESSION['vendor_hashed_password'] = $hashedVendorPassword;
+    $_SESSION['vendor_password'] = $vendor_password;
     $_SESSION['vendor_transaction_id'] = $vendor_transaction_id;
 
     /*
@@ -206,7 +182,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style>
+        .flex-row-direction {
+            display: flex;
+            flex-direction: column;
+        }
 
+        .back-button1 {
+            margin-top: 10px; /* Adjust the margin as needed */
+        }
+    </style>
 </head>
 
 
@@ -217,8 +202,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="flex-row">
         <div class="create-vendor-form">
             <div class="flex-row-direction">
-
-
                 <div>
                     <h2 class="title6">Admin Password Before Vendor Account Creation</h2>
                     <div>
@@ -227,13 +210,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <input class="input-info" type="password" name="admin_password" id="admin_password" required>
                             <input class="submit-btn1 sbt1" type="submit" value="Submit">
                         </form>
-
-                        <a class="back-button1 vendor-back" href=admin_create_vendor_account.php>
-                            < Back </a>
                     </div>
-
                 </div>
             </div>
+        </div>
+        <div>
+            <a class="back-button1 vendor-back" href=admin_create_vendor_account.php>Back </a>
         </div>
     </div>
 

@@ -11,12 +11,13 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     header("location:admin_logout.php");
 }
 
+/*
 // Initialize the password confirmation trial count if not set
 if (!isset($_SESSION['admin_password_confirmation_trial'])) {
     $_SESSION['admin_password_confirmation_trial'] = 0;
-}
+}*/
 
-$admin_password_confirmation_trial = $_SESSION['admin_password_confirmation_trial'];
+//$admin_password_confirmation_trial = $_SESSION['admin_password_confirmation_trial'];
 
 // Retrieve vendor information from session variables
 $vendor_first_name = $_SESSION['vendor_first_name'];
@@ -31,6 +32,7 @@ $vendor_first_payment_date = $_SESSION['vendor_first_payment_date'];
 $vendor_userid = $_SESSION['vendor_userid'];
 $vendor_password = $_SESSION['vendor_hashed_password'];
 $vendor_transaction_id = $_SESSION['vendor_transaction_id'];
+$vendor_password_1 = $_SESSION['vendor_password'];
 
 $first_payment_date_breakdown = explode('-', $vendor_first_payment_date);
 $year = intval($first_payment_date_breakdown[0]);
@@ -55,6 +57,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (mysqli_num_rows($result) > 0) {
         if (password_verify($admin_password, $row["admin_password"])) {
+
+            include("admin_create_vendor_account_3.php");
+
             // Insert data into vendor_sign_in table
             $sql1 = "INSERT INTO vendor_sign_in (vendor_first_name, vendor_last_name, vendor_name, vendor_stall_number, vendor_mobile_number, vendor_product, vendor_payment_basis, vendor_email, vendor_userid, vendor_password) 
                 VALUES ('$vendor_first_name', '$vendor_last_name', '$vendor_full_name', '$vendor_stall_number', '$vendor_mobile_number', '$vendor_product_type', 'Monthly','$vendor_email', '$vendor_userid', '$vendor_password')";
@@ -86,7 +91,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Close the database connection
             $connect->close();
         } else {
-            handleIncorrectCredentials();
+            //unsetVendorSessionVariables();
+            echo '<script>';
+            echo 'alert("Wrong Credentials!");';
+            echo 'window.location.href = "admin_create_vendor_account_1.php";';
+            echo '</script>';
+            exit();
         }
     } else {
         unsetVendorSessionVariables();
@@ -96,13 +106,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo '</script>';
     }
 }
-
+/*
 // Function to handle incorrect credentials
 function handleIncorrectCredentials()
 {
     // Increment the password confirmation trial count
-    $_SESSION['admin_password_confirmation_trial']++;
-
+    // $_SESSION['admin_password_confirmation_trial']++;
+    /*
     // Check if maximum trials reached
     if ($_SESSION['admin_password_confirmation_trial'] > 2) {
         // Clear session variables and redirect
@@ -115,11 +125,14 @@ function handleIncorrectCredentials()
     }
 
     // Display incorrect credentials message
+    unsetVendorSessionVariables();
     echo '<script>';
     echo 'alert("Wrong Credentials!");';
-    echo 'window.location.href = "admin_create_vendor_account_1.php";';
+    echo 'window.location.href = "admin_create_vendor_account.php";';
     echo '</script>';
 }
+
+*/
 
 // Function to unset vendor-related session variables
 function unsetVendorSessionVariables()
@@ -137,4 +150,5 @@ function unsetVendorSessionVariables()
     unset($_SESSION['vendor_hashed_password']);
     unset($_SESSION['vendor_transaction_id']);
     unset($_SESSION['admin_password_confirmation_trial']);
+    unset($_SESSION['vendor_password']);
 }
