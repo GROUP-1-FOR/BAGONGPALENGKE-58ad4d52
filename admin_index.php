@@ -97,22 +97,21 @@ if ($resultAllVendors->num_rows > 0) {
                     }
                     // Update current balance and remaining balance
                     $currentBalance = $balance + $rowUserData['balance'];
-                        $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
-                        $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-                        $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
-                        $stmtUpdateBalance->execute();
+                    $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
+                    $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+                    $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
+                    $stmtUpdateBalance->execute();
 
-                        $sqlUpdateBalance = "UPDATE admin_stall_map SET balance = ?, due = 1, paid = 0 WHERE vendor_userid = ?";
-                        $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-                        $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
-                        $stmtUpdateBalance->execute();
+                    $sqlUpdateBalance = "UPDATE admin_stall_map SET balance = ?, due = 1, paid = 0 WHERE vendor_userid = ?";
+                    $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+                    $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
+                    $stmtUpdateBalance->execute();
 
-                        // Update day, month, and year
-                        $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
-                        $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
-                        $stmtUpdateDate->bind_param('iiis', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
-                        $stmtUpdateDate->execute();
-                    
+                    // Update day, month, and year
+                    $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
+                    $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
+                    $stmtUpdateDate->bind_param('iiis', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
+                    $stmtUpdateDate->execute();
                 }
             }
         }
@@ -152,6 +151,18 @@ if ($resultStallMap->num_rows > 0) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+
+    <script>
+        function openNotif() {
+            document.getElementById('myNotif').style.display = 'block';
+        }
+
+        // JavaScript function to close the modal
+        function closeNotif() {
+            document.getElementById('myNotif').style.display = 'none';
+        }
+    </script>
 </head>
 <header class="header2"></header>
 
@@ -213,7 +224,80 @@ if ($resultStallMap->num_rows > 0) {
 
                     </div>
                 </div>
-                <center><a href=admin_notification.php><input class="submit-button3" type="submit" value="View"></a></center>
+                <!-- <center><a href=admin_notification.php><input class="submit-button3" type="submit" value="View"></a></center> -->
+                <center> <button class="submit-button3" onclick="openNotif()">View</button></center>
+            </div>
+        </div>
+
+        <div id="myNotif" class="notif">
+            <div class="notif-content">
+                <h1 class="notif-header">Notification</h1>
+
+                <ul class="notification-list-box">
+                    <?php
+
+
+                    // Fetch notifications from the database
+                    $query = "SELECT * FROM admin_notification ORDER BY notif_date DESC";
+                    $result = $connect->query($query);
+
+                    // Check if there are notifications
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<div class="notification-banner">';
+                            
+                            // Check if the notification is confirmed (confirm column == 1)
+                            if ($row['confirm'] == 1) {
+                                // Display the notification banner
+                                echo '<div class="notification-banner">';
+
+                                // Make the title clickable and redirect to admin_confirmpay.php
+                                echo '<h3><a href="admin_confirmpay.php">' . $row['title'] . '</a></h3>';
+
+                                echo '<p>From: ' . $row['vendor_name'] . ' | Vendor ID: ' . $row['vendor_userid'] . '</p>';
+                                echo '<p>Transaction ID: ' . $row['transaction_id'] . '</p>';
+                                echo '<p>MOP: ' . $row['mop'] . '</p>';
+                                echo '</div>';
+                            } else if ($row['message'] == 1) {
+                                // Display the notification banner
+                              ;
+
+                                // Make the title clickable and redirect to admin_confirmpay.php
+                                echo '<h3><a href="admin_messages_preview.php">' . $row['title'] . '</a></h3>';
+
+                                echo '<p>From: ' . $row['vendor_name'] . ' | Vendor ID: ' . $row['vendor_userid'] . '</p>';
+                                echo '</div>';
+                            } else if ($row['edit'] == 1) {
+                                // Display the notification banner
+                           ;
+
+                                // Make the title clickable and redirect to admin_confirmpay.php
+                                echo '<h3><a href="admin_vendor_manage_accounts.php">' . $row['title'] . '</a></h3>';
+
+                                echo '<p> Vendor ID: ' . $row['vendor_userid'] . '</p>';
+                                echo '</div>';
+                            }
+                            echo '</div">';
+                        }
+
+                        // Add a back button
+                        echo '<a href="admin_index.php" class="back-button">Home</a>';
+                    } else {
+                        // Display a message if there are no notifications
+                        echo '<p>No notifications available.</p>';
+                        // Add a back button even if there are no notifications
+                        echo '<a href="admin_index.php" class="back-button">Home</a>';
+                    }
+
+                    // Close the database connection
+                    $connect->close();
+
+
+                    ?>
+
+                </ul>
+                <br>
+                <a href="admin_index.php" class="back-button8">Back</a>
             </div>
         </div>
 

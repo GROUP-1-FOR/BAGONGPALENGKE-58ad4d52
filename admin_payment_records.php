@@ -89,7 +89,8 @@ if (!$result) {
     <?php include 'sidebar.php'; ?>
 
     <div class="flex-row">
-        <h2 class="manage-account-header" style="color: maroon"> PAID RECORDS</h2>
+        <h2 class="announcement-header">ADMIN PAYMENT RECORDS</h2>
+        <!-- <h2 class="manage-account-header" style="color: maroon"> PAID RECORDS</h2> -->
         <div class="report-manage">
             <div class="flex-box1">
                 <div class="main-container">

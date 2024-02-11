@@ -67,6 +67,46 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             cursor: pointer;
             display: block;
         }
+
+        .notification-banner {
+            width: 95%;
+            margin: auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: #F4F1EC;
+            margin-bottom: 20px;
+            border-color: maroon;
+            border-radius: 10px;
+        }
+
+        .notification-banner h3 {
+            color: #850F16;
+        }
+
+        .notification-banner p {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        .back-button {
+            width: 100px;
+            /* Adjust the width as needed */
+            margin: 20px auto;
+            /* Center the button horizontally */
+            padding: 10px;
+            background-color: #850F16;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+        }
+
+        .notif-header {
+            color: maroon;
+            padding-top: 10px;
+        }
     </style>
 </head>
 
@@ -124,6 +164,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                                     echo '<p> Vendor ID: ' . $row['vendor_userid'] . '</p>';
                                     echo '</div>';
                                 }
+                                echo '</div>';
                             }
 
                             // Add a back button

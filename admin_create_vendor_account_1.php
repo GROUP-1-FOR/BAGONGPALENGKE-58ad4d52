@@ -189,34 +189,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .back-button1 {
-            margin-top: 10px; /* Adjust the margin as needed */
+            margin-top: 10px;
+            /* Adjust the margin as needed */
+        }
+
+
+        .center {
+            align-self: center;
+            margin-top: 5%;
+            margin-left: 35%;
         }
     </style>
 </head>
 
 
 <body>
-    <header></header>
+    <header class="header2"></header>
     <?php include 'sidebar.php'; ?>
 
     <div class="flex-row">
-        <div class="create-vendor-form">
-            <div class="flex-row-direction">
+        <h1 class="manage-account-header">ADD AN ACCOUNT</h1>
+        <div class="manage-account">
+            <div class="flexbox-column">
                 <div>
-                    <h2 class="title6">Admin Password Before Vendor Account Creation</h2>
-                    <div>
+                    <center>
+                        <h2 class="title6">Admin Password Before Vendor Account Creation</h2>
+                    </center>
+                    <!-- <center> -->
+                    <div class="center">
                         <form class="flex-row mid" action="admin_create_vendor_account_2.php" method="post">
+
                             <label class="admin-heading" for="Admin Password Confirmation">Admin Password Confirmation</label>
                             <input class="input-info" type="password" name="admin_password" id="admin_password" required>
+                            <br>
                             <input class="submit-btn1 sbt1" type="submit" value="Submit">
+
                         </form>
                     </div>
+                    <!-- </center> -->
                 </div>
             </div>
+            <br><br>
+            <div>
+                <a class="back-button1 vendor-back" href=admin_create_vendor_account.php>Back </a>
+            </div>
         </div>
-        <div>
-            <a class="back-button1 vendor-back" href=admin_create_vendor_account.php>Back </a>
-        </div>
+
     </div>
 
     <footer></footer>

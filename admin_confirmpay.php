@@ -72,7 +72,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
             <div class="hr"></div>
 
-            <div class="payment-container">
+            <div class="payment-container1">
                 <table>
                     <div class="flex-box1">
 

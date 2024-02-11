@@ -531,9 +531,9 @@
   flex-direction: row;
   z-index: 999;
 }
-.mid {
+/* .mid {
   margin-left: 250px;
-}
+} */
 
 .flex-row-direction {
   display: flex;

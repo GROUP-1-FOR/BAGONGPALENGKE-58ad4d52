@@ -243,13 +243,37 @@ label {
 }
 
 .input-info,
-.input-info1 {
+.input-info1,
+.input-info2 {
   min-width: 300px !important;
   max-width: 300px;
   height: 40px;
   border-radius: 5px;
   padding: 10px;
-  margin: 10px;
+  margin: 5px;
+}
+
+input-info2 {
+  margin-top: 0px !important;
+}
+/* input[type="text"]:disabled {
+  background-color: #dddddd; 
+}
+input[type="text"]:enabled {
+  background-color: white; 
+} */
+
+button:disabled,
+input:disabled,
+input:read-only,
+.input-info2:read-only,
+.input-info:read-only,
+.input-info1:read-only {
+  background-color: #999696;
+  color: rgb(209, 207, 207) !important;
+  font-weight: bold;
+  border-style: solid;
+  border-color: transparent;
 }
 
 /* input-info-v2{
@@ -2194,10 +2218,11 @@ h2,
 }
 
 .title6 {
-  margin-top: 30px;
+  margin-top: 60px;
   line-height: 1;
   flex: 1;
   font-weight: 900;
+  font-size: 30px;
   color: rgb(76, 74, 74);
   letter-spacing: 1px;
 }
@@ -2475,7 +2500,9 @@ h2,
 .login-btn,
 .submit,
 .submit-btn,
-.submit-btn1 {
+.submit-btn1,
+.submit-btn2,
+.submit-btn3 {
   background-color: #850f16;
   font-weight: bolder;
   color: white !important;
@@ -2505,8 +2532,16 @@ h2,
   margin-left: 120px;
 }
 
+.submit-btn2 {
+  margin-top: 30px;
+  margin-left: 40px;
+}
+.submit-btn3 {
+  margin-top: 30px;
+  margin-left: 40px;
+}
 .sbt1 {
-  margin-bottom: 30px;
+  margin-left: 115px !important;
 }
 .update-password-button {
   height: 60px !important ;
@@ -2547,11 +2582,16 @@ h2,
 .input-box {
   width: 290px !important;
   max-width: 290px !important;
+  margin-right: 10px;
 }
 
 .label2 {
   padding-top: 10px;
-  padding-right: 48px;
+  padding-right: 33px;
+}
+
+label {
+  text-wrap: nowrap;
 }
 
 .label3 {
@@ -2637,15 +2677,15 @@ h2,
   background-color: magenta;
 }
 #autocomplete {
-  padding: 10px; 
-  height: 200px;
+  /* padding: 10px;
+  height: 200px; */
   color: maroon;
   border-radius: 10px;
   font-size: small;
   position: absolute;
   background-color: white;
   margin-top: 100%;
-  border: 2px solid maroon;
+  /* border: 2px solid maroon; */
   z-index: 0;
   display: block;
 }
@@ -2803,8 +2843,9 @@ h2,
 }
 
 .vendor-back {
-  margin-left: 340px;
-  padding-top: 60px;
+  height: 30px;
+  margin-left: 580px;
+  margin-top: 60px;
 }
 
 .back-button:hover,
@@ -2973,6 +3014,8 @@ ul {
 .submit-btn:disabled,
 .input-info:disabled,
 .submit-btn1:disabled,
+.submit-btn2:disabled,
+.submit-btn3:disabled,
 .submit-btn:disabled {
   background-color: gray;
   font-weight: bolder;

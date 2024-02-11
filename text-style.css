@@ -18,11 +18,13 @@
 }
 
 .admin-heading {
-  margin-left: -70px;
+  width: 300px;
+  text-wrap:nowrap;
   font-size: larger;
-  color: white;
+  color: maroon;
   font-weight: bold;
-  padding: 20px;
+  padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .status-heading {

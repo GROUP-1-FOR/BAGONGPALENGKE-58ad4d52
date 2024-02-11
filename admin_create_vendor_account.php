@@ -316,7 +316,7 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
 
     <div class="flex-row">
         <h1 class="manage-account-header">Create Vendor Account, <?php echo $admin_userid  ?>! </h1>
-        <div class="create-vendor-form">
+        <div class="manage-account">
 
 
             <form action=" admin_create_vendor_account_1.php" method="post" onsubmit="return validateForm()">
@@ -329,7 +329,7 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
                     <div class="box-position4">
                         <label class="title-label tl1" for="Vendor First Name">Vendor First Name:</label>
                         <div class="flexbox-row2">
-                            <input class="input-info" type="text" name="vendor_first_name" id="vendor_first_name" maxlength="35" value="<?php echo isset($_SESSION['vendor_first_name']) ? $_SESSION['vendor_first_name'] : ''; ?>" required oninput="capitalizeFirstName(); validateVendorFirstName(); updateSubmitButton()">
+                            <input class="input-info2" type="text" name="vendor_first_name" id="vendor_first_name" maxlength="35" value="<?php echo isset($_SESSION['vendor_first_name']) ? $_SESSION['vendor_first_name'] : ''; ?>" required oninput="capitalizeFirstName(); validateVendorFirstName(); updateSubmitButton()">
                             <!-- Di!splay an error message if it exists in the session -->
                             <span class="error-message2" style="color: red;" id="vendor_first_name_error_span">
                         </div>
@@ -344,7 +344,7 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
                         <br />
                         <label class="title-label tl2" for="Vendor Last Name">Vendor Last Name:</label>
                         <div class="flexbox-row2">
-                            <input class="input-info" type="text" name="vendor_last_name" id="vendor_last_name" maxlength="35" value="<?php echo isset($_SESSION['vendor_last_name']) ? $_SESSION['vendor_last_name'] : ''; ?>" required oninput="capitalizeLastName();validateVendorLastName(); updateSubmitButton()">
+                            <input class="input-info2" type="text" name="vendor_last_name" id="vendor_last_name" maxlength="35" value="<?php echo isset($_SESSION['vendor_last_name']) ? $_SESSION['vendor_last_name'] : ''; ?>" required oninput="capitalizeLastName();validateVendorLastName(); updateSubmitButton()">
 
                             <!-- Display an error message if it exists in the session -->
                             <span style="color: red;" id="vendor_last_name_error_span">
@@ -361,11 +361,11 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
                         <br />
                         <label class="title-label tl3" for="Stall Number">Stall No:</label>
                         <div class="flexbox-row2">
-                            <input class="input-info" type="number" id="vendor_stall_number" name="vendor_stall_number" value="<?php echo isset($_SESSION['vendor_stall_number']) ? $_SESSION['vendor_stall_number'] : ''; ?>" required readonly><br />
+                            <input class="input-info2" type="number" id="vendor_stall_number" name="vendor_stall_number" value="<?php echo isset($_SESSION['vendor_stall_number']) ? $_SESSION['vendor_stall_number'] : ''; ?>" required readonly><br />
                         </div>
                         <label class="title-label tl4" for="Mobile Number">Mobile Number:</label>
                         <div class="flexbox-row2">
-                            <input class="input-info" type="tel" name="vendor_mobile_number" id="vendor_mobile_number" maxlength="11" placeholder="09XXXXXXXXX" value="<?php echo isset($_SESSION['vendor_mobile_number']) ? $_SESSION['vendor_mobile_number'] : ''; ?>" oninput="validateVendorMobileNumber(); updateSubmitButton()">
+                            <input class="input-info2" type="tel" name="vendor_mobile_number" id="vendor_mobile_number" maxlength="11" placeholder="09XXXXXXXXX" value="<?php echo isset($_SESSION['vendor_mobile_number']) ? $_SESSION['vendor_mobile_number'] : ''; ?>" oninput="validateVendorMobileNumber(); updateSubmitButton()">
 
                             <!-- Display an error message if it exists in the session -->
                             <span style="color: red;" id="vendor_mobile_number_error_span">
@@ -382,7 +382,7 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
                         <label class="title-label tl5" for="Email">Email:</label>
 
                         <div class="flexbox-row2">
-                            <input class="input-info" type="email" name="vendor_email" id="vendor_email" maxlength="254" value="<?php echo isset($_SESSION['vendor_email']) ? $_SESSION['vendor_email'] : ''; ?>" required oninput="validateVendorEmail(); updateSubmitButton()">
+                            <input class="input-info2" type="email" name="vendor_email" id="vendor_email" maxlength="254" value="<?php echo isset($_SESSION['vendor_email']) ? $_SESSION['vendor_email'] : ''; ?>" required oninput="validateVendorEmail(); updateSubmitButton()">
 
                             <!-- Display an error message if it exists in the session -->
                             <span style="color: red;" id="vendor_email_error_span">
@@ -398,8 +398,8 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
 
                         <br />
                         <label class="title-label tl6" for="vendor_product">Products:</label>
-                        <select class="input-info1" name="vendor_product" id="vendor_product" required onchange="validateVendorProductType(); updateSubmitButton()">>
-                            <option class="option" disabled selected>Select Product Type</option>
+                        <select class="input-info2" name="vendor_product" id="vendor_product" required onchange="validateVendorProductType(); updateSubmitButton()">>
+                            <option class="option" selected>Select Product Type</option>
                             <option value="Wet" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Wet') ? 'selected' : ''; ?>>Wet</option>
                             <option value="Dry" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Dry') ? 'selected' : ''; ?>>Dry</option>
                             <option value="Other" <?php echo (isset($_SESSION['vendor_product_type']) && $_SESSION['vendor_product_type'] == 'Other') ? 'selected' : ''; ?>>Other</option>
@@ -437,14 +437,14 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
                     <div class="box-position5">
 
                         <label class="title-label tl1" for="vendor_userid" name="vendor_userid">Vendor User ID:</label>
-                        <input class=" input-info" type="text" id="vendor_userid" name="vendor_userid" value="<?php echo $new_vendor_userid = generateUserID($pdo); ?>" readonly><br />
+                        <input class=" input-info2" type="text" id="vendor_userid" name="vendor_userid" value="<?php echo $new_vendor_userid = generateUserID($pdo); ?>" readonly><br />
 
                         <!-- <label class="title-label tl9">Password:</label>
                         <input class="input-info" type="password" id="vendor_password" name="vendor_password" placeholder="8-16 characters" maxlength="16" oninput="validatePassword(); checkPasswordMatch(); updateSubmitButton()">
                         <input class="check-box" type="checkbox" id="showPassword" onclick="togglePasswordVisibility()">
                         <label class="show-password" for="showPassword">Show Password</label> -->
                         <label class="title-label tl1" for="vendor_first_payment_date">Select Start of Stall Operation:</label>
-                        <input class="input-info" type="date" id="vendor_first_payment_date" name="vendor_first_payment_date" value="<?php echo isset($_SESSION['vendor_first_payment_date']) ? $_SESSION['vendor_first_payment_date'] : ''; ?><?php echo date('Y-m-d'); ?>" required onkeydown="return false" required onchange="validateVendorFirstPaymentDate(); updateSubmitButton()">
+                        <input class="input-info2" type="date" id="vendor_first_payment_date" name="vendor_first_payment_date" value="<?php echo isset($_SESSION['vendor_first_payment_date']) ? $_SESSION['vendor_first_payment_date'] : ''; ?><?php echo date('Y-m-d'); ?>" required onkeydown="return false" required onchange="validateVendorFirstPaymentDate(); updateSubmitButton()">
                         <span style="color: red;" id=" vendor_first_payment_date_error_span">
                             <?php
 
@@ -458,13 +458,13 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
 
                         <div class="password-container">
                             <label class="title-label tl1">Password:</label>
-                            <input class="input-info" type="password" id="vendor_password" name="vendor_password" placeholder="8-16 characters" maxlength="16" value="<?php echo $new_vendor_password; ?>" readonly><br>
+                            <input class="input-info2" type="password" id="vendor_password" name="vendor_password" placeholder="8-16 characters" maxlength="16" value="<?php echo $new_vendor_password; ?>" readonly><br>
                         </div>
 
                         <span style="color:red" id="passwordValidationMessage"> </span> <br />
 
                         <label class="title-label tl1" for="vendor_confirm_password">Confirm Password:</label>
-                        <input class="input-info" type="password" id="vendor_confirm_password" name="vendor_confirm_password" maxlength="16" value="<?php echo $new_vendor_password; ?>" readonly>
+                        <input class="input-info2" type="password" id="vendor_confirm_password" name="vendor_confirm_password" maxlength="16" value="<?php echo $new_vendor_password; ?>" readonly>
                         <span id="passwordMatchMessage"></span><br />
 
                         <button class="submit" type="submit" disabled>Submit</button>

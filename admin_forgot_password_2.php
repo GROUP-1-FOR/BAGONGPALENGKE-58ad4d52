@@ -154,7 +154,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             console.log("Update submit button called. Form is valid: ", formIsValid);
         }
     </script>
+    <style>
+        .submit-btn6 {
+            min-height: 35px !important;
+            width: 150px;
+            background-color: maroon !important;
+            border-radius: 5px;
+            margin-left: 150px;
+        }
 
+        span {
+            text-wrap: nowrap;
+        }
+    </style>
 </head>
 
 <body class="bagongpgalengke-v2">
@@ -191,16 +203,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label class="label2" for="admin_new_password">New Password:</label>
                 <input class="input-box" type="password" name="admin_new_password" id="admin_new_password" maxlength="16" placeholder="8-16 characters" oninput="validatePassword(); checkPasswordMatch(); updateSubmitButton()">
                 <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()">
-                <label for="showPassword">Show Password</label>
+                <!-- <label for="showPassword">Show Password</label> -->
                 <span style="color: red;" id="passwordValidationMessage"></span><br />
             </div>
 
             <div class="flex-row">
                 <label class="label3" for="admin_confirm_new_password">Confirm Password:</label>
                 <input class="input-box" type="password" name="admin_confirm_new_password" id="admin_confirm_new_password" maxlength="16" required oninput="checkPasswordMatch(); updateSubmitButton()">
-                <span id="passwordMatchMessage"></span><br />
+
             </div>
-            <button class="update-password-button" type="submit" disabled>Update Password</button>
+
+            <button class="submit-btn6" type="submit" disabled>Update Password</button>
+            <span id="passwordMatchMessage"></span><br />
         </form>
     </div>
 </body>
