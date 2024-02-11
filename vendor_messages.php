@@ -189,7 +189,7 @@ $resultFetchAllMessages = $stmtFetchAllMessages->get_result();
 </head>
 
 <body>
-    <header></header>
+    <header class="header2"></header>
     <?php include 'sidebar2.php'; ?>
 
     <div class="flex-row-body">

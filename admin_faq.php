@@ -30,6 +30,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
     <div class="flex-row">
         <!-- <h2 class="manage-account-header">Frequently Asked Questions</h2> -->
+        <h2 class="announcement-header">FAQs</h2>
         <div class="faq-table">
 
             <div class="flex-box1">

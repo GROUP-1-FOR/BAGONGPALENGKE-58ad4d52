@@ -54,12 +54,12 @@ tr {
   height: 2px;
 }
 
-hr {
+/* hr {
   z-index: 999;
   color: yellow;
   height: 2px;
   width: fit-content;
-}
+} */
 
 .items-text-center {
   display: flex;
@@ -540,6 +540,8 @@ h2,
   margin: 10px;
   width: 100%;
   max-width: 1190px;
+  border-color: #850f16;
+  border-width: 1px;
   border-radius: 10px;
 }
 
@@ -1237,7 +1239,7 @@ h2,
   width: 1245px !important;
   margin-left: 20px;
   margin-top: 41px;
-  border-top: 40px solid maroon;
+  border-top: 60px solid maroon;
   border-bottom: 80px solid #d9d9d9;
   background-color: #d9d9d9;
   color: white;
@@ -1356,6 +1358,21 @@ h2,
   padding-top: 0px !important;
 }
 
+.payment-container1 {
+  padding: 10px;
+  margin-top: 20px;
+  position: relative;
+  overflow-x: hidden;
+  height: 410px;
+  width: 1200px !important;
+  margin-left: 20px;
+  background-color: white;
+  color: maroon;
+  flex: 1;
+  z-index: 3;
+  border-radius: 10px;
+  padding-top: 0px !important;
+}
 .confirm-payment-container {
   margin-top: 20px;
   position: relative;
@@ -1429,6 +1446,7 @@ h2,
 
 .paid-records2 {
   overflow-x: hidden;
+  overflow-y: hidden;
   border: 2px solid gray; /* Correct the typo: '2PX' to '2px' */
   border-style: hidden;
   max-height: 430px;
@@ -1735,7 +1753,7 @@ h2,
 }
 
 .modify-buttons {
-  margin-left: 980px;
+  margin-left: 1100px;
 }
 
 .button-1,
@@ -1981,6 +1999,10 @@ h2,
   align-items: center;
 }
 .flexbox-row3 {
+  display: flex;
+  flex-direction: row;
+}
+.flexbox-row4 {
   display: flex;
   flex-direction: row;
 }
@@ -2289,7 +2311,7 @@ h2,
 }
 
 .form-style {
-  background-color: #ffffff;
+  background-color: #f4f1ec;
   padding: 10px;
   height: 195px;
   border-radius: 15px;
@@ -2480,7 +2502,7 @@ h2,
 
 .submit-btn1 {
   margin-top: 30px;
-  margin-left: 60px;
+  margin-left: 120px;
 }
 
 .sbt1 {
@@ -2615,16 +2637,17 @@ h2,
   background-color: magenta;
 }
 #autocomplete {
-  /* padding: 10px; */
+  padding: 10px; 
   height: 200px;
   color: maroon;
   border-radius: 10px;
   font-size: small;
   position: absolute;
   background-color: white;
-  margin-top: 80%;
+  margin-top: 100%;
   border: 2px solid maroon;
   z-index: 0;
+  display: block;
 }
 
 #autocomplete:hover {

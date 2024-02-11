@@ -37,15 +37,49 @@ if (!$result) {
             width: 100%;
         }
 
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+            color: maroon;
+        }
 
         th {
-            background-color: #f2f2f2;
+            background-color: #d9d9d9;
+
         }
 
         .archive-button {
             display: block;
             margin: 20px auto;
             /* Adjust margin as needed */
+        }
+
+        .main-container {
+            overflow-y: auto;
+            /* Enable vertical scrolling */
+            height: 555px;
+            /* Adjust height as needed */
+        }
+
+        .table-header {
+            position: sticky;
+            top: 0;
+            background-color: #f2f2f2;
+            color: maroon;
+        }
+
+        .table-header th {
+            position: relative;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-header .flexbox-row3 {
+            display: flex;
         }
     </style>
 </head>
@@ -55,46 +89,40 @@ if (!$result) {
     <?php include 'sidebar.php'; ?>
 
     <div class="flex-row">
-        <h2 class="paid-record" style="color: maroon" ;> PAID RECORDS</h2>
-        <div class="paid-records2">
-
+        <h2 class="manage-account-header" style="color: maroon"> PAID RECORDS</h2>
+        <div class="report-manage">
             <div class="flex-box1">
                 <div class="main-container">
                     <table>
-                        <center>
-                            <tr class="table-header">
-                                <th class="table-header-left th1">Name</th>
-                                <th class="th1">Balance</th>
-                                <th class="th1">Payment Date</th> <!-- Add this line for the payment date -->
-                                <th class="th1">Mode of Payment</th>
-                                <th class="table-header-right th1">Transaction ID</th>
-                            </tr>
-                        </center>
+                        <tr class="table-header">
+                            <th>NAME</th>
+                            <th>BALANCE</th>
+                            <th>PAYMENT DATE</th>
+                            <!-- Add this line for the payment date -->
+                            <th>MODE OF PAYMENT</th>
+                            <th>TRANSACTION ID</th>
+                        </tr>
 
                         <?php
-                        echo "</center>";
                         // Loop through the database results and display them in the table
                         while ($row = mysqli_fetch_assoc($result)) {
-                            echo "<center>";
-                            echo "<tr class='table-header1'>";
-                            echo "<td class= 'td2'>{$row['vendor_name']}</td>";
-                            echo "<td class= 'td1'>{$row['balance']}</td>";
-                            echo "<td class= 'td1'>{$row['payment_date']}</td>";
-                            echo "<td class= 'td1'>{$row['mop']}</td>";
-                            echo "<td class= 'td1'>{$row['transaction_id']}</td>";
+                            echo "<tr class='table-row'>";
+                            echo "<td>{$row['vendor_name']}</td>";
+                            echo "<td>{$row['balance']}</td>";
+                            echo "<td>{$row['payment_date']}</td>";
+                            echo "<td>{$row['mop']}</td>";
+                            echo "<td>{$row['transaction_id']}</td>";
                             echo "</tr>";
+                            echo "<tr><td colspan='5'><hr></td></tr>"; // Add horizontal line after each row
                         }
-                        echo "</center>";
                         ?>
 
-
+                    </table>
                 </div>
-                </table>
             </div>
-
         </div>
-
     </div>
+
     <!-- <button class="archive-button" onclick="requestAccess()">Request Access for Archive</button> -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
@@ -123,8 +151,6 @@ if (!$result) {
             });
         }
     </script>
-
-
     <footer></footer>
 </body>
 

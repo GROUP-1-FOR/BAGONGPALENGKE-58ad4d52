@@ -185,9 +185,9 @@ if ($resultStallMap->num_rows > 0) {
                                 <h1 class="rent-status-header"> Rent <br>Status </h1>
                             </div>
                             <div>
-                                <p class="index-notifs"> Paid: <?php echo $totalPaid; ?> </p>
-                                <button class="index-notifs"> Ongoing: <?php echo $totalOngoing; ?> </button>
-                                <button class="index-notifs"> Vacant: <?php echo max(0, $totalVacant); ?> </button>
+                                <p class="index-notifs">Paid: <?php echo $totalPaid; ?> </p>
+                                <p class="index-notifs"> Ongoing: <?php echo $totalOngoing; ?> </p>
+                                <p class="index-notifs"> Vacant: <?php echo max(0, $totalVacant); ?> </p>
                             </div>
                         </div>
                     </div>
