@@ -122,6 +122,11 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
                 <script>
                     function confirmAndArchive(vendorUserId, vendorName, paymentDate, modeOfPayment, transactionId, row) {
+                    // Prompt the user for the balance
+                    var userEnteredBalance = prompt("Please enter the paid balance for vendor " + vendorName + ":", $(row).data('balance'));
+
+                    // Check if the user entered a valid balance
+                    if (userEnteredBalance !== null && !isNaN(userEnteredBalance)) {
                         // Display a confirmation dialog with the vendor's name
                         var isConfirmed = confirm("Are you sure you want to confirm and archive for vendor: " + vendorName + "?");
 
@@ -136,7 +141,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                                     paymentDate: paymentDate,
                                     modeOfPayment: modeOfPayment,
                                     transactionId: transactionId,
-                                    balance: $(row).data('balance'),
+                                    balance: userEnteredBalance,
                                     adminName: "<?php echo $admin_name; ?>"
                                 },
                                 success: function(response) {
@@ -151,7 +156,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                         } else {
                             console.log("Action canceled by the user");
                         }
+                    } else {
+                        alert("Invalid balance entered. Please enter a valid number.");
                     }
+                }
 
 
                     function confirmRemoveAll() {
