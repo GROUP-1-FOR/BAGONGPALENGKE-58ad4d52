@@ -293,8 +293,6 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
 
         }
 
-
-
         function updateSubmitButton() {
             var submitButton = document.querySelector('button[type="submit"]');
             var formIsValid = validateVendorFirstName() && validateVendorLastName() && validateVendorMobileNumber() && validateVendorEmail() && validateVendorProductType() && validateVendorFirstPaymentDate();
@@ -302,6 +300,12 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
 
             console.log("Update submit button called. Form is valid: ", formIsValid);
         }
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Trigger the updateSubmitButton function once the page loads
+            updateSubmitButton();
+        });
     </script>
 
 </head>

@@ -11,12 +11,13 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     header("location:admin_logout.php");
 }
 
+/*
 // Initialize the password confirmation trial count if not set
 if (!isset($_SESSION['admin_password_confirmation_trial'])) {
     $_SESSION['admin_password_confirmation_trial'] = 0;
-}
+}*/
 
-$admin_password_confirmation_trial = $_SESSION['admin_password_confirmation_trial'];
+//$admin_password_confirmation_trial = $_SESSION['admin_password_confirmation_trial'];
 
 // Retrieve vendor information from session variables
 $vendor_first_name = $_SESSION['vendor_first_name'];
@@ -90,7 +91,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Close the database connection
             $connect->close();
         } else {
-            handleIncorrectCredentials();
+            //unsetVendorSessionVariables();
+            echo '<script>';
+            echo 'alert("Wrong Credentials!");';
+            echo 'window.location.href = "admin_create_vendor_account_1.php";';
+            echo '</script>';
+            exit();
         }
     } else {
         unsetVendorSessionVariables();
@@ -100,13 +106,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo '</script>';
     }
 }
-
+/*
 // Function to handle incorrect credentials
 function handleIncorrectCredentials()
 {
     // Increment the password confirmation trial count
-    $_SESSION['admin_password_confirmation_trial']++;
-
+    // $_SESSION['admin_password_confirmation_trial']++;
+    /*
     // Check if maximum trials reached
     if ($_SESSION['admin_password_confirmation_trial'] > 2) {
         // Clear session variables and redirect
@@ -119,11 +125,14 @@ function handleIncorrectCredentials()
     }
 
     // Display incorrect credentials message
+    unsetVendorSessionVariables();
     echo '<script>';
     echo 'alert("Wrong Credentials!");';
-    echo 'window.location.href = "admin_create_vendor_account_1.php";';
+    echo 'window.location.href = "admin_create_vendor_account.php";';
     echo '</script>';
 }
+
+*/
 
 // Function to unset vendor-related session variables
 function unsetVendorSessionVariables()
