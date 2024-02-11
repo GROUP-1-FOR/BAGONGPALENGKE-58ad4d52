@@ -34,7 +34,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         }
 
         .notification-banner {
-            width: 50%;
+            width: 100%;
             margin: auto;
             border: 3px solid #ccc;
             padding: 20px;
@@ -69,7 +69,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 </head>
 
 <body>
-    <header></header>
+    <header class="header2">
+    </header>
     <?php include 'sidebar2.php'; ?>
 
     <div class="flex-row">
@@ -80,7 +81,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
             <div class="flex-box1">
                 <div class="main-container">
                     <br>
-                    <ul>
+                    <hr>helllow
+                    <ul class="notif-content">
                         <?php
 
 
@@ -131,15 +133,10 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
                         $connect->close();
 
                         ?>
-
+                    </ul>
                 </div>
-                <i>
 
-                </i>
             </div>
-            </li>
-
-            </ul>
             <br>
             <br>
 

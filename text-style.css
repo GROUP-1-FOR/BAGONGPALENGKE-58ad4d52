@@ -53,8 +53,9 @@
 .manage-account-header {
   position: absolute;
   color: white;
-  margin-top: 4%;
-  margin-left: 30px;
+  margin-top: 3%;
+  margin-left: 4%;
+  font-size: 50px;
   z-index: 5;
 }
 

@@ -41,7 +41,11 @@ if ($result) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-
+    <style>
+        #vendor_name_error_span {
+            text-align: left;
+        }
+    </style>
     <title>Create Vendor Account</title>
     <script>
         function validateVendorFirstName() {
@@ -190,7 +194,7 @@ if ($result) {
     <br>
     <div class="flex-row">
         <h2 class="manage-account-header">Update Vendor Account, <?php echo $userid  ?>!</h2>
-        <div class="create-vendor-form">
+        <div class="report-manage">
 
             <form action="vendor_edit_profile_1.php" method="post" onsubmit="return validateForm()">
 
@@ -204,7 +208,7 @@ if ($result) {
                                 <label class="title-label tl1" for="Vendor First Name">Vendor First Name:</label>
                                 <input class="input-info input-info-margin" type="text" name="vendor_first_name" id="vendor_first_name" required oninput="validateVendorFirstName(); updateSubmitButton()" value="<?php echo $vendorFirstName; ?>">
                                 <!-- Display an error message if it exists in the session -->
-                                <span class="error-message" style="color: red;" id="vendor_first_name_error_span">
+                                <span class="error-message2 span1" style="color: red;" id="vendor_first_name_error_span">
 
                                     <?php
                                     if (isset($_SESSION['vendor_first_name_error'])) {
@@ -221,7 +225,7 @@ if ($result) {
                             <label class="title-label tl1" for="Vendor Last Name">Vendor Last Name:</label>
                             <input class="input-info" type="text" name="vendor_last_name" id="vendor_last_name" required oninput="validateVendorLastName(); updateSubmitButton()" value="<?php echo $vendorLastName; ?>">
                             <!-- Display an error message if it exists in the session -->
-                            <span style="color: red;" id="vendor_last_name_error_span">
+                            <span class="span1" style="color: red;" id="vendor_last_name_error_span">
 
                                 <?php
                                 if (isset($_SESSION['vendor_last_name_error'])) {
@@ -242,7 +246,7 @@ if ($result) {
                             <div>
                                 <input class="input-info" type="tel" name="vendor_mobile_number" id="vendor_mobile_number" maxlength="11" placeholder="09XXXXXXXXX" oninput="validateVendorMobileNumber(); updateSubmitButton()" value="<?php echo $vendorMobileNumber; ?>">
                                 <!-- Display an error message if it exists in the session -->
-                                <span style="color: red;" id="vendor_mobile_number_error_span">
+                                <span class="span1" style="color: red;" id="vendor_mobile_number_error_span">
                                     <?php
                                     if (isset($_SESSION['vendor_mobile_number_error'])) {
                                         echo $_SESSION['vendor_mobile_number_error'];
@@ -257,7 +261,7 @@ if ($result) {
                             <label class="title-label tl1" for="Email">Email:</label>
                             <input class="input-info" type="email" name="vendor_email" id="vendor_email" required oninput="validateVendorEmail(); updateSubmitButton()" value="<?php echo $vendorEmail; ?>">
                             <!-- Display an error message if it exists in the session -->
-                            <span style="color: red;" id="vendor_email_error_span">
+                            <span class="span1"  style="color: red;" id="vendor_email_error_span">
                                 <?php
                                 if (isset($_SESSION['vendor_email_error'])) {
                                     echo $_SESSION['vendor_email_error'];
@@ -270,7 +274,7 @@ if ($result) {
                             <br />
                             <br />
             </form>
-            <center><button class="submit-btn1" type="submit" disabled>Submit</button></center>
+            <button class="submit-btn1" type="submit" disabled>Submit</button>
         </div>
     </div>
     <script>

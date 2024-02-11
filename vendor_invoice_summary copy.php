@@ -32,6 +32,7 @@ if (
 }
 
 // Check if the "Cash" button is clicked
+
 if (isset($_POST['pay_cash'])) {
     // Insert payment data into ven_payments table
     $paymentDate = date('Y-m-d H:i:s');
@@ -63,7 +64,7 @@ if (isset($_POST['gcash_mobile'])) {
         $stmtGetMobileNumber->execute();
         $stmtGetMobileNumber->bind_result($vendorMobileNumber);
         $stmtGetMobileNumber->fetch();
-        $stmtGetMobileNumber->close();
+        //$stmtGetMobileNumber->close();
 
         // Check if the inputted mobile number matches the one in the database
         if ($vendorMobileNumber == '0' . $inputedNumber) {
@@ -147,9 +148,18 @@ if (isset($_POST['gcash_mobile'])) {
             /* ensure it appears above everything else */
         }
 
+        #overlay-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+        }
+
         #overlay-content {
+
             margin-top: 0;
-            height: 200px;
             width: 300px;
         }
 
@@ -163,10 +173,30 @@ if (isset($_POST['gcash_mobile'])) {
             top: 40%;
             left: 50%;
             transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
             background-color: #F4F1EC;
             padding: 40px;
             border-radius: 5px;
             display: flex;
+        }
+
+        #overlay-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 520px;
+            width: 500px;
+            /* background-color: white; */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(to top, white 60%, #1D71FB 50%);
+            /* Gradient from blue to white */
+            opacity: 1;
+            border-radius: 15px;
         }
 
         .gcash-header {
@@ -187,6 +217,7 @@ if (isset($_POST['gcash_mobile'])) {
         .gcash-button {
             width: 90px;
             font-weight: 700;
+
         }
 
         .gcb1 {
@@ -197,6 +228,7 @@ if (isset($_POST['gcash_mobile'])) {
             color: white;
             height: 30px;
         }
+
 
         .gcb2 {
             margin-top: 15px;
@@ -210,8 +242,8 @@ if (isset($_POST['gcash_mobile'])) {
         }
 
         .gcash-link {
-            margin-top: 210px;
-            margin-left: -200px;
+            margin-top: 250px;
+            margin-left: -160px;
             font-size: x-small;
         }
 
@@ -259,7 +291,16 @@ if (isset($_POST['gcash_mobile'])) {
             document.getElementById("gcash_form").submit();
             return true;
         }
+
+        // Modified hideOverlay function to prevent automatic closing on error
+        function hideOverlayOnError() {
+            var errorMessage = "<?php echo isset($errorMessage) ? $errorMessage : ''; ?>";
+            if (errorMessage.trim() === "") {
+                showOverlay();
+            }
+        }
     </script>
+
 </head>
 
 <body>
@@ -269,7 +310,6 @@ if (isset($_POST['gcash_mobile'])) {
         <p><strong>Vendor ID:</strong><?php echo $vendorUserId; ?></p>
         <p><strong>Stall Number:</strong><?php echo $vendorStallNumber; ?></p>
         <p><strong>Balance:</strong>$<?php echo number_format($balance, 2); ?></p>
-
         <p><strong>Transaction ID:</strong><?php echo $transactionId; ?></p>
         <p><strong>Payment Status:</strong>To be paid</p>
 
@@ -302,15 +342,16 @@ if (isset($_POST['gcash_mobile'])) {
                             <input type="hidden" name="vendorStallNumber" value="<?php echo $vendorStallNumber; ?>">
                             <input type="hidden" name="balance" value="<?php echo $balance; ?>">
                             <input type="hidden" name="transactionId" value="<?php echo $transactionId; ?>">
-                            <?php if (isset($errorMessage)) {
-                                echo "<p style='color: red;'>$errorMessage</p>";
-                            } ?>
+
                             <div class="flexbox-column">
                                 <label class="mobile-label">Mobile Number</label>
                                 <div class="flexbox-row3">
                                     <p class=""> +63</p>
                                     <input class="input-box1" type="text" name="gcash_mobile" id="gcash_mobile" placeholder="XXXXXXXXXX" maxlength="10" oninput="validateVendorMobileNumber();" required>
                                 </div>
+                                <?php if (isset($errorMessage)) {
+                                    echo "<p class='error-message3'>$errorMessage</p>";
+                                } ?>
                             </div>
                             <br>
                             <div class="flexbox-column-center ">
@@ -320,6 +361,7 @@ if (isset($_POST['gcash_mobile'])) {
                         </form>
                     </div>
                 </div>
+                <img class="gcash-logo" src="assets\images\sign-in\gcash-logo.png" alt="GCash Logo">
                 <p class="gcash-link"> Don’t have a GCash account? <a class="reg-link" href="https://m.gcash.com/gcashapp/gcash-promotion-web/2.0.0/index.html#/?referralCode=hWlkIm1"> Register now?</a> </p>
             </div>
         </div>
