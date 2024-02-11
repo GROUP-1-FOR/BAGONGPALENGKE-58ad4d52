@@ -82,26 +82,27 @@ $connect->close();
     <?php include 'sidebar2.php'; ?>
 
     <div class="flex-row">
-        <h2 class="manage-account-header">REPORTS</h2>
+        <h1 class="manage-account-header">REPORTS</h1>
         <div class="report-manage">
             <br>
-            <h1 class="admin-name-report"><?php echo $vendor_userid  ?>! </h1>
             <br>
+            <h1 class="admin-name-report"><?php echo $vendor_userid  ?>! </h1>
+
 
 
             <form action="vendor_send_report_1.php" method="post" onsubmit="return validateForm()">
-                <div class="flex-box-row">
 
+                <div class="flex-box-row">
                     <label class="text-design1" for="admin_report_ticket"></label>
                     <p class="text-design" type="text" id="vendor_report_ticket" name="vendor_report_ticket" required readonly></p>
-
                 </div>
 
                 <div class="flex-box-row">
+
                     <!-- <input type="text" id="admin_report_ticket" name="admin_report_ticket" value="<//?php echo $formattedTicketNumber; ?>" required readonly> -->
                     <label class="text-design1" for="vendor_report_ticket">Ticket No: <?php echo $formattedTicketNumber; ?></label>
                     <input class="text-design" type="hidden" id="vendor_report_ticket" name="vendor_report_ticket" value="<?php echo $formattedTicketNumber; ?>">
-                    <br />
+                    <!-- <br /> -->
                 </div>
 
                 <div>

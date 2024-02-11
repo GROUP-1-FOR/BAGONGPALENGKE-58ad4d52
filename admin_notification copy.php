@@ -36,7 +36,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         .notification-banner {
             width: 50%;
             margin: auto;
-            border: 3px solid #ccc;
+            border: 1px solid #ccc;
             padding: 20px;
             background-color: #fff;
             margin-bottom: 20px;

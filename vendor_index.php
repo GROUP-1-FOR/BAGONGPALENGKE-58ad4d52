@@ -281,7 +281,7 @@ if ($resultNotification->num_rows > 0) {
             color: maroon;
             padding: 20px;
             border-radius: 10px;
-            text-align: center;
+
             display: flex;
             flex-direction: column;
             margin-top: 2.5% !important;
@@ -300,6 +300,56 @@ if ($resultNotification->num_rows > 0) {
             justify-content: flex-end;
             /* Aligns the button to the right */
         }
+
+        p {
+            color: maroon;
+        }
+
+        body {
+            text-align: center;
+            margin: 50px;
+            background-color: #f2f2f2;
+        }
+
+        .notification-banner {
+            width: 95%;
+            margin: auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: #F4F1EC;
+            margin-bottom: 20px;
+            border-color: maroon;
+            border-radius: 10px;
+        }
+
+        .notification-banner h3 {
+            color: #850F16;
+        }
+
+        .notification-banner p {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        .back-button {
+            width: 100px;
+            /* Adjust the width as needed */
+            margin: 20px auto;
+            /* Center the button horizontally */
+            padding: 10px;
+            background-color: #850F16;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+        }
+
+        .notif-header {
+            color: maroon;
+            padding-top: 10px;
+        }
     </style>
     <script>
         function openModal() {
@@ -314,6 +364,15 @@ if ($resultNotification->num_rows > 0) {
             // Now, submit the form
             document.getElementById('paymentForm').submit();
             closeModal();
+        }
+
+        function openNotif() {
+            document.getElementById('myNotif').style.display = 'block';
+        }
+
+        // JavaScript function to close the modal
+        function closeNotif() {
+            document.getElementById('myNotif').style.display = 'none';
         }
     </script>
 </head>
@@ -393,6 +452,67 @@ if ($resultNotification->num_rows > 0) {
                             </div>
                         </div>
                     </div>
+
+                    <div id="myNotif" class="notif">
+                        <div class="notif-content">
+                            <h1 class="notif-header">Notification</h1>
+
+                            <ul class="notification-list-box">
+                                <?php
+
+
+                                // Fetch notifications using prepared statement
+                                $sqlNotifications = "SELECT * FROM vendor_notification WHERE vendor_userid = ? OR vendor_userid = 'ALL' ORDER BY notif_date DESC";
+                                $stmtNotifications = $connect->prepare($sqlNotifications);
+                                $stmtNotifications->bind_param('s', $userid); // Use 's' for VARCHAR
+                                $stmtNotifications->execute();
+                                $resultNotifications = $stmtNotifications->get_result();
+
+                                // Check if there are notifications
+                                if ($resultNotifications->num_rows > 0) {
+                                    while ($row = $resultNotifications->fetch_assoc()) {
+                                        // Display the notification banner
+                                        echo '<div class="notification-banner">';
+
+                                        // Make the title clickable and redirect to the appropriate page based on the notification type
+                                        if ($row['confirm'] == 1) {
+                                            echo '<h3><a href="vendor_transaction_history.php" class="notification-subj">' . $row['title'] . '</a></h3>';
+                                            echo '<p class="transaction-id">Transaction ID: ' . $row['transaction_id'] . '</p>';
+                                            echo '<p class="sub-notif" >MOP: ' . $row['mop'] . '</p>';
+                                            echo '<p class="sub-notif">By: ' . $row['admin_name'] . '</p>';
+                                        } elseif ($row['message'] == 1) {
+                                            echo '<h3><a href="vendor_messages.php">' . $row['title'] . '</a></h3>';
+                                            echo '<p>From: ' . $row['admin_name'] . '</p>';
+                                        } elseif ($row['announcement'] == 1) {
+                                            echo '<h3><a href="vendor_view_announcement.php">' . $row['title'] . '</a></h3>';
+                                        } elseif ($row['edit'] == 1) {
+                                            echo '<h3><a href="vendor_index.php">' . $row['title'] . '</a></h3>';
+                                        }
+
+
+                                        echo '</div>';
+                                    }
+
+                                    // Add a back button
+
+                                } else {
+                                    // Display a message if there are no notifications
+                                    echo '<p>No notifications available.</p>';
+                                    // Add a back button even if there are no notifications
+
+                                }
+
+                                // Close the prepared statement
+                                $stmtNotifications->close();
+                                // Close the database connection
+                                $connect->close();
+
+                                ?>
+                            </ul>
+                            <br>
+                            <a href="vendor_index.php" class="back-button8">Back</a>
+                        </div>
+                    </div>
                 </div>
                 <!-- </div> -->
 
@@ -416,7 +536,10 @@ if ($resultNotification->num_rows > 0) {
                         <?php endif; ?>
                     </div>
                 </div>
-                <center><a href=vendor_notification.php><input class="submit-button3" type="submit" value="View"></a></center>
+                <!-- <a href=vendor_notification.php><input class="submit-button3" type="submit" value="View"></a> -->
+                <center>
+                    <button class="submit-button3" onclick="openNotif()">View</button>
+                </center>
             </div>
         </div>
 
