@@ -68,28 +68,28 @@ if ($currentDate >= $startingDate) {
             }
             // Update current balance and remaining balance
             $currentBalance = $balance + $rowUserData['balance'];
-            if($currentDay >= 15){
-            $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
-            $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-            $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
-            $stmtUpdateBalance->execute();
             if ($currentDay >= 15) {
                 $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
                 $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
                 $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
                 $stmtUpdateBalance->execute();
+                if ($currentDay >= 15) {
+                    $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
+                    $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+                    $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
+                    $stmtUpdateBalance->execute();
 
-                $sqlUpdateBalance = "UPDATE admin_stall_map SET balance = ?, due = 1, paid = 0 WHERE vendor_userid = ?";
-                $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-                $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
-                $stmtUpdateBalance->execute();
+                    $sqlUpdateBalance = "UPDATE admin_stall_map SET balance = ?, due = 1, paid = 0 WHERE vendor_userid = ?";
+                    $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+                    $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
+                    $stmtUpdateBalance->execute();
 
-            // Update day, month, and year
-            $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
-            $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
-            $stmtUpdateDate->bind_param('iiis', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
-            $stmtUpdateDate->execute();
-            }
+                    // Update day, month, and year
+                    $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
+                    $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
+                    $stmtUpdateDate->bind_param('iiis', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
+                    $stmtUpdateDate->execute();
+                }
                 // Update day, month, and year
                 $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
                 $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
@@ -152,13 +152,13 @@ $sqlNotification = "SELECT notif_date, title, admin_name FROM vendor_notificatio
 $resultNotification = $connect->query($sqlNotification);
 $latestNotificationDate = "";
 $latestNotificationTitle = "";
-$latestNotificationVendorName = "";
+$latestNotificationAdminName = "";
 
 if ($resultNotification->num_rows > 0) {
     while ($rowNotification = $resultNotification->fetch_assoc()) {
         $latestNotificationDate = $rowNotification['notif_date'];
         $latestNotificationTitle = $rowNotification['title'];
-        $latestNotificationVendorName = $rowNotification['admin_name'];
+        $latestNotificationAdminName = $rowNotification['admin_name'];
     }
 }
 ?>
@@ -411,7 +411,9 @@ if ($resultNotification->num_rows > 0) {
                     <div class="message-notif">
                         <p class="admin-datetime-text-v2"><?php echo $latestNotificationDate; ?></p>
                         <h1 class="admin-message-notif"><?php echo $latestNotificationTitle; ?></h1>
-                        <p class="admin-vendor-notif">From: <?php echo $latestNotificationVendorName; ?></p>
+                        <?php if (!empty($latestNotificationAdminName)) : ?>
+                            <p class="admin-vendor-notif">From: <?php echo $latestNotificationAdminName; ?></p>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <center><a href=vendor_notification.php><input class="submit-button3" type="submit" value="View"></a></center>
