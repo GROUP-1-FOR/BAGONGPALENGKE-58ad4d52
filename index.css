@@ -182,6 +182,13 @@ label {
   color: maroon;
 }
 
+.error-message3 {
+  font-size: xx-small;
+  font-style: italic;
+  display: block;
+  min-height: 15px; /* Adjust the height as needed */
+  color: maroon;
+}
 .error-message2 {
   width: 400px;
   display: block;
@@ -629,10 +636,9 @@ h2,
 }
 
 .vendor-img {
-  width: 55%;
-  margin-top: -20px;
-  margin-left: 0px;
-  position: absolute;
+  margin-left: 2%;
+  width: 110%;
+  /* position: relative; */
   z-index: 1;
 }
 .public-market-pic,
@@ -645,13 +651,13 @@ h2,
   max-width: 1260px;
 }
 
-.gcash-logo{
+.gcash-logo {
   width: 150px;
 }
 
 .head-bottom-1 {
   position: relative;
-  margin-top: -30px;
+  margin-top: -20px;
   margin-left: 3px;
   z-index: 2;
   /* or any other percentage or pixel value you desire */
@@ -1021,27 +1027,23 @@ h2,
   padding: 10px;
 }
 
-.dashboard-announcement6 {
+.dashboard-announcement66 {
   display: flex;
+  background-color: bisque;
   flex-direction: column; /* Added flex-direction to stack elements vertically */
   justify-content: center; /* Center content vertically */
   align-items: center; /* Center content horizontally */
-  margin-top: -10px;
   z-index: 3;
   overflow-y: hidden;
   overflow-x: hidden;
-  border: maroon;
   border-width: 2px;
   border-style: solid;
-  min-height: 58%;
-  max-width: auto;
+  height: 300px;
   margin-left: 10px;
-  border-top: 35px solid maroon;
-  background-color: #d9d9d9;
+  border-top: 20px solid transparent;
   color: white;
   flex: 1;
   border-radius: 10px;
-  padding: 10px;
 }
 
 .dashboard-announcement-2 {
@@ -1189,12 +1191,12 @@ h2,
   padding: 10px;
 }
 
-.input-box1{
+.input-box1 {
   outline: none;
   margin-left: 10px;
   width: 290px;
   border-style: none;
-  background-color: #F4F1EC;
+  background-color: #f4f1ec;
   border-bottom: 1px black solid;
 }
 
@@ -2234,7 +2236,7 @@ h2,
   padding: 20px;
   float: right;
 }
-
+.submit-button2,
 .send-button1,
 .token-button,
 /* .login-btn, */
@@ -2733,6 +2735,7 @@ ul {
 }
 /* .remove-button:hover, */
 
+.submit-button2,
 .submit,
 .edit-button:hover,
 .submit-button1:hover,
