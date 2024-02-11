@@ -444,7 +444,7 @@ if (isset($_GET['cancel_button']) && $_GET['cancel_button'] == 1) {
                         <input class="check-box" type="checkbox" id="showPassword" onclick="togglePasswordVisibility()">
                         <label class="show-password" for="showPassword">Show Password</label> -->
                         <label class="title-label tl1" for="vendor_first_payment_date">Select Start of Billing Period:</label>
-                        <input class="input-info" type="date" id="vendor_first_payment_date" name="vendor_first_payment_date" value="<?php echo isset($_SESSION['vendor_first_payment_date']) ? $_SESSION['vendor_first_payment_date'] : ''; ?>" min="<?php echo date('Y-m-d'); ?>" required onkeydown="return false" required onchange="validateVendorFirstPaymentDate(); updateSubmitButton()">
+                        <input class="input-info" type="date" id="vendor_first_payment_date" name="vendor_first_payment_date" value="<?php echo isset($_SESSION['vendor_first_payment_date']) ? $_SESSION['vendor_first_payment_date'] : ''; ?>" required onkeydown="return false" required onchange="validateVendorFirstPaymentDate(); updateSubmitButton()">
                         <span style="color: red;" id=" vendor_first_payment_date_error_span">
                             <?php
 
