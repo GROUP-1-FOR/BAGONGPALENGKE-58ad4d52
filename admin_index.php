@@ -207,7 +207,7 @@ if ($resultStallMap->num_rows > 0) {
 
                         <?php if (!empty($latestNotificationVendorName)) : ?>
                             <p class="admin-vendor-notif">From: <?php echo $latestNotificationVendorName; ?></p>
-                        <?php else : ?>
+                        <?php elseif (!empty($latestNotificationVendorUserID)) : ?>
                             <p class="admin-vendor-notif">From user ID: <?php echo $latestNotificationVendorUserID; ?></p>
                         <?php endif; ?>
 

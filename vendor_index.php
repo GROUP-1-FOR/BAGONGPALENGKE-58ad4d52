@@ -148,8 +148,11 @@ if (isset($_POST['pay']) && $paymentStatus === "To be paid" && $balance > 0) {
 
 $currentDateTime = date('F d, Y | h:i A');
 // Fetch data from the latest row of vendor_notification table
-$sqlNotification = "SELECT notif_date, title, admin_name FROM vendor_notification ORDER BY notif_date DESC LIMIT 1";
-$resultNotification = $connect->query($sqlNotification);
+$sqlNotification = "SELECT notif_date, title, admin_name FROM vendor_notification WHERE vendor_userid = ? ORDER BY notif_date DESC LIMIT 1";
+$stmtNotification = $connect->prepare($sqlNotification);
+$stmtNotification->bind_param('s', $userid);
+$stmtNotification->execute();
+$resultNotification = $stmtNotification->get_result();
 $latestNotificationDate = "";
 $latestNotificationTitle = "";
 $latestNotificationAdminName = "";
