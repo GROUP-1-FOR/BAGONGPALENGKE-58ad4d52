@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $insertPaidStatement = mysqli_prepare($connect, $insertPaidQuery);
 
         if ($insertPaidStatement) {
-            mysqli_stmt_bind_param($insertPaidStatement, "sssdssss", $vendorUserId, $vendorName, $vendor_receipt_number, $vendorBalance, $paymentDate, $modeOfPayment, $transactionId, $admin_userid); // Use the new transaction ID
+            mysqli_stmt_bind_param($insertPaidStatement, "sssdssss", $vendorUserId, $vendorName, $vendor_receipt_number, $balance, $paymentDate, $modeOfPayment, $transactionId, $admin_userid);
             $successPaid = mysqli_stmt_execute($insertPaidStatement);
 
             if (!$successPaid) {
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $insertArchiveStatement = mysqli_prepare($connect, $insertArchiveQuery);
 
         if ($insertArchiveStatement) {
-            mysqli_stmt_bind_param($insertArchiveStatement, "ssdsss", $vendorUserId, $vendorName, $vendorBalance, $paymentDate, $modeOfPayment, $transactionId); // Use the new transaction ID
+            mysqli_stmt_bind_param($insertArchiveStatement, "ssdsss", $vendorUserId, $vendorName, $balance, $paymentDate, $modeOfPayment, $transactionId);
             $successArchive = mysqli_stmt_execute($insertArchiveStatement);
 
             if (!$successArchive) {
