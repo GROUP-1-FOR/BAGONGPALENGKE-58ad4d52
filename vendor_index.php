@@ -384,7 +384,8 @@ if ($resultNotification->num_rows > 0) {
 
     <div class="head-bottom">
         <div>
-            <p class="user-name">Welcome, <?php echo $vendorName; ?>! </p> <br />
+            <!-- <p class="user-name">Welcome, <?php echo $vendorName; ?>! </p> <br /> -->
+            <p class="user-name"> <Strong>Welcome, </Strong> <?php echo $vendorName  ?>! </p> <br />
             <img class="head-bottom-1" src="assets\images\sign-in\name-holder2.svg" alt="back-layer">
         </div>
 
@@ -477,14 +478,14 @@ if ($resultNotification->num_rows > 0) {
                                         // Make the title clickable and redirect to the appropriate page based on the notification type
                                         if ($row['confirm'] == 1) {
                                             echo '<h3><a href="vendor_transaction_history.php" class="notification-subj">' . $row['title'] . '</a></h3>';
-                                            echo '<p class="transaction-id">Transaction ID: ' . $row['transaction_id'] . '</p>';
+                                            echo '<p class="transaction-id"> Transaction ID: ' . $row['transaction_id'] . '</p>';
                                             echo '<p class="sub-notif" >MOP: ' . $row['mop'] . '</p>';
                                             echo '<p class="sub-notif">By: ' . $row['admin_name'] . '</p>';
                                         } elseif ($row['message'] == 1) {
                                             echo '<h3><a href="vendor_messages.php">' . $row['title'] . '</a></h3>';
                                             echo '<p>From: ' . $row['admin_name'] . '</p>';
                                         } elseif ($row['announcement'] == 1) {
-                                            echo '<h3><a href="vendor_view_announcement.php">' . $row['title'] . '</a></h3>';
+                                            echo '<h3 ><a href="vendor_view_announcement.php">' . $row['title'] . '</a></h3>';
                                         } elseif ($row['edit'] == 1) {
                                             echo '<h3><a href="vendor_index.php">' . $row['title'] . '</a></h3>';
                                         }

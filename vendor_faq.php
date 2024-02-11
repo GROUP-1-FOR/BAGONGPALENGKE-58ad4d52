@@ -29,6 +29,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     <?php include 'sidebar2.php'; ?>
 
     <div class="flex-row">
+        <h2 class="announcement-header">FAQs</h2>
         <div class="faq-table">
 
             <div class="flex-box1">

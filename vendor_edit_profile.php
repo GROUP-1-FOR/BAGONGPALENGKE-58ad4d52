@@ -193,7 +193,7 @@ if ($result) {
     <br>
     <br>
     <div class="flex-row">
-        <h2 class="manage-account-header">Update Vendor Account, <?php echo $userid  ?>!</h2>
+        <h2 class="manage-account-header">UPDATE VENDOR ACCOUNT, <?php echo $userid  ?>!</h2>
         <div class="report-manage">
 
             <form action="vendor_edit_profile_1.php" method="post" onsubmit="return validateForm()">

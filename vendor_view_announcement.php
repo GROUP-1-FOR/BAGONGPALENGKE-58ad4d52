@@ -47,8 +47,8 @@ $connect->close();
 
 
     <div class="flex-row">
-        <h2 class="announcement-header">Announcement</h2>
-        <div class="dashboard-announcement-v3">
+        <h2 class="announcement-header">ANNOUNCEMENT</h2>
+        <div class="report-manage1">
 
             <?php
             $currentDate = date('Y-m-d');

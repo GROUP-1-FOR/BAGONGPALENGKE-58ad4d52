@@ -1520,6 +1520,25 @@ h2,
   padding: 10px;
   /* padding-top: 10px !important; */
 }
+
+.report-manage1 {
+  position: relative;
+  overflow-x: hidden;
+  border: 2px solid gray;
+  border-style: hidden;
+  max-height: 82%;
+  width: 1240px !important;
+  margin-top: 50%;
+  margin-left: 20px;
+  border-top: 60px solid maroon;
+  background-color: #d9d9d9;
+  color: white;
+  flex: 1;
+  z-index: 1; /* Lower z-index to keep it behind */
+  border-radius: 10px;
+  padding: 10px;
+  /* padding-top: 10px !important; */
+}
 .create-vendor-form {
   justify-content: center;
   align-items: center;
@@ -1543,9 +1562,10 @@ h2,
 
 .announcement-header {
   position: absolute;
+  font-size: 50px;
   color: white;
-  margin-top: 70px;
-  margin-left: 30px;
+  margin-top: 3%;
+  margin-left: 4%;
   z-index: 4;
 }
 
@@ -1660,7 +1680,7 @@ h2,
 }
 
 .text-box-area {
-  margin-top: 10px!important;
+  margin-top: 10px !important;
   margin: 30px;
   margin-bottom: 5px;
   padding: 30px;
@@ -1768,7 +1788,7 @@ h2,
   margin-top: 1%;
   margin-left: 40px;
   color: maroon;
-  font-size: 50px;
+  font-size: 55px;
   font-weight: 900;
 }
 
@@ -1818,10 +1838,10 @@ h2,
   z-index: 3;
   position: absolute;
   margin-left: 3%;
-  color: maroon;
-  font-weight: bolder;
   margin-top: 3%;
-  font-size: large;
+  color: maroon;
+  font-size: 20px;
+  font-weight: 900;
 }
 .sending-message {
   border-color: grey;
@@ -2666,12 +2686,12 @@ h2,
   height: 30px;
   width: 60px;
   border-radius: 5px;
-    transition: 0.3s;
+  transition: 0.3s;
 }
 .back-button8:hover {
   cursor: pointer;
   color: white;
-    transition: 0.3s;
+  transition: 0.3s;
   background-color: gray;
 
   cursor: pointer;
