@@ -31,6 +31,7 @@ $vendor_first_payment_date = $_SESSION['vendor_first_payment_date'];
 $vendor_userid = $_SESSION['vendor_userid'];
 $vendor_password = $_SESSION['vendor_hashed_password'];
 $vendor_transaction_id = $_SESSION['vendor_transaction_id'];
+$vendor_password_1 = $_SESSION['vendor_password'];
 
 $first_payment_date_breakdown = explode('-', $vendor_first_payment_date);
 $year = intval($first_payment_date_breakdown[0]);
@@ -55,6 +56,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (mysqli_num_rows($result) > 0) {
         if (password_verify($admin_password, $row["admin_password"])) {
+
+            include("admin_create_vendor_account_3.php");
+
             // Insert data into vendor_sign_in table
             $sql1 = "INSERT INTO vendor_sign_in (vendor_first_name, vendor_last_name, vendor_name, vendor_stall_number, vendor_mobile_number, vendor_product, vendor_payment_basis, vendor_email, vendor_userid, vendor_password) 
                 VALUES ('$vendor_first_name', '$vendor_last_name', '$vendor_full_name', '$vendor_stall_number', '$vendor_mobile_number', '$vendor_product_type', 'Monthly','$vendor_email', '$vendor_userid', '$vendor_password')";
@@ -137,4 +141,5 @@ function unsetVendorSessionVariables()
     unset($_SESSION['vendor_hashed_password']);
     unset($_SESSION['vendor_transaction_id']);
     unset($_SESSION['admin_password_confirmation_trial']);
+    unset($_SESSION['vendor_password']);
 }

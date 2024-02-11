@@ -105,31 +105,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $vendor_password = isset($_POST["vendor_password"]) ? htmlspecialchars($_POST["vendor_password"]) : '';
     $vendor_confirm_password = isset($_POST["vendor_confirm_password"]) ? htmlspecialchars($_POST["vendor_confirm_password"]) : '';
 
-    $lengthPattern = '/^.{8,16}$/';
-    $uppercasePattern = '/[A-Z]/';
-    $lowercasePattern = '/[a-z]/';
-    $digitPattern = '/\d/';
-    $specialCharPattern = '/[!@#$%^&*()_+]/';
-
-    if (
-        !preg_match($lengthPattern, $vendor_password) || !preg_match($uppercasePattern, $vendor_password) || !preg_match($lowercasePattern, $vendor_password)
-        || !preg_match($digitPattern, $vendor_password) ||  !preg_match($specialCharPattern, $vendor_password)
-    ) {
-        echo '<script>';
-        echo 'alert("Password did not meet requirements!");';
-        echo 'window.location.href = "admin_create_vendor_account.php";';
-        echo '</script>';
-        exit();
-    }
-
-    if ($vendor_password !== $vendor_confirm_password) {
-        echo '<script>';
-        echo 'alert("Passwords do not match!");';
-        echo 'window.location.href = "admin_create_vendor_account.php";';
-        echo '</script>';
-        exit();
-    }
-
     // Hash the password
     $hashedVendorPassword = password_hash($vendor_password, PASSWORD_BCRYPT);
     $vendor_full_name = $vendor_first_name . " " . $vendor_last_name;
@@ -161,6 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['vendor_email'] = $vendor_email;
     $_SESSION['vendor_userid'] = $vendor_userid;
     $_SESSION['vendor_hashed_password'] = $hashedVendorPassword;
+    $_SESSION['vendor_password'] = $vendor_password;
     $_SESSION['vendor_transaction_id'] = $vendor_transaction_id;
 
     /*
