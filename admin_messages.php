@@ -52,7 +52,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
         if (!$messages_result) {
             die("Error executing the query: " . $connect->error);
         }
-
+        $currentDateTime = date('F d, Y | h:i A');
 ?>
 
         <!DOCTYPE html>
@@ -168,7 +168,7 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
 
                 <div class="recipient-box">
                     <label class="recipient" for="recipient">From: <?php echo $recipient; ?></label>
-                    <p class="message-datetime">December 25 | 10:30 PM</p>
+                    <p class="message-datetime"><?php echo  $currentDateTime; ?></p>
                 </div>
 
                 <!-- <div class="convo-container"> -->

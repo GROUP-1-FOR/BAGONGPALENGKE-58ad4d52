@@ -44,6 +44,7 @@ $vendors = [];
 while ($row = $result->fetch_assoc()) {
     $vendors[] = $row;
 }
+$currentDateTime = date('F d, Y | h:i A');
 ?>
 
 <!DOCTYPE html>
@@ -99,7 +100,7 @@ while ($row = $result->fetch_assoc()) {
                     }
                     ?>
                 </select>
-                <p class="message-datetime">December 25 | 10:30 PM</p>
+                <p class="message-datetime"><?php echo $currentDateTime; ?></p>
             </div>
             <div class="convo-container">
                 <div class="text-messages">

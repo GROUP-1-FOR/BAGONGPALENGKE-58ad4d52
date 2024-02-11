@@ -70,6 +70,7 @@ $stmtFetchAllMessages->bind_param('ssss', $vendorName, $vendorStallNumber, $vend
 $stmtFetchAllMessages->execute();
 $resultFetchAllMessages = $stmtFetchAllMessages->get_result();
 
+$currentDateTime = date('F d, Y | h:i A');
 ?>
 
 <!DOCTYPE html>
@@ -206,7 +207,7 @@ $resultFetchAllMessages = $stmtFetchAllMessages->get_result();
 
         <div class="recipient-box">
             <label class="recipient">Welcome, <?php echo $vendorName; ?>! </label>
-            <p class="message-datetime">December 25 | 10:30 PM</p>
+            <p class="message-datetime"> <?php echo $currentDateTime; ?></p>
         </div>
 
         <!-- <div class="convo-container"> -->
