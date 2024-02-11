@@ -68,22 +68,23 @@ if ($currentDate >= $startingDate) {
             }
             // Update current balance and remaining balance
             $currentBalance = $balance + $rowUserData['balance'];
+            if ($currentDay >= 15) {
+                $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
+                $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+                $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
+                $stmtUpdateBalance->execute();
 
-            $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
-            $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-            $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
-            $stmtUpdateBalance->execute();
+                $sqlUpdateBalance = "UPDATE admin_stall_map SET balance = ?, due = 1, paid = 0 WHERE vendor_userid = ?";
+                $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
+                $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
+                $stmtUpdateBalance->execute();
 
-            $sqlUpdateBalance = "UPDATE admin_stall_map SET balance = ?, due = 1, paid = 0 WHERE vendor_userid = ?";
-            $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
-            $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
-            $stmtUpdateBalance->execute();
-
-            // Update day, month, and year
-            $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
-            $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
-            $stmtUpdateDate->bind_param('iiis', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
-            $stmtUpdateDate->execute();
+                // Update day, month, and year
+                $sqlUpdateDate = "UPDATE vendor_balance SET day = ?, month = ?, year = ? WHERE vendor_userid = ?";
+                $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
+                $stmtUpdateDate->bind_param('iiis', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
+                $stmtUpdateDate->execute();
+            }
         }
     }
 }
@@ -159,8 +160,7 @@ if ($resultNotification->num_rows > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="icon" href="assets\images\sign-in\src-logo.png" type="image/x-icon">
-    <title>Vendor Dashboard</title>
+    <title>SIGN IN</title>
     <link rel="stylesheet" type="text/css" href="index.css">
     <link rel="stylesheet" type="text/css" href="text-style.css">
     <link rel="stylesheet" type="text/css" href="box-style.css">
@@ -177,6 +177,13 @@ if ($resultNotification->num_rows > 0) {
             height: 200px;
         }
 
+
+        .otp-text {
+            /* float: left; */
+            display: flex;
+            justify-content: flex-start;
+        }
+
         #money-table {
 
             position: absolute;
@@ -191,15 +198,17 @@ if ($resultNotification->num_rows > 0) {
         }
 
         #money-cell {
-            margin-top: -150px;
+            margin-top: -40px;
             position: absolute;
             align-items: center;
             align-content: center;
             text-align: center;
-            margin-left: 50px;
+            margin-left: -350px;
             background-color: transparent;
+            font-size: 90px;
+            font-weight: bolder;
             color: white;
-            font-size: 40px;
+            /* font-size: 40px; */
             z-index: 10;
 
         }
@@ -224,23 +233,27 @@ if ($resultNotification->num_rows > 0) {
             z-index: 10;
         }
 
-        .modal-content {
-            background-color: #fefefe;
+        /* .modal-content {
+            top: 0;
+            background-color: #D9D9D9;
             color: maroon;
+            margin-top: 2.5% !important;
             margin: 15% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 70%;
-            height: 20%;
+            border-radius: 10px;
+            width: 500px;
+            height: 150px;
             text-align: center;
             z-index: 999;
-        }
+        } */
 
         .close {
             color: #aaa;
             float: right;
             font-size: 28px;
             font-weight: bold;
+            margin-left: 10px;
         }
 
         .close:hover,
@@ -250,24 +263,31 @@ if ($resultNotification->num_rows > 0) {
             cursor: pointer;
         }
 
-        /* Add this style for the "Pay" button inside the modal */
-        #payButton {
-            margin-top: 5px;
-            padding: 15px;
-            background-color: gray;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            z-index: 10;
-            background-color: #850f16;
-            font-weight: bolder;
-            color: white !important;
-            border-radius: 4px;
-            height: 35px;
-            border-style: solid;
-            border-color: transparent;
-            white-space: nowrap;
+        .notification {
+            width: 500px;
+            height: 150px;
+            background-color: #D9D9D9;
+            color: maroon;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            margin-top: 2.5% !important;
+            margin: 15% auto;
+        }
+
+        .notification h2 {
+            margin-top: 0;
+        }
+
+        .button-container4 {
+
+            margin-top: auto;
+            /* Pushes the button to the bottom */
+            display: flex;
+            justify-content: flex-end;
+            /* Aligns the button to the right */
         }
     </style>
     <script>
@@ -308,58 +328,72 @@ if ($resultNotification->num_rows > 0) {
 
     <div class="head-bottom3">
         <div class="flex-column2">
-            <div class="dashboard-announcement6">
-                <div class="flex-row-4">
-                    <div>
-                        <!-- <h2 class="interactive-map-header3">AMOUNT TO PAY</h2> -->
-                        <div class="status-heading">
-                            <img class="vendor-img" src="assets\images\sign-in\vendor-dashboard-img.svg" alt="back-layer">
-                            <table id="money-table">
-                                <!-- <tr> -->
-                                <td id="money-cell">
-                                    <?php if ($balance > 0) : ?>
-                                        $<?php echo number_format($balance, 2); ?>
-                                        <?php if ($paymentStatus === "To be paid") : ?>
-                                            <!-- The "Pay" button triggers the modal directly -->
-                                            <br>
-                                            <button type="button" name="pay" onclick="openModal()">Pay</button>
-                                            <!-- The form to be submitted -->
-                                            <form id="paymentForm" method="post" action="vendor_invoice_summary.php">
-                                                <input type="hidden" name="vendorName" value="<?php echo $vendorName; ?>">
-                                                <input type="hidden" name="vendorUserId" value="<?php echo $userid; ?>">
-                                                <input type="hidden" name="vendorStallNumber" value="<?php echo $stallNumber; ?>">
-                                                <input type="hidden" name="balance" value="<?php echo $balance; ?>">
-                                                <input type="hidden" name="transactionId" value="<?php echo $transactionId; ?>"> <!-- Add this line -->
-                                            </form>
-                                        <?php endif; ?>
-                                    <?php else : ?>
-                                        $<?php echo number_format($balance, 2); ?>
-                                    <?php endif; ?>
-                                    <?php if ($paymentStatus === "Payment has already been sent") : ?>
-                                        <p class="error-message2">Payment has already been sent. Wait for confirmation.</p>
-                                    <?php endif; ?>
+            <div class="dashboard-announcement4">
+                <!-- <div class="flex-row-7"> -->
+                <!-- <div> -->
+                <!-- <h2 class="interactive-map-header3">AMOUNT TO PAY</h2> -->
+                <div class="status-heading">
 
-                                </td>
-                                <!-- </tr> -->
-                            </table>
+                    <table id="money-table">
+                        <!-- <tr> -->
+                        <td id="money-cell">
+                            <?php if ($balance > 0) : ?>
+                                <a type="button" name="pay" onclick="openModal()">
+                                    ₱ <?php echo number_format($balance, 2); ?>
+                                </a>
+                                <?php if ($paymentStatus === "To be paid") : ?>
+                                    <!-- The "Pay" button triggers the modal directly -->
+                                    <br>
+                                    <!-- The form to be submitted -->
+                                    <form id="paymentForm" method="post" action="vendor_invoice_summary.php">
+                                        <input type="hidden" name="vendorName" value="<?php echo $vendorName; ?>">
+                                        <input type="hidden" name="vendorUserId" value="<?php echo $userid; ?>">
+                                        <input type="hidden" name="vendorStallNumber" value="<?php echo $stallNumber; ?>">
+                                        <input type="hidden" name="balance" value="<?php echo $balance; ?>">
+                                        <input type="hidden" name="transactionId" value="<?php echo $transactionId; ?>"> <!-- Add this line -->
+                                    </form>
+                                <?php endif; ?>
+                            <?php else : ?>
+                                $<?php echo number_format($balance, 2); ?>
+                            <?php endif; ?>
+                            <?php if ($paymentStatus === "Payment has already been sent") : ?>
+                                <p class="error-message2">Payment has already been sent. Wait for confirmation.</p>
+                            <?php endif; ?>
 
-                            <div id="myModal" class="modal">
-                                <div class="modal-content">
-                                    <span class="close error-message" onclick="closeModal()">&times;</span>
-                                    <p>Are you sure you want to make the payment?</p>
-                                    <!-- The "Pay" button inside the modal -->
-                                    <button class="submit-button" id="payButton" type="button" onclick="pay()">Pay</button>
+                        </td>
+                        <!-- </tr> -->
+                    </table>
+
+                    <div id="myModal" class="modal">
+                        <div class="modal-content">
+                            <div class="notification">
+
+                                <!-- <span class="close error-message" onclick="closeModal()">&times;</span> -->
+                                <h3 class="error-message">Are you sure you want to make the payment?</h3>
+                                <!-- The "Pay" button inside the modal -->
+                                <!-- <div class="flexbox-row3"> -->
+                                <div class="button-container4">
+                                    <button class="button" id="payButton" type="button" onclick="pay()">Pay</button>
+                                    <!-- </div>
+                                    <div class="button-container4"> -->
+                                    <button class="close button" onclick="closeModal()"> Cancel </button>
                                 </div>
+                                <!-- </div> -->
                             </div>
                         </div>
                     </div>
-
-                    <!-- <a href=admin-map.php><img class="map-icon" src="assets\images\sign-in\map-icon.svg" alt="map"> Amount to Pay </a> -->
-
                 </div>
+                <!-- </div> -->
+
+                <!-- <a href=admin-map.php><img class="map-icon" src="assets\images\sign-in\map-icon.svg" alt="map"> Amount to Pay </a> -->
+
+                <!-- </div> -->
 
             </div>
-            <div class="dashboard-announcementv2">
+            <a class="hover" type="button" name="pay" onclick="openModal()">
+                <img class="vendor-img" src="assets\images\sign-in\vendor-dashboard-img.svg" alt="back-layer">
+            </a>
+            <div class="dashboard-announcementv4">
 
                 <div class="flex-row-1">
                     <h2 class="notification-header">Notifications</h2>
@@ -373,7 +407,7 @@ if ($resultNotification->num_rows > 0) {
             </div>
         </div>
 
-        <div class="dashboard-map">
+        <div class="dashboard-map1">
             <center>
                 <a href="vendor_view_announcement.php"><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\announce.svg" alt="Sticker" class="sticker"> ANNOUNCEMENTS </button> </a>
                 <a href="vendor_transaction_history.php"><button class="index-buttons"> <img class="icons" src="assets\images\sign-in\transactions.svg" alt="Sticker" class="sticker">TRANSACTIONS </button> </a>

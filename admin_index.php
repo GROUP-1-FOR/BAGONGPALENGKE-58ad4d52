@@ -175,11 +175,11 @@ if ($resultStallMap->num_rows > 0) {
 
     <div class="head-bottom3">
         <div class="flex-column2">
-            <div class="dashboard-announcement">
+            <div class="dashboard-announcement3">
                 <div class="flex-row-1">
                     <div>
 
-                        <h2 class="interactive-map-header">INTERACTIVE MAP</h2>
+                        <h2 class="interactive-map-header">Interactive map</h2>
                         <div class="status-heading">
                             <div class=interactive-map-position>
                                 <h1 class="rent-status-header"> Rent <br>Status </h1>
