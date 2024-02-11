@@ -118,9 +118,6 @@ if ($resultAllVendors->num_rows > 0) {
             }
         }
     }
-} else {
-    // Handle the case where there are no vendors in the vendor_balance table
-    echo "No vendors found in the database.";
 }
 
 // Fetch data from admin_stall_map table
