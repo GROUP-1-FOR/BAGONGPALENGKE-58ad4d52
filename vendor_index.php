@@ -68,7 +68,7 @@ if ($currentDate >= $startingDate) {
             }
             // Update current balance and remaining balance
             $currentBalance = $balance + $rowUserData['balance'];
-
+            if($currentDay >= 15){
             $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
             $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
             $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
@@ -84,6 +84,7 @@ if ($currentDate >= $startingDate) {
             $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
             $stmtUpdateDate->bind_param('iiis', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
             $stmtUpdateDate->execute();
+            }
         }
     }
 }
