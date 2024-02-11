@@ -58,10 +58,10 @@ if ($resultAllVendors->num_rows > 0) {
 
         // Get the current date
         $currentDate = new DateTime();
-        $currentDay = 10;//intval($currentDate->format('d'));
-        $currentMonth = 3;//intval($currentDate->format('m'));
-        $currentYear = 2024;//intval($currentDate->format('Y'));
-
+        $currentDay = intval($currentDate->format('d'));
+        $currentMonth = intval($currentDate->format('m'));
+        $currentYear = intval($currentDate->format('Y'));
+        
         $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
 
         $startingDate = new DateTime($rowUserData['starting_date']);
@@ -95,7 +95,7 @@ if ($resultAllVendors->num_rows > 0) {
                     }
                     // Update current balance and remaining balance
                     $currentBalance = $balance + $rowUserData['balance'];
-
+                    if($currentDay >= 15){
                     $sqlUpdateBalance = "UPDATE vendor_balance SET balance = ? WHERE vendor_userid = ?";
                     $stmtUpdateBalance = $connect->prepare($sqlUpdateBalance);
                     $stmtUpdateBalance->bind_param('ds', $currentBalance, $userid); // Assuming vendor_userid is of type integer
@@ -111,6 +111,7 @@ if ($resultAllVendors->num_rows > 0) {
                     $stmtUpdateDate = $connect->prepare($sqlUpdateDate);
                     $stmtUpdateDate->bind_param('iiis', $currentDay, $currentMonth, $currentYear, $userid); // Assuming vendor_userid is of type integer
                     $stmtUpdateDate->execute();
+                    }
                 }
             }
         }
