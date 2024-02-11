@@ -99,6 +99,7 @@ if (isset($_GET['cancel_button'])) {
             align-items: flex-start;
             justify-content: center;
             margin-top: 58px;
+            
         }
 
         .notification {
