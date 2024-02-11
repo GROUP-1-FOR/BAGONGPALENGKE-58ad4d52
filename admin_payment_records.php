@@ -1,5 +1,6 @@
 <?php
 require("config.php");
+
 if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["userid"])) {
     $admin_id = $_SESSION["id"];
     $admin_userid = $_SESSION["userid"];
@@ -7,8 +8,8 @@ if (isset($_SESSION["id"]) && $_SESSION["login"] === true && isset($_SESSION["us
     header("location:admin_logout.php");
 }
 
-// Fetch paid records from the database
-$query = "SELECT id, vendor_name, balance, payment_date, mop, transaction_id FROM paid_records";
+// Fetch paid records from the database in descending order of payment date
+$query = "SELECT id, vendor_name, balance, payment_date, mop, transaction_id FROM paid_records ORDER BY payment_date DESC";
 $result = mysqli_query($connect, $query);
 
 if (!$result) {
