@@ -83,7 +83,7 @@
   <div>
     <a href="vendor_login.php"><button class="vendor-button"> VENDOR </button></a>
     <a href="admin_login.php"><button class="admin-button"> TREASURY </button></a>
-    <a href="first_signin.php"><button class="back-button"> &lt; BACK </button></a>
+    <a href="first_signin.php"><button class="back-button"> BACK </button></a>
   </div>
 
   <script>
